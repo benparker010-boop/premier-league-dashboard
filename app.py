@@ -3,40 +3,35 @@ import pandas as pd
 import requests
 import anthropic
 
-# --- Page setup (must be the first Streamlit command) ---
 st.set_page_config(page_title="Football Data Dashboard", layout="wide")
 st.title("⚽ Football Data Dashboard")
 
-# football-data.org (Premier League)
 PL_URL = "https://api.football-data.org/v4/competitions/PL/standings"
-
-# TheStatsAPI (World Cup detailed stats)
 STATS_BASE = "https://api.thestatsapi.com/api"
 WC_COMP = "comp_6107"
 WC_SEASON = "sn_118868"
-
 AI_MODEL = "claude-haiku-4-5-20251001"
 PREDICT_MODEL = "claude-sonnet-4-6"
 
+# Notable players to assemble a top-scorers board from (no aggregate endpoint exists)
+WATCHLIST = ["Haaland", "Kane", "Mbappe", "Vinicius", "Lautaro Martinez", "Musiala",
+             "Pedri", "Bellingham", "Lewandowski", "Pulisic", "Lamine Yamal", "Griezmann"]
 
-# ======================= Premier League data (unchanged) =======================
+
+# ===================== Premier League (football-data.org) =====================
 @st.cache_data(ttl=600)
 def load_pl_table():
     headers = {"X-Auth-Token": st.secrets["FOOTBALL_API_KEY"]}
     r = requests.get(PL_URL, headers=headers, timeout=10)
     r.raise_for_status()
     total = next(s for s in r.json()["standings"] if s["type"] == "TOTAL")
-    rows = []
-    for e in total["table"]:
-        rows.append({
-            "Team": e["team"]["name"], "Played": e["playedGames"],
-            "Won": e["won"], "Drawn": e["draw"], "Lost": e["lost"],
-            "GF": e["goalsFor"], "GA": e["goalsAgainst"], "Pts": e["points"],
-        })
-    return pd.DataFrame(rows)
+    return pd.DataFrame([{
+        "Team": e["team"]["name"], "Played": e["playedGames"], "Won": e["won"],
+        "Drawn": e["draw"], "Lost": e["lost"], "GF": e["goalsFor"],
+        "GA": e["goalsAgainst"], "Pts": e["points"]} for e in total["table"]])
 
 
-# ======================= World Cup data (TheStatsAPI) =======================
+# ===================== World Cup (TheStatsAPI) =====================
 def stats_headers():
     return {"Authorization": f"Bearer {st.secrets['STATS_API_KEY']}"}
 
@@ -58,8 +53,45 @@ def wc_match_stats(match_id):
     return r.json().get("data", {})
 
 
+@st.cache_data(ttl=3600)
+def search_player(name):
+    r = requests.get(f"{STATS_BASE}/football/players", headers=stats_headers(),
+                     params={"search": name}, timeout=15)
+    r.raise_for_status()
+    return r.json().get("data", [])
+
+
+@st.cache_data(ttl=600)
+def player_wc_stats(player_id):
+    r = requests.get(f"{STATS_BASE}/football/players/{player_id}/stats",
+                     headers=stats_headers(), params={"season_id": WC_SEASON}, timeout=15)
+    if r.status_code == 404:
+        return None                      # player has no World Cup stats
+    r.raise_for_status()
+    return r.json().get("data", {})
+
+
+def find_wc_player(name):
+    """Return the first search result that actually has World Cup stats."""
+    for p in search_player(name)[:3]:
+        s = player_wc_stats(p["id"])
+        if s:
+            return p, s
+    return None, None
+
+
+def build_team_name_map(*match_lists):
+    m = {}
+    for lst in match_lists:
+        for mt in lst:
+            for side in ("home_team", "away_team"):
+                t = mt.get(side) or {}
+                if t.get("id") and t.get("name"):
+                    m[t["id"]] = t["name"]
+    return m
+
+
 def build_group_standings(matches):
-    """Compute group tables from finished match results."""
     groups = {}
     for m in matches:
         g = m.get("group_label")
@@ -82,10 +114,7 @@ def build_group_standings(matches):
             gd[home]["Pts"] += 1; gd[away]["Pts"] += 1
     out = {}
     for g, teams in groups.items():
-        rows = []
-        for name, s in teams.items():
-            row = dict(s); row["Team"] = name; row["GD"] = s["GF"] - s["GA"]
-            rows.append(row)
+        rows = [dict(s, Team=n, GD=s["GF"] - s["GA"]) for n, s in teams.items()]
         df = pd.DataFrame(rows)[["Team", "P", "W", "D", "L", "GF", "GA", "GD", "Pts"]]
         out[g] = df.sort_values(["Pts", "GD", "GF"], ascending=False).reset_index(drop=True)
     return out
@@ -99,25 +128,19 @@ def stat_val(overview, key, side):
 
 
 def overview_to_df(overview, home, away):
-    labels = [
-        ("Possession %", "ball_possession"), ("Expected goals (xG)", "expected_goals"),
-        ("Total shots", "total_shots"), ("Shots on target", "shots_on_target"),
-        ("Big chances", "big_chances"), ("Corners", "corner_kicks"),
-        ("Fouls", "fouls"), ("Yellow cards", "yellow_cards"),
-        ("Red cards", "red_cards"), ("Passes", "passes"),
-        ("Accurate passes", "accurate_passes"),
-    ]
-    rows = []
-    for label, key in labels:
-        rows.append({"Stat": label, home: stat_val(overview, key, "home"),
-                     away: stat_val(overview, key, "away")})
-    return pd.DataFrame(rows)
+    labels = [("Possession %", "ball_possession"), ("Expected goals (xG)", "expected_goals"),
+              ("Total shots", "total_shots"), ("Shots on target", "shots_on_target"),
+              ("Big chances", "big_chances"), ("Corners", "corner_kicks"),
+              ("Fouls", "fouls"), ("Yellow cards", "yellow_cards"),
+              ("Red cards", "red_cards"), ("Passes", "passes"),
+              ("Accurate passes", "accurate_passes")]
+    return pd.DataFrame([{"Stat": lab, home: stat_val(overview, k, "home"),
+                          away: stat_val(overview, k, "away")} for lab, k in labels])
 
 
 def build_team_stats(finished):
-    """Aggregate per-team averages from every finished match's stat sheet."""
     agg = {}
-    done, failed = 0, 0
+    done = failed = 0
     for m in finished:
         try:
             ov = wc_match_stats(m["id"]).get("overview", {})
@@ -131,30 +154,64 @@ def build_team_stats(finished):
             t = agg.setdefault(team, {"GP": 0, "poss": 0, "xg": 0.0, "shots": 0,
                                       "sot": 0, "corners": 0, "fouls": 0, "yc": 0, "big": 0})
             t["GP"] += 1
-            t["poss"] += stat_val(ov, "ball_possession", side) or 0
-            t["xg"] += stat_val(ov, "expected_goals", side) or 0
-            t["shots"] += stat_val(ov, "total_shots", side) or 0
-            t["sot"] += stat_val(ov, "shots_on_target", side) or 0
-            t["corners"] += stat_val(ov, "corner_kicks", side) or 0
-            t["fouls"] += stat_val(ov, "fouls", side) or 0
-            t["yc"] += stat_val(ov, "yellow_cards", side) or 0
-            t["big"] += stat_val(ov, "big_chances", side) or 0
+            for k, sk in [("poss", "ball_possession"), ("xg", "expected_goals"),
+                          ("shots", "total_shots"), ("sot", "shots_on_target"),
+                          ("corners", "corner_kicks"), ("fouls", "fouls"),
+                          ("yc", "yellow_cards"), ("big", "big_chances")]:
+                t[k] += stat_val(ov, sk, side) or 0
     rows = []
     for team, t in agg.items():
         gp = t["GP"] or 1
-        rows.append({
-            "Team": team, "GP": t["GP"],
-            "Avg Poss %": round(t["poss"] / gp, 1),
-            "xG/game": round(t["xg"] / gp, 2),
-            "Shots/game": round(t["shots"] / gp, 1),
-            "SoT/game": round(t["sot"] / gp, 1),
-            "Big chances/game": round(t["big"] / gp, 1),
-            "Corners/game": round(t["corners"] / gp, 1),
-            "Fouls/game": round(t["fouls"] / gp, 1),
-            "Yellows/game": round(t["yc"] / gp, 1),
-        })
-    df = pd.DataFrame(rows).sort_values("xG/game", ascending=False).reset_index(drop=True)
+        rows.append({"Team": team, "GP": t["GP"], "Avg Poss %": round(t["poss"] / gp, 1),
+                     "xG/game": round(t["xg"] / gp, 2), "Shots/game": round(t["shots"] / gp, 1),
+                     "SoT/game": round(t["sot"] / gp, 1), "Big chances/game": round(t["big"] / gp, 1),
+                     "Corners/game": round(t["corners"] / gp, 1), "Fouls/game": round(t["fouls"] / gp, 1),
+                     "Yellows/game": round(t["yc"] / gp, 1)})
+    return pd.DataFrame(rows).sort_values("xG/game", ascending=False).reset_index(drop=True), done, failed
+
+
+def build_scorer_board(names, team_names):
+    rows, done, failed = [], 0, 0
+    for nm in names:
+        try:
+            p, s = find_wc_player(nm)
+        except Exception:
+            failed += 1
+            continue
+        if not p or not s:
+            continue
+        done += 1
+        sc = s.get("scoring", {})
+        rows.append({"Player": p["name"],
+                     "Team": team_names.get(s.get("team_id"), p.get("nationality", "")),
+                     "Goals": sc.get("goals", 0), "Assists": sc.get("assists", 0),
+                     "Rating": s.get("rating"), "Mins": s.get("minutes_played")})
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df = df.sort_values(["Goals", "Assists"], ascending=False).reset_index(drop=True)
     return df, done, failed
+
+
+def cat_df(d):
+    return pd.DataFrame([{"Stat": k.replace("_", " ").title(), "Value": v} for k, v in d.items()])
+
+
+def render_profile(player, stats, team_names):
+    nat_team = team_names.get(stats.get("team_id"), player.get("nationality", ""))
+    st.markdown(f"### {player['name']}  ·  {nat_team}")
+    st.caption(f"Position {stats.get('position', '?')}  ·  "
+               f"{player.get('nationality', '?')}  ·  Age {player.get('age', '?')}")
+    a, b, c, d = st.columns(4)
+    a.metric("Goals", stats.get("scoring", {}).get("goals", 0))
+    b.metric("Assists", stats.get("scoring", {}).get("assists", 0))
+    c.metric("Rating", stats.get("rating", "—"))
+    d.metric("Minutes", stats.get("minutes_played", 0))
+    for title, key in [("Scoring", "scoring"), ("Shooting", "shooting"), ("Passing", "passing"),
+                       ("Defending", "defending"), ("Duels", "duels"), ("Discipline", "discipline")]:
+        block = stats.get(key)
+        if block:
+            st.markdown(f"**{title}**")
+            st.dataframe(cat_df(block), hide_index=True)
 
 
 def ask_ai(prompt, model=AI_MODEL, temperature=1.0):
@@ -167,55 +224,50 @@ def ask_ai(prompt, model=AI_MODEL, temperature=1.0):
 # ----------------------------------------------------------------------
 tab_pl, tab_wc = st.tabs(["🏴 Premier League", "🌍 World Cup 2026"])
 
-
 # ============================ PREMIER LEAGUE ===========================
 with tab_pl:
     st.header("Premier League")
-    data_source = "live"
+    source = "live"
     try:
         df = load_pl_table()
         if df.empty:
             raise ValueError("empty")
     except Exception:
-        data_source = "sample"
+        source = "sample"
         df = pd.read_csv("sample_league_data.csv")
     df["GD"] = df["GF"] - df["GA"]
-    st.caption("🟢 Live data from football-data.org" if data_source == "live"
+    st.caption("🟢 Live data from football-data.org" if source == "live"
                else "🟡 Showing sample data (live source unavailable right now)")
-
     st.sidebar.header("Premier League controls")
-    num_teams = st.sidebar.slider("How many teams to show?", 1, 20, 10)
-    metric = st.sidebar.selectbox("Chart this stat:", options=["Pts", "GD", "GF"])
-    top_teams = df.head(num_teams)
+    n = st.sidebar.slider("How many teams to show?", 1, 20, 10)
+    metric = st.sidebar.selectbox("Chart this stat:", ["Pts", "GD", "GF"])
+    top = df.head(n)
     c1, c2 = st.columns(2)
     c1.metric("Top of the table", df.iloc[0]["Team"], f"{int(df.iloc[0]['Pts'])} pts")
-    c2.metric("Goals scored (shown teams)", int(top_teams["GF"].sum()))
-    st.subheader(f"Top {num_teams} teams")
-    st.dataframe(top_teams, hide_index=True)
+    c2.metric("Goals scored (shown teams)", int(top["GF"].sum()))
+    st.subheader(f"Top {n} teams")
+    st.dataframe(top, hide_index=True)
     st.subheader(f"{metric} by team")
-    st.bar_chart(data=top_teams, x="Team", y=metric)
-
+    st.bar_chart(data=top, x="Team", y=metric)
     st.subheader("🤖 AI Analyst Summary")
     if "pl_summary" not in st.session_state:
         st.session_state.pl_summary = ""
     if st.button("Generate AI Summary", key="pl_ai"):
         try:
-            prompt = ("You are a Premier League data analyst. Here is the current table:\n\n"
-                      f"{df.to_string(index=False)}\n\nWrite a short, punchy 3-4 sentence "
-                      "summary for a dashboard. Plain English, no bullet points.")
             with st.spinner("Asking the AI analyst..."):
-                st.session_state.pl_summary = ask_ai(prompt)
+                st.session_state.pl_summary = ask_ai(
+                    "You are a Premier League analyst. Current table:\n\n"
+                    f"{df.to_string(index=False)}\n\nWrite a punchy 3-4 sentence summary. "
+                    "Plain English, no bullet points.")
         except Exception as e:
             st.session_state.pl_summary = f"Sorry — couldn't generate a summary. ({e})"
     if st.session_state.pl_summary:
         st.info(st.session_state.pl_summary)
 
-
 # ============================== WORLD CUP ==============================
 with tab_wc:
     st.header("🌍 World Cup 2026")
     st.caption("🟢 Live detailed data from TheStatsAPI")
-
     try:
         finished = wc_matches("finished")
         upcoming = wc_matches("scheduled")
@@ -225,14 +277,13 @@ with tab_wc:
         st.warning(f"Couldn't load World Cup data right now: {e}")
 
     if wc_ok:
+        team_names = build_team_name_map(finished, upcoming)
         groups = build_group_standings(finished)
-        total_goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in finished)
+        goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in finished)
         m1, m2, m3 = st.columns(3)
-        m1.metric("Groups", len(groups))
-        m2.metric("Matches played", len(finished))
-        m3.metric("Goals scored", total_goals)
+        m1.metric("Groups", len(groups)); m2.metric("Matches played", len(finished))
+        m3.metric("Goals scored", goals)
 
-        # ---- Group standings (computed from results) ----
         st.subheader("Group standings (built from results)")
         gnames = sorted(groups.keys())
         for i in range(0, len(gnames), 2):
@@ -242,14 +293,12 @@ with tab_wc:
                     st.markdown(f"**Group {g}**")
                     st.dataframe(groups[g], hide_index=True)
 
-        # ---- Match stats explorer ----
         st.divider()
         st.subheader("🔍 Match stats explorer")
-        st.write("Pick a finished match to see its full stat sheet.")
         labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
-                  f"{m['away_team']['name']}  ({m['utc_date'][:10]})": m for m in finished}
+                  f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
         if labels:
-            choice = st.selectbox("Match:", options=list(labels.keys()))
+            choice = st.selectbox("Pick a finished match:", list(labels.keys()))
             m = labels[choice]
             try:
                 ov = wc_match_stats(m["id"]).get("overview", {})
@@ -257,80 +306,110 @@ with tab_wc:
                     st.dataframe(overview_to_df(ov, m["home_team"]["name"],
                                                 m["away_team"]["name"]), hide_index=True)
                 else:
-                    st.write("No detailed stats available for this match yet.")
+                    st.write("No detailed stats for this match yet.")
             except Exception as e:
                 st.warning(f"Couldn't load that match's stats: {e}")
 
-        # ---- Aggregated team stats ----
         st.divider()
-        st.subheader("📊 Team stats (per game, across the tournament)")
+        st.subheader("📊 Team stats (per game)")
         if "wc_team_stats" not in st.session_state:
             st.session_state.wc_team_stats = None
         if st.button("Build team stats from every finished match"):
-            with st.spinner("Pulling each match's stat sheet and aggregating..."):
+            with st.spinner("Aggregating every match's stat sheet..."):
                 ts, done, failed = build_team_stats(finished)
                 st.session_state.wc_team_stats = ts
-                msg = f"Built from {done} matches."
-                if failed:
-                    msg += f" {failed} couldn't load (rate limit) — click again in a minute to fill them in."
-                st.session_state.wc_team_stats_msg = msg
+                st.session_state.wc_team_msg = f"Built from {done} matches." + (
+                    f" {failed} hit the rate limit — click again in a minute." if failed else "")
         if st.session_state.wc_team_stats is not None:
-            st.caption(st.session_state.get("wc_team_stats_msg", ""))
+            st.caption(st.session_state.get("wc_team_msg", ""))
             st.dataframe(st.session_state.wc_team_stats, hide_index=True)
 
-        # ---- AI analysis & predictions ----
+        # ---------------- Player search & profile ----------------
+        st.divider()
+        st.subheader("👤 Player search & profile")
+        q = st.text_input("Type a player's name and press Search")
+        if st.button("Search player"):
+            try:
+                st.session_state.player_results = search_player(q) if q.strip() else []
+            except Exception as e:
+                st.session_state.player_results = []
+                st.warning(f"Search failed: {e}")
+        results = st.session_state.get("player_results", [])
+        if results:
+            opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
+                    for p in results}
+            pick = st.selectbox("Pick the player:", list(opts.keys()))
+            p = opts[pick]
+            try:
+                s = player_wc_stats(p["id"])
+                if s:
+                    render_profile(p, s, team_names)
+                else:
+                    st.info(f"{p['name']} has no recorded stats in the 2026 World Cup.")
+            except Exception as e:
+                st.warning(f"Couldn't load stats: {e}")
+
+        # ---------------- Top scorers (watchlist) ----------------
+        st.divider()
+        st.subheader("🥇 Top scorers (from a watchlist of notable players)")
+        st.caption("Assembled player-by-player, since the API has no all-players leaderboard.")
+        if "scorer_board" not in st.session_state:
+            st.session_state.scorer_board = None
+        if st.button("Build top-scorers board"):
+            with st.spinner("Looking up each player's goals..."):
+                sb, done, failed = build_scorer_board(WATCHLIST, team_names)
+                st.session_state.scorer_board = sb
+                st.session_state.scorer_msg = f"Built from {done} players." + (
+                    " Some hit the rate limit — click again in a minute." if failed else "")
+        if st.session_state.scorer_board is not None:
+            st.caption(st.session_state.get("scorer_msg", ""))
+            if st.session_state.scorer_board.empty:
+                st.write("No data yet — try again in a moment.")
+            else:
+                st.dataframe(st.session_state.scorer_board, hide_index=True)
+
+        # ---------------- AI analysis & predictions ----------------
         st.divider()
         st.subheader("🤖 AI Tournament Analysis & Predictions")
-
         groups_text = ""
         for g in gnames:
             groups_text += f"\nGroup {g} (only these teams): " + \
-                ", ".join(groups[g]["Team"].tolist()) + "\n" + \
-                groups[g].to_string(index=False) + "\n"
-
+                ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
         team_stats_text = ""
         if st.session_state.wc_team_stats is not None:
-            team_stats_text = ("\n\nPer-game team stats (real data):\n" +
-                               st.session_state.wc_team_stats.to_string(index=False))
-
+            team_stats_text = "\n\nPer-game team stats:\n" + \
+                st.session_state.wc_team_stats.to_string(index=False)
         if "wc_analysis" not in st.session_state:
             st.session_state.wc_analysis = ""
         if "wc_prediction" not in st.session_state:
             st.session_state.wc_prediction = ""
-
         b1, b2 = st.columns(2)
         with b1:
             if st.button("Analyse the tournament", key="wc_analyse"):
                 try:
-                    prompt = ("You are an expert analyst covering the 2026 World Cup group "
-                              "stage (in progress). Group standings:\n" + groups_text +
-                              team_stats_text +
-                              "\n\nWrite a punchy 4-6 sentence analysis of how it's shaping up: "
-                              "standout teams, surprises, tightest groups. Use the stats where "
-                              "useful. Plain English, no bullet points.")
                     with st.spinner("Analysing..."):
-                        st.session_state.wc_analysis = ask_ai(prompt)
+                        st.session_state.wc_analysis = ask_ai(
+                            "You are an expert analyst covering the 2026 World Cup group stage "
+                            "(in progress). Standings:\n" + groups_text + team_stats_text +
+                            "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
+                            "Plain English, no bullet points.")
                 except Exception as e:
                     st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
         with b2:
             if st.button("Predict who advances", key="wc_predict"):
                 try:
-                    prompt = ("You are a football analyst predicting the 2026 World Cup group "
-                              "stage (in progress).\n\nSTRICT RULES:\n1. Use ONLY the teams and "
-                              "numbers below.\n2. No outside knowledge of reputations.\n3. Every "
-                              "team named must appear in the group you assign it to.\n\n"
-                              "Group standings:\n" + groups_text + team_stats_text +
-                              "\n\nGo through groups in order; for each, name the likely winner "
-                              "and runner-up using points, goal difference and the per-game stats "
-                              "(xG, shots, possession) where they reveal who is strongest. Then "
-                              "name one favourite and one dark horse from the teams above. End by "
-                              "noting these are informed predictions, not certainties.")
                     with st.spinner("Predicting (stronger model + real stats)..."):
-                        st.session_state.wc_prediction = ask_ai(prompt, model=PREDICT_MODEL,
-                                                                temperature=0.2)
+                        st.session_state.wc_prediction = ask_ai(
+                            "You are predicting the 2026 World Cup group stage (in progress).\n\n"
+                            "RULES: use ONLY the teams and numbers below; no outside knowledge; "
+                            "every team named must be in the group you assign it to.\n\n"
+                            "Standings:\n" + groups_text + team_stats_text +
+                            "\n\nGo group by group; name a likely winner and runner-up using points, "
+                            "goal difference and the per-game stats. Then give one favourite and one "
+                            "dark horse from the teams above. End: these are informed predictions, "
+                            "not certainties.", model=PREDICT_MODEL, temperature=0.2)
                 except Exception as e:
                     st.session_state.wc_prediction = f"Sorry — couldn't predict. ({e})"
-
         if st.session_state.wc_analysis:
             st.info(st.session_state.wc_analysis)
         if st.session_state.wc_prediction:
