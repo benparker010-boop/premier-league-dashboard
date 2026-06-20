@@ -11,10 +11,14 @@ PL_URL = "https://api.football-data.org/v4/competitions/PL/standings"
 WC_STANDINGS_URL = "https://api.football-data.org/v4/competitions/WC/standings"
 WC_MATCHES_URL = "https://api.football-data.org/v4/competitions/WC/matches"
 
+# We use Haiku 4.5 (cheap + fast). For deeper, pricier analysis you could later
+# swap the model string below to "claude-sonnet-4-6".
+AI_MODEL = "claude-haiku-4-5-20251001"
+
 
 # ----------------------------------------------------------------------
-# Data-loading functions. Each is cached for 10 minutes so we don't spam
-# the API on every click (and stay under the free 10-requests-per-minute cap).
+# Data-loading functions, each cached for 10 minutes to respect the
+# free API's 10-requests-per-minute limit.
 # ----------------------------------------------------------------------
 
 @st.cache_data(ttl=600)
@@ -40,7 +44,6 @@ def load_wc_groups(api_key):
     r = requests.get(WC_STANDINGS_URL, headers=headers, timeout=10)
     r.raise_for_status()
     data = r.json()
-    # A group tournament returns one "TOTAL" table per group.
     groups = {}
     for s in data["standings"]:
         if s["type"] != "TOTAL":
@@ -78,14 +81,29 @@ def load_wc_matches(api_key):
             results.append({"Date": date, "Result": f"{home} {hs}-{a_s} {away}"})
         elif m["status"] in ("SCHEDULED", "TIMED"):
             upcoming.append({"Date": date, "Fixture": f"{home} vs {away}"})
-    results_df = pd.DataFrame(results)
-    upcoming_df = pd.DataFrame(upcoming)
     stats = {"played": len(results), "goals": total_goals, "upcoming": len(upcoming)}
-    return results_df, upcoming_df, stats
+    return pd.DataFrame(results), pd.DataFrame(upcoming), stats
 
 
-# ----------------------------------------------------------------------
-# Two tabs: the original Premier League dashboard, and the new World Cup one
+def ask_ai(prompt):
+    """Send a prompt to Claude and return the text reply."""
+    client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
+    msg = client.messages.create(
+        model=AI_MODEL, max_tokens=600,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return msg.content[0].text
+
+
+def groups_to_text(groups):
+    """Turn all the group tables into one block of text for the AI to read."""
+    text = ""
+    for gname in sorted(groups.keys()):
+        text += f"\n{gname.replace('_', ' ').title()}:\n"
+        text += groups[gname].to_string(index=False) + "\n"
+    return text
+
+
 # ----------------------------------------------------------------------
 tab_pl, tab_wc = st.tabs(["🏴 Premier League", "🌍 World Cup 2026"])
 
@@ -105,11 +123,8 @@ with tab_pl:
         df = pd.read_csv("sample_league_data.csv")
 
     df["GD"] = df["GF"] - df["GA"]
-
-    if data_source == "live":
-        st.caption("🟢 Live data from football-data.org")
-    else:
-        st.caption("🟡 Showing sample data (live source unavailable right now)")
+    st.caption("🟢 Live data from football-data.org" if data_source == "live"
+               else "🟡 Showing sample data (live source unavailable right now)")
 
     st.sidebar.header("Premier League controls")
     num_teams = st.sidebar.slider("How many teams to show?", 1, 20, 10)
@@ -125,7 +140,6 @@ with tab_pl:
 
     st.subheader(f"Top {num_teams} teams")
     st.dataframe(top_teams, hide_index=True)
-
     st.subheader(f"{metric} by team")
     st.bar_chart(data=top_teams, x="Team", y=metric)
 
@@ -134,7 +148,6 @@ with tab_pl:
         st.session_state.pl_summary = ""
     if st.button("Generate AI Summary", key="pl_ai"):
         try:
-            client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
             prompt = (
                 "You are a Premier League data analyst. Here is the current table:\n\n"
                 f"{df.to_string(index=False)}\n\n"
@@ -143,11 +156,7 @@ with tab_pl:
                 "picture. Plain English, no bullet points."
             )
             with st.spinner("Asking the AI analyst..."):
-                msg = client.messages.create(
-                    model="claude-haiku-4-5-20251001", max_tokens=400,
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                st.session_state.pl_summary = msg.content[0].text
+                st.session_state.pl_summary = ask_ai(prompt)
         except Exception as e:
             st.session_state.pl_summary = f"Sorry — couldn't generate a summary. ({e})"
     if st.session_state.pl_summary:
@@ -168,13 +177,11 @@ with tab_wc:
         st.warning(f"Couldn't load World Cup data right now: {e}")
 
     if wc_ok:
-        # Headline tournament numbers
         m1, m2, m3 = st.columns(3)
         m1.metric("Groups", len(groups))
         m2.metric("Matches played", stats["played"])
         m3.metric("Goals scored", stats["goals"])
 
-        # All group tables, laid out two per row
         st.subheader("Group standings (live)")
         group_names = sorted(groups.keys())
         for i in range(0, len(group_names), 2):
@@ -184,7 +191,6 @@ with tab_wc:
                     st.markdown(f"**{gname.replace('_', ' ').title()}**")
                     st.dataframe(groups[gname], hide_index=True)
 
-        # Results and fixtures side by side
         left, right = st.columns(2)
         with left:
             st.subheader("Recent results")
@@ -198,3 +204,59 @@ with tab_wc:
                 st.dataframe(upcoming_df.head(12), hide_index=True)
             else:
                 st.write("No upcoming fixtures listed.")
+
+        # ---------------- AI features for the World Cup ----------------
+        st.divider()
+        st.subheader("🤖 AI Tournament Analysis & Predictions")
+
+        groups_text = groups_to_text(groups)
+        recent_text = results_df.tail(20).to_string(index=False) if not results_df.empty else "None yet."
+        upcoming_text = upcoming_df.head(20).to_string(index=False) if not upcoming_df.empty else "None listed."
+
+        if "wc_analysis" not in st.session_state:
+            st.session_state.wc_analysis = ""
+        if "wc_prediction" not in st.session_state:
+            st.session_state.wc_prediction = ""
+
+        b1, b2 = st.columns(2)
+
+        with b1:
+            if st.button("Analyse the tournament", key="wc_analyse"):
+                try:
+                    prompt = (
+                        "You are an expert football analyst covering the 2026 World Cup "
+                        "(48 teams, 12 groups, group stage in progress). "
+                        "Current group standings:\n" + groups_text +
+                        "\n\nRecent results:\n" + recent_text +
+                        "\n\nWrite a punchy 4-6 sentence analysis of how the tournament is "
+                        "shaping up: standout teams, surprises, and which groups look "
+                        "tightest. Plain English, no bullet points."
+                    )
+                    with st.spinner("Analysing..."):
+                        st.session_state.wc_analysis = ask_ai(prompt)
+                except Exception as e:
+                    st.session_state.wc_analysis = f"Sorry — couldn't analyse right now. ({e})"
+
+        with b2:
+            if st.button("Predict who advances", key="wc_predict"):
+                try:
+                    prompt = (
+                        "You are a football analyst making informed predictions for the "
+                        "2026 World Cup group stage (still in progress). "
+                        "Current standings:\n" + groups_text +
+                        "\n\nUpcoming fixtures:\n" + upcoming_text +
+                        "\n\nBased on form and current standings, predict which teams look "
+                        "most likely to top their groups and advance, then name one overall "
+                        "tournament favourite and one dark horse. Be concise (5-7 sentences). "
+                        "Make clear these are informed predictions, not certainties."
+                    )
+                    with st.spinner("Predicting..."):
+                        st.session_state.wc_prediction = ask_ai(prompt)
+                except Exception as e:
+                    st.session_state.wc_prediction = f"Sorry — couldn't predict right now. ({e})"
+
+        if st.session_state.wc_analysis:
+            st.info(st.session_state.wc_analysis)
+        if st.session_state.wc_prediction:
+            st.success(st.session_state.wc_prediction)
+            st.caption("⚠️ AI-generated predictions — informed speculation for fun, not betting advice.")
