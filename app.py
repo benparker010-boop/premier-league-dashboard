@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import anthropic
+import time
 
 st.set_page_config(page_title="Football Data Dashboard", layout="wide")
 st.title("⚽ Football Data Dashboard")
@@ -36,35 +37,52 @@ def stats_headers():
     return {"Authorization": f"Bearer {st.secrets['STATS_API_KEY']}"}
 
 
+class RateLimited(Exception):
+    pass
+
+
+def stats_get(path, params=None, retries=3):
+    """GET from TheStatsAPI; if rate-limited (429), wait and retry a few times."""
+    url = f"{STATS_BASE}{path}"
+    last = None
+    for i in range(retries):
+        last = requests.get(url, headers=stats_headers(), params=params, timeout=15)
+        if last.status_code != 429:
+            return last
+        try:
+            wait = int(last.headers.get("Retry-After", 3 + i * 3))
+        except (TypeError, ValueError):
+            wait = 3 + i * 3
+        time.sleep(min(wait, 8))
+    raise RateLimited("TheStatsAPI rate limit reached. Wait about a minute and try again.")
+
+
 @st.cache_data(ttl=600)
 def wc_matches(status):
-    r = requests.get(f"{STATS_BASE}/football/matches", headers=stats_headers(),
-                     params={"competition_id": WC_COMP, "season_id": WC_SEASON,
-                             "status": status, "per_page": 100}, timeout=15)
+    r = stats_get("/football/matches",
+                  {"competition_id": WC_COMP, "season_id": WC_SEASON,
+                   "status": status, "per_page": 100})
     r.raise_for_status()
     return r.json().get("data", [])
 
 
 @st.cache_data(ttl=600)
 def wc_match_stats(match_id):
-    r = requests.get(f"{STATS_BASE}/football/matches/{match_id}/stats",
-                     headers=stats_headers(), timeout=15)
+    r = stats_get(f"/football/matches/{match_id}/stats")
     r.raise_for_status()
     return r.json().get("data", {})
 
 
 @st.cache_data(ttl=3600)
 def search_player(name):
-    r = requests.get(f"{STATS_BASE}/football/players", headers=stats_headers(),
-                     params={"search": name}, timeout=15)
+    r = stats_get("/football/players", {"search": name})
     r.raise_for_status()
     return r.json().get("data", [])
 
 
 @st.cache_data(ttl=600)
 def player_wc_stats(player_id):
-    r = requests.get(f"{STATS_BASE}/football/players/{player_id}/stats",
-                     headers=stats_headers(), params={"season_id": WC_SEASON}, timeout=15)
+    r = stats_get(f"/football/players/{player_id}/stats", {"season_id": WC_SEASON})
     if r.status_code == 404:
         return None                      # player has no World Cup stats
     r.raise_for_status()
@@ -333,7 +351,10 @@ with tab_wc:
                 st.session_state.player_results = search_player(q) if q.strip() else []
             except Exception as e:
                 st.session_state.player_results = []
-                st.warning(f"Search failed: {e}")
+                if "rate limit" in str(e).lower() or "429" in str(e):
+                    st.warning("⏳ Hit TheStatsAPI's per-minute limit — wait ~60 seconds and try again.")
+                else:
+                    st.warning(f"Search failed: {e}")
         results = st.session_state.get("player_results", [])
         if results:
             opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
