@@ -11,14 +11,13 @@ PL_URL = "https://api.football-data.org/v4/competitions/PL/standings"
 WC_STANDINGS_URL = "https://api.football-data.org/v4/competitions/WC/standings"
 WC_MATCHES_URL = "https://api.football-data.org/v4/competitions/WC/matches"
 
-# We use Haiku 4.5 (cheap + fast). For deeper, pricier analysis you could later
-# swap the model string below to "claude-sonnet-4-6".
+# Cheap + fast model for summaries; a stronger model for the trickier predictions.
 AI_MODEL = "claude-haiku-4-5-20251001"
+PREDICT_MODEL = "claude-sonnet-4-6"
 
 
 # ----------------------------------------------------------------------
-# Data-loading functions, each cached for 10 minutes to respect the
-# free API's 10-requests-per-minute limit.
+# Data loading (each cached 10 mins to respect the free 10-req/min limit)
 # ----------------------------------------------------------------------
 
 @st.cache_data(ttl=600)
@@ -85,21 +84,23 @@ def load_wc_matches(api_key):
     return pd.DataFrame(results), pd.DataFrame(upcoming), stats
 
 
-def ask_ai(prompt):
-    """Send a prompt to Claude and return the text reply."""
+def ask_ai(prompt, model=AI_MODEL, temperature=1.0):
+    """Send a prompt to Claude. Lower temperature = more grounded/consistent."""
     client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
     msg = client.messages.create(
-        model=AI_MODEL, max_tokens=600,
+        model=model, max_tokens=700, temperature=temperature,
         messages=[{"role": "user", "content": prompt}],
     )
     return msg.content[0].text
 
 
 def groups_to_text(groups):
-    """Turn all the group tables into one block of text for the AI to read."""
+    """Spell each group out very explicitly so the AI can't muddle who is where."""
     text = ""
     for gname in sorted(groups.keys()):
-        text += f"\n{gname.replace('_', ' ').title()}:\n"
+        label = gname.replace("_", " ").title()
+        teams = groups[gname]["Team"].tolist()
+        text += f"\n{label} (the ONLY teams in {label} are: {', '.join(teams)}):\n"
         text += groups[gname].to_string(index=False) + "\n"
     return text
 
@@ -211,7 +212,7 @@ with tab_wc:
 
         groups_text = groups_to_text(groups)
         recent_text = results_df.tail(20).to_string(index=False) if not results_df.empty else "None yet."
-        upcoming_text = upcoming_df.head(20).to_string(index=False) if not upcoming_df.empty else "None listed."
+        upcoming_text = upcoming_df.head(25).to_string(index=False) if not upcoming_df.empty else "None listed."
 
         if "wc_analysis" not in st.session_state:
             st.session_state.wc_analysis = ""
@@ -241,17 +242,28 @@ with tab_wc:
             if st.button("Predict who advances", key="wc_predict"):
                 try:
                     prompt = (
-                        "You are a football analyst making informed predictions for the "
-                        "2026 World Cup group stage (still in progress). "
-                        "Current standings:\n" + groups_text +
+                        "You are a football analyst predicting outcomes for the 2026 World "
+                        "Cup group stage, which is still in progress.\n\n"
+                        "STRICT RULES:\n"
+                        "1. Use ONLY the teams and numbers in the data below.\n"
+                        "2. Do NOT use any outside knowledge about team reputations, history "
+                        "or famous players.\n"
+                        "3. Every team you name MUST appear in the group you assign it to. "
+                        "Never place a team in a group it is not listed in.\n\n"
+                        "Current group standings:\n" + groups_text +
                         "\n\nUpcoming fixtures:\n" + upcoming_text +
-                        "\n\nBased on form and current standings, predict which teams look "
-                        "most likely to top their groups and advance, then name one overall "
-                        "tournament favourite and one dark horse. Be concise (5-7 sentences). "
-                        "Make clear these are informed predictions, not certainties."
+                        "\n\nWork through the groups ONE AT A TIME, in alphabetical order. "
+                        "For each group, give one short line naming the team currently best "
+                        "placed to win it and the most likely runner-up, based only on "
+                        "current points and goal difference. After covering every group, "
+                        "name one overall favourite and one dark horse, each of which must "
+                        "be a team from the standings above. End with one sentence stating "
+                        "these are informed predictions, not certainties."
                     )
-                    with st.spinner("Predicting..."):
-                        st.session_state.wc_prediction = ask_ai(prompt)
+                    with st.spinner("Predicting (using the stronger model)..."):
+                        st.session_state.wc_prediction = ask_ai(
+                            prompt, model=PREDICT_MODEL, temperature=0.2
+                        )
                 except Exception as e:
                     st.session_state.wc_prediction = f"Sorry — couldn't predict right now. ({e})"
 
