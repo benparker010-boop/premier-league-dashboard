@@ -725,12 +725,49 @@ def section_stats():
     st.markdown(f'<div class="team-grid">{cards}</div>', unsafe_allow_html=True)
 
 
+def _ordinal(n):
+    return f'{n}{"th" if 11 <= n % 100 <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")}'
+
+
+def _tile(value, label):
+    return (f'<div class="tp-tile"><div class="tp-val">{value}</div>'
+            f'<div class="tp-lbl">{label}</div></div>')
+
+
+TEAM_CSS = """
+<style>
+.tp-header { display:flex; align-items:center; gap:14px; margin:6px 0 10px; }
+.tp-header img { width:62px; height:auto; border-radius:4px; }
+.tp-name { font-size:34px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.04em; line-height:1; }
+.tp-meta { font-size:13px; color:rgba(255,255,255,0.65); margin-top:5px; }
+.tp-nav { position:sticky; top:0; z-index:5; display:flex; flex-wrap:wrap; gap:8px; padding:10px 0 14px; margin-bottom:6px; background:#0d1420; }
+.tp-nav a { font-size:13px; font-weight:600; color:rgba(255,255,255,0.82); text-decoration:none; padding:6px 14px; border:1px solid rgba(255,255,255,0.18); border-radius:20px; transition:all .15s; }
+.tp-nav a:hover { background:#e8b84b; color:#0d1420; border-color:#e8b84b; }
+.tp-section { margin-bottom:26px; scroll-margin-top:64px; }
+.tp-h { display:flex; align-items:center; gap:9px; font-size:17px; font-weight:600; color:#fff; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.03em; }
+.tp-h::before { content:""; width:4px; height:18px; background:#e8b84b; border-radius:2px; }
+.tp-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(135px,1fr)); gap:12px; }
+.tp-tile { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.09); border-radius:10px; padding:14px 10px; text-align:center; }
+.tp-val { font-size:24px; font-weight:700; color:#fff; line-height:1.1; }
+.tp-lbl { font-size:11px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.05em; margin-top:5px; }
+.tp-pval { font-size:16px; font-weight:600; color:#fff; margin-top:6px; }
+.tp-res { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:8px; color:#fff; font-size:14px; }
+.tp-w { color:#37b86b; font-weight:700; } .tp-d { color:#e8b84b; font-weight:700; } .tp-l { color:#e24b4a; font-weight:700; }
+</style>
+"""
+
+
 def team_page():
     tid = st.query_params.get("team")
     name = team_names.get(tid, "Team")
-    render_banner(name, "stats")
-    rows = []
-    w = d = l = gf = ga = 0
+    st.markdown(_pitch_background_css(), unsafe_allow_html=True)
+
+    keys = ["ball_possession", "expected_goals", "total_shots", "shots_on_target",
+            "big_chances", "corner_kicks", "fouls", "yellow_cards", "red_cards",
+            "passes", "accurate_passes"]
+    agg = {k: 0 for k in keys}
+    gp = gf = ga = w = d = l = 0
+    results = []
     for m in finished:
         h, a = m["home_team"], m["away_team"]
         if tid not in (h.get("id"), a.get("id")):
@@ -739,8 +776,9 @@ def team_page():
         if hs is None or as_ is None:
             continue
         is_home = h.get("id") == tid
+        side = "home" if is_home else "away"
         my, opp = (hs, as_) if is_home else (as_, hs)
-        gf += my; ga += opp
+        gf += my; ga += opp; gp += 1
         res = "W" if my > opp else ("D" if my == opp else "L")
         if res == "W":
             w += 1
@@ -748,19 +786,73 @@ def team_page():
             d += 1
         else:
             l += 1
-        rows.append({"Match": f"{h['name']} {hs}-{as_} {a['name']}",
-                     "Date": m["utc_date"][:10], "Result": res})
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Played", w + d + l)
-    c2.metric("W-D-L", f"{w}-{d}-{l}")
-    c3.metric("Goals for", gf)
-    c4.metric("Goals against", ga)
-    st.subheader("Results")
-    if rows:
-        st.dataframe(pd.DataFrame(rows), hide_index=True)
-    else:
-        st.write("No finished matches for this team yet.")
-    st.info("This is a starting point for the team page — we'll design the full stats layout next.")
+        results.append((f"{h['name']} {hs}-{as_} {a['name']}", res))
+        try:
+            ov = wc_match_stats(m["id"]).get("overview", {})
+        except Exception:
+            ov = {}
+        for k in keys:
+            agg[k] += stat_val(ov, k, side) or 0
+
+    g = max(gp, 1)
+    pass_acc = round(100 * agg["accurate_passes"] / agg["passes"], 1) if agg["passes"] else 0
+    grp = pos = None
+    for gl in sorted(groups):
+        teams_list = groups[gl]["Team"].tolist()
+        if name in teams_list:
+            grp = gl
+            pos = teams_list.index(name) + 1
+            break
+    meta = f"Group {grp} · {_ordinal(pos)}" if grp else "Group stage"
+
+    gsnap, asnap, _ = load_scorer_snapshot()
+    top_sc = top_as = "—"
+    if gsnap is not None and not gsnap.empty:
+        ts = gsnap[gsnap["Team"] == name]
+        if not ts.empty:
+            top_sc = f'{ts.iloc[0]["Player"]} ({int(ts.iloc[0]["Goals"])})'
+    if asnap is not None and not asnap.empty:
+        ta = asnap[asnap["Team"] == name]
+        if not ta.empty:
+            top_as = f'{ta.iloc[0]["Player"]} ({int(ta.iloc[0]["Assists"])})'
+
+    header = (f'<div class="tp-header">{_flag_img(name, 62)}'
+              f'<div><div class="tp-name">{name}</div><div class="tp-meta">{meta}</div></div></div>')
+    nav = ('<div class="tp-nav">'
+           '<a href="#summary">Summary</a><a href="#attack">Attack</a>'
+           '<a href="#possession">Possession</a><a href="#defence">Defence</a>'
+           '<a href="#players">Players</a><a href="#results">Results</a></div>')
+    summary = ('<div class="tp-section" id="summary"><div class="tp-h">Summary</div><div class="tp-grid">'
+               + _tile(gp, "Played") + _tile(f"{w}-{d}-{l}", "W-D-L")
+               + _tile(gf, "Goals for") + _tile(ga, "Goals against")
+               + _tile(gf - ga, "Goal diff") + _tile(w * 3 + d, "Points") + '</div></div>')
+    attack = ('<div class="tp-section" id="attack"><div class="tp-h">Attack</div><div class="tp-grid">'
+              + _tile(gf, "Goals") + _tile(round(agg["expected_goals"], 1), "xG")
+              + _tile(int(agg["total_shots"]), "Shots") + _tile(int(agg["shots_on_target"]), "On target")
+              + _tile(int(agg["big_chances"]), "Big chances") + _tile(int(agg["corner_kicks"]), "Corners")
+              + '</div></div>')
+    possession = ('<div class="tp-section" id="possession"><div class="tp-h">Possession &amp; passing</div>'
+                  '<div class="tp-grid">'
+                  + _tile(f'{round(agg["ball_possession"] / g, 1)}%', "Avg possession")
+                  + _tile(f"{pass_acc}%", "Pass accuracy")
+                  + _tile(int(agg["passes"]), "Passes")
+                  + _tile(int(agg["accurate_passes"]), "Accurate") + '</div></div>')
+    defence = ('<div class="tp-section" id="defence"><div class="tp-h">Defence &amp; discipline</div>'
+               '<div class="tp-grid">'
+               + _tile(ga, "Conceded") + _tile(int(agg["fouls"]), "Fouls")
+               + _tile(int(agg["yellow_cards"]), "Yellow cards") + _tile(int(agg["red_cards"]), "Red cards")
+               + '</div></div>')
+    players = ('<div class="tp-section" id="players"><div class="tp-h">Key players</div><div class="tp-grid">'
+               f'<div class="tp-tile"><div class="tp-lbl">Top scorer</div><div class="tp-pval">{top_sc}</div></div>'
+               f'<div class="tp-tile"><div class="tp-lbl">Top assister</div><div class="tp-pval">{top_as}</div></div>'
+               '</div></div>')
+    res_rows = "".join(
+        f'<div class="tp-res"><span>{mm}</span><span class="tp-{r.lower()}">{r}</span></div>'
+        for mm, r in results) or '<div class="tp-res">No finished matches yet</div>'
+    resultsec = f'<div class="tp-section" id="results"><div class="tp-h">Results</div>{res_rows}</div>'
+
+    st.markdown(TEAM_CSS + header + nav + summary + attack + possession + defence + players + resultsec,
+                unsafe_allow_html=True)
 
 
 def _stats_context():
