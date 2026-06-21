@@ -394,7 +394,7 @@ header[data-testid="stHeader"] { display: none; }
   text-align: center; padding: 44px 20px; gap: 16px;
 }
 .hero-kicker { font-size: 14px; letter-spacing: 0.18em; font-weight: 500; color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
-.hero-title { font-size: 56px; font-weight: 700; color: #ffffff; line-height: 1.05; margin: 0; text-shadow: 0 3px 22px rgba(0,0,0,0.9); }
+.hero-title { font-size: 56px; font-weight: 700; color: #ffffff !important; line-height: 1.05; margin: 0; text-shadow: 0 3px 22px rgba(0,0,0,0.9); }
 .hero-sub { font-size: 18px; color: #f2f4f7; max-width: 580px; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,0.85); }
 .hero-stats { display: flex; gap: 48px; margin-top: 16px; }
 .hero-stats .num { font-size: 40px; font-weight: 700; color: __ACCENT__; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.75); }
@@ -419,7 +419,7 @@ header[data-testid="stHeader"] { display: none; }
 LANDING_HTML = """
 <div class="hero">
   <div class="hero-kicker">CANADA · MEXICO · USA</div>
-  <h1 class="hero-title">World Cup 2026 Analytics</h1>
+  <div class="hero-title">World Cup 2026 Analytics</div>
   <p class="hero-sub">Live tournament data, top scorers, team stats and a full knockout simulator — built in Python.</p>
   <div class="hero-stats">
     <div><div class="num">__MATCHES__</div><div class="lbl">matches</div></div>
