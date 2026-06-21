@@ -381,25 +381,29 @@ def _hero_background():
 
 
 LANDING_CSS = """
-.block-container { padding-top: 1.2rem; }
+.block-container { padding-top: 0 !important; }
 #MainMenu, footer { visibility: hidden; }
+header[data-testid="stHeader"] { display: none; }
 .hero {
+  position: relative;
+  width: 100vw; margin-left: calc(-50vw + 50%);
+  min-height: 100vh;
   background: __BG__;
   background-size: cover; background-position: center;
-  border-radius: 16px; min-height: 78vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 44px 20px; gap: 14px;
+  text-align: center; padding: 44px 20px; gap: 16px;
 }
-.hero-kicker { font-size: 13px; letter-spacing: 0.14em; color: rgba(255,255,255,0.65); }
-.hero-title { font-size: 48px; font-weight: 700; color: #ffffff; line-height: 1.08; margin: 0; }
-.hero-sub { font-size: 17px; color: rgba(255,255,255,0.82); max-width: 560px; margin: 0; }
-.hero-stats { display: flex; gap: 44px; margin-top: 12px; }
-.hero-stats .num { font-size: 34px; font-weight: 700; color: __ACCENT__; line-height: 1; }
-.hero-stats .lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 4px; }
-.hero-cue { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.7); }
-.hero-cue .chev { display: block; font-size: 24px; animation: bob 1.6s infinite; }
-@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
-.launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 40px 0 4px; }
+.hero-kicker { font-size: 14px; letter-spacing: 0.18em; font-weight: 500; color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
+.hero-title { font-size: 56px; font-weight: 700; color: #ffffff; line-height: 1.05; margin: 0; text-shadow: 0 3px 22px rgba(0,0,0,0.9); }
+.hero-sub { font-size: 18px; color: #f2f4f7; max-width: 580px; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,0.85); }
+.hero-stats { display: flex; gap: 48px; margin-top: 16px; }
+.hero-stats .num { font-size: 40px; font-weight: 700; color: __ACCENT__; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.75); }
+.hero-stats .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #eaedf2; margin-top: 5px; text-shadow: 0 1px 12px rgba(0,0,0,0.85); }
+.hero-cue { margin-top: 26px; font-size: 13px; color: #ffffff; text-decoration: none; cursor: pointer; display: inline-block; text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
+.hero-cue:hover { opacity: 0.75; }
+.hero-cue .chev { display: block; font-size: 28px; animation: bob 1.6s infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+.launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 44px 0 4px; padding-top: 10px; }
 .launch-sub { text-align: center; color: #6b7280; font-size: 14px; margin: 0 0 22px; }
 .launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
 .launch-card { display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -422,9 +426,9 @@ LANDING_HTML = """
     <div><div class="num">__GOALS__</div><div class="lbl">goals</div></div>
     <div><div class="num">__GROUPS__</div><div class="lbl">groups</div></div>
   </div>
-  <div class="hero-cue">scroll to explore<span class="chev">⌄</span></div>
+  <a class="hero-cue" href="#explore">scroll to explore<span class="chev">⌄</span></a>
 </div>
-<div class="launch-title">Jump into the data</div>
+<div class="launch-title" id="explore">Jump into the data</div>
 <div class="launch-sub">Pick a section below to explore</div>
 <div class="launch-grid">
   <a class="launch-card" href="#standings"><span class="ic">📊</span><span class="nm">Group standings</span><span class="ds">Live tables for every group</span></a>
