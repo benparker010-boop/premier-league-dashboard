@@ -380,6 +380,30 @@ def _hero_background():
     return "#0c1b2e"
 
 
+def _banner_bg(slug):
+    """Background for a section banner: images/banners/<slug>.<ext> if present, else dark."""
+    for ext, mime in (("jpg", "jpeg"), ("jpeg", "jpeg"), ("png", "png"), ("webp", "webp")):
+        path = os.path.join("images", "banners", f"{slug}.{ext}")
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+            return (f"linear-gradient(rgba(6,16,28,0.45), rgba(6,16,28,0.68)), "
+                    f"url('data:image/{mime};base64,{b64}')")
+    return "#0c1b2e"
+
+
+def render_banner(title, slug):
+    """Centered section title over a slim photo banner (design option 1)."""
+    bg = _banner_bg(slug)
+    st.markdown(
+        f'<div style="background:{bg};background-size:cover;background-position:center;'
+        'border-radius:12px;min-height:175px;display:flex;align-items:center;justify-content:center;'
+        'text-align:center;padding:20px;margin:2px 0 12px;">'
+        '<div style="font-size:34px;font-weight:700;color:#ffffff;'
+        f'text-shadow:0 2px 18px rgba(0,0,0,0.9);">{title}</div></div>',
+        unsafe_allow_html=True)
+
+
 LANDING_CSS = """
 .block-container { padding-top: 0 !important; }
 #MainMenu, footer { visibility: hidden; }
@@ -755,12 +779,12 @@ def section_ai():
 
 
 SECTIONS = {
-    "standings": ("📊 Group standings", section_standings),
-    "scorers": ("⚽ Top 10 scorers & assists", section_scorers),
-    "bracket": ("🏆 Knockout stage", section_bracket),
-    "players": ("🔍 Player search", section_players),
-    "stats": ("📈 Team stats & match explorer", section_stats),
-    "ai": ("🤖 AI tournament analysis", section_ai),
+    "standings": ("Group standings", section_standings),
+    "scorers": ("Top 10 scorers & assists", section_scorers),
+    "bracket": ("Knockout stage", section_bracket),
+    "players": ("Player search", section_players),
+    "stats": ("Team stats & match explorer", section_stats),
+    "ai": ("AI tournament analysis", section_ai),
 }
 
 view = st.query_params.get("view", "home")
@@ -779,7 +803,7 @@ elif view in SECTIONS:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
     else:
         title, render_fn = SECTIONS[view]
-        st.header(title)
+        render_banner(title, view)
         render_fn()
 else:
     # Home: full-screen hero + the menu of boxes
