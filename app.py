@@ -408,6 +408,9 @@ LANDING_CSS = """
 .block-container { padding-top: 0 !important; }
 #MainMenu, footer { visibility: hidden; }
 header[data-testid="stHeader"] { display: none; }
+[data-testid="stHeaderActionElements"] { display: none; }
+h1, h2, h3, h4, h5, h6 { text-decoration: none; border-bottom: none; }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 .hero {
   position: relative;
   width: 100vw; margin-left: calc(-50vw + 50%);
@@ -429,8 +432,9 @@ header[data-testid="stHeader"] { display: none; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
 .launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 44px 0 4px; padding-top: 10px; }
 .launch-sub { text-align: center; color: #374151; font-size: 14px; font-weight: 500; margin: 0 0 22px; }
-.launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
-.mcard { position: relative; overflow: hidden; border-radius: 14px; height: 130px;
+.launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 8px;
+  width: 100vw; margin-left: calc(-50vw + 50%); padding: 0 32px; box-sizing: border-box; }
+.mcard { position: relative; overflow: hidden; border-radius: 14px; height: 33vh; min-height: 210px;
   display: flex; align-items: flex-end; text-decoration: none;
   background-size: cover; background-position: center; transition: transform .15s; }
 .mcard:hover { transform: translateY(-3px); }
@@ -513,6 +517,9 @@ BASE_CSS = """
 .block-container { padding-top: 1.5rem !important; }
 #MainMenu, footer { visibility: hidden; }
 header[data-testid="stHeader"] { display: none; }
+[data-testid="stHeaderActionElements"] { display: none; }
+h1, h2, h3, h4, h5, h6 { text-decoration: none; border-bottom: none; }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 .backlink { display: inline-block; color: #4b5563; text-decoration: none; font-size: 15px;
   font-weight: 500; margin-bottom: 6px; }
 .backlink:hover { color: #111827; }
