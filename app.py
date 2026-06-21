@@ -430,13 +430,13 @@ header[data-testid="stHeader"] { display: none; }
 .launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 44px 0 4px; padding-top: 10px; }
 .launch-sub { text-align: center; color: #374151; font-size: 14px; font-weight: 500; margin: 0 0 22px; }
 .launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
-.launch-card { display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 28px 14px; border: 1px solid rgba(0,0,0,0.10); border-radius: 14px;
-  text-decoration: none; color: inherit; background: #ffffff; transition: transform .15s, border-color .15s; }
-.launch-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.28); }
-.launch-card .ic { font-size: 30px; line-height: 1; }
-.launch-card .nm { font-size: 15px; font-weight: 600; color: #111827; }
-.launch-card .ds { font-size: 12px; color: #4b5563; text-align: center; }
+.mcard { position: relative; overflow: hidden; border-radius: 14px; height: 130px;
+  display: flex; align-items: flex-end; text-decoration: none;
+  background-size: cover; background-position: center; transition: transform .15s; }
+.mcard:hover { transform: translateY(-3px); }
+.mcard-bar { width: 100%; background: rgba(10,16,28,0.55); backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px); padding: 11px 14px; text-align: center;
+  font-size: 16px; font-weight: 600; color: #ffffff; text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
 @media (max-width: 700px) { .launch-grid { grid-template-columns: 1fr; } .hero-title { font-size: 34px; } }
 """
 
@@ -454,18 +454,27 @@ HERO_HTML = """
 </div>
 """
 
-MENU_HTML = """
-<div class="launch-title" id="explore">Jump into the data</div>
-<div class="launch-sub">Pick a section below to explore</div>
-<div class="launch-grid">
-  <a class="launch-card" href="?view=standings" target="_self"><span class="ic">📊</span><span class="nm">Group standings</span><span class="ds">Live tables for every group</span></a>
-  <a class="launch-card" href="?view=scorers" target="_self"><span class="ic">⚽</span><span class="nm">Top scorers &amp; assists</span><span class="ds">Tournament top tens</span></a>
-  <a class="launch-card" href="?view=bracket" target="_self"><span class="ic">🏆</span><span class="nm">Knockout bracket</span><span class="ds">Full simulated bracket</span></a>
-  <a class="launch-card" href="?view=players" target="_self"><span class="ic">🔍</span><span class="nm">Player search</span><span class="ds">Profiles &amp; stats</span></a>
-  <a class="launch-card" href="?view=stats" target="_self"><span class="ic">📈</span><span class="nm">Team stats</span><span class="ds">Per-game performance</span></a>
-  <a class="launch-card" href="?view=ai" target="_self"><span class="ic">🤖</span><span class="nm">AI analysis</span><span class="ds">Auto tournament summary</span></a>
-</div>
-"""
+MENU_CARDS = [
+    ("standings", "Group standings"),
+    ("scorers", "Top scorers &amp; assists"),
+    ("bracket", "Knockout bracket"),
+    ("players", "Player search"),
+    ("stats", "Team stats"),
+    ("ai", "AI analysis"),
+]
+
+
+def render_menu_cards():
+    """The six menu boxes as image-backed cards with a frosted title bar."""
+    cards = ""
+    for slug, label in MENU_CARDS:
+        bg = _banner_bg(slug)
+        cards += (f'<a class="mcard" href="?view={slug}" target="_self" '
+                  f'style="background:{bg};background-size:cover;background-position:center;">'
+                  f'<div class="mcard-bar">{label}</div></a>')
+    return ('<div class="launch-title" id="explore">Jump into the data</div>'
+            '<div class="launch-sub">Pick a section below to explore</div>'
+            f'<div class="launch-grid">{cards}</div>')
 
 
 def render_home(n_matches, n_goals, n_groups):
@@ -473,7 +482,7 @@ def render_home(n_matches, n_goals, n_groups):
     hero = (HERO_HTML.replace("__MATCHES__", str(n_matches))
             .replace("__GOALS__", str(n_goals))
             .replace("__GROUPS__", str(n_groups)))
-    st.markdown(f"<style>{css}</style>{hero}{MENU_HTML}", unsafe_allow_html=True)
+    st.markdown(f"<style>{css}</style>{hero}{render_menu_cards()}", unsafe_allow_html=True)
 
 
 def render_menu_page():
@@ -481,7 +490,7 @@ def render_menu_page():
     home_link = ('<a href="?view=home" target="_self" style="display:inline-block;'
                  'color:#4b5563;text-decoration:none;font-size:15px;font-weight:500;'
                  'margin-bottom:4px;">↑ Back to the front page</a>')
-    st.markdown(f"<style>{css}</style>{home_link}{MENU_HTML}", unsafe_allow_html=True)
+    st.markdown(f"<style>{css}</style>{home_link}{render_menu_cards()}", unsafe_allow_html=True)
 
 
 # ============================== APP BODY ==============================
