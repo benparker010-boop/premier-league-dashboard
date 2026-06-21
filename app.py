@@ -431,12 +431,12 @@ LANDING_HTML = """
 <div class="launch-title" id="explore">Jump into the data</div>
 <div class="launch-sub">Pick a section below to explore</div>
 <div class="launch-grid">
-  <a class="launch-card" href="#standings"><span class="ic">📊</span><span class="nm">Group standings</span><span class="ds">Live tables for every group</span></a>
-  <a class="launch-card" href="#scorers"><span class="ic">⚽</span><span class="nm">Top scorers &amp; assists</span><span class="ds">Tournament top tens</span></a>
-  <a class="launch-card" href="#bracket"><span class="ic">🏆</span><span class="nm">Knockout bracket</span><span class="ds">Full simulated bracket</span></a>
-  <a class="launch-card" href="#players"><span class="ic">🔍</span><span class="nm">Player search</span><span class="ds">Profiles &amp; stats</span></a>
-  <a class="launch-card" href="#stats"><span class="ic">📈</span><span class="nm">Team stats</span><span class="ds">Per-game performance</span></a>
-  <a class="launch-card" href="#ai"><span class="ic">🤖</span><span class="nm">AI analysis</span><span class="ds">Auto tournament summary</span></a>
+  <a class="launch-card" href="?view=standings" target="_self"><span class="ic">📊</span><span class="nm">Group standings</span><span class="ds">Live tables for every group</span></a>
+  <a class="launch-card" href="?view=scorers" target="_self"><span class="ic">⚽</span><span class="nm">Top scorers &amp; assists</span><span class="ds">Tournament top tens</span></a>
+  <a class="launch-card" href="?view=bracket" target="_self"><span class="ic">🏆</span><span class="nm">Knockout bracket</span><span class="ds">Full simulated bracket</span></a>
+  <a class="launch-card" href="?view=players" target="_self"><span class="ic">🔍</span><span class="nm">Player search</span><span class="ds">Profiles &amp; stats</span></a>
+  <a class="launch-card" href="?view=stats" target="_self"><span class="ic">📈</span><span class="nm">Team stats</span><span class="ds">Per-game performance</span></a>
+  <a class="launch-card" href="?view=ai" target="_self"><span class="ic">🤖</span><span class="nm">AI analysis</span><span class="ds">Auto tournament summary</span></a>
 </div>
 """
 
@@ -463,164 +463,189 @@ team_names = build_team_name_map(finished, upcoming) if wc_ok else {}
 st.session_state["_team_names"] = team_names
 n_goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in finished)
 
-render_landing(len(finished), n_goals, len(groups))
-
-if not wc_ok:
-    st.warning(f"Couldn't load World Cup data right now: {wc_err}")
-    st.stop()
-
 gnames = sorted(groups.keys())
 
-# ----------------------------- Group standings -----------------------------
-st.divider()
-st.header("Group standings", anchor="standings")
-st.caption("Live tables built from every finished match.")
-for i in range(0, len(gnames), 2):
-    cols = st.columns(2)
-    for col, g in zip(cols, gnames[i:i + 2]):
-        with col:
-            st.markdown(f"**Group {g}**")
-            st.dataframe(groups[g], hide_index=True)
+BASE_CSS = """
+.block-container { padding-top: 1.5rem !important; }
+#MainMenu, footer { visibility: hidden; }
+header[data-testid="stHeader"] { display: none; }
+.backlink { display: inline-block; color: #4b5563; text-decoration: none; font-size: 15px;
+  font-weight: 500; margin-bottom: 6px; }
+.backlink:hover { color: #111827; }
+"""
 
-# ----------------------------- Top scorers & assists -----------------------------
-st.divider()
-st.header("Top 10 scorers & assists", anchor="scorers")
-gsnap, asnap, stamp = load_scorer_snapshot()
-gdf = st.session_state.get("scorers_live", gsnap)
-adf = st.session_state.get("assisters_live", asnap)
-if "scorers_live" in st.session_state:
-    st.caption("🟢 Refreshed live from match data just now.")
-elif stamp:
-    st.caption(f"📁 Snapshot built {stamp}. Press refresh for the very latest.")
-else:
-    st.caption("No snapshot found yet — press refresh to build it from live match data.")
-gcol, acol = st.columns(2)
-with gcol:
-    st.markdown("**Top scorers**")
-    if gdf is None or gdf.empty:
-        st.write("No goal data available.")
+
+# ----------------------------- Section pages -----------------------------
+def section_standings():
+    st.caption("Live tables built from every finished match.")
+    for i in range(0, len(gnames), 2):
+        cols = st.columns(2)
+        for col, g in zip(cols, gnames[i:i + 2]):
+            with col:
+                st.markdown(f"**Group {g}**")
+                st.dataframe(groups[g], hide_index=True)
+
+
+def section_scorers():
+    gsnap, asnap, stamp = load_scorer_snapshot()
+    gdf = st.session_state.get("scorers_live", gsnap)
+    adf = st.session_state.get("assisters_live", asnap)
+    if "scorers_live" in st.session_state:
+        st.caption("🟢 Refreshed live from match data just now.")
+    elif stamp:
+        st.caption(f"📁 Snapshot built {stamp}. Press refresh for the very latest.")
     else:
-        st.dataframe(gdf, hide_index=True)
-with acol:
-    st.markdown("**Top assists**")
-    if adf is None or adf.empty:
-        st.write("No assist data available.")
+        st.caption("No snapshot found yet — press refresh to build it from live match data.")
+    gcol, acol = st.columns(2)
+    with gcol:
+        st.markdown("**Top scorers**")
+        if gdf is None or gdf.empty:
+            st.write("No goal data available.")
+        else:
+            st.dataframe(gdf, hide_index=True)
+    with acol:
+        st.markdown("**Top assists**")
+        if adf is None or adf.empty:
+            st.write("No assist data available.")
+        else:
+            st.dataframe(adf, hide_index=True)
+    if st.button("🔄 Refresh from live results"):
+        with st.spinner("Reading every finished match..."):
+            lg, la, done, failed = build_scorers_assists([m["id"] for m in finished])
+            st.session_state.scorers_live = lg
+            st.session_state.assisters_live = la
+        if failed:
+            st.warning(f"Built from {done} matches; {failed} hit the rate limit — try again in a minute.")
+        st.rerun()
+
+
+def section_bracket():
+    st.subheader("Group winner predictions")
+    st.caption("From the current standings — winner and runner-up of each group.")
+    if groups:
+        st.dataframe(group_predictions(groups), hide_index=True)
     else:
-        st.dataframe(adf, hide_index=True)
-if st.button("🔄 Refresh from live results"):
-    with st.spinner("Reading every finished match..."):
-        lg, la, done, failed = build_scorers_assists([m["id"] for m in finished])
-        st.session_state.scorers_live = lg
-        st.session_state.assisters_live = la
-    if failed:
-        st.warning(f"Built from {done} matches; {failed} hit the rate limit — try again in a minute.")
-    st.rerun()
+        st.write("No group results yet.")
+    st.subheader("Simulated knockout bracket")
+    st.caption("Deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best third-placed "
+               "teams) are seeded by points, goal difference and goals scored, then every tie is decided "
+               "by the stronger record. No AI, no randomness.")
+    qualified = qualified_from_groups(groups)
+    rounds, champion = simulate_bracket(qualified)
+    if not rounds:
+        st.info("Not enough completed group games yet to build the bracket. It will appear automatically "
+                "once more results are in.")
+    else:
+        st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
+        render_bracket(rounds, champion)
+        st.success(f"🏆 Simulated champion: **{champion}**")
+        st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
 
-# ----------------------------- Knockout stage -----------------------------
-st.divider()
-st.header("Knockout stage", anchor="bracket")
-st.subheader("Group winner predictions")
-st.caption("From the current standings — winner and runner-up of each group.")
-if groups:
-    st.dataframe(group_predictions(groups), hide_index=True)
+
+def section_players():
+    q = st.text_input("Type a player's name and press Search")
+    if st.button("Search player"):
+        try:
+            st.session_state.player_results = search_player(q) if q.strip() else []
+        except Exception as e:
+            st.session_state.player_results = []
+            if "rate limit" in str(e).lower() or "429" in str(e):
+                st.warning("⏳ Hit TheStatsAPI's per-minute limit — wait ~60 seconds and try again.")
+            else:
+                st.warning(f"Search failed: {e}")
+    results = st.session_state.get("player_results", [])
+    if results:
+        opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
+                for p in results}
+        pick = st.selectbox("Pick the player:", list(opts.keys()))
+        p = opts[pick]
+        try:
+            s = player_wc_stats(p["id"])
+            if s:
+                render_profile(p, s, team_names)
+            else:
+                st.info(f"{p['name']} has no recorded stats in the 2026 World Cup.")
+        except Exception as e:
+            st.warning(f"Couldn't load stats: {e}")
+
+
+def section_stats():
+    if "wc_team_stats" not in st.session_state:
+        st.session_state.wc_team_stats = None
+    if st.button("Build team stats from every finished match"):
+        with st.spinner("Aggregating every match's stat sheet..."):
+            ts, done, failed = build_team_stats(finished)
+            st.session_state.wc_team_stats = ts
+            st.session_state.wc_team_msg = f"Built from {done} matches." + (
+                f" {failed} hit the rate limit — click again in a minute." if failed else "")
+    if st.session_state.wc_team_stats is not None:
+        st.caption(st.session_state.get("wc_team_msg", ""))
+        st.dataframe(st.session_state.wc_team_stats, hide_index=True)
+    st.subheader("Match stats explorer")
+    labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
+              f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
+    if labels:
+        choice = st.selectbox("Pick a finished match:", list(labels.keys()))
+        m = labels[choice]
+        try:
+            ov = wc_match_stats(m["id"]).get("overview", {})
+            if ov:
+                st.dataframe(overview_to_df(ov, m["home_team"]["name"],
+                                            m["away_team"]["name"]), hide_index=True)
+            else:
+                st.write("No detailed stats for this match yet.")
+        except Exception as e:
+            st.warning(f"Couldn't load that match's stats: {e}")
+
+
+def section_ai():
+    groups_text = ""
+    for g in gnames:
+        groups_text += f"\nGroup {g} (only these teams): " + \
+            ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
+    team_stats_text = ""
+    if st.session_state.get("wc_team_stats") is not None:
+        team_stats_text = "\n\nPer-game team stats:\n" + st.session_state.wc_team_stats.to_string(index=False)
+    if "wc_analysis" not in st.session_state:
+        st.session_state.wc_analysis = ""
+    if st.button("Analyse the tournament"):
+        try:
+            with st.spinner("Analysing..."):
+                st.session_state.wc_analysis = ask_ai(
+                    "You are an expert analyst covering the 2026 World Cup group stage (in progress). "
+                    "Standings:\n" + groups_text + team_stats_text +
+                    "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
+                    "Plain English, no bullet points.")
+        except Exception as e:
+            st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
+    if st.session_state.wc_analysis:
+        st.info(st.session_state.wc_analysis)
+
+
+SECTIONS = {
+    "standings": ("📊 Group standings", section_standings),
+    "scorers": ("⚽ Top 10 scorers & assists", section_scorers),
+    "bracket": ("🏆 Knockout stage", section_bracket),
+    "players": ("🔍 Player search", section_players),
+    "stats": ("📈 Team stats & match explorer", section_stats),
+    "ai": ("🤖 AI tournament analysis", section_ai),
+}
+
+view = st.query_params.get("view", "home")
+
+if view not in SECTIONS:
+    # Home: full-screen hero + the menu of boxes
+    render_landing(len(finished), n_goals, len(groups))
+    if not wc_ok:
+        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
 else:
-    st.write("No group results yet.")
-
-st.subheader("Simulated knockout bracket")
-st.caption("Deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best third-placed "
-           "teams) are seeded by points, goal difference and goals scored, then every tie is decided "
-           "by the stronger record. No AI, no randomness.")
-qualified = qualified_from_groups(groups)
-rounds, champion = simulate_bracket(qualified)
-if not rounds:
-    st.info("Not enough completed group games yet to build the bracket. It will appear automatically "
-            "once more results are in.")
-else:
-    st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
-    render_bracket(rounds, champion)
-    st.success(f"🏆 Simulated champion: **{champion}**")
-    st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
-
-# ----------------------------- Player search -----------------------------
-st.divider()
-st.header("Player search", anchor="players")
-q = st.text_input("Type a player's name and press Search")
-if st.button("Search player"):
-    try:
-        st.session_state.player_results = search_player(q) if q.strip() else []
-    except Exception as e:
-        st.session_state.player_results = []
-        if "rate limit" in str(e).lower() or "429" in str(e):
-            st.warning("⏳ Hit TheStatsAPI's per-minute limit — wait ~60 seconds and try again.")
-        else:
-            st.warning(f"Search failed: {e}")
-results = st.session_state.get("player_results", [])
-if results:
-    opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
-            for p in results}
-    pick = st.selectbox("Pick the player:", list(opts.keys()))
-    p = opts[pick]
-    try:
-        s = player_wc_stats(p["id"])
-        if s:
-            render_profile(p, s, team_names)
-        else:
-            st.info(f"{p['name']} has no recorded stats in the 2026 World Cup.")
-    except Exception as e:
-        st.warning(f"Couldn't load stats: {e}")
-
-# ----------------------------- Team stats + match explorer -----------------------------
-st.divider()
-st.header("Team stats", anchor="stats")
-if "wc_team_stats" not in st.session_state:
-    st.session_state.wc_team_stats = None
-if st.button("Build team stats from every finished match"):
-    with st.spinner("Aggregating every match's stat sheet..."):
-        ts, done, failed = build_team_stats(finished)
-        st.session_state.wc_team_stats = ts
-        st.session_state.wc_team_msg = f"Built from {done} matches." + (
-            f" {failed} hit the rate limit — click again in a minute." if failed else "")
-if st.session_state.wc_team_stats is not None:
-    st.caption(st.session_state.get("wc_team_msg", ""))
-    st.dataframe(st.session_state.wc_team_stats, hide_index=True)
-
-st.subheader("Match stats explorer")
-labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
-          f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
-if labels:
-    choice = st.selectbox("Pick a finished match:", list(labels.keys()))
-    m = labels[choice]
-    try:
-        ov = wc_match_stats(m["id"]).get("overview", {})
-        if ov:
-            st.dataframe(overview_to_df(ov, m["home_team"]["name"],
-                                        m["away_team"]["name"]), hide_index=True)
-        else:
-            st.write("No detailed stats for this match yet.")
-    except Exception as e:
-        st.warning(f"Couldn't load that match's stats: {e}")
-
-# ----------------------------- AI analysis -----------------------------
-st.divider()
-st.header("AI tournament analysis", anchor="ai")
-groups_text = ""
-for g in gnames:
-    groups_text += f"\nGroup {g} (only these teams): " + \
-        ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
-team_stats_text = ""
-if st.session_state.wc_team_stats is not None:
-    team_stats_text = "\n\nPer-game team stats:\n" + st.session_state.wc_team_stats.to_string(index=False)
-if "wc_analysis" not in st.session_state:
-    st.session_state.wc_analysis = ""
-if st.button("Analyse the tournament"):
-    try:
-        with st.spinner("Analysing..."):
-            st.session_state.wc_analysis = ask_ai(
-                "You are an expert analyst covering the 2026 World Cup group stage (in progress). "
-                "Standings:\n" + groups_text + team_stats_text +
-                "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
-                "Plain English, no bullet points.")
-    except Exception as e:
-        st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
-if st.session_state.wc_analysis:
-    st.info(st.session_state.wc_analysis)
+    # A section page: back link + just this section's content
+    st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
+    st.markdown('<a class="backlink" href="?view=home" target="_self">← Back to menu</a>',
+                unsafe_allow_html=True)
+    if not wc_ok:
+        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+    else:
+        title, render_fn = SECTIONS[view]
+        st.header(title)
+        render_fn()
