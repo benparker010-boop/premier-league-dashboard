@@ -734,6 +734,16 @@ def _tile(value, label):
             f'<div class="tp-lbl">{label}</div></div>')
 
 
+def _tiles(pairs):
+    """Render a tile grid, skipping any (value, label) whose value is None."""
+    cells = "".join(_tile(v, lbl) for v, lbl in pairs if v is not None)
+    return f'<div class="tp-grid">{cells}</div>'
+
+
+def _pct(num, den):
+    return round(100 * num / den, 1) if den else None
+
+
 TEAM_CSS = """
 <style>
 .tp-header { display:flex; align-items:center; gap:14px; margin:6px 0 10px; }
@@ -762,12 +772,23 @@ def team_page():
     name = team_names.get(tid, "Team")
     st.markdown(_pitch_background_css(), unsafe_allow_html=True)
 
-    keys = ["ball_possession", "expected_goals", "total_shots", "shots_on_target",
-            "big_chances", "corner_kicks", "fouls", "yellow_cards", "red_cards",
-            "passes", "accurate_passes"]
-    agg = {k: 0 for k in keys}
-    gp = gf = ga = w = d = l = 0
-    results = []
+    OV = ["ball_possession", "expected_goals", "total_shots", "shots_on_target", "big_chances",
+          "corner_kicks", "fouls", "yellow_cards", "red_cards", "passes", "accurate_passes", "offsides"]
+    PL = {"key_passes": ("passing", "key_passes"), "total_crosses": ("passing", "total_crosses"),
+          "accurate_crosses": ("passing", "accurate_crosses"),
+          "total_long_balls": ("passing", "total_long_balls"),
+          "accurate_long_balls": ("passing", "accurate_long_balls"),
+          "big_chances_created": ("shooting", "big_chances_created"),
+          "expected_assists": ("shooting", "expected_assists"),
+          "duel_won": ("duels", "duel_won"), "duel_lost": ("duels", "duel_lost"),
+          "aerial_won": ("duels", "aerial_won"), "tackles": ("defending", "tackles"),
+          "interceptions": ("defending", "interceptions"), "clearances": ("defending", "clearances"),
+          "blocks": ("defending", "blocks")}
+    ov = {k: 0.0 for k in OV}; ovp = {k: False for k in OV}
+    pl = {k: 0.0 for k in PL}; plp = {k: False for k in PL}
+    xga = 0.0; rating_sum = 0.0; minutes = 0
+    gp = gf = ga = w = d = l = cs = 0
+    matches = []
     for m in finished:
         h, a = m["home_team"], m["away_team"]
         if tid not in (h.get("id"), a.get("id")):
@@ -776,67 +797,121 @@ def team_page():
         if hs is None or as_ is None:
             continue
         is_home = h.get("id") == tid
-        side = "home" if is_home else "away"
-        my, opp = (hs, as_) if is_home else (as_, hs)
-        gf += my; ga += opp; gp += 1
-        res = "W" if my > opp else ("D" if my == opp else "L")
+        side, opp_side = ("home", "away") if is_home else ("away", "home")
+        my, conceded = (hs, as_) if is_home else (as_, hs)
+        gp += 1; gf += my; ga += conceded
+        if conceded == 0:
+            cs += 1
+        res = "W" if my > conceded else ("D" if my == conceded else "L")
         if res == "W":
             w += 1
         elif res == "D":
             d += 1
         else:
             l += 1
-        results.append((f"{h['name']} {hs}-{as_} {a['name']}", res))
+        matches.append({"date": m.get("utc_date", ""),
+                        "label": f"{h['name']} {hs}-{as_} {a['name']}", "res": res})
         try:
-            ov = wc_match_stats(m["id"]).get("overview", {})
+            o = wc_match_stats(m["id"]).get("overview", {})
         except Exception:
-            ov = {}
-        for k in keys:
-            agg[k] += stat_val(ov, k, side) or 0
+            o = {}
+        for k in OV:
+            v = stat_val(o, k, side)
+            if v is not None:
+                ov[k] += v; ovp[k] = True
+        xv = stat_val(o, "expected_goals", opp_side)
+        if xv is not None:
+            xga += xv
+        try:
+            players = match_player_stats(m["id"])
+        except Exception:
+            players = []
+        for p in players:
+            if p.get("team_id") != tid:
+                continue
+            for fld, (blk, key) in PL.items():
+                v = (p.get(blk) or {}).get(key)
+                if v is not None:
+                    pl[fld] += v; plp[fld] = True
+            r, mn = p.get("rating"), p.get("minutes_played") or 0
+            try:
+                if r is not None:
+                    rating_sum += float(r) * mn; minutes += mn
+            except (TypeError, ValueError):
+                pass
 
+    matches.sort(key=lambda x: x["date"])
     g = max(gp, 1)
-    pass_acc = round(100 * agg["accurate_passes"] / agg["passes"], 1) if agg["passes"] else 0
+    points = w * 3 + d
+    avg_poss = f'{round(ov["ball_possession"] / g, 1)}%' if ovp["ball_possession"] else None
+    pa = _pct(ov["accurate_passes"], ov["passes"]) if ovp["passes"] else None
+    sa = _pct(ov["shots_on_target"], ov["total_shots"]) if ovp["total_shots"] else None
+    conv = _pct(gf, ov["total_shots"]) if ovp["total_shots"] else None
+    ca = _pct(pl["accurate_crosses"], pl["total_crosses"]) if plp["total_crosses"] else None
+    la = _pct(pl["accurate_long_balls"], pl["total_long_balls"]) if plp["total_long_balls"] else None
+    dw = _pct(pl["duel_won"], pl["duel_won"] + pl["duel_lost"]) if (plp["duel_won"] or plp["duel_lost"]) else None
+    avg_rating = round(rating_sum / minutes, 2) if minutes else None
+
     grp = pos = None
     for gl in sorted(groups):
-        teams_list = groups[gl]["Team"].tolist()
-        if name in teams_list:
-            grp = gl
-            pos = teams_list.index(name) + 1
-            break
+        tl = groups[gl]["Team"].tolist()
+        if name in tl:
+            grp = gl; pos = tl.index(name) + 1; break
     meta = f"Group {grp} · {_ordinal(pos)}" if grp else "Group stage"
+    form_html = " ".join(f'<span class="tp-{x["res"].lower()}">{x["res"]}</span>'
+                         for x in matches[-5:]) or "—"
+
+    def num(flag, value):
+        return value if flag else None
 
     header = (f'<div class="tp-header">{_flag_img(name, 62)}'
               f'<div><div class="tp-name">{name}</div><div class="tp-meta">{meta}</div></div></div>')
     nav = ('<div class="tp-nav">'
            '<a href="#summary">Summary</a><a href="#attack">Attack</a>'
-           '<a href="#possession">Possession</a><a href="#defence">Defence</a>'
-           '<a href="#results">Results</a></div>')
-    summary = ('<div class="tp-section" id="summary"><div class="tp-h">Summary</div><div class="tp-grid">'
-               + _tile(gp, "Played") + _tile(f"{w}-{d}-{l}", "W-D-L")
-               + _tile(gf, "Goals for") + _tile(ga, "Goals against")
-               + _tile(gf - ga, "Goal diff") + _tile(w * 3 + d, "Points") + '</div></div>')
-    attack = ('<div class="tp-section" id="attack"><div class="tp-h">Attack</div><div class="tp-grid">'
-              + _tile(gf, "Goals") + _tile(round(agg["expected_goals"], 1), "xG")
-              + _tile(int(agg["total_shots"]), "Shots") + _tile(int(agg["shots_on_target"]), "On target")
-              + _tile(int(agg["big_chances"]), "Big chances") + _tile(int(agg["corner_kicks"]), "Corners")
-              + '</div></div>')
-    possession = ('<div class="tp-section" id="possession"><div class="tp-h">Possession &amp; passing</div>'
-                  '<div class="tp-grid">'
-                  + _tile(f'{round(agg["ball_possession"] / g, 1)}%', "Avg possession")
-                  + _tile(f"{pass_acc}%", "Pass accuracy")
-                  + _tile(int(agg["passes"]), "Passes")
-                  + _tile(int(agg["accurate_passes"]), "Accurate") + '</div></div>')
-    defence = ('<div class="tp-section" id="defence"><div class="tp-h">Defence &amp; discipline</div>'
-               '<div class="tp-grid">'
-               + _tile(ga, "Conceded") + _tile(int(agg["fouls"]), "Fouls")
-               + _tile(int(agg["yellow_cards"]), "Yellow cards") + _tile(int(agg["red_cards"]), "Red cards")
-               + '</div></div>')
+           '<a href="#passing">Passing</a><a href="#defence">Defence</a>'
+           '<a href="#discipline">Discipline</a><a href="#results">Results</a></div>')
+
+    summary = ('<div class="tp-section" id="summary"><div class="tp-h">Summary</div>' + _tiles([
+        (gp, "Played"), (f"{w}-{d}-{l}", "W-D-L"), (points, "Points"),
+        (round(points / g, 2), "Points/game"), (gf, "Goals for"), (ga, "Goals against"),
+        (gf - ga, "Goal diff"), (cs, "Clean sheets"), (avg_rating, "Avg rating"),
+        (form_html, "Form (last 5)")]) + '</div>')
+    attack = ('<div class="tp-section" id="attack"><div class="tp-h">Attack</div>' + _tiles([
+        (gf, "Goals"), (round(gf / g, 2), "Goals/game"),
+        (num(ovp["expected_goals"], round(ov["expected_goals"], 1)), "xG"),
+        (num(ovp["total_shots"], int(ov["total_shots"])), "Shots"),
+        (num(ovp["shots_on_target"], int(ov["shots_on_target"])), "On target"),
+        (f"{sa}%" if sa is not None else None, "Shot accuracy"),
+        (f"{conv}%" if conv is not None else None, "Conversion"),
+        (num(ovp["big_chances"], int(ov["big_chances"])), "Big chances"),
+        (num(plp["expected_assists"], round(pl["expected_assists"], 1)), "xA")]) + '</div>')
+    passing = ('<div class="tp-section" id="passing"><div class="tp-h">Possession &amp; passing</div>' + _tiles([
+        (avg_poss, "Avg possession"), (f"{pa}%" if pa is not None else None, "Pass accuracy"),
+        (num(ovp["passes"], round(ov["passes"] / g)), "Passes/game"),
+        (num(plp["key_passes"], int(pl["key_passes"])), "Key passes"),
+        (f"{ca}%" if ca is not None else None, "Cross accuracy"),
+        (f"{la}%" if la is not None else None, "Long-ball accuracy")]) + '</div>')
+    defence = ('<div class="tp-section" id="defence"><div class="tp-h">Defence</div>' + _tiles([
+        (ga, "Conceded"), (round(ga / g, 2), "Conceded/game"), (cs, "Clean sheets"),
+        (round(xga, 1) if xga else None, "xG against"),
+        (num(plp["tackles"], int(pl["tackles"])), "Tackles"),
+        (num(plp["interceptions"], int(pl["interceptions"])), "Interceptions"),
+        (num(plp["clearances"], int(pl["clearances"])), "Clearances"),
+        (f"{dw}%" if dw is not None else None, "Duels won"),
+        (num(plp["aerial_won"], int(pl["aerial_won"])), "Aerials won")]) + '</div>')
+    discipline = ('<div class="tp-section" id="discipline"><div class="tp-h">Discipline &amp; set pieces</div>' + _tiles([
+        (num(ovp["fouls"], round(ov["fouls"] / g, 1)), "Fouls/game"),
+        (num(ovp["yellow_cards"], int(ov["yellow_cards"])), "Yellow cards"),
+        (num(ovp["red_cards"], int(ov["red_cards"])), "Red cards"),
+        (num(ovp["offsides"], int(ov["offsides"])), "Offsides"),
+        (num(ovp["corner_kicks"], int(ov["corner_kicks"])), "Corners")]) + '</div>')
     res_rows = "".join(
-        f'<div class="tp-res"><span>{mm}</span><span class="tp-{r.lower()}">{r}</span></div>'
-        for mm, r in results) or '<div class="tp-res">No finished matches yet</div>'
+        f'<div class="tp-res"><span>{x["label"]}</span>'
+        f'<span class="tp-{x["res"].lower()}">{x["res"]}</span></div>'
+        for x in matches) or '<div class="tp-res">No finished matches yet</div>'
     resultsec = f'<div class="tp-section" id="results"><div class="tp-h">Results</div>{res_rows}</div>'
 
-    st.markdown(TEAM_CSS + header + nav + summary + attack + possession + defence + resultsec,
+    st.markdown(TEAM_CSS + header + nav + summary + attack + passing + defence + discipline + resultsec,
                 unsafe_allow_html=True)
 
 
