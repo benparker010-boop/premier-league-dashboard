@@ -404,7 +404,7 @@ header[data-testid="stHeader"] { display: none; }
 .hero-cue .chev { display: block; font-size: 28px; animation: bob 1.6s infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
 .launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 44px 0 4px; padding-top: 10px; }
-.launch-sub { text-align: center; color: #6b7280; font-size: 14px; margin: 0 0 22px; }
+.launch-sub { text-align: center; color: #374151; font-size: 14px; font-weight: 500; margin: 0 0 22px; }
 .launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
 .launch-card { display: flex; flex-direction: column; align-items: center; gap: 8px;
   padding: 28px 14px; border: 1px solid rgba(0,0,0,0.10); border-radius: 14px;
@@ -412,7 +412,7 @@ header[data-testid="stHeader"] { display: none; }
 .launch-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.28); }
 .launch-card .ic { font-size: 30px; line-height: 1; }
 .launch-card .nm { font-size: 15px; font-weight: 600; color: #111827; }
-.launch-card .ds { font-size: 12px; color: #6b7280; text-align: center; }
+.launch-card .ds { font-size: 12px; color: #4b5563; text-align: center; }
 @media (max-width: 700px) { .launch-grid { grid-template-columns: 1fr; } .hero-title { font-size: 34px; } }
 """
 
