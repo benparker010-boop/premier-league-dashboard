@@ -528,6 +528,13 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 .backlink { display: inline-block; color: #4b5563; text-decoration: none; font-size: 15px;
   font-weight: 500; margin-bottom: 6px; }
 .backlink:hover { color: #111827; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 14px;
+  width: 100vw; margin-left: calc(-50vw + 50%); padding: 0 32px; box-sizing: border-box; }
+.team-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 10px;
+  background: #ffffff; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px;
+  text-decoration: none; color: #1a2230; transition: transform .15s, border-color .15s, box-shadow .15s; }
+.team-card:hover { transform: translateY(-3px); border-color: #e8b84b; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+.team-name { font-size: 15px; font-weight: 600; text-align: center; }
 """
 
 
@@ -554,12 +561,13 @@ NAME_TO_ISO2 = {
 }
 
 
-def _flag_img(team):
+def _flag_img(team, w=26):
     iso = NAME_TO_ISO2.get(team)
     if not iso:
         return ""
-    return (f'<img src="https://flagcdn.com/w40/{iso}.png" alt="" loading="lazy" '
-            'style="width:26px;height:auto;border-radius:2px;margin-right:8px;vertical-align:middle;">')
+    src = "w80" if w > 40 else "w40"
+    return (f'<img src="https://flagcdn.com/{src}/{iso}.png" alt="" loading="lazy" '
+            f'style="width:{w}px;height:auto;border-radius:3px;vertical-align:middle;">')
 
 
 # ----------------------------- Section pages -----------------------------
@@ -657,48 +665,54 @@ def section_players():
 
 
 def section_stats():
-    st.subheader("Teams")
-    teams = sorted(set(team_names.values()))
-    if teams:
-        cards = "".join(
-            '<div style="display:flex;align-items:center;gap:6px;padding:9px 12px;'
-            'border:1px solid rgba(0,0,0,0.12);border-radius:10px;background:#ffffff;">'
-            f'{_flag_img(t)}<span style="font-size:14px;font-weight:500;color:#111827;">{t}</span></div>'
-            for t in teams)
-        st.markdown(
-            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));'
-            f'gap:10px;margin-bottom:14px;">{cards}</div>', unsafe_allow_html=True)
-    else:
+    st.caption("Pick a country to see its stats.")
+    items = sorted(team_names.items(), key=lambda kv: kv[1])
+    if not items:
         st.write("No teams loaded yet.")
+        return
+    cards = "".join(
+        f'<a class="team-card" href="?view=team&team={tid}" target="_self">'
+        f'{_flag_img(name, 56)}<span class="team-name">{name}</span></a>'
+        for tid, name in items)
+    st.markdown(f'<div class="team-grid">{cards}</div>', unsafe_allow_html=True)
 
-    st.divider()
-    st.subheader("Per-game team stats")
-    if "wc_team_stats" not in st.session_state:
-        st.session_state.wc_team_stats = None
-    if st.button("Build team stats from every finished match"):
-        with st.spinner("Aggregating every match's stat sheet..."):
-            ts, done, failed = build_team_stats(finished)
-            st.session_state.wc_team_stats = ts
-            st.session_state.wc_team_msg = f"Built from {done} matches." + (
-                f" {failed} hit the rate limit — click again in a minute." if failed else "")
-    if st.session_state.wc_team_stats is not None:
-        st.caption(st.session_state.get("wc_team_msg", ""))
-        st.dataframe(st.session_state.wc_team_stats, hide_index=True)
-    st.subheader("Match stats explorer")
-    labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
-              f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
-    if labels:
-        choice = st.selectbox("Pick a finished match:", list(labels.keys()))
-        m = labels[choice]
-        try:
-            ov = wc_match_stats(m["id"]).get("overview", {})
-            if ov:
-                st.dataframe(overview_to_df(ov, m["home_team"]["name"],
-                                            m["away_team"]["name"]), hide_index=True)
-            else:
-                st.write("No detailed stats for this match yet.")
-        except Exception as e:
-            st.warning(f"Couldn't load that match's stats: {e}")
+
+def team_page():
+    tid = st.query_params.get("team")
+    name = team_names.get(tid, "Team")
+    render_banner(name, "stats")
+    rows = []
+    w = d = l = gf = ga = 0
+    for m in finished:
+        h, a = m["home_team"], m["away_team"]
+        if tid not in (h.get("id"), a.get("id")):
+            continue
+        hs, as_ = m["score"]["home"], m["score"]["away"]
+        if hs is None or as_ is None:
+            continue
+        is_home = h.get("id") == tid
+        my, opp = (hs, as_) if is_home else (as_, hs)
+        gf += my; ga += opp
+        res = "W" if my > opp else ("D" if my == opp else "L")
+        if res == "W":
+            w += 1
+        elif res == "D":
+            d += 1
+        else:
+            l += 1
+        rows.append({"Match": f"{h['name']} {hs}-{as_} {a['name']}",
+                     "Date": m["utc_date"][:10], "Result": res})
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Played", w + d + l)
+    c2.metric("W-D-L", f"{w}-{d}-{l}")
+    c3.metric("Goals for", gf)
+    c4.metric("Goals against", ga)
+    st.subheader("Results")
+    if rows:
+        st.dataframe(pd.DataFrame(rows), hide_index=True)
+    else:
+        st.write("No finished matches for this team yet.")
+    st.info("This is a starting point for the team page — we'll design the full stats layout next.")
 
 
 def _stats_context():
@@ -804,7 +818,7 @@ SECTIONS = {
     "scorers": ("Top 10 scorers & assists", section_scorers),
     "bracket": ("Knockout stage", section_bracket),
     "players": ("Player search", section_players),
-    "stats": ("Team stats & match explorer", section_stats),
+    "stats": ("Team stats", section_stats),
     "ai": ("AI tournament analysis", section_ai),
 }
 
@@ -815,6 +829,15 @@ if view == "menu":
     render_menu_page()
     if not wc_ok:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+elif view == "team":
+    # An individual team's page, reached from the Team stats flag grid
+    st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
+    st.markdown('<a class="backlink" href="?view=stats" target="_self">← Back to teams</a>',
+                unsafe_allow_html=True)
+    if not wc_ok:
+        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+    else:
+        team_page()
 elif view in SECTIONS:
     # A section page: back link (to the menu) + just this section's content
     st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
