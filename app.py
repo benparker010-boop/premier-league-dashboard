@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import anthropic
 import time
+import os
 
 st.set_page_config(page_title="Football Data Dashboard", layout="wide")
 st.title("⚽ Football Data Dashboard")
@@ -13,6 +14,11 @@ WC_COMP = "comp_6107"
 WC_SEASON = "sn_118868"
 AI_MODEL = "claude-haiku-4-5-20251001"
 PREDICT_MODEL = "claude-sonnet-4-6"
+
+# Snapshot files (committed to the repo) so the scorer/assist tables are
+# shown instantly on every visit without rebuilding from the API each time.
+SCORERS_CSV = "top_scorers.csv"
+ASSISTS_CSV = "top_assists.csv"
 
 
 # ===================== Premier League (football-data.org) =====================
@@ -141,6 +147,176 @@ def build_group_standings(matches):
     return out
 
 
+# ============== Deterministic tournament simulator (no AI) ==============
+# Each team's strength is a plain tuple read off the current group table:
+# (Points, Goal difference, Goals for). The team with the higher tuple wins;
+# ties break on alphabetical name so the result is always the same.
+ROUND_NAMES = {32: "Round of 32", 16: "Round of 16", 8: "Quarter-finals",
+               4: "Semi-finals", 2: "Final"}
+
+
+def _strength(row):
+    return (int(row["Pts"]), int(row["GD"]), int(row["GF"]))
+
+
+def group_predictions(groups):
+    """One row per group: predicted winner and runner-up from current standings."""
+    rows = []
+    for g in sorted(groups):
+        df = groups[g]
+        rows.append({
+            "Group": g,
+            "Predicted Winner": df.iloc[0]["Team"] if len(df) >= 1 else "—",
+            "Pts (W)": int(df.iloc[0]["Pts"]) if len(df) >= 1 else 0,
+            "Runner-up": df.iloc[1]["Team"] if len(df) >= 2 else "—",
+            "Pts (R)": int(df.iloc[1]["Pts"]) if len(df) >= 2 else 0,
+        })
+    return pd.DataFrame(rows)
+
+
+def qualified_from_groups(groups):
+    """Top 2 of every group + the 8 best third-placed teams = up to 32 teams."""
+    winners, runners, thirds = [], [], []
+    for g in sorted(groups):
+        df = groups[g]
+        if len(df) >= 1:
+            r = df.iloc[0]; winners.append(dict(name=r["Team"], group=g, pos=1, key=_strength(r)))
+        if len(df) >= 2:
+            r = df.iloc[1]; runners.append(dict(name=r["Team"], group=g, pos=2, key=_strength(r)))
+        if len(df) >= 3:
+            r = df.iloc[2]; thirds.append(dict(name=r["Team"], group=g, pos=3, key=_strength(r)))
+    thirds.sort(key=lambda t: t["key"], reverse=True)
+    return winners + runners + thirds[:8]
+
+
+def _largest_pow2(n):
+    p = 1
+    while p * 2 <= n:
+        p *= 2
+    return p
+
+
+def _seed_order(n):
+    """Standard knockout seeding so the strongest sides only meet late."""
+    order = [1, 2]
+    while len(order) < n:
+        m = len(order) * 2
+        new = []
+        for s in order:
+            new += [s, m + 1 - s]
+        order = new
+    return order
+
+
+def _play(a, b):
+    if a["key"] > b["key"]:
+        return a
+    if b["key"] > a["key"]:
+        return b
+    return a if a["name"] < b["name"] else b   # deterministic tie-break
+
+
+def render_bracket(rounds, champion):
+    """Draw the rounds left-to-right as a visual bracket of match cards."""
+    cols = st.columns(len(rounds) + 1)
+    for col, (rname, rdf) in zip(cols, rounds):
+        with col:
+            st.markdown(f"**{rname}**")
+            for _, mt in rdf.iterrows():
+                a, b, w = mt["Home"], mt["Away"], mt["Advances"]
+                a_disp = f"<b>{a} ✅</b>" if a.split(" (")[0] == w else a
+                b_disp = f"<b>{b} ✅</b>" if b.split(" (")[0] == w else b
+                st.markdown(
+                    "<div style='border:1px solid #555;border-radius:6px;padding:6px 8px;"
+                    "margin-bottom:8px;font-size:0.8rem;line-height:1.4'>"
+                    f"{a_disp}<br>{b_disp}</div>", unsafe_allow_html=True)
+    with cols[-1]:
+        st.markdown("**Champion**")
+        st.markdown(
+            "<div style='border:2px solid gold;border-radius:8px;padding:12px 10px;"
+            "text-align:center;font-weight:bold;font-size:0.95rem'>"
+            f"🏆<br>{champion}</div>", unsafe_allow_html=True)
+
+
+def simulate_bracket(qualified):
+    """Seed the qualified teams by strength and play out every round.
+    Returns (rounds, champion) where rounds = list of (name, [match dicts])."""
+    teams = sorted(qualified, key=lambda t: t["key"], reverse=True)
+    size = _largest_pow2(len(teams))
+    if size < 2:
+        return [], None
+    teams = teams[:size]
+    seeds = {i + 1: t for i, t in enumerate(teams)}
+    field = [seeds[s] for s in _seed_order(size)]
+    rounds = []
+    while len(field) > 1:
+        rname = ROUND_NAMES.get(len(field), f"Round of {len(field)}")
+        matches, nxt = [], []
+        for i in range(0, len(field), 2):
+            a, b = field[i], field[i + 1]
+            w = _play(a, b)
+            matches.append({"Home": f"{a['name']} ({a['group']}{a['pos']})",
+                            "Away": f"{b['name']} ({b['group']}{b['pos']})",
+                            "Advances": w["name"]})
+            nxt.append(w)
+        rounds.append((rname, pd.DataFrame(matches)))
+        field = nxt
+    return rounds, field[0]["name"]
+
+
+# ----------------- Top scorers & assists (snapshot + live) -----------------
+def build_scorers_assists(match_ids):
+    """Tally real goals and assists from each finished match's event timeline."""
+    goals, assists = {}, {}
+    done = failed = 0
+    for mid in match_ids:
+        try:
+            events = wc_timeline(mid)
+        except Exception:
+            failed += 1
+            continue
+        done += 1
+        for ev in events:
+            if ev.get("type") != "goal":
+                continue
+            scorer = ev.get("player") or {}
+            team = (ev.get("team") or {}).get("name", "")
+            if scorer.get("name"):
+                g = goals.setdefault(scorer["name"],
+                                     {"Player": scorer["name"], "Team": team, "Goals": 0})
+                g["Goals"] += 1
+            a = (ev.get("assist") or ev.get("assist_player") or
+                 ev.get("assisted_by") or ev.get("secondary_player"))
+            if isinstance(a, dict) and a.get("name"):
+                ad = assists.setdefault(a["name"],
+                                        {"Player": a["name"], "Team": team, "Assists": 0})
+                ad["Assists"] += 1
+    gdf = pd.DataFrame(list(goals.values()))
+    adf = pd.DataFrame(list(assists.values()))
+    if not gdf.empty:
+        gdf = gdf.sort_values("Goals", ascending=False).head(10).reset_index(drop=True)
+    if not adf.empty:
+        adf = adf.sort_values("Assists", ascending=False).head(10).reset_index(drop=True)
+    return gdf, adf, done, failed
+
+
+def load_scorer_snapshot():
+    """Read the pre-built top-10 tables committed to the repo (instant)."""
+    g = a = None
+    stamp = None
+    try:
+        g = pd.read_csv(SCORERS_CSV)
+        stamp = time.strftime("%d %b %Y", time.localtime(os.path.getmtime(SCORERS_CSV)))
+    except Exception:
+        pass
+    try:
+        a = pd.read_csv(ASSISTS_CSV)
+    except Exception:
+        pass
+    return g, a, stamp
+
+
+# ===================== Other helpers (unchanged) =====================
 def stat_val(overview, key, side):
     try:
         return overview[key]["all"][side]
@@ -189,42 +365,6 @@ def build_team_stats(finished):
                      "Corners/game": round(t["corners"] / gp, 1), "Fouls/game": round(t["fouls"] / gp, 1),
                      "Yellows/game": round(t["yc"] / gp, 1)})
     return pd.DataFrame(rows).sort_values("xG/game", ascending=False).reset_index(drop=True), done, failed
-
-
-def build_scorers_assists(finished):
-    """Tally real goals and assists from every finished match's event timeline."""
-    goals, assists = {}, {}
-    done = failed = 0
-    for m in finished:
-        try:
-            events = wc_timeline(m["id"])
-        except Exception:
-            failed += 1
-            continue
-        done += 1
-        for ev in events:
-            if ev.get("type") != "goal":
-                continue
-            scorer = ev.get("player") or {}
-            team = (ev.get("team") or {}).get("name", "")
-            if scorer.get("name"):
-                g = goals.setdefault(scorer["name"],
-                                     {"Player": scorer["name"], "Team": team, "Goals": 0})
-                g["Goals"] += 1
-            # assist may be labelled under one of a few possible keys
-            a = (ev.get("assist") or ev.get("assist_player") or
-                 ev.get("assisted_by") or ev.get("secondary_player"))
-            if isinstance(a, dict) and a.get("name"):
-                ad = assists.setdefault(a["name"],
-                                        {"Player": a["name"], "Team": team, "Assists": 0})
-                ad["Assists"] += 1
-    gdf = pd.DataFrame(list(goals.values()))
-    adf = pd.DataFrame(list(assists.values()))
-    if not gdf.empty:
-        gdf = gdf.sort_values("Goals", ascending=False).head(10).reset_index(drop=True)
-    if not adf.empty:
-        adf = adf.sort_values("Assists", ascending=False).head(10).reset_index(drop=True)
-    return gdf, adf, done, failed
 
 
 def cat_df(d):
@@ -328,6 +468,67 @@ with tab_wc:
                     st.markdown(f"**Group {g}**")
                     st.dataframe(groups[g], hide_index=True)
 
+        # ---------------- Top scorers & assists (always shown) ----------------
+        st.divider()
+        st.subheader("🥇 Top 10 scorers & assists")
+        gsnap, asnap, stamp = load_scorer_snapshot()
+        gdf = st.session_state.get("scorers_live", gsnap)
+        adf = st.session_state.get("assisters_live", asnap)
+        if "scorers_live" in st.session_state:
+            st.caption("🟢 Refreshed live from match events just now.")
+        elif stamp:
+            st.caption(f"📁 Snapshot from committed data (built {stamp}). "
+                       "Press refresh to pull the very latest from live match events.")
+        else:
+            st.caption("No snapshot found yet — press refresh to build it from live match events.")
+        gcol, acol = st.columns(2)
+        with gcol:
+            st.markdown("**Top scorers**")
+            if gdf is None or gdf.empty:
+                st.write("No goal data available.")
+            else:
+                st.dataframe(gdf, hide_index=True)
+        with acol:
+            st.markdown("**Top assists**")
+            if adf is None or adf.empty:
+                st.write("No assist data available.")
+            else:
+                st.dataframe(adf, hide_index=True)
+        if st.button("🔄 Refresh from live results"):
+            with st.spinner("Reading every finished match's goals..."):
+                lg, la, done, failed = build_scorers_assists([m["id"] for m in finished])
+                st.session_state.scorers_live = lg
+                st.session_state.assisters_live = la
+            if failed:
+                st.warning(f"Built from {done} matches; {failed} hit the rate limit — try again in a minute.")
+            st.rerun()
+
+        # ---------------- Group winner predictions (no AI) ----------------
+        st.divider()
+        st.subheader("🔮 Group winner predictions")
+        st.caption("Based purely on the current standings — winner and runner-up of each group.")
+        if groups:
+            st.dataframe(group_predictions(groups), hide_index=True)
+        else:
+            st.write("No group results yet.")
+
+        # ---------------- Full knockout bracket simulation (no AI) ----------------
+        st.divider()
+        st.subheader("🏆 Simulated knockout bracket")
+        st.caption("A deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best "
+                   "third-placed teams) are seeded by points, goal difference and goals scored, "
+                   "then every tie is decided by the stronger record. No AI, no randomness.")
+        qualified = qualified_from_groups(groups)
+        rounds, champion = simulate_bracket(qualified)
+        if not rounds:
+            st.info("Not enough completed group games yet to build a 16/32-team bracket. "
+                    "The bracket will appear automatically once more results are in.")
+        else:
+            st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
+            render_bracket(rounds, champion)
+            st.success(f"🏆 Simulated champion: **{champion}**")
+            st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
+
         st.divider()
         st.subheader("🔍 Match stats explorer")
         labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
@@ -387,80 +588,13 @@ with tab_wc:
             except Exception as e:
                 st.warning(f"Couldn't load stats: {e}")
 
-        # ---------------- Top scorers & assists (from match events) ----------------
+        # ---------------- AI analysis (predictions now handled above) ----------------
         st.divider()
-        st.subheader("🥇 Top 10 scorers & assists")
-        st.caption("Tallied from real goal events across every finished match.")
-        if "scorers" not in st.session_state:
-            st.session_state.scorers = None
-        if st.button("Build top scorers & assists"):
-            with st.spinner("Reading every match's goals..."):
-                gdf, adf, done, failed = build_scorers_assists(finished)
-                st.session_state.scorers = gdf
-                st.session_state.assisters = adf
-                st.session_state.scorers_msg = f"Built from {done} matches." + (
-                    " Some hit the rate limit — click again in a minute." if failed else "")
-        if st.session_state.scorers is not None:
-            st.caption(st.session_state.get("scorers_msg", ""))
-            gcol, acol = st.columns(2)
-            with gcol:
-                st.markdown("**Top scorers**")
-                if st.session_state.scorers.empty:
-                    st.write("No goals tallied yet.")
-                else:
-                    st.dataframe(st.session_state.scorers, hide_index=True)
-            with acol:
-                st.markdown("**Top assists**")
-                adf = st.session_state.get("assisters")
-                if adf is None or adf.empty:
-                    st.write("No assist data found in the events feed.")
-                else:
-                    st.dataframe(adf, hide_index=True)
-
-        # ---------------- AI analysis & predictions ----------------
-        st.divider()
-        st.subheader("🤖 AI Tournament Analysis & Predictions")
+        st.subheader("🤖 AI Tournament Analysis")
         groups_text = ""
         for g in gnames:
             groups_text += f"\nGroup {g} (only these teams): " + \
                 ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
         team_stats_text = ""
         if st.session_state.wc_team_stats is not None:
-            team_stats_text = "\n\nPer-game team stats:\n" + \
-                st.session_state.wc_team_stats.to_string(index=False)
-        if "wc_analysis" not in st.session_state:
-            st.session_state.wc_analysis = ""
-        if "wc_prediction" not in st.session_state:
-            st.session_state.wc_prediction = ""
-        b1, b2 = st.columns(2)
-        with b1:
-            if st.button("Analyse the tournament", key="wc_analyse"):
-                try:
-                    with st.spinner("Analysing..."):
-                        st.session_state.wc_analysis = ask_ai(
-                            "You are an expert analyst covering the 2026 World Cup group stage "
-                            "(in progress). Standings:\n" + groups_text + team_stats_text +
-                            "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
-                            "Plain English, no bullet points.")
-                except Exception as e:
-                    st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
-        with b2:
-            if st.button("Predict who advances", key="wc_predict"):
-                try:
-                    with st.spinner("Predicting (stronger model + real stats)..."):
-                        st.session_state.wc_prediction = ask_ai(
-                            "You are predicting the 2026 World Cup group stage (in progress).\n\n"
-                            "RULES: use ONLY the teams and numbers below; no outside knowledge; "
-                            "every team named must be in the group you assign it to.\n\n"
-                            "Standings:\n" + groups_text + team_stats_text +
-                            "\n\nGo group by group; name a likely winner and runner-up using points, "
-                            "goal difference and the per-game stats. Then give one favourite and one "
-                            "dark horse from the teams above. End: these are informed predictions, "
-                            "not certainties.", model=PREDICT_MODEL, temperature=0.2)
-                except Exception as e:
-                    st.session_state.wc_prediction = f"Sorry — couldn't predict. ({e})"
-        if st.session_state.wc_analysis:
-            st.info(st.session_state.wc_analysis)
-        if st.session_state.wc_prediction:
-            st.success(st.session_state.wc_prediction)
-            st.caption("⚠️ AI-generated predictions — informed speculation, not betting advice.")
+            tea

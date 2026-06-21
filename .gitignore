@@ -1,0 +1,6 @@
+# Keep secret API keys out of GitHub — NEVER commit this
+.streamlit/secrets.toml
+
+# Python junk
+__pycache__/
+*.pyc
