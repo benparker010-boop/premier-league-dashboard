@@ -659,6 +659,92 @@ def _heading(big, small=None):
             f'{big}</div>{sub}</div>')
 
 
+def _ko_bracket_svg(field):
+    """Symmetric knockout bracket as SVG (photo style, dark/gold). R32 slots filled."""
+    n = len(field)
+    if n < 4:
+        return ('<div style="color:rgba(255,255,255,0.7);">'
+                'Not enough results yet to project the bracket.</div>')
+    half = n // 2
+    bw, bh, vp, cg, top = 122, 22, 30, 26, 30
+    step = bw + cg
+
+    def round_ys(count):
+        ys = [i * vp for i in range(count)]
+        rounds = [ys]
+        while len(ys) > 1:
+            ys = [(ys[2 * i] + ys[2 * i + 1]) / 2 for i in range(len(ys) // 2)]
+            rounds.append(ys)
+        return rounds
+
+    lr = round_ys(half)
+    nL = len(lr)
+    total_w = (2 * nL + 1) * step - cg
+    height = (half - 1) * vp + bh + top + 24
+    labels = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "", "", "", ""]
+    P = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {int(total_w)} {int(height)}" '
+         f'style="min-width:{int(total_w)}px;font-family:Oswald,sans-serif;">']
+
+    def colx(c):
+        return c * step
+
+    def side(team_field, is_left):
+        for r, ys in enumerate(lr):
+            c = r if is_left else (2 * nL - r)
+            x = colx(c)
+            for idx, y in enumerate(ys):
+                yy = y + top
+                nm = team_field[idx]["name"] if (r == 0 and idx < len(team_field)) else ""
+                nm = nm.replace("&", "&amp;")
+                fill = "#16202f" if nm else "#0f1726"
+                P.append(f'<rect x="{x:.0f}" y="{yy:.0f}" width="{bw}" height="{bh}" rx="4" '
+                         f'fill="{fill}" stroke="rgba(232,184,75,0.35)" stroke-width="1"/>')
+                if nm:
+                    P.append(f'<text x="{x + bw / 2:.0f}" y="{yy + bh / 2 + 3.5:.0f}" '
+                             f'text-anchor="middle" fill="#fff" font-size="10">{nm}</text>')
+            if r + 1 < nL:
+                c2 = (r + 1) if is_left else (2 * nL - (r + 1))
+                px = colx(c2)
+                for j, py in enumerate(lr[r + 1]):
+                    pcy = py + top + bh / 2
+                    for child in (2 * j, 2 * j + 1):
+                        ccy = ys[child] + top + bh / 2
+                        if is_left:
+                            x1, mx, x2 = x + bw, (x + bw + px) / 2, px
+                        else:
+                            x1, mx, x2 = x, (x + px + bw) / 2, px + bw
+                        P.append(f'<path d="M{x1:.0f},{ccy:.0f} L{mx:.0f},{ccy:.0f} '
+                                 f'L{mx:.0f},{pcy:.0f} L{x2:.0f},{pcy:.0f}" fill="none" '
+                                 f'stroke="rgba(232,184,75,0.28)" stroke-width="1"/>')
+
+    side(field[:half], True)
+    side(field[half:], False)
+
+    cx = colx(nL)
+    cy = lr[-1][0] + top
+    midy = cy + (bh + 8) / 2
+    fy = lr[-1][0] + top + bh / 2
+    P.append(f'<path d="M{colx(nL - 1) + bw:.0f},{fy:.0f} L{cx:.0f},{midy:.0f}" '
+             f'stroke="rgba(232,184,75,0.3)" fill="none"/>')
+    P.append(f'<path d="M{colx(nL + 1):.0f},{fy:.0f} L{cx + bw:.0f},{midy:.0f}" '
+             f'stroke="rgba(232,184,75,0.3)" fill="none"/>')
+    P.append(f'<text x="{cx + bw / 2:.0f}" y="{cy - 9:.0f}" text-anchor="middle" fill="#e8b84b" '
+             f'font-size="12" letter-spacing="1.5">FINAL</text>')
+    P.append(f'<rect x="{cx:.0f}" y="{cy:.0f}" width="{bw}" height="{bh + 8}" rx="5" '
+             f'fill="#1c2336" stroke="#e8b84b" stroke-width="1.6"/>')
+    P.append(f'<text x="{cx + bw / 2:.0f}" y="{cy + 19:.0f}" text-anchor="middle" fill="#e8b84b" '
+             f'font-size="11" letter-spacing="1">🏆 CHAMPION</text>')
+
+    for r in range(nL):
+        if labels[r]:
+            P.append(f'<text x="{colx(r) + bw / 2:.0f}" y="14" text-anchor="middle" fill="#e8b84b" '
+                     f'font-size="9" letter-spacing="0.5">{labels[r]}</text>')
+            P.append(f'<text x="{colx(2 * nL - r) + bw / 2:.0f}" y="14" text-anchor="middle" '
+                     f'fill="#e8b84b" font-size="9" letter-spacing="0.5">{labels[r]}</text>')
+    P.append('</svg>')
+    return '<div style="overflow-x:auto;padding-bottom:6px;">' + "".join(P) + '</div>'
+
+
 def section_standings():
     st.markdown(_glow_background_css(), unsafe_allow_html=True)
     st.markdown(STANDINGS_CSS, unsafe_allow_html=True)
@@ -698,16 +784,7 @@ def section_standings():
     teams = teams[:size]
     seeds = {i + 1: t for i, t in enumerate(teams)}
     field = [seeds[s] for s in _seed_order(size)]
-
-    def chip(t):
-        return (f'<span class="ko-team">{_flag_img(t["name"], 22)}{t["name"]} '
-                f'<span style="opacity:0.6;">({t["group"]}{t["pos"]})</span></span>')
-
-    ties = ""
-    for i in range(0, len(field), 2):
-        a, b = field[i], field[i + 1]
-        ties += f'<div class="ko-tie">{chip(a)}<span class="ko-vs">vs</span>{chip(b)}</div>'
-    st.markdown(f'<div class="ko-grid">{ties}</div>', unsafe_allow_html=True)
+    st.markdown(_ko_bracket_svg(field), unsafe_allow_html=True)
 
 
 def section_scorers():
