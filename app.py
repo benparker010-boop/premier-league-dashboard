@@ -538,31 +538,45 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 """
 
 
-# Country name -> ISO code for flag images (flagcdn.com). Covers likely 2026 teams.
+# Country name (lowercased) -> ISO code for flag images (flagcdn.com).
 NAME_TO_ISO2 = {
-    "Argentina": "ar", "Australia": "au", "Austria": "at", "Belgium": "be", "Bolivia": "bo",
-    "Brazil": "br", "Cameroon": "cm", "Canada": "ca", "Cape Verde": "cv", "Chile": "cl",
-    "Colombia": "co", "Costa Rica": "cr", "Croatia": "hr", "Curacao": "cw", "Czechia": "cz",
-    "Czech Republic": "cz", "Denmark": "dk", "DR Congo": "cd", "Ecuador": "ec", "Egypt": "eg",
-    "El Salvador": "sv", "England": "gb-eng", "France": "fr", "Germany": "de", "Ghana": "gh",
-    "Greece": "gr", "Guatemala": "gt", "Haiti": "ht", "Honduras": "hn", "Hungary": "hu",
-    "Iceland": "is", "Iran": "ir", "Iraq": "iq", "Ireland": "ie", "Republic of Ireland": "ie",
-    "Italy": "it", "Ivory Coast": "ci", "Jamaica": "jm", "Japan": "jp", "Jordan": "jo",
-    "Kazakhstan": "kz", "Korea Republic": "kr", "South Korea": "kr", "Mali": "ml", "Mexico": "mx",
-    "Morocco": "ma", "Netherlands": "nl", "New Zealand": "nz", "Nigeria": "ng", "North Macedonia": "mk",
-    "Northern Ireland": "gb-nir", "Norway": "no", "Oman": "om", "Panama": "pa", "Paraguay": "py",
-    "Peru": "pe", "Poland": "pl", "Portugal": "pt", "Qatar": "qa", "Romania": "ro", "Russia": "ru",
-    "Saudi Arabia": "sa", "Scotland": "gb-sct", "Senegal": "sn", "Serbia": "rs", "Slovakia": "sk",
-    "Slovenia": "si", "South Africa": "za", "Spain": "es", "Sweden": "se", "Switzerland": "ch",
-    "Trinidad and Tobago": "tt", "Tunisia": "tn", "Turkey": "tr", "Ukraine": "ua",
-    "United States": "us", "USA": "us", "Uruguay": "uy", "Uzbekistan": "uz", "Venezuela": "ve",
-    "Wales": "gb-wls", "Algeria": "dz", "Bahrain": "bh", "China": "cn", "India": "in",
-    "Indonesia": "id", "Thailand": "th", "Vietnam": "vn", "United Arab Emirates": "ae",
+    "afghanistan": "af", "albania": "al", "algeria": "dz", "angola": "ao", "argentina": "ar",
+    "armenia": "am", "australia": "au", "austria": "at", "azerbaijan": "az", "bahrain": "bh",
+    "bangladesh": "bd", "belarus": "by", "belgium": "be", "benin": "bj", "bolivia": "bo",
+    "bosnia and herzegovina": "ba", "botswana": "bw", "brazil": "br", "bulgaria": "bg",
+    "burkina faso": "bf", "cameroon": "cm", "canada": "ca", "cape verde": "cv", "cabo verde": "cv",
+    "chile": "cl", "china": "cn", "china pr": "cn", "colombia": "co", "comoros": "km", "congo": "cg",
+    "dr congo": "cd", "congo dr": "cd", "costa rica": "cr", "croatia": "hr", "cuba": "cu",
+    "curacao": "cw", "cyprus": "cy", "czechia": "cz", "czech republic": "cz", "denmark": "dk",
+    "ecuador": "ec", "egypt": "eg", "el salvador": "sv", "england": "gb-eng",
+    "equatorial guinea": "gq", "estonia": "ee", "finland": "fi", "france": "fr", "gabon": "ga",
+    "gambia": "gm", "georgia": "ge", "germany": "de", "ghana": "gh", "greece": "gr",
+    "guatemala": "gt", "guinea": "gn", "haiti": "ht", "honduras": "hn", "hungary": "hu",
+    "iceland": "is", "india": "in", "indonesia": "id", "iran": "ir", "iraq": "iq", "ireland": "ie",
+    "republic of ireland": "ie", "israel": "il", "italy": "it", "ivory coast": "ci",
+    "cote d'ivoire": "ci", "côte d'ivoire": "ci", "jamaica": "jm", "japan": "jp", "jordan": "jo",
+    "kazakhstan": "kz", "kenya": "ke", "kosovo": "xk", "kuwait": "kw", "latvia": "lv",
+    "lebanon": "lb", "libya": "ly", "lithuania": "lt", "luxembourg": "lu", "madagascar": "mg",
+    "malaysia": "my", "mali": "ml", "malta": "mt", "mauritania": "mr", "mexico": "mx",
+    "moldova": "md", "montenegro": "me", "morocco": "ma", "mozambique": "mz", "namibia": "na",
+    "netherlands": "nl", "new zealand": "nz", "nigeria": "ng", "north macedonia": "mk",
+    "northern ireland": "gb-nir", "north korea": "kp", "korea dpr": "kp", "norway": "no",
+    "oman": "om", "pakistan": "pk", "panama": "pa", "paraguay": "py", "peru": "pe",
+    "philippines": "ph", "poland": "pl", "portugal": "pt", "qatar": "qa", "romania": "ro",
+    "russia": "ru", "saudi arabia": "sa", "scotland": "gb-sct", "senegal": "sn", "serbia": "rs",
+    "sierra leone": "sl", "singapore": "sg", "slovakia": "sk", "slovenia": "si",
+    "south africa": "za", "south korea": "kr", "korea republic": "kr", "spain": "es",
+    "sudan": "sd", "sweden": "se", "switzerland": "ch", "syria": "sy", "tanzania": "tz",
+    "thailand": "th", "togo": "tg", "trinidad and tobago": "tt", "tunisia": "tn", "turkey": "tr",
+    "türkiye": "tr", "turkiye": "tr", "uganda": "ug", "ukraine": "ua",
+    "united arab emirates": "ae", "united states": "us", "usa": "us", "uruguay": "uy",
+    "uzbekistan": "uz", "venezuela": "ve", "vietnam": "vn", "wales": "gb-wls", "zambia": "zm",
+    "zimbabwe": "zw",
 }
 
 
 def _flag_img(team, w=26):
-    iso = NAME_TO_ISO2.get(team)
+    iso = NAME_TO_ISO2.get((team or "").strip().lower())
     if not iso:
         return ""
     src = "w80" if w > 40 else "w40"
@@ -666,7 +680,10 @@ def section_players():
 
 def section_stats():
     st.caption("Pick a country to see its stats.")
-    items = sorted(team_names.items(), key=lambda kv: kv[1])
+    real = build_team_name_map(finished)
+    items = sorted(((tid, name) for tid, name in real.items()
+                    if NAME_TO_ISO2.get((name or "").strip().lower())),
+                   key=lambda kv: kv[1])
     if not items:
         st.write("No teams loaded yet.")
         return
