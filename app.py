@@ -668,25 +668,14 @@ def section_standings():
                     unsafe_allow_html=True)
         return
 
-    confirmed = {}
     cards = ""
     for g in sorted(groups):
         df = groups[g]
-        status = _qualification(df)
         rows_html = ""
         for i, r in enumerate(df.to_dict("records")):
-            cls = "q" if i < 2 else ("t3" if i == 2 else "")
-            st_ = status.get(r["Team"], "in")
-            tag = ""
-            if st_ == "won":
-                tag = '<span class="gs-tag">WON GROUP</span>'
-            elif st_ == "qualified":
-                tag = '<span class="gs-tag">QUALIFIED</span>'
-            if st_ in ("won", "qualified"):
-                confirmed[r["Team"]] = True
             rows_html += (
-                f'<tr class="{cls}"><td class="l gs-pos">{i + 1}</td>'
-                f'<td class="l gs-team">{_flag_img(r["Team"], 22)}{r["Team"]}{tag}</td>'
+                f'<tr><td class="l gs-pos">{i + 1}</td>'
+                f'<td class="l gs-team">{_flag_img(r["Team"], 22)}{r["Team"]}</td>'
                 f'<td>{r["P"]}</td><td>{r["W"]}</td><td>{r["D"]}</td><td>{r["L"]}</td>'
                 f'<td>{r["GD"]}</td><td class="gs-pts">{r["Pts"]}</td></tr>')
         cards += (f'<div class="gs-card"><div class="gs-gtitle">Group {g}</div>'
@@ -697,8 +686,7 @@ def section_standings():
     st.markdown(f'<div class="gs-grid">{cards}</div>', unsafe_allow_html=True)
 
     st.markdown(_heading("Knockout picture", small=True), unsafe_allow_html=True)
-    st.markdown('<div class="gs-legend">Round of 32, projected from current standings. '
-                '<span class="ko-check">✓</span> = qualification confirmed; faded = still provisional.</div>',
+    st.markdown('<div class="gs-legend">Round of 32, projected from current standings.</div>',
                 unsafe_allow_html=True)
     q = qualified_from_groups(groups)
     teams = sorted(q, key=lambda t: t["key"], reverse=True)
@@ -712,11 +700,8 @@ def section_standings():
     field = [seeds[s] for s in _seed_order(size)]
 
     def chip(t):
-        ok = confirmed.get(t["name"])
-        prov = "" if ok else " ko-prov"
-        chk = ' <span class="ko-check">✓</span>' if ok else ""
-        return (f'<span class="ko-team{prov}">{_flag_img(t["name"], 22)}{t["name"]} '
-                f'<span style="opacity:0.6;">({t["group"]}{t["pos"]})</span>{chk}</span>')
+        return (f'<span class="ko-team">{_flag_img(t["name"], 22)}{t["name"]} '
+                f'<span style="opacity:0.6;">({t["group"]}{t["pos"]})</span></span>')
 
     ties = ""
     for i in range(0, len(field), 2):
