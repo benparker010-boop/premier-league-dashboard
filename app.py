@@ -608,14 +608,121 @@ def _pitch_background_css():
 
 
 # ----------------------------- Section pages -----------------------------
+STANDINGS_CSS = """
+<style>
+.gs-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:16px; }
+.gs-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px 14px; }
+.gs-gtitle { font-size:14px; font-weight:600; color:#fff; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px; }
+.gs-table { width:100%; border-collapse:collapse; }
+.gs-table th { font-size:10px; text-transform:uppercase; letter-spacing:0.04em; color:rgba(255,255,255,0.5); text-align:right; padding:4px 5px; font-weight:600; }
+.gs-table th.l, .gs-table td.l { text-align:left; }
+.gs-table td { font-size:13px; color:#fff; padding:7px 5px; text-align:right; border-top:1px solid rgba(255,255,255,0.06); }
+.gs-table tr.q td:first-child { box-shadow:inset 3px 0 0 #37b86b; }
+.gs-table tr.t3 td:first-child { box-shadow:inset 3px 0 0 #e8b84b; }
+.gs-pos { color:rgba(255,255,255,0.55); }
+.gs-team img { width:22px; border-radius:2px; vertical-align:middle; margin-right:7px; }
+.gs-pts { font-weight:700; }
+.gs-tag { font-size:9px; background:rgba(55,184,107,0.22); color:#7fe0b0; padding:2px 6px; border-radius:5px; margin-left:7px; vertical-align:middle; letter-spacing:0.04em; }
+.ko-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+.ko-tie { display:flex; align-items:center; justify-content:space-between; gap:8px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:9px 14px; }
+.ko-team { display:flex; align-items:center; gap:7px; font-size:13px; color:#fff; }
+.ko-team img { width:22px; border-radius:2px; }
+.ko-prov { opacity:0.5; font-style:italic; }
+.ko-vs { font-size:11px; color:rgba(255,255,255,0.4); }
+.ko-check { color:#37b86b; font-weight:700; }
+.gs-legend { font-size:12px; color:rgba(255,255,255,0.6); margin:6px 0 18px; }
+</style>
+"""
+
+
+def _glow_background_css():
+    return ("<style>.stApp{background:radial-gradient(circle at 22% 12%, #1a2c46 0%, #0a0f18 62%) !important;}"
+            ".backlink{color:rgba(255,255,255,0.78) !important;}"
+            ".backlink:hover{color:#ffffff !important;}</style>")
+
+
+def _qualification(df):
+    """Clinch status per team from current points: 'won' (1st locked), 'qualified' (top 2 locked), else 'in'."""
+    rows = df.to_dict("records")
+    out = {}
+    for x in rows:
+        above = sum(1 for y in rows if y["Team"] != x["Team"]
+                    and (y["Pts"] + 3 * (3 - y["P"])) >= x["Pts"])
+        out[x["Team"]] = "won" if above == 0 else ("qualified" if above <= 1 else "in")
+    return out
+
+
+def _heading(big, small=None):
+    sub = (f'<div style="width:54px;height:3px;background:#e8b84b;border-radius:2px;margin-top:10px;"></div>')
+    return (f'<div style="margin:8px 0 4px;"><div style="font-size:{38 if small is None else 26}px;'
+            f'font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase;line-height:1;">'
+            f'{big}</div>{sub}</div>')
+
+
 def section_standings():
-    st.caption("Live tables built from every finished match.")
-    for i in range(0, len(gnames), 2):
-        cols = st.columns(2)
-        for col, g in zip(cols, gnames[i:i + 2]):
-            with col:
-                st.markdown(f"**Group {g}**")
-                st.dataframe(groups[g], hide_index=True)
+    st.markdown(_glow_background_css(), unsafe_allow_html=True)
+    st.markdown(STANDINGS_CSS, unsafe_allow_html=True)
+    st.markdown(_heading("Group standings"), unsafe_allow_html=True)
+    if not groups:
+        st.markdown('<div style="color:rgba(255,255,255,0.7);margin-top:12px;">No group results yet.</div>',
+                    unsafe_allow_html=True)
+        return
+
+    confirmed = {}
+    cards = ""
+    for g in sorted(groups):
+        df = groups[g]
+        status = _qualification(df)
+        rows_html = ""
+        for i, r in enumerate(df.to_dict("records")):
+            cls = "q" if i < 2 else ("t3" if i == 2 else "")
+            st_ = status.get(r["Team"], "in")
+            tag = ""
+            if st_ == "won":
+                tag = '<span class="gs-tag">WON GROUP</span>'
+            elif st_ == "qualified":
+                tag = '<span class="gs-tag">QUALIFIED</span>'
+            if st_ in ("won", "qualified"):
+                confirmed[r["Team"]] = True
+            rows_html += (
+                f'<tr class="{cls}"><td class="l gs-pos">{i + 1}</td>'
+                f'<td class="l gs-team">{_flag_img(r["Team"], 22)}{r["Team"]}{tag}</td>'
+                f'<td>{r["P"]}</td><td>{r["W"]}</td><td>{r["D"]}</td><td>{r["L"]}</td>'
+                f'<td>{r["GD"]}</td><td class="gs-pts">{r["Pts"]}</td></tr>')
+        cards += (f'<div class="gs-card"><div class="gs-gtitle">Group {g}</div>'
+                  '<table class="gs-table"><thead><tr>'
+                  '<th class="l">#</th><th class="l">Team</th><th>P</th><th>W</th><th>D</th>'
+                  '<th>L</th><th>GD</th><th>Pts</th></tr></thead>'
+                  f'<tbody>{rows_html}</tbody></table></div>')
+    st.markdown(f'<div class="gs-grid">{cards}</div>', unsafe_allow_html=True)
+
+    st.markdown(_heading("Knockout picture", small=True), unsafe_allow_html=True)
+    st.markdown('<div class="gs-legend">Round of 32, projected from current standings. '
+                '<span class="ko-check">✓</span> = qualification confirmed; faded = still provisional.</div>',
+                unsafe_allow_html=True)
+    q = qualified_from_groups(groups)
+    teams = sorted(q, key=lambda t: t["key"], reverse=True)
+    size = _largest_pow2(len(teams))
+    if size < 2:
+        st.markdown('<div style="color:rgba(255,255,255,0.7);">Not enough results yet to project the bracket.</div>',
+                    unsafe_allow_html=True)
+        return
+    teams = teams[:size]
+    seeds = {i + 1: t for i, t in enumerate(teams)}
+    field = [seeds[s] for s in _seed_order(size)]
+
+    def chip(t):
+        ok = confirmed.get(t["name"])
+        prov = "" if ok else " ko-prov"
+        chk = ' <span class="ko-check">✓</span>' if ok else ""
+        return (f'<span class="ko-team{prov}">{_flag_img(t["name"], 22)}{t["name"]} '
+                f'<span style="opacity:0.6;">({t["group"]}{t["pos"]})</span>{chk}</span>')
+
+    ties = ""
+    for i in range(0, len(field), 2):
+        a, b = field[i], field[i + 1]
+        ties += f'<div class="ko-tie">{chip(a)}<span class="ko-vs">vs</span>{chip(b)}</div>'
+    st.markdown(f'<div class="ko-grid">{ties}</div>', unsafe_allow_html=True)
 
 
 def section_scorers():
@@ -1047,7 +1154,7 @@ elif view in SECTIONS:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
     else:
         title, render_fn = SECTIONS[view]
-        if view != "stats":
+        if view not in ("stats", "standings"):
             render_banner(title, view)
         render_fn()
 else:
