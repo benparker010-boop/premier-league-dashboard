@@ -4,3 +4,7 @@
 # Python junk
 __pycache__/
 *.pyc
+
+# Large PNG image originals — we commit the compressed .jpg versions instead
+images/*.png
+images/banners/*.png
