@@ -4,11 +4,10 @@ import requests
 import anthropic
 import time
 import os
+import base64
 
-st.set_page_config(page_title="Football Data Dashboard", layout="wide")
-st.title("⚽ Football Data Dashboard")
+st.set_page_config(page_title="World Cup 2026 Analytics", layout="wide")
 
-PL_URL = "https://api.football-data.org/v4/competitions/PL/standings"
 STATS_BASE = "https://api.thestatsapi.com/api"
 WC_COMP = "comp_6107"
 WC_SEASON = "sn_118868"
@@ -20,21 +19,12 @@ PREDICT_MODEL = "claude-sonnet-4-6"
 SCORERS_CSV = "top_scorers.csv"
 ASSISTS_CSV = "top_assists.csv"
 
-
-# ===================== Premier League (football-data.org) =====================
-@st.cache_data(ttl=600)
-def load_pl_table():
-    headers = {"X-Auth-Token": st.secrets["FOOTBALL_API_KEY"]}
-    r = requests.get(PL_URL, headers=headers, timeout=10)
-    r.raise_for_status()
-    total = next(s for s in r.json()["standings"] if s["type"] == "TOTAL")
-    return pd.DataFrame([{
-        "Team": e["team"]["name"], "Played": e["playedGames"], "Won": e["won"],
-        "Drawn": e["draw"], "Lost": e["lost"], "GF": e["goalsFor"],
-        "GA": e["goalsAgainst"], "Pts": e["points"]} for e in total["table"]])
+# Hero accent colour for the title numbers / scroll cue. Change to suit the
+# background photo: gold "#e8b84b", green "#37b86b", or white "#ffffff".
+ACCENT = "#e8b84b"
 
 
-# ===================== World Cup (TheStatsAPI) =====================
+# ===================== Data layer (TheStatsAPI) =====================
 def stats_headers():
     return {"Authorization": f"Bearer {st.secrets['STATS_API_KEY']}"}
 
@@ -75,13 +65,6 @@ def wc_match_stats(match_id):
     return r.json().get("data", {})
 
 
-@st.cache_data(ttl=600)
-def wc_timeline(match_id):
-    r = stats_get(f"/football/matches/{match_id}/timeline")
-    r.raise_for_status()
-    return r.json().get("data", {}).get("events", [])
-
-
 @st.cache_data(ttl=3600)
 def search_player(name):
     r = stats_get("/football/players", {"search": name})
@@ -93,18 +76,18 @@ def search_player(name):
 def player_wc_stats(player_id):
     r = stats_get(f"/football/players/{player_id}/stats", {"season_id": WC_SEASON})
     if r.status_code == 404:
-        return None                      # player has no World Cup stats
+        return None
     r.raise_for_status()
     return r.json().get("data", {})
 
 
-def find_wc_player(name):
-    """Return the first search result that actually has World Cup stats."""
-    for p in search_player(name)[:3]:
-        s = player_wc_stats(p["id"])
-        if s:
-            return p, s
-    return None, None
+@st.cache_data(ttl=1800)
+def match_player_stats(match_id):
+    """Per-player stat sheet for one match — includes goals and assists."""
+    r = stats_get(f"/football/matches/{match_id}/player-stats")
+    r.raise_for_status()
+    data = r.json().get("data", [])
+    return data if isinstance(data, list) else []
 
 
 def build_team_name_map(*match_lists):
@@ -148,9 +131,6 @@ def build_group_standings(matches):
 
 
 # ============== Deterministic tournament simulator (no AI) ==============
-# Each team's strength is a plain tuple read off the current group table:
-# (Points, Goal difference, Goals for). The team with the higher tuple wins;
-# ties break on alphabetical name so the result is always the same.
 ROUND_NAMES = {32: "Round of 32", 16: "Round of 16", 8: "Quarter-finals",
                4: "Semi-finals", 2: "Final"}
 
@@ -160,7 +140,6 @@ def _strength(row):
 
 
 def group_predictions(groups):
-    """One row per group: predicted winner and runner-up from current standings."""
     rows = []
     for g in sorted(groups):
         df = groups[g]
@@ -175,7 +154,6 @@ def group_predictions(groups):
 
 
 def qualified_from_groups(groups):
-    """Top 2 of every group + the 8 best third-placed teams = up to 32 teams."""
     winners, runners, thirds = [], [], []
     for g in sorted(groups):
         df = groups[g]
@@ -197,7 +175,6 @@ def _largest_pow2(n):
 
 
 def _seed_order(n):
-    """Standard knockout seeding so the strongest sides only meet late."""
     order = [1, 2]
     while len(order) < n:
         m = len(order) * 2
@@ -213,34 +190,10 @@ def _play(a, b):
         return a
     if b["key"] > a["key"]:
         return b
-    return a if a["name"] < b["name"] else b   # deterministic tie-break
-
-
-def render_bracket(rounds, champion):
-    """Draw the rounds left-to-right as a visual bracket of match cards."""
-    cols = st.columns(len(rounds) + 1)
-    for col, (rname, rdf) in zip(cols, rounds):
-        with col:
-            st.markdown(f"**{rname}**")
-            for _, mt in rdf.iterrows():
-                a, b, w = mt["Home"], mt["Away"], mt["Advances"]
-                a_disp = f"<b>{a} ✅</b>" if a.split(" (")[0] == w else a
-                b_disp = f"<b>{b} ✅</b>" if b.split(" (")[0] == w else b
-                st.markdown(
-                    "<div style='border:1px solid #555;border-radius:6px;padding:6px 8px;"
-                    "margin-bottom:8px;font-size:0.8rem;line-height:1.4'>"
-                    f"{a_disp}<br>{b_disp}</div>", unsafe_allow_html=True)
-    with cols[-1]:
-        st.markdown("**Champion**")
-        st.markdown(
-            "<div style='border:2px solid gold;border-radius:8px;padding:12px 10px;"
-            "text-align:center;font-weight:bold;font-size:0.95rem'>"
-            f"🏆<br>{champion}</div>", unsafe_allow_html=True)
+    return a if a["name"] < b["name"] else b
 
 
 def simulate_bracket(qualified):
-    """Seed the qualified teams by strength and play out every round.
-    Returns (rounds, champion) where rounds = list of (name, [match dicts])."""
     teams = sorted(qualified, key=lambda t: t["key"], reverse=True)
     size = _largest_pow2(len(teams))
     if size < 2:
@@ -264,33 +217,52 @@ def simulate_bracket(qualified):
     return rounds, field[0]["name"]
 
 
+def render_bracket(rounds, champion):
+    cols = st.columns(len(rounds) + 1)
+    for col, (rname, rdf) in zip(cols, rounds):
+        with col:
+            st.markdown(f"**{rname}**")
+            for _, mt in rdf.iterrows():
+                a, b, w = mt["Home"], mt["Away"], mt["Advances"]
+                a_disp = f"<b>{a} ✅</b>" if a.split(" (")[0] == w else a
+                b_disp = f"<b>{b} ✅</b>" if b.split(" (")[0] == w else b
+                st.markdown(
+                    "<div style='border:1px solid #555;border-radius:6px;padding:6px 8px;"
+                    "margin-bottom:8px;font-size:0.8rem;line-height:1.4'>"
+                    f"{a_disp}<br>{b_disp}</div>", unsafe_allow_html=True)
+    with cols[-1]:
+        st.markdown("**Champion**")
+        st.markdown(
+            "<div style='border:2px solid gold;border-radius:8px;padding:12px 10px;"
+            "text-align:center;font-weight:bold;font-size:0.95rem'>"
+            f"🏆<br>{champion}</div>", unsafe_allow_html=True)
+
+
 # ----------------- Top scorers & assists (snapshot + live) -----------------
 def build_scorers_assists(match_ids):
-    """Tally real goals and assists from each finished match's event timeline."""
     goals, assists = {}, {}
     done = failed = 0
+    names = st.session_state.get("_team_names", {})
     for mid in match_ids:
         try:
-            events = wc_timeline(mid)
+            players = match_player_stats(mid)
         except Exception:
             failed += 1
             continue
         done += 1
-        for ev in events:
-            if ev.get("type") != "goal":
+        for p in players:
+            name = p.get("player_name")
+            if not name:
                 continue
-            scorer = ev.get("player") or {}
-            team = (ev.get("team") or {}).get("name", "")
-            if scorer.get("name"):
-                g = goals.setdefault(scorer["name"],
-                                     {"Player": scorer["name"], "Team": team, "Goals": 0})
-                g["Goals"] += 1
-            a = (ev.get("assist") or ev.get("assist_player") or
-                 ev.get("assisted_by") or ev.get("secondary_player"))
-            if isinstance(a, dict) and a.get("name"):
-                ad = assists.setdefault(a["name"],
-                                        {"Player": a["name"], "Team": team, "Assists": 0})
-                ad["Assists"] += 1
+            team = names.get(p.get("team_id"), "")
+            g = (p.get("shooting") or {}).get("goals", 0) or 0
+            a = (p.get("passing") or {}).get("assists", 0) or 0
+            if g:
+                row = goals.setdefault(name, {"Player": name, "Team": team, "Goals": 0})
+                row["Goals"] += g
+            if a:
+                row = assists.setdefault(name, {"Player": name, "Team": team, "Assists": 0})
+                row["Assists"] += a
     gdf = pd.DataFrame(list(goals.values()))
     adf = pd.DataFrame(list(assists.values()))
     if not gdf.empty:
@@ -301,7 +273,6 @@ def build_scorers_assists(match_ids):
 
 
 def load_scorer_snapshot():
-    """Read the pre-built top-10 tables committed to the repo (instant)."""
     g = a = None
     stamp = None
     try:
@@ -316,7 +287,7 @@ def load_scorer_snapshot():
     return g, a, stamp
 
 
-# ===================== Other helpers (unchanged) =====================
+# ===================== Match / team / player helpers =====================
 def stat_val(overview, key, side):
     try:
         return overview[key]["all"][side]
@@ -396,205 +367,256 @@ def ask_ai(prompt, model=AI_MODEL, temperature=1.0):
     return msg.content[0].text
 
 
-# ----------------------------------------------------------------------
-tab_pl, tab_wc = st.tabs(["🏴 Premier League", "🌍 World Cup 2026"])
+# ===================== Landing page (hero + launcher) =====================
+def _hero_background():
+    """Return a CSS 'background' value: the photo if present, else solid dark."""
+    for ext, mime in (("jpg", "jpeg"), ("jpeg", "jpeg"), ("png", "png"), ("webp", "webp")):
+        path = os.path.join("images", f"hero.{ext}")
+        if os.path.exists(path):
+            with open(path, "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+            return (f"linear-gradient(rgba(6,16,28,0.55), rgba(6,16,28,0.80)), "
+                    f"url('data:image/{mime};base64,{b64}')")
+    return "#0c1b2e"
 
-# ============================ PREMIER LEAGUE ===========================
-with tab_pl:
-    st.header("Premier League")
-    source = "live"
-    try:
-        df = load_pl_table()
-        if df.empty:
-            raise ValueError("empty")
-    except Exception:
-        source = "sample"
-        df = pd.read_csv("sample_league_data.csv")
-    df["GD"] = df["GF"] - df["GA"]
-    st.caption("🟢 Live data from football-data.org" if source == "live"
-               else "🟡 Showing sample data (live source unavailable right now)")
-    st.sidebar.header("Premier League controls")
-    n = st.sidebar.slider("How many teams to show?", 1, 20, 10)
-    metric = st.sidebar.selectbox("Chart this stat:", ["Pts", "GD", "GF"])
-    top = df.head(n)
-    c1, c2 = st.columns(2)
-    c1.metric("Top of the table", df.iloc[0]["Team"], f"{int(df.iloc[0]['Pts'])} pts")
-    c2.metric("Goals scored (shown teams)", int(top["GF"].sum()))
-    st.subheader(f"Top {n} teams")
-    st.dataframe(top, hide_index=True)
-    st.subheader(f"{metric} by team")
-    st.bar_chart(data=top, x="Team", y=metric)
-    st.subheader("🤖 AI Analyst Summary")
-    if "pl_summary" not in st.session_state:
-        st.session_state.pl_summary = ""
-    if st.button("Generate AI Summary", key="pl_ai"):
-        try:
-            with st.spinner("Asking the AI analyst..."):
-                st.session_state.pl_summary = ask_ai(
-                    "You are a Premier League analyst. Current table:\n\n"
-                    f"{df.to_string(index=False)}\n\nWrite a punchy 3-4 sentence summary. "
-                    "Plain English, no bullet points.")
-        except Exception as e:
-            st.session_state.pl_summary = f"Sorry — couldn't generate a summary. ({e})"
-    if st.session_state.pl_summary:
-        st.info(st.session_state.pl_summary)
 
-# ============================== WORLD CUP ==============================
-with tab_wc:
-    st.header("🌍 World Cup 2026")
-    st.caption("🟢 Live detailed data from TheStatsAPI")
+LANDING_CSS = """
+.block-container { padding-top: 1.2rem; }
+#MainMenu, footer { visibility: hidden; }
+.hero {
+  background: __BG__;
+  background-size: cover; background-position: center;
+  border-radius: 16px; min-height: 78vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 44px 20px; gap: 14px;
+}
+.hero-kicker { font-size: 13px; letter-spacing: 0.14em; color: rgba(255,255,255,0.65); }
+.hero-title { font-size: 48px; font-weight: 700; color: #ffffff; line-height: 1.08; margin: 0; }
+.hero-sub { font-size: 17px; color: rgba(255,255,255,0.82); max-width: 560px; margin: 0; }
+.hero-stats { display: flex; gap: 44px; margin-top: 12px; }
+.hero-stats .num { font-size: 34px; font-weight: 700; color: __ACCENT__; line-height: 1; }
+.hero-stats .lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 4px; }
+.hero-cue { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.7); }
+.hero-cue .chev { display: block; font-size: 24px; animation: bob 1.6s infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+.launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 40px 0 4px; }
+.launch-sub { text-align: center; color: #6b7280; font-size: 14px; margin: 0 0 22px; }
+.launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+.launch-card { display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 28px 14px; border: 1px solid rgba(0,0,0,0.10); border-radius: 14px;
+  text-decoration: none; color: inherit; background: #ffffff; transition: transform .15s, border-color .15s; }
+.launch-card:hover { transform: translateY(-3px); border-color: rgba(0,0,0,0.28); }
+.launch-card .ic { font-size: 30px; line-height: 1; }
+.launch-card .nm { font-size: 15px; font-weight: 600; color: #111827; }
+.launch-card .ds { font-size: 12px; color: #6b7280; text-align: center; }
+@media (max-width: 700px) { .launch-grid { grid-template-columns: 1fr; } .hero-title { font-size: 34px; } }
+"""
+
+LANDING_HTML = """
+<div class="hero">
+  <div class="hero-kicker">CANADA · MEXICO · USA</div>
+  <h1 class="hero-title">World Cup 2026 Analytics</h1>
+  <p class="hero-sub">Live tournament data, top scorers, team stats and a full knockout simulator — built in Python.</p>
+  <div class="hero-stats">
+    <div><div class="num">__MATCHES__</div><div class="lbl">matches</div></div>
+    <div><div class="num">__GOALS__</div><div class="lbl">goals</div></div>
+    <div><div class="num">__GROUPS__</div><div class="lbl">groups</div></div>
+  </div>
+  <div class="hero-cue">scroll to explore<span class="chev">⌄</span></div>
+</div>
+<div class="launch-title">Jump into the data</div>
+<div class="launch-sub">Pick a section below to explore</div>
+<div class="launch-grid">
+  <a class="launch-card" href="#standings"><span class="ic">📊</span><span class="nm">Group standings</span><span class="ds">Live tables for every group</span></a>
+  <a class="launch-card" href="#scorers"><span class="ic">⚽</span><span class="nm">Top scorers &amp; assists</span><span class="ds">Tournament top tens</span></a>
+  <a class="launch-card" href="#bracket"><span class="ic">🏆</span><span class="nm">Knockout bracket</span><span class="ds">Full simulated bracket</span></a>
+  <a class="launch-card" href="#players"><span class="ic">🔍</span><span class="nm">Player search</span><span class="ds">Profiles &amp; stats</span></a>
+  <a class="launch-card" href="#stats"><span class="ic">📈</span><span class="nm">Team stats</span><span class="ds">Per-game performance</span></a>
+  <a class="launch-card" href="#ai"><span class="ic">🤖</span><span class="nm">AI analysis</span><span class="ds">Auto tournament summary</span></a>
+</div>
+"""
+
+
+def render_landing(n_matches, n_goals, n_groups):
+    css = LANDING_CSS.replace("__BG__", _hero_background()).replace("__ACCENT__", ACCENT)
+    html = (LANDING_HTML.replace("__MATCHES__", str(n_matches))
+            .replace("__GOALS__", str(n_goals))
+            .replace("__GROUPS__", str(n_groups)))
+    st.markdown(f"<style>{css}</style>{html}", unsafe_allow_html=True)
+
+
+# ============================== APP BODY ==============================
+try:
+    finished = wc_matches("finished")
+    upcoming = wc_matches("scheduled")
+    wc_ok = True
+except Exception as e:
+    finished, upcoming, wc_ok = [], [], False
+    wc_err = e
+
+groups = build_group_standings(finished) if wc_ok else {}
+team_names = build_team_name_map(finished, upcoming) if wc_ok else {}
+st.session_state["_team_names"] = team_names
+n_goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in finished)
+
+render_landing(len(finished), n_goals, len(groups))
+
+if not wc_ok:
+    st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+    st.stop()
+
+gnames = sorted(groups.keys())
+
+# ----------------------------- Group standings -----------------------------
+st.divider()
+st.header("Group standings", anchor="standings")
+st.caption("Live tables built from every finished match.")
+for i in range(0, len(gnames), 2):
+    cols = st.columns(2)
+    for col, g in zip(cols, gnames[i:i + 2]):
+        with col:
+            st.markdown(f"**Group {g}**")
+            st.dataframe(groups[g], hide_index=True)
+
+# ----------------------------- Top scorers & assists -----------------------------
+st.divider()
+st.header("Top 10 scorers & assists", anchor="scorers")
+gsnap, asnap, stamp = load_scorer_snapshot()
+gdf = st.session_state.get("scorers_live", gsnap)
+adf = st.session_state.get("assisters_live", asnap)
+if "scorers_live" in st.session_state:
+    st.caption("🟢 Refreshed live from match data just now.")
+elif stamp:
+    st.caption(f"📁 Snapshot built {stamp}. Press refresh for the very latest.")
+else:
+    st.caption("No snapshot found yet — press refresh to build it from live match data.")
+gcol, acol = st.columns(2)
+with gcol:
+    st.markdown("**Top scorers**")
+    if gdf is None or gdf.empty:
+        st.write("No goal data available.")
+    else:
+        st.dataframe(gdf, hide_index=True)
+with acol:
+    st.markdown("**Top assists**")
+    if adf is None or adf.empty:
+        st.write("No assist data available.")
+    else:
+        st.dataframe(adf, hide_index=True)
+if st.button("🔄 Refresh from live results"):
+    with st.spinner("Reading every finished match..."):
+        lg, la, done, failed = build_scorers_assists([m["id"] for m in finished])
+        st.session_state.scorers_live = lg
+        st.session_state.assisters_live = la
+    if failed:
+        st.warning(f"Built from {done} matches; {failed} hit the rate limit — try again in a minute.")
+    st.rerun()
+
+# ----------------------------- Knockout stage -----------------------------
+st.divider()
+st.header("Knockout stage", anchor="bracket")
+st.subheader("Group winner predictions")
+st.caption("From the current standings — winner and runner-up of each group.")
+if groups:
+    st.dataframe(group_predictions(groups), hide_index=True)
+else:
+    st.write("No group results yet.")
+
+st.subheader("Simulated knockout bracket")
+st.caption("Deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best third-placed "
+           "teams) are seeded by points, goal difference and goals scored, then every tie is decided "
+           "by the stronger record. No AI, no randomness.")
+qualified = qualified_from_groups(groups)
+rounds, champion = simulate_bracket(qualified)
+if not rounds:
+    st.info("Not enough completed group games yet to build the bracket. It will appear automatically "
+            "once more results are in.")
+else:
+    st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
+    render_bracket(rounds, champion)
+    st.success(f"🏆 Simulated champion: **{champion}**")
+    st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
+
+# ----------------------------- Player search -----------------------------
+st.divider()
+st.header("Player search", anchor="players")
+q = st.text_input("Type a player's name and press Search")
+if st.button("Search player"):
     try:
-        finished = wc_matches("finished")
-        upcoming = wc_matches("scheduled")
-        wc_ok = True
+        st.session_state.player_results = search_player(q) if q.strip() else []
     except Exception as e:
-        wc_ok = False
-        st.warning(f"Couldn't load World Cup data right now: {e}")
-
-    if wc_ok:
-        team_names = build_team_name_map(finished, upcoming)
-        groups = build_group_standings(finished)
-        goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in finished)
-        m1, m2, m3 = st.columns(3)
-        m1.metric("Groups", len(groups)); m2.metric("Matches played", len(finished))
-        m3.metric("Goals scored", goals)
-
-        st.subheader("Group standings (built from results)")
-        gnames = sorted(groups.keys())
-        for i in range(0, len(gnames), 2):
-            cols = st.columns(2)
-            for col, g in zip(cols, gnames[i:i + 2]):
-                with col:
-                    st.markdown(f"**Group {g}**")
-                    st.dataframe(groups[g], hide_index=True)
-
-        # ---------------- Top scorers & assists (always shown) ----------------
-        st.divider()
-        st.subheader("🥇 Top 10 scorers & assists")
-        gsnap, asnap, stamp = load_scorer_snapshot()
-        gdf = st.session_state.get("scorers_live", gsnap)
-        adf = st.session_state.get("assisters_live", asnap)
-        if "scorers_live" in st.session_state:
-            st.caption("🟢 Refreshed live from match events just now.")
-        elif stamp:
-            st.caption(f"📁 Snapshot from committed data (built {stamp}). "
-                       "Press refresh to pull the very latest from live match events.")
+        st.session_state.player_results = []
+        if "rate limit" in str(e).lower() or "429" in str(e):
+            st.warning("⏳ Hit TheStatsAPI's per-minute limit — wait ~60 seconds and try again.")
         else:
-            st.caption("No snapshot found yet — press refresh to build it from live match events.")
-        gcol, acol = st.columns(2)
-        with gcol:
-            st.markdown("**Top scorers**")
-            if gdf is None or gdf.empty:
-                st.write("No goal data available.")
-            else:
-                st.dataframe(gdf, hide_index=True)
-        with acol:
-            st.markdown("**Top assists**")
-            if adf is None or adf.empty:
-                st.write("No assist data available.")
-            else:
-                st.dataframe(adf, hide_index=True)
-        if st.button("🔄 Refresh from live results"):
-            with st.spinner("Reading every finished match's goals..."):
-                lg, la, done, failed = build_scorers_assists([m["id"] for m in finished])
-                st.session_state.scorers_live = lg
-                st.session_state.assisters_live = la
-            if failed:
-                st.warning(f"Built from {done} matches; {failed} hit the rate limit — try again in a minute.")
-            st.rerun()
-
-        # ---------------- Group winner predictions (no AI) ----------------
-        st.divider()
-        st.subheader("🔮 Group winner predictions")
-        st.caption("Based purely on the current standings — winner and runner-up of each group.")
-        if groups:
-            st.dataframe(group_predictions(groups), hide_index=True)
+            st.warning(f"Search failed: {e}")
+results = st.session_state.get("player_results", [])
+if results:
+    opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
+            for p in results}
+    pick = st.selectbox("Pick the player:", list(opts.keys()))
+    p = opts[pick]
+    try:
+        s = player_wc_stats(p["id"])
+        if s:
+            render_profile(p, s, team_names)
         else:
-            st.write("No group results yet.")
+            st.info(f"{p['name']} has no recorded stats in the 2026 World Cup.")
+    except Exception as e:
+        st.warning(f"Couldn't load stats: {e}")
 
-        # ---------------- Full knockout bracket simulation (no AI) ----------------
-        st.divider()
-        st.subheader("🏆 Simulated knockout bracket")
-        st.caption("A deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best "
-                   "third-placed teams) are seeded by points, goal difference and goals scored, "
-                   "then every tie is decided by the stronger record. No AI, no randomness.")
-        qualified = qualified_from_groups(groups)
-        rounds, champion = simulate_bracket(qualified)
-        if not rounds:
-            st.info("Not enough completed group games yet to build a 16/32-team bracket. "
-                    "The bracket will appear automatically once more results are in.")
+# ----------------------------- Team stats + match explorer -----------------------------
+st.divider()
+st.header("Team stats", anchor="stats")
+if "wc_team_stats" not in st.session_state:
+    st.session_state.wc_team_stats = None
+if st.button("Build team stats from every finished match"):
+    with st.spinner("Aggregating every match's stat sheet..."):
+        ts, done, failed = build_team_stats(finished)
+        st.session_state.wc_team_stats = ts
+        st.session_state.wc_team_msg = f"Built from {done} matches." + (
+            f" {failed} hit the rate limit — click again in a minute." if failed else "")
+if st.session_state.wc_team_stats is not None:
+    st.caption(st.session_state.get("wc_team_msg", ""))
+    st.dataframe(st.session_state.wc_team_stats, hide_index=True)
+
+st.subheader("Match stats explorer")
+labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
+          f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
+if labels:
+    choice = st.selectbox("Pick a finished match:", list(labels.keys()))
+    m = labels[choice]
+    try:
+        ov = wc_match_stats(m["id"]).get("overview", {})
+        if ov:
+            st.dataframe(overview_to_df(ov, m["home_team"]["name"],
+                                        m["away_team"]["name"]), hide_index=True)
         else:
-            st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
-            render_bracket(rounds, champion)
-            st.success(f"🏆 Simulated champion: **{champion}**")
-            st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
+            st.write("No detailed stats for this match yet.")
+    except Exception as e:
+        st.warning(f"Couldn't load that match's stats: {e}")
 
-        st.divider()
-        st.subheader("🔍 Match stats explorer")
-        labels = {f"{m['home_team']['name']} {m['score']['home']}-{m['score']['away']} "
-                  f"{m['away_team']['name']} ({m['utc_date'][:10]})": m for m in finished}
-        if labels:
-            choice = st.selectbox("Pick a finished match:", list(labels.keys()))
-            m = labels[choice]
-            try:
-                ov = wc_match_stats(m["id"]).get("overview", {})
-                if ov:
-                    st.dataframe(overview_to_df(ov, m["home_team"]["name"],
-                                                m["away_team"]["name"]), hide_index=True)
-                else:
-                    st.write("No detailed stats for this match yet.")
-            except Exception as e:
-                st.warning(f"Couldn't load that match's stats: {e}")
-
-        st.divider()
-        st.subheader("📊 Team stats (per game)")
-        if "wc_team_stats" not in st.session_state:
-            st.session_state.wc_team_stats = None
-        if st.button("Build team stats from every finished match"):
-            with st.spinner("Aggregating every match's stat sheet..."):
-                ts, done, failed = build_team_stats(finished)
-                st.session_state.wc_team_stats = ts
-                st.session_state.wc_team_msg = f"Built from {done} matches." + (
-                    f" {failed} hit the rate limit — click again in a minute." if failed else "")
-        if st.session_state.wc_team_stats is not None:
-            st.caption(st.session_state.get("wc_team_msg", ""))
-            st.dataframe(st.session_state.wc_team_stats, hide_index=True)
-
-        # ---------------- Player search & profile ----------------
-        st.divider()
-        st.subheader("👤 Player search & profile")
-        q = st.text_input("Type a player's name and press Search")
-        if st.button("Search player"):
-            try:
-                st.session_state.player_results = search_player(q) if q.strip() else []
-            except Exception as e:
-                st.session_state.player_results = []
-                if "rate limit" in str(e).lower() or "429" in str(e):
-                    st.warning("⏳ Hit TheStatsAPI's per-minute limit — wait ~60 seconds and try again.")
-                else:
-                    st.warning(f"Search failed: {e}")
-        results = st.session_state.get("player_results", [])
-        if results:
-            opts = {f"{p['name']} — {p.get('nationality', '?')} ({p.get('position', '?')})": p
-                    for p in results}
-            pick = st.selectbox("Pick the player:", list(opts.keys()))
-            p = opts[pick]
-            try:
-                s = player_wc_stats(p["id"])
-                if s:
-                    render_profile(p, s, team_names)
-                else:
-                    st.info(f"{p['name']} has no recorded stats in the 2026 World Cup.")
-            except Exception as e:
-                st.warning(f"Couldn't load stats: {e}")
-
-        # ---------------- AI analysis (predictions now handled above) ----------------
-        st.divider()
-        st.subheader("🤖 AI Tournament Analysis")
-        groups_text = ""
-        for g in gnames:
-            groups_text += f"\nGroup {g} (only these teams): " + \
-                ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
-        team_stats_text = ""
-        if st.session_state.wc_team_stats is not None:
-            tea
+# ----------------------------- AI analysis -----------------------------
+st.divider()
+st.header("AI tournament analysis", anchor="ai")
+groups_text = ""
+for g in gnames:
+    groups_text += f"\nGroup {g} (only these teams): " + \
+        ", ".join(groups[g]["Team"].tolist()) + "\n" + groups[g].to_string(index=False) + "\n"
+team_stats_text = ""
+if st.session_state.wc_team_stats is not None:
+    team_stats_text = "\n\nPer-game team stats:\n" + st.session_state.wc_team_stats.to_string(index=False)
+if "wc_analysis" not in st.session_state:
+    st.session_state.wc_analysis = ""
+if st.button("Analyse the tournament"):
+    try:
+        with st.spinner("Analysing..."):
+            st.session_state.wc_analysis = ask_ai(
+                "You are an expert analyst covering the 2026 World Cup group stage (in progress). "
+                "Standings:\n" + groups_text + team_stats_text +
+                "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
+                "Plain English, no bullet points.")
+    except Exception as e:
+        st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
+if st.session_state.wc_analysis:
+    st.info(st.session_state.wc_analysis)
