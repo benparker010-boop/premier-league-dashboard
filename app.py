@@ -703,7 +703,13 @@ def section_players():
 
 def section_stats():
     st.markdown(_pitch_background_css(), unsafe_allow_html=True)
-    st.markdown('<div style="color:rgba(255,255,255,0.75);font-size:14px;margin:0 0 10px;">'
+    st.markdown(
+        '<div style="margin:8px 0 4px;">'
+        '<div style="font-size:38px;font-weight:700;color:#ffffff;letter-spacing:0.05em;'
+        'text-transform:uppercase;line-height:1;">Team stats</div>'
+        '<div style="width:66px;height:3px;background:#e8b84b;border-radius:2px;margin-top:12px;"></div>'
+        '</div>', unsafe_allow_html=True)
+    st.markdown('<div style="color:rgba(255,255,255,0.7);font-size:14px;margin:12px 0 16px;">'
                 'Pick a country to see its stats.</div>', unsafe_allow_html=True)
     real = build_team_name_map(finished)
     items = sorted(((tid, name) for tid, name in real.items()
@@ -889,7 +895,8 @@ elif view in SECTIONS:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
     else:
         title, render_fn = SECTIONS[view]
-        render_banner(title, view)
+        if view != "stats":
+            render_banner(title, view)
         render_fn()
 else:
     # Home: full-screen hero + the menu of boxes
