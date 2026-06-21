@@ -805,23 +805,12 @@ def team_page():
             break
     meta = f"Group {grp} · {_ordinal(pos)}" if grp else "Group stage"
 
-    gsnap, asnap, _ = load_scorer_snapshot()
-    top_sc = top_as = "—"
-    if gsnap is not None and not gsnap.empty:
-        ts = gsnap[gsnap["Team"] == name]
-        if not ts.empty:
-            top_sc = f'{ts.iloc[0]["Player"]} ({int(ts.iloc[0]["Goals"])})'
-    if asnap is not None and not asnap.empty:
-        ta = asnap[asnap["Team"] == name]
-        if not ta.empty:
-            top_as = f'{ta.iloc[0]["Player"]} ({int(ta.iloc[0]["Assists"])})'
-
     header = (f'<div class="tp-header">{_flag_img(name, 62)}'
               f'<div><div class="tp-name">{name}</div><div class="tp-meta">{meta}</div></div></div>')
     nav = ('<div class="tp-nav">'
            '<a href="#summary">Summary</a><a href="#attack">Attack</a>'
            '<a href="#possession">Possession</a><a href="#defence">Defence</a>'
-           '<a href="#players">Players</a><a href="#results">Results</a></div>')
+           '<a href="#results">Results</a></div>')
     summary = ('<div class="tp-section" id="summary"><div class="tp-h">Summary</div><div class="tp-grid">'
                + _tile(gp, "Played") + _tile(f"{w}-{d}-{l}", "W-D-L")
                + _tile(gf, "Goals for") + _tile(ga, "Goals against")
@@ -842,16 +831,12 @@ def team_page():
                + _tile(ga, "Conceded") + _tile(int(agg["fouls"]), "Fouls")
                + _tile(int(agg["yellow_cards"]), "Yellow cards") + _tile(int(agg["red_cards"]), "Red cards")
                + '</div></div>')
-    players = ('<div class="tp-section" id="players"><div class="tp-h">Key players</div><div class="tp-grid">'
-               f'<div class="tp-tile"><div class="tp-lbl">Top scorer</div><div class="tp-pval">{top_sc}</div></div>'
-               f'<div class="tp-tile"><div class="tp-lbl">Top assister</div><div class="tp-pval">{top_as}</div></div>'
-               '</div></div>')
     res_rows = "".join(
         f'<div class="tp-res"><span>{mm}</span><span class="tp-{r.lower()}">{r}</span></div>'
         for mm, r in results) or '<div class="tp-res">No finished matches yet</div>'
     resultsec = f'<div class="tp-section" id="results"><div class="tp-h">Results</div>{res_rows}</div>'
 
-    st.markdown(TEAM_CSS + header + nav + summary + attack + possession + defence + players + resultsec,
+    st.markdown(TEAM_CSS + header + nav + summary + attack + possession + defence + resultsec,
                 unsafe_allow_html=True)
 
 
