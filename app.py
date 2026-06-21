@@ -14,10 +14,6 @@ WC_SEASON = "sn_118868"
 AI_MODEL = "claude-haiku-4-5-20251001"
 PREDICT_MODEL = "claude-sonnet-4-6"
 
-# Notable players to assemble a top-scorers board from (no aggregate endpoint exists)
-WATCHLIST = ["Haaland", "Kane", "Mbappe", "Vinicius", "Lautaro Martinez", "Musiala",
-             "Pedri", "Bellingham", "Lewandowski", "Pulisic", "Lamine Yamal", "Griezmann"]
-
 
 # ===================== Premier League (football-data.org) =====================
 @st.cache_data(ttl=600)
@@ -71,6 +67,13 @@ def wc_match_stats(match_id):
     r = stats_get(f"/football/matches/{match_id}/stats")
     r.raise_for_status()
     return r.json().get("data", {})
+
+
+@st.cache_data(ttl=600)
+def wc_timeline(match_id):
+    r = stats_get(f"/football/matches/{match_id}/timeline")
+    r.raise_for_status()
+    return r.json().get("data", {}).get("events", [])
 
 
 @st.cache_data(ttl=3600)
@@ -188,26 +191,40 @@ def build_team_stats(finished):
     return pd.DataFrame(rows).sort_values("xG/game", ascending=False).reset_index(drop=True), done, failed
 
 
-def build_scorer_board(names, team_names):
-    rows, done, failed = [], 0, 0
-    for nm in names:
+def build_scorers_assists(finished):
+    """Tally real goals and assists from every finished match's event timeline."""
+    goals, assists = {}, {}
+    done = failed = 0
+    for m in finished:
         try:
-            p, s = find_wc_player(nm)
+            events = wc_timeline(m["id"])
         except Exception:
             failed += 1
             continue
-        if not p or not s:
-            continue
         done += 1
-        sc = s.get("scoring", {})
-        rows.append({"Player": p["name"],
-                     "Team": team_names.get(s.get("team_id"), p.get("nationality", "")),
-                     "Goals": sc.get("goals", 0), "Assists": sc.get("assists", 0),
-                     "Rating": s.get("rating"), "Mins": s.get("minutes_played")})
-    df = pd.DataFrame(rows)
-    if not df.empty:
-        df = df.sort_values(["Goals", "Assists"], ascending=False).reset_index(drop=True)
-    return df, done, failed
+        for ev in events:
+            if ev.get("type") != "goal":
+                continue
+            scorer = ev.get("player") or {}
+            team = (ev.get("team") or {}).get("name", "")
+            if scorer.get("name"):
+                g = goals.setdefault(scorer["name"],
+                                     {"Player": scorer["name"], "Team": team, "Goals": 0})
+                g["Goals"] += 1
+            # assist may be labelled under one of a few possible keys
+            a = (ev.get("assist") or ev.get("assist_player") or
+                 ev.get("assisted_by") or ev.get("secondary_player"))
+            if isinstance(a, dict) and a.get("name"):
+                ad = assists.setdefault(a["name"],
+                                        {"Player": a["name"], "Team": team, "Assists": 0})
+                ad["Assists"] += 1
+    gdf = pd.DataFrame(list(goals.values()))
+    adf = pd.DataFrame(list(assists.values()))
+    if not gdf.empty:
+        gdf = gdf.sort_values("Goals", ascending=False).head(10).reset_index(drop=True)
+    if not adf.empty:
+        adf = adf.sort_values("Assists", ascending=False).head(10).reset_index(drop=True)
+    return gdf, adf, done, failed
 
 
 def cat_df(d):
@@ -370,24 +387,35 @@ with tab_wc:
             except Exception as e:
                 st.warning(f"Couldn't load stats: {e}")
 
-        # ---------------- Top scorers (watchlist) ----------------
+        # ---------------- Top scorers & assists (from match events) ----------------
         st.divider()
-        st.subheader("🥇 Top scorers (from a watchlist of notable players)")
-        st.caption("Assembled player-by-player, since the API has no all-players leaderboard.")
-        if "scorer_board" not in st.session_state:
-            st.session_state.scorer_board = None
-        if st.button("Build top-scorers board"):
-            with st.spinner("Looking up each player's goals..."):
-                sb, done, failed = build_scorer_board(WATCHLIST, team_names)
-                st.session_state.scorer_board = sb
-                st.session_state.scorer_msg = f"Built from {done} players." + (
+        st.subheader("🥇 Top 10 scorers & assists")
+        st.caption("Tallied from real goal events across every finished match.")
+        if "scorers" not in st.session_state:
+            st.session_state.scorers = None
+        if st.button("Build top scorers & assists"):
+            with st.spinner("Reading every match's goals..."):
+                gdf, adf, done, failed = build_scorers_assists(finished)
+                st.session_state.scorers = gdf
+                st.session_state.assisters = adf
+                st.session_state.scorers_msg = f"Built from {done} matches." + (
                     " Some hit the rate limit — click again in a minute." if failed else "")
-        if st.session_state.scorer_board is not None:
-            st.caption(st.session_state.get("scorer_msg", ""))
-            if st.session_state.scorer_board.empty:
-                st.write("No data yet — try again in a moment.")
-            else:
-                st.dataframe(st.session_state.scorer_board, hide_index=True)
+        if st.session_state.scorers is not None:
+            st.caption(st.session_state.get("scorers_msg", ""))
+            gcol, acol = st.columns(2)
+            with gcol:
+                st.markdown("**Top scorers**")
+                if st.session_state.scorers.empty:
+                    st.write("No goals tallied yet.")
+                else:
+                    st.dataframe(st.session_state.scorers, hide_index=True)
+            with acol:
+                st.markdown("**Top assists**")
+                adf = st.session_state.get("assisters")
+                if adf is None or adf.empty:
+                    st.write("No assist data found in the events feed.")
+                else:
+                    st.dataframe(adf, hide_index=True)
 
         # ---------------- AI analysis & predictions ----------------
         st.divider()
