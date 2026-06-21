@@ -405,6 +405,8 @@ def render_banner(title, slug):
 
 
 LANDING_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap');
+html, body, [class*="css"], button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, label { font-family: 'Oswald', sans-serif; }
 .block-container { padding-top: 0 !important; }
 #MainMenu, footer { visibility: hidden; }
 header[data-testid="stHeader"] { display: none; }
@@ -514,6 +516,8 @@ n_goals = sum((m["score"]["home"] or 0) + (m["score"]["away"] or 0) for m in fin
 gnames = sorted(groups.keys())
 
 BASE_CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap');
+html, body, [class*="css"], button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, label { font-family: 'Oswald', sans-serif; }
 .block-container { padding-top: 1.5rem !important; }
 #MainMenu, footer { visibility: hidden; }
 header[data-testid="stHeader"] { display: none; }
