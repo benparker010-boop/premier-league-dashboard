@@ -5,6 +5,7 @@ import anthropic
 import time
 import os
 import base64
+import urllib.parse
 
 st.set_page_config(page_title="World Cup 2026 Analytics", layout="wide")
 
@@ -584,6 +585,27 @@ def _flag_img(team, w=26):
             f'style="width:{w}px;height:auto;border-radius:3px;vertical-align:middle;">')
 
 
+def _pitch_background_css():
+    """Dark page with faint football-pitch markings, for the team grid."""
+    svg = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 600' "
+           "preserveAspectRatio='xMidYMid slice'>"
+           "<g fill='none' stroke='white' stroke-opacity='0.09' stroke-width='3'>"
+           "<rect x='20' y='20' width='960' height='560'/>"
+           "<line x1='500' y1='20' x2='500' y2='580'/>"
+           "<circle cx='500' cy='300' r='70'/>"
+           "<rect x='20' y='180' width='120' height='240'/>"
+           "<rect x='860' y='180' width='120' height='240'/>"
+           "<rect x='20' y='250' width='45' height='100'/>"
+           "<rect x='935' y='250' width='45' height='100'/></g>"
+           "<circle cx='500' cy='300' r='4' fill='white' fill-opacity='0.09'/></svg>")
+    uri = "data:image/svg+xml," + urllib.parse.quote(svg)
+    return ("<style>.stApp{background-color:#0d1420 !important;"
+            f"background-image:url(\"{uri}\");"
+            "background-size:cover;background-position:center;background-attachment:fixed;}"
+            ".backlink{color:rgba(255,255,255,0.78) !important;}"
+            ".backlink:hover{color:#ffffff !important;}</style>")
+
+
 # ----------------------------- Section pages -----------------------------
 def section_standings():
     st.caption("Live tables built from every finished match.")
@@ -679,7 +701,9 @@ def section_players():
 
 
 def section_stats():
-    st.caption("Pick a country to see its stats.")
+    st.markdown(_pitch_background_css(), unsafe_allow_html=True)
+    st.markdown('<div style="color:rgba(255,255,255,0.75);font-size:14px;margin:0 0 10px;">'
+                'Pick a country to see its stats.</div>', unsafe_allow_html=True)
     real = build_team_name_map(finished)
     items = sorted(((tid, name) for tid, name in real.items()
                     if NAME_TO_ISO2.get((name or "").strip().lower())),
