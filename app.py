@@ -413,6 +413,7 @@ header[data-testid="stHeader"] { display: none; }
 [data-testid="stHeaderActionElements"] { display: none; }
 h1, h2, h3, h4, h5, h6 { text-decoration: none; border-bottom: none; }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
+.stApp { background-color: #0e1117 !important; }
 .hero {
   position: relative;
   width: 100vw; margin-left: calc(-50vw + 50%);
@@ -432,8 +433,8 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 .hero-cue:hover { opacity: 0.75; }
 .hero-cue .chev { display: block; font-size: 28px; animation: bob 1.6s infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
-.launch-title { text-align: center; font-size: 24px; font-weight: 600; margin: 44px 0 4px; padding-top: 10px; }
-.launch-sub { text-align: center; color: #374151; font-size: 14px; font-weight: 500; margin: 0 0 22px; }
+.launch-title { text-align: center; font-size: 26px; font-weight: 600; margin: 40px 0 4px; padding-top: 10px; color: #ffffff; }
+.launch-sub { text-align: center; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; margin: 0 0 22px; }
 .launch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 8px;
   width: 100vw; margin-left: calc(-50vw + 50%); padding: 0 32px; box-sizing: border-box; }
 .mcard { position: relative; overflow: hidden; border-radius: 14px; height: 33vh; min-height: 210px;
@@ -494,7 +495,7 @@ def render_home(n_matches, n_goals, n_groups):
 def render_menu_page():
     css = LANDING_CSS.replace("__BG__", _hero_background()).replace("__ACCENT__", ACCENT)
     home_link = ('<a href="?view=home" target="_self" style="display:inline-block;'
-                 'color:#4b5563;text-decoration:none;font-size:15px;font-weight:500;'
+                 'color:rgba(255,255,255,0.75);text-decoration:none;font-size:15px;font-weight:500;'
                  'margin-bottom:4px;">↑ Back to the front page</a>')
     st.markdown(f"<style>{css}</style>{home_link}{render_menu_cards()}", unsafe_allow_html=True)
 
