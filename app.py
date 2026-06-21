@@ -394,7 +394,7 @@ header[data-testid="stHeader"] { display: none; }
   text-align: center; padding: 44px 20px; gap: 16px;
 }
 .hero-kicker { font-size: 14px; letter-spacing: 0.18em; font-weight: 500; color: #ffffff; text-shadow: 0 2px 14px rgba(0,0,0,0.85); }
-.hero-title { font-size: 56px; font-weight: 700; color: #f2c14e; line-height: 1.05; margin: 0; text-shadow: 0 3px 22px rgba(0,0,0,0.9); }
+.hero-title { font-size: 56px; font-weight: 700; color: #ffffff; line-height: 1.05; margin: 0; text-shadow: 0 3px 22px rgba(0,0,0,0.9); }
 .hero-sub { font-size: 18px; color: #f2f4f7; max-width: 580px; margin: 0; text-shadow: 0 2px 16px rgba(0,0,0,0.85); }
 .hero-stats { display: flex; gap: 48px; margin-top: 16px; }
 .hero-stats .num { font-size: 40px; font-weight: 700; color: __ACCENT__; line-height: 1; text-shadow: 0 2px 16px rgba(0,0,0,0.75); }
