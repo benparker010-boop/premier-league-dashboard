@@ -416,7 +416,7 @@ header[data-testid="stHeader"] { display: none; }
 @media (max-width: 700px) { .launch-grid { grid-template-columns: 1fr; } .hero-title { font-size: 34px; } }
 """
 
-LANDING_HTML = """
+HERO_HTML = """
 <div class="hero">
   <div class="hero-kicker">CANADA · MEXICO · USA</div>
   <div class="hero-title">World Cup 2026 Analytics</div>
@@ -428,6 +428,9 @@ LANDING_HTML = """
   </div>
   <a class="hero-cue" href="#explore">scroll to explore<span class="chev">⌄</span></a>
 </div>
+"""
+
+MENU_HTML = """
 <div class="launch-title" id="explore">Jump into the data</div>
 <div class="launch-sub">Pick a section below to explore</div>
 <div class="launch-grid">
@@ -441,12 +444,20 @@ LANDING_HTML = """
 """
 
 
-def render_landing(n_matches, n_goals, n_groups):
+def render_home(n_matches, n_goals, n_groups):
     css = LANDING_CSS.replace("__BG__", _hero_background()).replace("__ACCENT__", ACCENT)
-    html = (LANDING_HTML.replace("__MATCHES__", str(n_matches))
+    hero = (HERO_HTML.replace("__MATCHES__", str(n_matches))
             .replace("__GOALS__", str(n_goals))
             .replace("__GROUPS__", str(n_groups)))
-    st.markdown(f"<style>{css}</style>{html}", unsafe_allow_html=True)
+    st.markdown(f"<style>{css}</style>{hero}{MENU_HTML}", unsafe_allow_html=True)
+
+
+def render_menu_page():
+    css = LANDING_CSS.replace("__BG__", _hero_background()).replace("__ACCENT__", ACCENT)
+    home_link = ('<a href="?view=home" target="_self" style="display:inline-block;'
+                 'color:#4b5563;text-decoration:none;font-size:15px;font-weight:500;'
+                 'margin-bottom:4px;">↑ Back to the front page</a>')
+    st.markdown(f"<style>{css}</style>{home_link}{MENU_HTML}", unsafe_allow_html=True)
 
 
 # ============================== APP BODY ==============================
@@ -473,6 +484,37 @@ header[data-testid="stHeader"] { display: none; }
   font-weight: 500; margin-bottom: 6px; }
 .backlink:hover { color: #111827; }
 """
+
+
+# Country name -> ISO code for flag images (flagcdn.com). Covers likely 2026 teams.
+NAME_TO_ISO2 = {
+    "Argentina": "ar", "Australia": "au", "Austria": "at", "Belgium": "be", "Bolivia": "bo",
+    "Brazil": "br", "Cameroon": "cm", "Canada": "ca", "Cape Verde": "cv", "Chile": "cl",
+    "Colombia": "co", "Costa Rica": "cr", "Croatia": "hr", "Curacao": "cw", "Czechia": "cz",
+    "Czech Republic": "cz", "Denmark": "dk", "DR Congo": "cd", "Ecuador": "ec", "Egypt": "eg",
+    "El Salvador": "sv", "England": "gb-eng", "France": "fr", "Germany": "de", "Ghana": "gh",
+    "Greece": "gr", "Guatemala": "gt", "Haiti": "ht", "Honduras": "hn", "Hungary": "hu",
+    "Iceland": "is", "Iran": "ir", "Iraq": "iq", "Ireland": "ie", "Republic of Ireland": "ie",
+    "Italy": "it", "Ivory Coast": "ci", "Jamaica": "jm", "Japan": "jp", "Jordan": "jo",
+    "Kazakhstan": "kz", "Korea Republic": "kr", "South Korea": "kr", "Mali": "ml", "Mexico": "mx",
+    "Morocco": "ma", "Netherlands": "nl", "New Zealand": "nz", "Nigeria": "ng", "North Macedonia": "mk",
+    "Northern Ireland": "gb-nir", "Norway": "no", "Oman": "om", "Panama": "pa", "Paraguay": "py",
+    "Peru": "pe", "Poland": "pl", "Portugal": "pt", "Qatar": "qa", "Romania": "ro", "Russia": "ru",
+    "Saudi Arabia": "sa", "Scotland": "gb-sct", "Senegal": "sn", "Serbia": "rs", "Slovakia": "sk",
+    "Slovenia": "si", "South Africa": "za", "Spain": "es", "Sweden": "se", "Switzerland": "ch",
+    "Trinidad and Tobago": "tt", "Tunisia": "tn", "Turkey": "tr", "Ukraine": "ua",
+    "United States": "us", "USA": "us", "Uruguay": "uy", "Uzbekistan": "uz", "Venezuela": "ve",
+    "Wales": "gb-wls", "Algeria": "dz", "Bahrain": "bh", "China": "cn", "India": "in",
+    "Indonesia": "id", "Thailand": "th", "Vietnam": "vn", "United Arab Emirates": "ae",
+}
+
+
+def _flag_img(team):
+    iso = NAME_TO_ISO2.get(team)
+    if not iso:
+        return ""
+    return (f'<img src="https://flagcdn.com/w40/{iso}.png" alt="" loading="lazy" '
+            'style="width:26px;height:auto;border-radius:2px;margin-right:8px;vertical-align:middle;">')
 
 
 # ----------------------------- Section pages -----------------------------
@@ -570,6 +612,22 @@ def section_players():
 
 
 def section_stats():
+    st.subheader("Teams")
+    teams = sorted(set(team_names.values()))
+    if teams:
+        cards = "".join(
+            '<div style="display:flex;align-items:center;gap:6px;padding:9px 12px;'
+            'border:1px solid rgba(0,0,0,0.12);border-radius:10px;background:#ffffff;">'
+            f'{_flag_img(t)}<span style="font-size:14px;font-weight:500;color:#111827;">{t}</span></div>'
+            for t in teams)
+        st.markdown(
+            '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));'
+            f'gap:10px;margin-bottom:14px;">{cards}</div>', unsafe_allow_html=True)
+    else:
+        st.write("No teams loaded yet.")
+
+    st.divider()
+    st.subheader("Per-game team stats")
     if "wc_team_stats" not in st.session_state:
         st.session_state.wc_team_stats = None
     if st.button("Build team stats from every finished match"):
@@ -598,6 +656,21 @@ def section_stats():
             st.warning(f"Couldn't load that match's stats: {e}")
 
 
+def _stats_context():
+    """Bundle every stat we have into one text block for the AI to reason over."""
+    parts = []
+    for g in gnames:
+        parts.append(f"Group {g} standings:\n" + groups[g].to_string(index=False))
+    gsnap, asnap, _ = load_scorer_snapshot()
+    if gsnap is not None and not gsnap.empty:
+        parts.append("Top scorers:\n" + gsnap.to_string(index=False))
+    if asnap is not None and not asnap.empty:
+        parts.append("Top assists:\n" + asnap.to_string(index=False))
+    if st.session_state.get("wc_team_stats") is not None:
+        parts.append("Per-game team stats:\n" + st.session_state.wc_team_stats.to_string(index=False))
+    return "\n\n".join(parts)
+
+
 def section_ai():
     groups_text = ""
     for g in gnames:
@@ -606,6 +679,9 @@ def section_ai():
     team_stats_text = ""
     if st.session_state.get("wc_team_stats") is not None:
         team_stats_text = "\n\nPer-game team stats:\n" + st.session_state.wc_team_stats.to_string(index=False)
+
+    # ---- 1. Auto tournament summary ----
+    st.subheader("Tournament summary")
     if "wc_analysis" not in st.session_state:
         st.session_state.wc_analysis = ""
     if st.button("Analyse the tournament"):
@@ -621,6 +697,62 @@ def section_ai():
     if st.session_state.wc_analysis:
         st.info(st.session_state.wc_analysis)
 
+    # ---- 2. Ask-the-stats chatbot ----
+    st.divider()
+    st.subheader("💬 Ask the stats chatbot")
+    st.caption("Ask anything about the tournament data — standings, scorers, team stats. It answers "
+               "only from the live data, and will tell you if a stat isn't tracked.")
+    uq = st.text_input("Your question",
+                       placeholder="e.g. Which group has scored the most goals?")
+    if st.button("Ask"):
+        if uq.strip():
+            with st.spinner("Thinking..."):
+                prompt = ("You are a World Cup 2026 stats assistant. Answer the user's question using "
+                          "ONLY the data below. If the answer isn't in the data (for example a stat "
+                          "like tackles that isn't tracked here), say you don't have that stat rather "
+                          "than guessing. Be concise and specific.\n\nDATA:\n" + _stats_context() +
+                          "\n\nQUESTION: " + uq)
+                try:
+                    ans = ask_ai(prompt, temperature=0.2)
+                except Exception as e:
+                    ans = f"Sorry — couldn't answer right now. ({e})"
+            st.session_state.chat_q = uq
+            st.session_state.chat_answer = ans
+    if st.session_state.get("chat_answer"):
+        st.markdown(f"**You asked:** {st.session_state.get('chat_q', '')}")
+        st.info(st.session_state.chat_answer)
+
+    # ---- 3. AI predicted knockout bracket with scores ----
+    st.divider()
+    st.subheader("🔮 AI predicted knockout bracket")
+    st.caption("The AI's own prediction of every knockout tie and scoreline. (The number-based "
+               "simulation lives in the Knockout bracket section.)")
+    if st.button("Predict the bracket with scores"):
+        qualified = qualified_from_groups(groups)
+        rounds, _ = simulate_bracket(qualified)
+        if not rounds:
+            st.session_state.ai_bracket = ("Not enough completed group games yet to seed a bracket — "
+                                           "check back once more results are in.")
+        else:
+            r32 = rounds[0][1]
+            fixtures = "\n".join(f"{r['Home']} vs {r['Away']}" for _, r in r32.iterrows())
+            prompt = ("You are predicting the 2026 World Cup knockout stage. Below are the first-round "
+                      "fixtures, seeded from current standings:\n" + fixtures +
+                      "\n\nPredict the FULL knockout bracket round by round: Round of 32, Round of 16, "
+                      "Quarter-finals, Semi-finals, then the Final. For every match give a predicted "
+                      "scoreline and put the winner in **bold**, and carry the winners forward "
+                      "consistently between rounds. Use ONLY the teams above. Format as markdown with "
+                      "a heading per round and one line per match like '**Brazil** 2-1 Mexico'. End "
+                      "with a line: 'Predicted champion: <team>'.")
+            with st.spinner("Predicting the bracket..."):
+                try:
+                    st.session_state.ai_bracket = ask_ai(prompt, model=PREDICT_MODEL, temperature=0.4)
+                except Exception as e:
+                    st.session_state.ai_bracket = f"Sorry — couldn't predict. ({e})"
+    if st.session_state.get("ai_bracket"):
+        st.markdown(st.session_state.ai_bracket)
+        st.caption("⚠️ AI-generated predictions — informed speculation, not betting advice.")
+
 
 SECTIONS = {
     "standings": ("📊 Group standings", section_standings),
@@ -633,15 +765,15 @@ SECTIONS = {
 
 view = st.query_params.get("view", "home")
 
-if view not in SECTIONS:
-    # Home: full-screen hero + the menu of boxes
-    render_landing(len(finished), n_goals, len(groups))
+if view == "menu":
+    # The menu page: just the six boxes (the "second page")
+    render_menu_page()
     if not wc_ok:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
-else:
-    # A section page: back link + just this section's content
+elif view in SECTIONS:
+    # A section page: back link (to the menu) + just this section's content
     st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
-    st.markdown('<a class="backlink" href="?view=home" target="_self">← Back to menu</a>',
+    st.markdown('<a class="backlink" href="?view=menu" target="_self">← Back to menu</a>',
                 unsafe_allow_html=True)
     if not wc_ok:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
@@ -649,3 +781,8 @@ else:
         title, render_fn = SECTIONS[view]
         st.header(title)
         render_fn()
+else:
+    # Home: full-screen hero + the menu of boxes
+    render_home(len(finished), n_goals, len(groups))
+    if not wc_ok:
+        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
