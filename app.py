@@ -531,11 +531,12 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
 .backlink:hover { color: #111827; }
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 14px;
   width: 100vw; margin-left: calc(-50vw + 50%); padding: 0 32px; box-sizing: border-box; }
-.team-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 10px;
-  background: #ffffff; border: 1px solid rgba(0,0,0,0.10); border-radius: 12px;
-  text-decoration: none; color: #1a2230; transition: transform .15s, border-color .15s, box-shadow .15s; }
-.team-card:hover { transform: translateY(-3px); border-color: #e8b84b; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-.team-name { font-size: 15px; font-weight: 600; text-align: center; }
+.team-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 16px 8px;
+  background: transparent; border: none; border-radius: 12px;
+  text-decoration: none; color: #ffffff; transition: transform .15s, background .15s; }
+.team-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.07); }
+.team-name { font-size: 15px; font-weight: 600; text-align: center; color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6); }
 """
 
 
