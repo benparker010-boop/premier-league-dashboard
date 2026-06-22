@@ -1176,14 +1176,42 @@ def _elo_probs(d):
     return pH / s, pd_ / s, pA / s
 
 
+def _xg_rates(name, finished):
+    """Aggregate a team's xG for and against from its finished-match stat sheets."""
+    xf = xa = g = 0.0
+    for m in finished:
+        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        if name not in (h, a):
+            continue
+        try:
+            ov = wc_match_stats(m["id"]).get("overview", {})
+        except Exception:
+            continue
+        side, opp = ("home", "away") if name == h else ("away", "home")
+        xfg, xag = stat_val(ov, "expected_goals", side), stat_val(ov, "expected_goals", opp)
+        if xfg is None or xag is None:
+            continue
+        xf += xfg; xa += xag; g += 1
+    return xf, xa, g
+
+
 def predict_fixture(a, b, finished, k=5.0, pen_a=0.0, pen_b=0.0, elo_w=0.4):
-    """Neutral-venue prediction: goals model + Elo prior + opponent adjustment + injury penalties."""
+    """Neutral-venue prediction: goals + xG blend + Elo prior + opponent adjustment + injury penalties."""
     F, A, G, league = _goal_rates(finished)
     elo = _elo_ratings(finished)
     att_a = _str_factor(a, F, G, league, k) * (1 - pen_a)
     att_b = _str_factor(b, F, G, league, k) * (1 - pen_b)
     la = max(0.05, league * att_a * _str_factor(b, A, G, league, k))
     lb = max(0.05, league * att_b * _str_factor(a, A, G, league, k))
+    # Blend in xG-based strengths — the biggest validated accuracy gain in backtesting.
+    xfa, xaa, gxa = _xg_rates(a, finished)
+    xfb, xab, gxb = _xg_rates(b, finished)
+    if gxa >= 2 and gxb >= 2 and league > 0:
+        def xfac(total, g_):
+            w = g_ / (g_ + k)
+            return w * ((total / g_) / league) + (1 - w)
+        la = 0.5 * la + 0.5 * max(0.05, league * xfac(xfa, gxa) * (1 - pen_a) * xfac(xab, gxb))
+        lb = 0.5 * lb + 0.5 * max(0.05, league * xfac(xfb, gxb) * (1 - pen_b) * xfac(xaa, gxa))
     sup = (elo.get(a, 1500.0) - elo.get(b, 1500.0)) / 400.0          # opponent-strength adjustment
     la = max(0.05, la * 10 ** (0.10 * sup))
     lb = max(0.05, lb * 10 ** (-0.10 * sup))
