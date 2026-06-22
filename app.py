@@ -7,7 +7,7 @@ import os
 import base64
 import math
 import urllib.parse
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 st.set_page_config(page_title="World Cup 2026 Analytics", layout="wide")
 
@@ -138,9 +138,12 @@ def _match_dt(m):
     if not s:
         return None
     try:
-        return datetime.fromisoformat(str(s).replace("Z", "+00:00").replace(" ", "T", 1))
+        dt = datetime.fromisoformat(str(s).replace("Z", "+00:00").replace(" ", "T", 1))
     except Exception:
         return None
+    if dt.tzinfo is not None:
+        dt = dt.astimezone(timezone.utc).replace(tzinfo=None)
+    return dt
 
 
 def _match_goal_lines(mid, home_id, away_id):
@@ -941,6 +944,16 @@ LIVE_CSS = """
 .lv-goals .g.r { text-align:right; }
 .lv-goals .g .a { opacity:.55; }
 .lv-sect { color:#e8b84b; font-size:13px; letter-spacing:.06em; text-transform:uppercase; margin:20px 0 2px; }
+.lv-link { text-decoration:none; display:block; }
+.lv-card { transition:border-color .15s, background .15s; }
+.lv-link:hover .lv-card { border-color:#e8b84b; background:rgba(255,255,255,0.08); }
+.ms-row { display:flex; align-items:center; justify-content:space-between; margin-top:12px; font-size:13px; }
+.ms-row .ms-v { color:#fff; width:60px; }
+.ms-row .ms-v.r { text-align:right; }
+.ms-row .ms-lab { color:rgba(255,255,255,0.6); font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+.ms-bar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin-top:5px; background:rgba(255,255,255,0.08); }
+.ms-bar .ms-h { background:#e8b84b; }
+.ms-bar .ms-a { background:#5b8fb0; }
 </style>
 """
 
@@ -961,11 +974,13 @@ def _goals_col(items, right=False):
 
 
 def _live_match_card(m, kind):
+    mid = m.get("id")
     home = (m.get("home_team") or {}).get("name", "?")
     away = (m.get("away_team") or {}).get("name", "?")
     hid = (m.get("home_team") or {}).get("id")
     aid = (m.get("away_team") or {}).get("id")
     hs, a_s = m.get("score", {}).get("home"), m.get("score", {}).get("away")
+    dt = _match_dt(m)
     if kind == "live":
         mins = _ev_get(m, "minute", "clock", "elapsed", "min")
         try:
@@ -973,19 +988,22 @@ def _live_match_card(m, kind):
         except (TypeError, ValueError):
             mtxt = ""
         badge = f'<span class="lv-badge lv-live">● LIVE{mtxt}</span>'
-    elif kind == "ft":
+    elif kind == "today_ft":
         badge = '<span class="lv-badge lv-ft">FULL TIME</span>'
-    else:
-        dt = _match_dt(m)
+    elif kind == "past":
+        badge = f'<span class="lv-badge lv-ft">FT · {dt.strftime("%d %b") if dt else ""}</span>'
+    elif kind == "future":
+        badge = f'<span class="lv-badge lv-up">{dt.strftime("%d %b %H:%M") if dt else "UPCOMING"}</span>'
+    else:  # up — today's upcoming
         badge = f'<span class="lv-badge lv-up">{dt.strftime("%H:%M") if dt else "UPCOMING"}</span>'
     score = f"{hs} – {a_s}" if hs is not None and a_s is not None else "vs"
     goals_html = ""
-    if kind in ("live", "ft"):
-        g = _match_goal_lines(m.get("id"), hid, aid)
+    if kind in ("live", "today_ft"):
+        g = _match_goal_lines(mid, hid, aid)
         if g["home"] or g["away"]:
             goals_html = ('<div class="lv-goals">' + _goals_col(g["home"])
                           + _goals_col(g["away"], right=True) + "</div>")
-    return (
+    card = (
         '<div class="lv-card">'
         f'<div class="lv-top">{badge}</div>'
         '<div class="lv-row">'
@@ -995,6 +1013,7 @@ def _live_match_card(m, kind):
         '</div>'
         f'{goals_html}</div>'
     )
+    return f'<a class="lv-link" href="?view=match&match={mid}" target="_self">{card}</a>'
 
 
 def section_bracket():
@@ -1009,36 +1028,147 @@ def section_bracket():
 
     live = wc_live_matches()
     today = date.today()
-    ft_today = [m for m in finished if _match_dt(m) and _match_dt(m).date() == today]
-    up_today = [m for m in upcoming if _match_dt(m) and _match_dt(m).date() == today]
-    label_ft, label_up = "Today's results", "Later today"
-    if not ft_today:
-        ft_today = sorted(finished, key=lambda m: _match_dt(m) or datetime.min, reverse=True)[:6]
-        label_ft = "Latest results"
-    if not up_today:
-        up_today = sorted(upcoming, key=lambda m: _match_dt(m) or datetime.max)[:6]
-        label_up = "Upcoming"
-    up_today = sorted(up_today, key=lambda m: _match_dt(m) or datetime.max)
+    fin_dated = [(m, _match_dt(m)) for m in finished]
+    up_dated = [(m, _match_dt(m)) for m in upcoming]
+    have_dates = any(d for _, d in fin_dated + up_dated)
 
-    if not (live or ft_today or up_today):
+    if have_dates:
+        today_ft = [m for m, d in fin_dated if d and d.date() == today]
+        past_ft = [m for m, _ in sorted([(m, d) for m, d in fin_dated if d and d.date() < today],
+                                         key=lambda x: x[1], reverse=True)][:12]
+        today_up = [m for m, _ in sorted([(m, d) for m, d in up_dated if d and d.date() == today],
+                                         key=lambda x: x[1])]
+        future_up = [m for m, _ in sorted([(m, d) for m, d in up_dated if d and d.date() > today],
+                                          key=lambda x: x[1])][:12]
+    else:
+        today_ft, today_up = [], []
+        past_ft = sorted(finished, key=lambda m: str(m.get("id")), reverse=True)[:12]
+        future_up = upcoming[:12]
+
+    if not (live or today_ft or today_up or past_ft or future_up):
         st.info("No match data available yet. Live scores will appear here on match days.")
         return
 
-    if live:
-        st.markdown('<div class="lv-sect">● Live now</div>', unsafe_allow_html=True)
-        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "live") for m in live)
+    def _block(title, items, kind):
+        if not items:
+            return
+        st.markdown(f'<div class="lv-sect">{title}</div>', unsafe_allow_html=True)
+        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, kind) for m in items)
                     + "</div>", unsafe_allow_html=True)
-    if ft_today:
-        st.markdown(f'<div class="lv-sect">{label_ft}</div>', unsafe_allow_html=True)
-        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "ft") for m in ft_today)
-                    + "</div>", unsafe_allow_html=True)
-    if up_today:
-        st.markdown(f'<div class="lv-sect">{label_up}</div>', unsafe_allow_html=True)
-        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "up") for m in up_today)
-                    + "</div>", unsafe_allow_html=True)
-    st.markdown('<div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.6);">Goals show '
-                'scorer, minute and assist where available, live from match data.</div>',
+
+    _block("● Live now", live, "live")
+    if today_ft or today_up:
+        st.markdown('<div class="lv-sect">Today</div>', unsafe_allow_html=True)
+        html = ("".join(_live_match_card(m, "today_ft") for m in today_ft)
+                + "".join(_live_match_card(m, "up") for m in today_up))
+        st.markdown('<div class="lv-wrap">' + html + "</div>", unsafe_allow_html=True)
+    _block("Recent results", past_ft, "past")
+    _block("Upcoming", future_up, "future")
+    st.markdown('<div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.6);">Tap any match '
+                'for full stats. Goals show scorer, minute and assist where available.</div>',
                 unsafe_allow_html=True)
+
+
+def _fmt_stat(v, unit=""):
+    if v is None:
+        return "—"
+    if isinstance(v, float):
+        v = int(v) if v.is_integer() else round(v, 2)
+    return f"{v}{unit}"
+
+
+MATCH_STAT_ROWS = [("Possession", "ball_possession", "%"), ("Expected goals", "expected_goals", ""),
+                   ("Total shots", "total_shots", ""), ("Shots on target", "shots_on_target", ""),
+                   ("Big chances", "big_chances", ""), ("Corners", "corner_kicks", ""),
+                   ("Fouls", "fouls", ""), ("Yellow cards", "yellow_cards", ""),
+                   ("Passes", "passes", ""), ("Accurate passes", "accurate_passes", "")]
+
+
+def match_page():
+    mid = st.query_params.get("match")
+    st.markdown(_glow_background_css(), unsafe_allow_html=True)
+    st.markdown(LIVE_CSS, unsafe_allow_html=True)
+    pool = {}
+    try:
+        for mm in wc_live_matches():
+            pool[str(mm.get("id"))] = ("live", mm)
+    except Exception:
+        pass
+    for mm in finished:
+        pool.setdefault(str(mm.get("id")), ("ft", mm))
+    for mm in upcoming:
+        pool.setdefault(str(mm.get("id")), ("up", mm))
+    entry = pool.get(str(mid))
+    if not entry:
+        st.warning("Couldn't find that match.")
+        return
+    state, m = entry
+    home = (m.get("home_team") or {}).get("name", "?")
+    away = (m.get("away_team") or {}).get("name", "?")
+    hid = (m.get("home_team") or {}).get("id")
+    aid = (m.get("away_team") or {}).get("id")
+    hs, a_s = m.get("score", {}).get("home"), m.get("score", {}).get("away")
+    dt = _match_dt(m)
+    if state == "live":
+        mins = _ev_get(m, "minute", "clock", "elapsed", "min")
+        try:
+            badge = f'<span class="lv-badge lv-live">● LIVE {int(mins)}\'</span>'
+        except (TypeError, ValueError):
+            badge = '<span class="lv-badge lv-live">● LIVE</span>'
+    elif state == "ft":
+        badge = f'<span class="lv-badge lv-ft">FULL TIME{(" · " + dt.strftime("%d %b")) if dt else ""}</span>'
+    else:
+        badge = f'<span class="lv-badge lv-up">{dt.strftime("%d %b · %H:%M") if dt else "UPCOMING"}</span>'
+    grp = m.get("group_label")
+    score = f"{hs} – {a_s}" if hs is not None and a_s is not None else "vs"
+    st.markdown(
+        '<div class="lv-card" style="padding:20px 22px;">'
+        f'<div class="lv-top">{badge}{(" · Group " + grp) if grp else ""}</div>'
+        '<div class="lv-row">'
+        f'<div class="lv-team">{_flag_img(home, 34)}<span style="font-size:19px;">{home}</span></div>'
+        f'<div class="lv-score" style="font-size:34px;">{score}</div>'
+        f'<div class="lv-team r"><span style="font-size:19px;">{away}</span>{_flag_img(away, 34)}</div>'
+        '</div></div>', unsafe_allow_html=True)
+
+    if state in ("live", "ft"):
+        g = _match_goal_lines(mid, hid, aid)
+        if g["home"] or g["away"]:
+            st.markdown('<div class="lv-sect">Goals</div>', unsafe_allow_html=True)
+            st.markdown('<div class="lv-card"><div class="lv-goals" style="border-top:none;margin-top:0;'
+                        'padding-top:0;">' + _goals_col(g["home"]) + _goals_col(g["away"], right=True)
+                        + '</div></div>', unsafe_allow_html=True)
+        ov = {}
+        try:
+            ov = wc_match_stats(mid).get("overview", {})
+        except Exception:
+            ov = {}
+        rows = []
+        for lab, key, unit in MATCH_STAT_ROWS:
+            hv, av = stat_val(ov, key, "home"), stat_val(ov, key, "away")
+            if hv is None and av is None:
+                continue
+            try:
+                hn, an = float(hv or 0), float(av or 0)
+            except (TypeError, ValueError):
+                hn, an = 0.0, 0.0
+            hpct = max(0.0, min(100.0, hn / ((hn + an) or 1) * 100))
+            rows.append(
+                '<div class="ms-row">'
+                f'<div class="ms-v">{_fmt_stat(hv, unit)}</div>'
+                f'<div class="ms-lab">{lab}</div>'
+                f'<div class="ms-v r">{_fmt_stat(av, unit)}</div></div>'
+                f'<div class="ms-bar"><div class="ms-h" style="width:{hpct:.0f}%"></div>'
+                f'<div class="ms-a" style="width:{100 - hpct:.0f}%"></div></div>')
+        if rows:
+            st.markdown('<div class="lv-sect">Match stats</div>', unsafe_allow_html=True)
+            st.markdown('<div class="lv-card" style="padding:14px 20px;">' + "".join(rows) + '</div>',
+                        unsafe_allow_html=True)
+        else:
+            st.caption("No detailed stats published for this match yet.")
+    else:
+        when = dt.strftime("%A %d %B, %H:%M") if dt else "a time to be confirmed"
+        st.info(f"This match hasn't kicked off yet — scheduled for {when}. "
+                "Goals and stats will appear here once it's under way.")
 
 
 def section_players():
@@ -1566,6 +1696,15 @@ elif view == "team":
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
     else:
         team_page()
+elif view == "match":
+    # A single match's detail page, reached from the Live scores cards
+    st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
+    st.markdown('<a class="backlink" href="?view=bracket" target="_self">← Back to live scores</a>',
+                unsafe_allow_html=True)
+    if not wc_ok:
+        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+    else:
+        match_page()
 elif view in SECTIONS:
     # A section page: back link (to the menu) + just this section's content
     st.markdown(f"<style>{BASE_CSS}</style>", unsafe_allow_html=True)
