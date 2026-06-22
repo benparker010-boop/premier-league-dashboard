@@ -33,6 +33,10 @@ import sys
 
 # allow `python research/wc_ingest.py` from the repo root (bare imports below)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:                                   # make accented team names print cleanly on Windows
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
 
 from wc_data import finished_matches, match_record, _date
 
