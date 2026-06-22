@@ -1149,19 +1149,58 @@ def _str_factor(team, sums, G, league, k=5.0):
     return w * raw + (1 - w) * 1.0
 
 
-def predict_fixture(a, b, finished, k=5.0):
-    """Neutral-venue prediction for a fixture: expected goals + outcome probabilities."""
+def _elo_ratings(finished):
+    """Rolling Elo from results (neutral venue). Gives a strength prior beyond a few games."""
+    elo = {}
+    for m in finished:
+        hs, as_ = m["score"]["home"], m["score"]["away"]
+        if hs is None or as_ is None:
+            continue
+        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        eh, ea = elo.get(h, 1500.0), elo.get(a, 1500.0)
+        gd = abs(hs - as_)
+        mult = math.log(gd + 1) + 1
+        sc = 1.0 if hs > as_ else (0.5 if hs == as_ else 0.0)
+        exp = 1 / (1 + 10 ** (-(eh - ea) / 400))
+        chg = 20 * mult * (sc - exp)
+        elo[h] = eh + chg
+        elo[a] = ea - chg
+    return elo
+
+
+def _elo_probs(d):
+    e = 1 / (1 + 10 ** (-d / 400))
+    pd_ = 0.30 * math.exp(-((e - 0.5) ** 2) / 0.10)
+    pH, pA = max(0.0, e - pd_ / 2), max(0.0, 1 - e - pd_ / 2)
+    s = pH + pd_ + pA
+    return pH / s, pd_ / s, pA / s
+
+
+def predict_fixture(a, b, finished, k=5.0, pen_a=0.0, pen_b=0.0, elo_w=0.4):
+    """Neutral-venue prediction: goals model + Elo prior + opponent adjustment + injury penalties."""
     F, A, G, league = _goal_rates(finished)
-    la = max(0.05, league * _str_factor(a, F, G, league, k) * _str_factor(b, A, G, league, k))
-    lb = max(0.05, league * _str_factor(b, F, G, league, k) * _str_factor(a, A, G, league, k))
+    elo = _elo_ratings(finished)
+    att_a = _str_factor(a, F, G, league, k) * (1 - pen_a)
+    att_b = _str_factor(b, F, G, league, k) * (1 - pen_b)
+    la = max(0.05, league * att_a * _str_factor(b, A, G, league, k))
+    lb = max(0.05, league * att_b * _str_factor(a, A, G, league, k))
+    sup = (elo.get(a, 1500.0) - elo.get(b, 1500.0)) / 400.0          # opponent-strength adjustment
+    la = max(0.05, la * 10 ** (0.10 * sup))
+    lb = max(0.05, lb * 10 ** (-0.10 * sup))
     pH, pD, pA = _poisson_outcome(la, lb)
+    eH, eD, eA = _elo_probs(elo.get(a, 1500.0) - elo.get(b, 1500.0))
+    pAf = elo_w * eH + (1 - elo_w) * pH
+    pDf = elo_w * eD + (1 - elo_w) * pD
+    pBf = elo_w * eA + (1 - elo_w) * pA
+    s = pAf + pDf + pBf
     best, bestp = (0, 0), -1.0
     for i in range(8):
         for j in range(8):
             p = _pois_pmf(i, la) * _pois_pmf(j, lb)
             if p > bestp:
                 bestp, best = p, (i, j)
-    return {"la": la, "lb": lb, "pA": pH, "pD": pD, "pB": pA, "score": best}
+    return {"la": la, "lb": lb, "pA": pAf / s, "pD": pDf / s, "pB": pBf / s, "score": best,
+            "eloA": elo.get(a, 1500.0), "eloB": elo.get(b, 1500.0)}
 
 
 def section_ai():
@@ -1249,9 +1288,9 @@ def section_ai():
     # ---- 4. Statistical match predictor (Poisson attack/defence model) ----
     st.divider()
     st.subheader("📊 Statistical match predictor")
-    st.caption("A Poisson attack/defence model built from this tournament's results — opponent-adjusted, "
-               "with shrinkage so teams with few games are pulled toward the average. Backtested on real "
-               "Premier League data, where it beats naive baselines on goals and match outcome.")
+    st.caption("Poisson attack/defence model with shrinkage, plus an Elo rating prior and "
+               "opponent-strength adjustment. Backtested on real Premier League data. Use the sliders to "
+               "dock a team's attack for key injuries/suspensions.")
     names = sorted({m["home_team"]["name"] for m in finished} |
                    {m["away_team"]["name"] for m in finished})
     if len(names) < 2:
@@ -1260,18 +1299,21 @@ def section_ai():
         pc1, pc2 = st.columns(2)
         ta = pc1.selectbox("Team A", names, key="pred_a")
         tb = pc2.selectbox("Team B", names, index=min(1, len(names) - 1), key="pred_b")
+        ia = pc1.slider("Team A injury impact (attack −%)", 0, 40, 0, key="inj_a")
+        ib = pc2.slider("Team B injury impact (attack −%)", 0, 40, 0, key="inj_b")
         if st.button("Predict match"):
             if ta == tb:
                 st.warning("Pick two different teams.")
             else:
-                r = predict_fixture(ta, tb, finished)
+                r = predict_fixture(ta, tb, finished, pen_a=ia / 100, pen_b=ib / 100)
                 m1, m2, m3 = st.columns(3)
                 m1.metric(f"{ta} win", f"{r['pA'] * 100:.0f}%")
                 m2.metric("Draw", f"{r['pD'] * 100:.0f}%")
                 m3.metric(f"{tb} win", f"{r['pB'] * 100:.0f}%")
                 st.markdown(f"**Expected goals:** {ta} {r['la']:.2f} – {r['lb']:.2f} {tb}  ·  "
                             f"**Most likely score:** {ta} {r['score'][0]}–{r['score'][1]} {tb}")
-                st.caption("Model output from current form — not betting advice.")
+                st.caption(f"Elo rating: {ta} {r['eloA']:.0f} · {tb} {r['eloB']:.0f}. "
+                           "Model output — not betting advice.")
 
 
 SECTIONS = {
