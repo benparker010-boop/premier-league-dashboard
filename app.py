@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import requests
 import anthropic
@@ -954,6 +955,21 @@ LIVE_CSS = """
 .ms-bar { display:flex; height:6px; border-radius:3px; overflow:hidden; margin-top:5px; background:rgba(255,255,255,0.08); }
 .ms-bar .ms-h { background:#e8b84b; }
 .ms-bar .ms-a { background:#5b8fb0; }
+.lvr-date { color:#fff; font-size:17px; font-weight:500; border-bottom:1px solid rgba(232,184,75,0.35); padding-bottom:7px; margin:22px 0 2px; scroll-margin-top:75px; }
+.lvr-date.today { color:#ffe9a8; }
+.lvr { display:flex; align-items:center; padding:9px 6px; border-bottom:1px solid rgba(255,255,255,0.07); text-decoration:none; }
+.lvr:hover { background:rgba(255,255,255,0.05); }
+.lvr-st { width:62px; flex-shrink:0; font-size:11px; color:rgba(255,255,255,0.55); }
+.lvr-st.live { color:#ff5b52; font-weight:600; }
+.lvr-st.up { color:#ffe0a3; }
+.lvr-tms { flex:1; min-width:0; }
+.lvr-tm { display:flex; align-items:center; gap:8px; color:#fff; font-size:14px; }
+.lvr-tm.top { margin-bottom:5px; }
+.lvr-tm.lose { color:rgba(255,255,255,0.5); }
+.lvr-tm img { width:22px; border-radius:2px; flex-shrink:0; }
+.lvr-tm span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.lvr-sc { width:26px; flex-shrink:0; text-align:right; color:#ffe9a8; font-size:15px; font-weight:600; line-height:1.55; }
+.lvr-sc.up { color:rgba(255,255,255,0.30); font-weight:400; }
 </style>
 """
 
@@ -973,47 +989,42 @@ def _goals_col(items, right=False):
     return f'<div class="{cls}">' + "<br>".join(rows) + "</div>"
 
 
-def _live_match_card(m, kind):
+def _score_row(m, status, dt):
+    """One compact, clickable match row (live-score-site style)."""
     mid = m.get("id")
     home = (m.get("home_team") or {}).get("name", "?")
     away = (m.get("away_team") or {}).get("name", "?")
-    hid = (m.get("home_team") or {}).get("id")
-    aid = (m.get("away_team") or {}).get("id")
     hs, a_s = m.get("score", {}).get("home"), m.get("score", {}).get("away")
-    dt = _match_dt(m)
-    if kind == "live":
+    if status == "live":
         mins = _ev_get(m, "minute", "clock", "elapsed", "min")
         try:
-            mtxt = f" {int(mins)}'"
+            st_html = f'<div class="lvr-st live">● {int(mins)}\'</div>'
         except (TypeError, ValueError):
-            mtxt = ""
-        badge = f'<span class="lv-badge lv-live">● LIVE{mtxt}</span>'
-    elif kind == "today_ft":
-        badge = '<span class="lv-badge lv-ft">FULL TIME</span>'
-    elif kind == "past":
-        badge = f'<span class="lv-badge lv-ft">FT · {dt.strftime("%d %b") if dt else ""}</span>'
-    elif kind == "future":
-        badge = f'<span class="lv-badge lv-up">{dt.strftime("%d %b %H:%M") if dt else "UPCOMING"}</span>'
-    else:  # up — today's upcoming
-        badge = f'<span class="lv-badge lv-up">{dt.strftime("%H:%M") if dt else "UPCOMING"}</span>'
-    score = f"{hs} – {a_s}" if hs is not None and a_s is not None else "vs"
-    goals_html = ""
-    if kind in ("live", "today_ft"):
-        g = _match_goal_lines(mid, hid, aid)
-        if g["home"] or g["away"]:
-            goals_html = ('<div class="lv-goals">' + _goals_col(g["home"])
-                          + _goals_col(g["away"], right=True) + "</div>")
-    card = (
-        '<div class="lv-card">'
-        f'<div class="lv-top">{badge}</div>'
-        '<div class="lv-row">'
-        f'<div class="lv-team">{_flag_img(home, 26)}<span>{home}</span></div>'
-        f'<div class="lv-score">{score}</div>'
-        f'<div class="lv-team r"><span>{away}</span>{_flag_img(away, 26)}</div>'
+            st_html = '<div class="lvr-st live">● LIVE</div>'
+    elif status == "up":
+        st_html = f'<div class="lvr-st up">{dt.strftime("%H:%M") if dt else "—"}</div>'
+    else:
+        st_html = '<div class="lvr-st">FT</div>'
+    has_score = hs is not None and a_s is not None
+    hcls = acls = ""
+    if status == "ft" and has_score:
+        if hs > a_s:
+            acls = " lose"
+        elif a_s > hs:
+            hcls = " lose"
+    if has_score:
+        sc = f'<div class="lvr-sc"><div>{hs}</div><div>{a_s}</div></div>'
+    else:
+        sc = '<div class="lvr-sc up"><div>–</div><div>–</div></div>'
+    return (
+        f'<a class="lvr" href="?view=match&match={mid}" target="_self">'
+        f'{st_html}'
+        '<div class="lvr-tms">'
+        f'<div class="lvr-tm top{hcls}">{_flag_img(home, 22)}<span>{home}</span></div>'
+        f'<div class="lvr-tm{acls}">{_flag_img(away, 22)}<span>{away}</span></div>'
         '</div>'
-        f'{goals_html}</div>'
+        f'{sc}</a>'
     )
-    return f'<a class="lv-link" href="?view=match&match={mid}" target="_self">{card}</a>'
 
 
 def section_bracket():
@@ -1028,45 +1039,48 @@ def section_bracket():
 
     live = wc_live_matches()
     today = date.today()
-    fin_dated = [(m, _match_dt(m)) for m in finished]
-    up_dated = [(m, _match_dt(m)) for m in upcoming]
-    have_dates = any(d for _, d in fin_dated + up_dated)
+    live_ids = {str(m.get("id")) for m in live}
+    entries = [(m, _match_dt(m), "live") for m in live]
+    entries += [(m, _match_dt(m), "ft") for m in finished if str(m.get("id")) not in live_ids]
+    entries += [(m, _match_dt(m), "up") for m in upcoming if str(m.get("id")) not in live_ids]
 
-    if have_dates:
-        today_ft = [m for m, d in fin_dated if d and d.date() == today]
-        past_ft = [m for m, _ in sorted([(m, d) for m, d in fin_dated if d and d.date() < today],
-                                         key=lambda x: x[1], reverse=True)][:12]
-        today_up = [m for m, _ in sorted([(m, d) for m, d in up_dated if d and d.date() == today],
-                                         key=lambda x: x[1])]
-        future_up = [m for m, _ in sorted([(m, d) for m, d in up_dated if d and d.date() > today],
-                                          key=lambda x: x[1])][:12]
-    else:
-        today_ft, today_up = [], []
-        past_ft = sorted(finished, key=lambda m: str(m.get("id")), reverse=True)[:12]
-        future_up = upcoming[:12]
-
-    if not (live or today_ft or today_up or past_ft or future_up):
+    if not entries:
         st.info("No match data available yet. Live scores will appear here on match days.")
         return
 
-    def _block(title, items, kind):
-        if not items:
-            return
-        st.markdown(f'<div class="lv-sect">{title}</div>', unsafe_allow_html=True)
-        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, kind) for m in items)
-                    + "</div>", unsafe_allow_html=True)
+    dated = [e for e in entries if e[1] is not None]
+    undated = [e for e in entries if e[1] is None]
 
-    _block("● Live now", live, "live")
-    if today_ft or today_up:
-        st.markdown('<div class="lv-sect">Today</div>', unsafe_allow_html=True)
-        html = ("".join(_live_match_card(m, "today_ft") for m in today_ft)
-                + "".join(_live_match_card(m, "up") for m in today_up))
-        st.markdown('<div class="lv-wrap">' + html + "</div>", unsafe_allow_html=True)
-    _block("Recent results", past_ft, "past")
-    _block("Upcoming", future_up, "future")
+    parts = []
+    have_today = False
+    if dated:
+        by_day = {}
+        for m, dt, status in dated:
+            by_day.setdefault(dt.date(), []).append((m, dt, status))
+        for d in sorted(by_day):
+            rows = sorted(by_day[d], key=lambda e: e[1])
+            is_today = (d == today)
+            have_today = have_today or is_today
+            label = (("Today · " if is_today else "")
+                     + f"{d.strftime('%A')} {d.day} {d.strftime('%B')}")
+            anchor = ' id="lv-today"' if is_today else ""
+            cls = "lvr-date today" if is_today else "lvr-date"
+            parts.append(f'<div class="{cls}"{anchor}>{label}</div>')
+            parts += [_score_row(m, status, dt) for m, dt, status in rows]
+    if undated:
+        parts.append('<div class="lvr-date">Other matches</div>')
+        parts += [_score_row(e[0], e[2], e[1]) for e in undated]
+    st.markdown("".join(parts), unsafe_allow_html=True)
+
+    if have_today and any(d < today for d in by_day):
+        components.html(
+            "<script>const d=window.parent.document;"
+            "function s(){const e=d.getElementById('lv-today');"
+            "if(e){e.scrollIntoView({block:'start'});}}"
+            "setTimeout(s,80);setTimeout(s,350);</script>", height=0)
+
     st.markdown('<div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.6);">Tap any match '
-                'for full stats. Goals show scorer, minute and assist where available.</div>',
-                unsafe_allow_html=True)
+                'for full stats, goals and the scorer timeline.</div>', unsafe_allow_html=True)
 
 
 def _fmt_stat(v, unit=""):
