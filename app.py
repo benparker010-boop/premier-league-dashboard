@@ -685,6 +685,9 @@ def _ko_bracket_svg(field):
     labels = ["Round of 32", "Round of 16", "Quarter-finals", "Semi-finals", "", "", "", ""]
     P = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {int(total_w)} {int(height)}" '
          f'style="min-width:{int(total_w)}px;font-family:Oswald,sans-serif;">']
+    P.append('<defs><filter id="goldglow" x="-60%" y="-60%" width="220%" height="220%">'
+             '<feGaussianBlur stdDeviation="2.4" result="b"/><feMerge>'
+             '<feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>')
 
     def colx(c):
         return c * step
@@ -695,14 +698,24 @@ def _ko_bracket_svg(field):
             x = colx(c)
             for idx, y in enumerate(ys):
                 yy = y + top
-                nm = team_field[idx]["name"] if (r == 0 and idx < len(team_field)) else ""
-                nm = nm.replace("&", "&amp;")
-                fill = "#16202f" if nm else "#0f1726"
-                P.append(f'<rect x="{x:.0f}" y="{yy:.0f}" width="{bw}" height="{bh}" rx="4" '
-                         f'fill="{fill}" stroke="rgba(232,184,75,0.35)" stroke-width="1"/>')
-                if nm:
-                    P.append(f'<text x="{x + bw / 2:.0f}" y="{yy + bh / 2 + 3.5:.0f}" '
-                             f'text-anchor="middle" fill="#fff" font-size="10">{nm}</text>')
+                item = team_field[idx] if (r == 0 and idx < len(team_field)) else None
+                nm = (item["name"] if item else "").replace("&", "&amp;")
+                tx = x + bw / 2
+                ty = yy + bh / 2 + 3.5
+                if not nm:
+                    P.append(f'<rect x="{x:.0f}" y="{yy:.0f}" width="{bw}" height="{bh}" rx="4" '
+                             f'fill="#0f1726" stroke="rgba(232,184,75,0.18)" stroke-width="1"/>')
+                elif item.get("confirmed"):
+                    P.append(f'<rect x="{x:.0f}" y="{yy:.0f}" width="{bw}" height="{bh}" rx="4" '
+                             f'fill="#1a2740" stroke="#f0cf6a" stroke-width="1.8" filter="url(#goldglow)"/>')
+                    P.append(f'<text x="{tx:.0f}" y="{ty:.0f}" text-anchor="middle" '
+                             f'fill="#ffe9a8" font-size="10" font-weight="600">{nm}</text>')
+                else:
+                    P.append(f'<rect x="{x:.0f}" y="{yy:.0f}" width="{bw}" height="{bh}" rx="4" '
+                             f'fill="#0e1626" stroke="rgba(232,184,75,0.40)" stroke-width="1" '
+                             f'stroke-dasharray="3 2"/>')
+                    P.append(f'<text x="{tx:.0f}" y="{ty:.0f}" text-anchor="middle" '
+                             f'fill="rgba(255,255,255,0.55)" font-size="9.5" font-style="italic">{nm}</text>')
             if r + 1 < nL:
                 c2 = (r + 1) if is_left else (2 * nL - (r + 1))
                 px = colx(c2)
@@ -772,10 +785,19 @@ def section_standings():
                   f'<tbody>{rows_html}</tbody></table></div>')
     st.markdown(f'<div class="gs-grid">{cards}</div>', unsafe_allow_html=True)
 
-    st.markdown(_heading("Knockout picture", small=True), unsafe_allow_html=True)
-    st.markdown('<div class="gs-legend">Round of 32, projected from current standings.</div>',
+    st.markdown(_heading("Round of 32", small=True), unsafe_allow_html=True)
+    st.markdown('<div class="gs-legend">First knockout round only. '
+                '<span style="color:#ffe9a8;">Solid gold = qualified</span> &nbsp;·&nbsp; '
+                '<span style="color:rgba(255,255,255,0.55);font-style:italic;">faded = predicted '
+                'from current standings</span>.</div>',
                 unsafe_allow_html=True)
     q = qualified_from_groups(groups)
+    clinch = {}
+    for gg in groups:
+        for tname, status in _qualification(groups[gg]).items():
+            clinch[tname] = status
+    for t in q:
+        t["confirmed"] = t["pos"] in (1, 2) and clinch.get(t["name"]) in ("won", "qualified")
     teams = sorted(q, key=lambda t: t["key"], reverse=True)
     size = _largest_pow2(len(teams))
     if size < 2:
