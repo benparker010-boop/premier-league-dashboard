@@ -7,6 +7,7 @@ import os
 import base64
 import math
 import urllib.parse
+from datetime import datetime, date
 
 st.set_page_config(page_title="World Cup 2026 Analytics", layout="wide")
 
@@ -90,6 +91,84 @@ def match_player_stats(match_id):
     r.raise_for_status()
     data = r.json().get("data", [])
     return data if isinstance(data, list) else []
+
+
+@st.cache_data(ttl=120)
+def match_timeline(match_id):
+    """Event timeline for a match (goals, cards, subs) — used for goal minutes/assists."""
+    try:
+        r = stats_get(f"/football/matches/{match_id}/timeline")
+        if r.status_code == 404:
+            return []
+        r.raise_for_status()
+        data = r.json().get("data", [])
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+
+def wc_live_matches():
+    """Matches in progress now. Tries the common status strings the API may use."""
+    for s in ("live", "in_play", "inplay", "playing", "in_progress"):
+        try:
+            data = wc_matches(s)
+        except Exception:
+            continue
+        if data:
+            return data
+    return []
+
+
+def _ev_get(d, *keys):
+    for k in keys:
+        v = d.get(k) if isinstance(d, dict) else None
+        if v not in (None, ""):
+            return v
+    return None
+
+
+def _name_of(v):
+    if isinstance(v, dict):
+        return v.get("name") or v.get("display_name") or v.get("full_name")
+    return v
+
+
+def _match_dt(m):
+    s = _ev_get(m, "datetime", "date", "kickoff", "start_time", "starting_at", "utc_date", "kickoff_time")
+    if not s:
+        return None
+    try:
+        return datetime.fromisoformat(str(s).replace("Z", "+00:00").replace(" ", "T", 1))
+    except Exception:
+        return None
+
+
+def _match_goal_lines(mid, home_id, away_id):
+    """Return {'home': [...], 'away': [...]} goal tuples (minute, scorer, assist, own_goal)."""
+    out = {"home": [], "away": []}
+    for ev in match_timeline(mid):
+        if not isinstance(ev, dict):
+            continue
+        et = str(_ev_get(ev, "type", "event_type", "event", "code") or "").lower()
+        if "goal" not in et and "score" not in et:
+            continue
+        if "miss" in et or "disallow" in et or "var" in et:
+            continue
+        own = "own" in et
+        minute = _ev_get(ev, "minute", "time", "clock", "elapsed", "min")
+        scorer = _name_of(_ev_get(ev, "player_name", "player", "scorer", "scorer_name"))
+        assist = _name_of(_ev_get(ev, "assist_name", "assist_player_name", "assist", "assist_player",
+                                  "related_player"))
+        tid = _ev_get(ev, "team_id", "team")
+        if isinstance(tid, dict):
+            tid = tid.get("id")
+        side = "home" if tid == home_id else ("away" if tid == away_id else "home")
+        try:
+            mtxt = f"{int(minute)}'"
+        except (TypeError, ValueError):
+            mtxt = str(minute) if minute else ""
+        out[side].append((mtxt, scorer, assist, own))
+    return out
 
 
 def build_team_name_map(*match_lists):
@@ -466,7 +545,7 @@ HERO_HTML = """
 MENU_CARDS = [
     ("standings", "Group standings"),
     ("scorers", "Top scorers &amp; assists"),
-    ("bracket", "Knockout bracket"),
+    ("bracket", "Live scores"),
     ("players", "Player search"),
     ("stats", "Team stats"),
     ("ai", "AI analysis"),
@@ -843,27 +922,123 @@ def section_scorers():
         st.rerun()
 
 
+LIVE_CSS = """
+<style>
+.lv-wrap { display:flex; flex-direction:column; gap:14px; }
+.lv-card { background:rgba(255,255,255,0.04); border:1px solid rgba(232,184,75,0.30); border-radius:12px; padding:14px 18px; }
+.lv-badge { display:inline-block; font-size:10px; padding:2px 8px; border-radius:5px; letter-spacing:.06em; }
+.lv-live { background:#b3261e; color:#fff; }
+.lv-ft { background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.85); }
+.lv-up { background:rgba(232,184,75,0.18); color:#ffe0a3; }
+.lv-top { text-align:center; margin-bottom:10px; }
+.lv-row { display:flex; align-items:center; justify-content:space-between; }
+.lv-team { display:flex; align-items:center; gap:8px; flex:1; color:#fff; font-size:15px; }
+.lv-team.r { justify-content:flex-end; }
+.lv-team img { width:26px; border-radius:2px; }
+.lv-score { color:#ffe9a8; font-size:26px; font-weight:600; padding:0 16px; white-space:nowrap; }
+.lv-goals { display:flex; justify-content:space-between; gap:10px; margin-top:10px; border-top:1px solid rgba(255,255,255,0.08); padding-top:9px; }
+.lv-goals .g { font-size:12px; color:rgba(255,255,255,0.78); line-height:1.7; flex:1; }
+.lv-goals .g.r { text-align:right; }
+.lv-goals .g .a { opacity:.55; }
+.lv-sect { color:#e8b84b; font-size:13px; letter-spacing:.06em; text-transform:uppercase; margin:20px 0 2px; }
+</style>
+"""
+
+
+def _goals_col(items, right=False):
+    cls = "g r" if right else "g"
+    if not items:
+        return f'<div class="{cls}" style="opacity:.35;">—</div>'
+    rows = []
+    for mtxt, scorer, assist, own in items:
+        line = (f"{mtxt} " if mtxt else "") + (scorer or "Goal").replace("&", "&amp;")
+        if own:
+            line += " (OG)"
+        if assist:
+            line += f' <span class="a">· assist {assist.replace("&", "&amp;")}</span>'
+        rows.append(line)
+    return f'<div class="{cls}">' + "<br>".join(rows) + "</div>"
+
+
+def _live_match_card(m, kind):
+    home = (m.get("home_team") or {}).get("name", "?")
+    away = (m.get("away_team") or {}).get("name", "?")
+    hid = (m.get("home_team") or {}).get("id")
+    aid = (m.get("away_team") or {}).get("id")
+    hs, a_s = m.get("score", {}).get("home"), m.get("score", {}).get("away")
+    if kind == "live":
+        mins = _ev_get(m, "minute", "clock", "elapsed", "min")
+        try:
+            mtxt = f" {int(mins)}'"
+        except (TypeError, ValueError):
+            mtxt = ""
+        badge = f'<span class="lv-badge lv-live">● LIVE{mtxt}</span>'
+    elif kind == "ft":
+        badge = '<span class="lv-badge lv-ft">FULL TIME</span>'
+    else:
+        dt = _match_dt(m)
+        badge = f'<span class="lv-badge lv-up">{dt.strftime("%H:%M") if dt else "UPCOMING"}</span>'
+    score = f"{hs} – {a_s}" if hs is not None and a_s is not None else "vs"
+    goals_html = ""
+    if kind in ("live", "ft"):
+        g = _match_goal_lines(m.get("id"), hid, aid)
+        if g["home"] or g["away"]:
+            goals_html = ('<div class="lv-goals">' + _goals_col(g["home"])
+                          + _goals_col(g["away"], right=True) + "</div>")
+    return (
+        '<div class="lv-card">'
+        f'<div class="lv-top">{badge}</div>'
+        '<div class="lv-row">'
+        f'<div class="lv-team">{_flag_img(home, 26)}<span>{home}</span></div>'
+        f'<div class="lv-score">{score}</div>'
+        f'<div class="lv-team r"><span>{away}</span>{_flag_img(away, 26)}</div>'
+        '</div>'
+        f'{goals_html}</div>'
+    )
+
+
 def section_bracket():
-    st.subheader("Group winner predictions")
-    st.caption("From the current standings — winner and runner-up of each group.")
-    if groups:
-        st.dataframe(group_predictions(groups), hide_index=True)
-    else:
-        st.write("No group results yet.")
-    st.subheader("Simulated knockout bracket")
-    st.caption("Deterministic simulation: the 32 qualifiers (top 2 of each group + 8 best third-placed "
-               "teams) are seeded by points, goal difference and goals scored, then every tie is decided "
-               "by the stronger record. No AI, no randomness.")
-    qualified = qualified_from_groups(groups)
-    rounds, champion = simulate_bracket(qualified)
-    if not rounds:
-        st.info("Not enough completed group games yet to build the bracket. It will appear automatically "
-                "once more results are in.")
-    else:
-        st.write(f"Seeding **{len(rounds[0][1]) * 2}** qualified teams into the bracket.")
-        render_bracket(rounds, champion)
-        st.success(f"🏆 Simulated champion: **{champion}**")
-        st.caption("⚠️ A mechanical simulation from current form — not a real prediction.")
+    st.markdown(_glow_background_css(), unsafe_allow_html=True)
+    st.markdown(LIVE_CSS, unsafe_allow_html=True)
+    st.markdown(_heading("Live scores"), unsafe_allow_html=True)
+    if not wc_ok:
+        st.warning("Couldn't load match data right now — try again shortly.")
+        return
+    if st.button("🔄 Refresh"):
+        st.rerun()
+
+    live = wc_live_matches()
+    today = date.today()
+    ft_today = [m for m in finished if _match_dt(m) and _match_dt(m).date() == today]
+    up_today = [m for m in upcoming if _match_dt(m) and _match_dt(m).date() == today]
+    label_ft, label_up = "Today's results", "Later today"
+    if not ft_today:
+        ft_today = sorted(finished, key=lambda m: _match_dt(m) or datetime.min, reverse=True)[:6]
+        label_ft = "Latest results"
+    if not up_today:
+        up_today = sorted(upcoming, key=lambda m: _match_dt(m) or datetime.max)[:6]
+        label_up = "Upcoming"
+    up_today = sorted(up_today, key=lambda m: _match_dt(m) or datetime.max)
+
+    if not (live or ft_today or up_today):
+        st.info("No match data available yet. Live scores will appear here on match days.")
+        return
+
+    if live:
+        st.markdown('<div class="lv-sect">● Live now</div>', unsafe_allow_html=True)
+        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "live") for m in live)
+                    + "</div>", unsafe_allow_html=True)
+    if ft_today:
+        st.markdown(f'<div class="lv-sect">{label_ft}</div>', unsafe_allow_html=True)
+        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "ft") for m in ft_today)
+                    + "</div>", unsafe_allow_html=True)
+    if up_today:
+        st.markdown(f'<div class="lv-sect">{label_up}</div>', unsafe_allow_html=True)
+        st.markdown('<div class="lv-wrap">' + "".join(_live_match_card(m, "up") for m in up_today)
+                    + "</div>", unsafe_allow_html=True)
+    st.markdown('<div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.6);">Goals show '
+                'scorer, minute and assist where available, live from match data.</div>',
+                unsafe_allow_html=True)
 
 
 def section_players():
@@ -1308,7 +1483,7 @@ def section_ai():
     st.divider()
     st.subheader("🔮 AI predicted knockout bracket")
     st.caption("The AI's own prediction of every knockout tie and scoreline. (The number-based "
-               "simulation lives in the Knockout bracket section.)")
+               "Round-of-32 projection lives under Group standings.)")
     if st.button("Predict the bracket with scores"):
         qualified = qualified_from_groups(groups)
         rounds, _ = simulate_bracket(qualified)
@@ -1369,7 +1544,7 @@ def section_ai():
 SECTIONS = {
     "standings": ("Group standings", section_standings),
     "scorers": ("Top 10 scorers & assists", section_scorers),
-    "bracket": ("Knockout stage", section_bracket),
+    "bracket": ("Live scores", section_bracket),
     "players": ("Player search", section_players),
     "stats": ("Team stats", section_stats),
     "ai": ("AI tournament analysis", section_ai),
