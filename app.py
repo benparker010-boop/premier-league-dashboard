@@ -96,16 +96,47 @@ def match_player_stats(match_id):
 
 @st.cache_data(ttl=120)
 def match_timeline(match_id):
-    """Event timeline for a match (goals, cards, subs) — used for goal minutes/assists."""
+    """Event timeline for a match (goals, cards, subs, etc.).
+    TheStatsAPI wraps the list as {match_id, coverage, events:[...]}, so unwrap it."""
     try:
         r = stats_get(f"/football/matches/{match_id}/timeline")
         if r.status_code == 404:
             return []
         r.raise_for_status()
         data = r.json().get("data", [])
+        if isinstance(data, dict):
+            data = data.get("events", [])
         return data if isinstance(data, list) else []
     except Exception:
         return []
+
+
+@st.cache_data(ttl=600)
+def match_lineups(match_id):
+    """Confirmed/predicted lineups: formation + starting XI + substitutes per side."""
+    try:
+        r = stats_get(f"/football/matches/{match_id}/lineups")
+        if r.status_code == 404:
+            return {}
+        r.raise_for_status()
+        d = r.json().get("data", {})
+        return d if isinstance(d, dict) else {}
+    except Exception:
+        return {}
+
+
+@st.cache_data(ttl=300)
+def match_odds(match_id):
+    """Bookmaker odds (1X2 / BTTS / totals). Heavier — fetched on demand, not every view."""
+    try:
+        r = stats_get(f"/football/matches/{match_id}/odds")
+        if r.status_code == 404:
+            return {}
+        r.raise_for_status()
+        d = r.json().get("data", {})
+        return d if isinstance(d, dict) else {}
+    except Exception:
+        return {}
 
 
 def wc_live_matches():
@@ -1104,17 +1135,282 @@ def _fmt_stat(v, unit=""):
     return f"{v}{unit}"
 
 
-MATCH_STAT_ROWS = [("Possession", "ball_possession", "%"), ("Expected goals", "expected_goals", ""),
+MATCH_STAT_ROWS = [("Possession", "ball_possession", "%"), ("Expected goals (xG)", "expected_goals", ""),
                    ("Total shots", "total_shots", ""), ("Shots on target", "shots_on_target", ""),
-                   ("Big chances", "big_chances", ""), ("Corners", "corner_kicks", ""),
-                   ("Fouls", "fouls", ""), ("Yellow cards", "yellow_cards", ""),
+                   ("Big chances", "big_chances", ""), ("Goalkeeper saves", "goalkeeper_saves", ""),
+                   ("Corners", "corner_kicks", ""), ("Fouls", "fouls", ""),
+                   ("Tackles", "tackles", ""), ("Free kicks", "free_kicks", ""),
+                   ("Yellow cards", "yellow_cards", ""), ("Red cards", "red_cards", ""),
                    ("Passes", "passes", ""), ("Accurate passes", "accurate_passes", "")]
+
+
+MATCH_CSS = """
+<style>
+.md-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; }
+@media (max-width:640px){ .md-grid{ grid-template-columns:1fr; } }
+.md-muted { color:rgba(255,255,255,0.55); font-size:12px; }
+.md-row { display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.6); margin-top:3px; }
+.sub-h { display:flex; align-items:center; gap:8px; color:#fff; font-weight:600; font-size:15px; margin-bottom:4px; }
+.fchip { display:inline-block; background:rgba(232,184,75,0.14); border:1px solid rgba(232,184,75,0.35); border-radius:6px; padding:2px 10px; font-size:12px; color:#e8b84b; font-weight:700; letter-spacing:.04em; }
+/* event timeline */
+.tl-ev { display:flex; align-items:center; gap:10px; padding:6px 2px; font-size:13px; color:#fff; border-bottom:1px solid rgba(255,255,255,0.05); }
+.tl-ev.away { flex-direction:row-reverse; text-align:right; }
+.tl-min { min-width:46px; color:#e8b84b; font-weight:700; font-size:12px; }
+.tl-ev.away .tl-min { color:#7fb6d6; }
+.tl-ic { width:20px; text-align:center; }
+.tl-pl { font-weight:600; }
+.tl-sub { color:rgba(255,255,255,0.45); font-size:11px; margin-left:6px; }
+.tl-ev.away .tl-sub { margin-left:0; margin-right:6px; }
+/* lineups */
+.xi { list-style:none; padding:0; margin:6px 0 0; }
+.xi li { display:flex; align-items:center; gap:9px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.06); font-size:13px; color:#fff; }
+.xi .num { display:inline-block; min-width:24px; height:22px; line-height:22px; text-align:center; background:rgba(232,184,75,0.16); color:#e8b84b; border-radius:6px; font-size:11px; font-weight:700; }
+.xi .pos { margin-left:auto; font-size:10px; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:.04em; }
+/* form pills */
+.frm { display:flex; gap:5px; margin-top:6px; flex-wrap:wrap; }
+.frm span { width:24px; height:24px; line-height:24px; text-align:center; border-radius:5px; font-size:12px; font-weight:800; }
+.frm .w { background:#37b86b; color:#06240f; } .frm .d { background:#e8b84b; color:#332600; } .frm .l { background:#e24b4a; color:#fff; }
+.frm-line { font-size:12px; color:rgba(255,255,255,0.7); margin-top:8px; line-height:1.7; }
+/* prediction */
+.wdl { display:flex; height:30px; border-radius:7px; overflow:hidden; margin:10px 0 2px; font-size:12px; font-weight:800; }
+.wdl div { display:flex; align-items:center; justify-content:center; min-width:0; }
+.wdl .h { background:#e8b84b; color:#332600; } .wdl .d { background:#5b6b80; color:#fff; } .wdl .a { background:#7fb6d6; color:#08222e; }
+/* ratings */
+.motm { display:flex; align-items:center; gap:12px; background:linear-gradient(90deg,rgba(232,184,75,0.20),rgba(232,184,75,0.02)); border:1px solid rgba(232,184,75,0.40); border-radius:10px; padding:11px 15px; margin-bottom:6px; }
+.motm .rt { margin-left:auto; font-size:23px; font-weight:800; color:#e8b84b; }
+.rrow { display:flex; align-items:center; gap:8px; font-size:13px; color:#fff; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.rrow .rt { margin-left:auto; font-weight:800; color:#e8b84b; }
+.rrow .ev { color:rgba(255,255,255,0.55); font-size:11px; }
+</style>
+"""
+
+EVENT_ICON = {"goal": "⚽", "penalty_missed": "❌", "penalty_awarded": "🎯",
+              "yellow_card": "🟨", "red_card": "🟥", "substitution": "🔄", "var": "📺"}
+EVENT_LABEL = {"penalty_missed": "penalty missed", "penalty_awarded": "penalty won",
+               "substitution": "substituted", "var": "VAR check",
+               "yellow_card": "yellow card", "red_card": "red card"}
+
+
+def _section(title):
+    st.markdown(f'<div class="lv-sect">{title}</div>', unsafe_allow_html=True)
+
+
+def _card(html, pad="14px 20px"):
+    st.markdown(f'<div class="lv-card" style="padding:{pad};">{html}</div>', unsafe_allow_html=True)
+
+
+def _esc(s):
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _team_finished(team_id, exclude_id=None):
+    out = []
+    for mm in finished:
+        h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
+        if team_id not in (h.get("id"), a.get("id")):
+            continue
+        if mm.get("score", {}).get("home") is None:
+            continue
+        out.append(mm)
+    out.sort(key=lambda mm: (_match_dt(mm) or datetime.min), reverse=True)
+    return out
+
+
+def _result_for(team_id, mm):
+    h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
+    hs, as_ = mm.get("score", {}).get("home"), mm.get("score", {}).get("away")
+    is_home = h.get("id") == team_id
+    gf, ga = (hs, as_) if is_home else (as_, hs)
+    opp = (a if is_home else h).get("name", "?")
+    res = "W" if gf > ga else ("L" if gf < ga else "D")
+    return res, gf, ga, opp, is_home
+
+
+def _form_html(team_id):
+    ms = _team_finished(team_id)[:5]
+    if not ms:
+        return '<div class="md-muted">No completed matches yet.</div>'
+    pills, lines = [], []
+    for mm in ms:
+        res, gf, ga, opp, is_home = _result_for(team_id, mm)
+        pills.append(f'<span class="{res.lower()}">{res}</span>')
+        loc = "v" if is_home else "@"
+        lines.append(f'{res} &nbsp;{loc} {_esc(opp)} &nbsp;<b style="color:#fff;">{gf}–{ga}</b>')
+    return ('<div class="frm">' + "".join(pills) + '</div>'
+            '<div class="frm-line">' + "<br>".join(lines) + '</div>')
+
+
+def _h2h_html(hid, aid, home, away, current_mid=None):
+    rows, hw, aw, dr = [], 0, 0, 0
+    for mm in finished:
+        if current_mid is not None and str(mm.get("id")) == str(current_mid):
+            continue  # don't count the match being viewed as its own head-to-head
+        h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
+        if {h.get("id"), a.get("id")} != {hid, aid}:
+            continue
+        hs, as_ = mm.get("score", {}).get("home"), mm.get("score", {}).get("away")
+        if hs is None:
+            continue
+        gf, ga = (hs, as_) if h.get("id") == hid else (as_, hs)
+        hw, aw, dr = hw + (gf > ga), aw + (ga > gf), dr + (gf == ga)
+        dt = _match_dt(mm)
+        rows.append(f'{dt.strftime("%d %b") if dt else ""} · {_esc(h.get("name"))} '
+                    f'{hs}–{as_} {_esc(a.get("name"))}')
+    if not rows:
+        return None
+    return (f'<div class="md-muted" style="margin-bottom:6px;">{_esc(home)} {hw} · '
+            f'{dr} draw{"s" if dr != 1 else ""} · {aw} {_esc(away)}</div>'
+            '<div class="frm-line">' + "<br>".join(rows) + '</div>')
+
+
+def _group_html(name):
+    for g, df in groups.items():
+        if name in df["Team"].values:
+            idx = int(df.index[df["Team"] == name][0])
+            row = df.loc[idx]
+            return (f'<b style="color:#fff;">{_esc(name)}</b> — Group {g} · {_ordinal(idx + 1)} · '
+                    f'{int(row["Pts"])} pts '
+                    f'<span class="md-muted">({int(row["W"])}W {int(row["D"])}D {int(row["L"])}L, '
+                    f'GD {int(row["GD"]):+d})</span>')
+    return None
+
+
+def _timeline_html(mid, hid, aid):
+    evs = [e for e in match_timeline(mid) if isinstance(e, dict) and e.get("type") in EVENT_ICON]
+    if not evs:
+        return None
+    evs.sort(key=lambda e: e.get("sequence", 0))
+    out = []
+    for e in evs:
+        t = e.get("type")
+        tm = e.get("team") or {}
+        side = "home" if tm.get("id") == hid else "away"
+        mn, ex = e.get("minute"), e.get("extra_time") or 0
+        mtxt = (f"{mn}'" + (f"+{ex}" if ex else "")) if mn is not None else ""
+        pl = _name_of(e.get("player")) or EVENT_LABEL.get(t, t)
+        sub = "" if t == "goal" else f'<span class="tl-sub">{EVENT_LABEL.get(t, t)}</span>'
+        out.append(f'<div class="tl-ev {side}"><span class="tl-min">{mtxt}</span>'
+                   f'<span class="tl-ic">{EVENT_ICON[t]}</span>'
+                   f'<span><span class="tl-pl">{_esc(pl)}</span>{sub}</span></div>')
+    return "".join(out)
+
+
+def _xi_html(side):
+    if not side:
+        return None
+    xi = side.get("starting_xi") or []
+    subs = side.get("substitutes") or []
+    if not xi:
+        return None
+
+    def li(p):
+        return (f'<li><span class="num">{p.get("jersey_number", "") or ""}</span>'
+                f'<span>{_esc(p.get("name", ""))}</span>'
+                f'<span class="pos">{_esc(p.get("position", "") or "")}</span></li>')
+
+    fm = side.get("formation")
+    head = (f'<div class="sub-h">{_esc(side.get("name", ""))}'
+            + (f'<span class="fchip">{_esc(fm)}</span>' if fm else "") + '</div>')
+    html = head + '<ul class="xi">' + "".join(li(p) for p in xi) + '</ul>'
+    if subs:
+        html += ('<div class="md-muted" style="margin-top:10px;">Substitutes</div>'
+                 '<ul class="xi">' + "".join(li(p) for p in subs) + '</ul>')
+    return html
+
+
+def _ratings_block(mid, hid, aid, home, away):
+    ps = [p for p in match_player_stats(mid) if p.get("rating") and p.get("played")]
+    if not ps:
+        return None
+    ps.sort(key=lambda p: -(p.get("rating") or 0))
+    motm = ps[0]
+    mt_name = home if motm.get("team_id") == hid else away
+
+    def rrow(p):
+        g = (p.get("shooting") or {}).get("goals") or 0
+        a = (p.get("passing") or {}).get("assists") or 0
+        ev = []
+        if g:
+            ev.append(f'{g}⚽')
+        if a:
+            ev.append(f'{a}🅰')
+        evs = f'<span class="ev">{" ".join(ev)}</span>' if ev else ""
+        return (f'<div class="rrow"><span>{_esc(p.get("player_name", ""))}</span>{evs}'
+                f'<span class="rt">{p.get("rating"):.1f}</span></div>')
+
+    motm_html = (f'<div class="motm">{_flag_img(mt_name, 30)}<div>'
+                 f'<div style="font-weight:700;color:#fff;">{_esc(motm.get("player_name", ""))}</div>'
+                 f'<div class="md-muted">⭐ Player of the match · {_esc(mt_name)}</div></div>'
+                 f'<div class="rt">{motm.get("rating"):.1f}</div></div>')
+    home_top = [p for p in ps if p.get("team_id") == hid][:6]
+    away_top = [p for p in ps if p.get("team_id") == aid][:6]
+    cols = (f'<div><div class="sub-h">{_flag_img(home, 22)}{_esc(home)}</div>'
+            + "".join(rrow(p) for p in home_top) + '</div>'
+            f'<div><div class="sub-h">{_flag_img(away, 22)}{_esc(away)}</div>'
+            + "".join(rrow(p) for p in away_top) + '</div>')
+    return motm_html + f'<div class="md-grid" style="margin-top:10px;">{cols}</div>'
+
+
+def _predict_html(home, away):
+    try:
+        p = predict_fixture(home, away, finished)
+    except Exception:
+        return None
+    pH, pD, pA = p["pA"], p["pD"], p["pB"]
+    i, j = p["score"]
+    bar = (f'<div class="wdl"><div class="h" style="width:{pH * 100:.0f}%">{pH * 100:.0f}%</div>'
+           f'<div class="d" style="width:{pD * 100:.0f}%">{pD * 100:.0f}%</div>'
+           f'<div class="a" style="width:{pA * 100:.0f}%">{pA * 100:.0f}%</div></div>')
+    labels = (f'<div class="md-row"><span>{_esc(home)} win</span><span>Draw</span>'
+              f'<span>{_esc(away)} win</span></div>')
+    foot = (f'<div class="md-muted" style="margin-top:10px;">Most likely score '
+            f'<b style="color:#fff;">{_esc(home)} {i}–{j} {_esc(away)}</b> · '
+            f'expected goals {p["la"]:.2f} – {p["lb"]:.2f}</div>')
+    return bar + labels + foot
+
+
+def _odds_html(mid):
+    od = match_odds(mid)
+    bks = od.get("bookmakers") or []
+    if not bks:
+        return None
+    bk = bks[0]
+    mk = bk.get("markets") or {}
+
+    def px(d, *keys):
+        for k in keys:
+            v = d.get(k) if isinstance(d, dict) else None
+            if isinstance(v, dict):
+                p = v.get("last_seen") or v.get("opening")
+                if p:
+                    return p
+        return "—"
+
+    rows = []
+    mo = mk.get("match_odds") or {}
+    if mo:
+        rows.append(f'<b>1X2</b> &nbsp; Home {px(mo, "home")} &nbsp;·&nbsp; '
+                    f'Draw {px(mo, "draw")} &nbsp;·&nbsp; Away {px(mo, "away")}')
+    bt = mk.get("btts") or {}
+    if bt:
+        rows.append(f'<b>Both teams to score</b> &nbsp; Yes {px(bt, "yes")} &nbsp;·&nbsp; '
+                    f'No {px(bt, "no")}')
+    tg = mk.get("total_goals") or {}
+    if isinstance(tg.get("2.5"), dict):
+        o = tg["2.5"]
+        rows.append(f'<b>Over/Under 2.5</b> &nbsp; Over {px(o, "over")} &nbsp;·&nbsp; '
+                    f'Under {px(o, "under")}')
+    if not rows:
+        return None
+    return (f'<div class="md-muted" style="margin-bottom:8px;">Source: {_esc(bk.get("bookmaker", "bookmaker"))} '
+            '(latest seen price)</div><div class="frm-line">' + "<br>".join(rows) + '</div>')
 
 
 def match_page():
     mid = st.query_params.get("match")
     st.markdown(_glow_background_css(), unsafe_allow_html=True)
     st.markdown(LIVE_CSS, unsafe_allow_html=True)
+    st.markdown(MATCH_CSS, unsafe_allow_html=True)
     pool = {}
     try:
         for mm in wc_live_matches():
@@ -1157,13 +1453,20 @@ def match_page():
         f'<div class="lv-team r"><span style="font-size:19px;">{away}</span>{_flag_img(away, 34)}</div>'
         '</div></div>', unsafe_allow_html=True)
 
+    # ---- Goals + key-events timeline + match stats (played matches only) ----
     if state in ("live", "ft"):
         g = _match_goal_lines(mid, hid, aid)
         if g["home"] or g["away"]:
-            st.markdown('<div class="lv-sect">Goals</div>', unsafe_allow_html=True)
+            _section("Goals")
             st.markdown('<div class="lv-card"><div class="lv-goals" style="border-top:none;margin-top:0;'
                         'padding-top:0;">' + _goals_col(g["home"]) + _goals_col(g["away"], right=True)
                         + '</div></div>', unsafe_allow_html=True)
+
+        tl = _timeline_html(mid, hid, aid)
+        if tl:
+            _section("Key events")
+            _card(tl, pad="8px 18px")
+
         ov = {}
         try:
             ov = wc_match_stats(mid).get("overview", {})
@@ -1187,15 +1490,112 @@ def match_page():
                 f'<div class="ms-bar"><div class="ms-h" style="width:{hpct:.0f}%"></div>'
                 f'<div class="ms-a" style="width:{100 - hpct:.0f}%"></div></div>')
         if rows:
-            st.markdown('<div class="lv-sect">Match stats</div>', unsafe_allow_html=True)
-            st.markdown('<div class="lv-card" style="padding:14px 20px;">' + "".join(rows) + '</div>',
-                        unsafe_allow_html=True)
+            _section("Match stats")
+            _card("".join(rows))
         else:
-            st.caption("No detailed stats published for this match yet.")
+            st.caption("No detailed team stats published for this match yet.")
+
+        # Player ratings & MOTM — heavier (extra API call), so gated behind a button.
+        _section("Player ratings & Man of the Match")
+        rk = f"show_rt_{mid}"
+        if st.button("Show player ratings", key=f"btn_rt_{mid}"):
+            st.session_state[rk] = True
+        if st.session_state.get(rk):
+            rb = _ratings_block(mid, hid, aid, home, away)
+            if rb:
+                _card(rb)
+            else:
+                st.caption("Player ratings not published for this match.")
+        else:
+            st.caption("Tap to load per-player ratings (rating, goals, assists) and the top performer.")
     else:
         when = dt.strftime("%A %d %B, %H:%M") if dt else "a time to be confirmed"
         st.info(f"This match hasn't kicked off yet — scheduled for {when}. "
-                "Goals and stats will appear here once it's under way.")
+                "The model prediction, line-ups, form and head-to-head are below; "
+                "goals and live stats will appear here once it's under way.")
+
+    # ---- Model prediction (pure compute, no API) ----
+    pred = _predict_html(home, away)
+    if pred:
+        _section("Model prediction" if state == "up" else "Pre-match model prediction")
+        _card(pred)
+
+    # ---- Line-ups & formations ----
+    lu = {}
+    try:
+        lu = match_lineups(mid)
+    except Exception:
+        lu = {}
+    hx, ax = _xi_html(lu.get("home")), _xi_html(lu.get("away"))
+    if hx or ax:
+        conf = "Confirmed line-ups" if lu.get("confirmed") else "Predicted line-ups"
+        _section(conf)
+        _card(f'<div class="md-grid">{hx or ""}{ax or ""}</div>')
+    else:
+        _section("Line-ups")
+        st.caption("Line-ups not published yet for this match.")
+
+    # ---- Recent form (computed from finished matches) ----
+    _section("Recent form")
+    _card(f'<div class="md-grid">'
+          f'<div><div class="sub-h">{_flag_img(home, 22)}{home}</div>{_form_html(hid)}</div>'
+          f'<div><div class="sub-h">{_flag_img(away, 22)}{away}</div>{_form_html(aid)}</div></div>')
+
+    # ---- Head-to-head (only what this data source has = this tournament) ----
+    h2h = _h2h_html(hid, aid, home, away, current_mid=mid)
+    _section("Head-to-head")
+    if h2h:
+        _card(h2h)
+    else:
+        st.caption("No previous meeting in this tournament — and TheStatsAPI doesn't expose "
+                   "cross-tournament head-to-head history, so none is shown rather than guessed.")
+
+    # ---- Group / league context ----
+    gh, ga2 = _group_html(home), _group_html(away)
+    if gh or ga2:
+        _section("Group standings context")
+        _card("<br>".join(x for x in (gh, ga2) if x))
+
+    # ---- Live / closing odds — extra API call, gated ----
+    _section("Betting odds")
+    ok = f"show_od_{mid}"
+    if st.button("Show bookmaker odds", key=f"btn_od_{mid}"):
+        st.session_state[ok] = True
+    if st.session_state.get(ok):
+        oh = _odds_html(mid)
+        if oh:
+            _card(oh)
+        else:
+            st.caption("No bookmaker odds available for this match.")
+    else:
+        st.caption("Tap to fetch live 1X2 / BTTS / over-under prices for this match.")
+
+    # ---- AI match summary — gated (token cost) ----
+    _section("AI match summary")
+    ak = f"ai_sum_{mid}"
+    if st.button("Generate AI summary", key=f"btn_ai_{mid}"):
+        facts = [f"{home} vs {away}", f"Status: {state}", f"Score: {home} {hs}–{a_s} {away}"
+                 if hs is not None else "Not played yet"]
+        try:
+            ov2 = wc_match_stats(mid).get("overview", {}) if state in ("live", "ft") else {}
+        except Exception:
+            ov2 = {}
+        for lab, key, _u in MATCH_STAT_ROWS:
+            hv, av = stat_val(ov2, key, "home"), stat_val(ov2, key, "away")
+            if hv is not None or av is not None:
+                facts.append(f"{lab}: {hv} vs {av}")
+        try:
+            with st.spinner("Writing summary..."):
+                st.session_state[ak] = ask_ai(
+                    "You are a football reporter. Using ONLY these facts, write a tight 3-4 sentence "
+                    "summary of this World Cup match. Don't invent anything not in the data.\n\n"
+                    + "\n".join(facts), temperature=0.3)
+        except Exception as e:
+            st.session_state[ak] = f"Couldn't generate a summary right now. ({e})"
+    if st.session_state.get(ak):
+        st.info(st.session_state[ak])
+    else:
+        st.caption("Tap for a short AI-written recap/preview based on this match's data.")
 
 
 def section_players():
