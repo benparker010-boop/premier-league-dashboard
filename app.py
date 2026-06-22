@@ -1181,6 +1181,42 @@ MATCH_CSS = """
 .rrow { display:flex; align-items:center; gap:8px; font-size:13px; color:#fff; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
 .rrow .rt { margin-left:auto; font-weight:800; color:#e8b84b; }
 .rrow .ev { color:rgba(255,255,255,0.55); font-size:11px; }
+/* ---- premium stats panel ---- */
+.sh { padding:17px 22px 19px; }
+.sh-legend { display:flex; justify-content:space-between; margin-bottom:16px; }
+.sh-legend .th { display:flex; align-items:center; gap:8px; font-weight:700; color:#fff; font-size:14.5px; padding-bottom:7px; }
+.sh-legend .th img { border-radius:3px; }
+.sh-legend .th.h { border-bottom:2px solid #e8b84b; }
+.sh-legend .th.a { border-bottom:2px solid #7fb6d6; }
+.sh-poss, .sh-xg { display:grid; grid-template-columns:1fr auto 1fr; align-items:baseline; }
+.sh-xg { margin-top:18px; }
+.sh-big { font-size:31px; font-weight:800; font-variant-numeric:tabular-nums; line-height:1; }
+.sh-big.h { text-align:left; color:#e8b84b; } .sh-big.a { text-align:right; color:#7fb6d6; }
+.sh-xv { font-size:21px; font-weight:800; font-variant-numeric:tabular-nums; }
+.sh-xv.h { text-align:left; color:#e8b84b; } .sh-xv.a { text-align:right; color:#7fb6d6; }
+.sh-mid { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); padding:0 16px; align-self:center; white-space:nowrap; }
+.sh-bar { display:flex; height:9px; gap:3px; margin:11px 0 2px; }
+.sh-bar span { border-radius:99px; min-width:3px; }
+.sh-bar .h { background:linear-gradient(90deg,rgba(232,184,75,0.45),#e8b84b); box-shadow:0 0 14px rgba(232,184,75,0.25); }
+.sh-bar .a { background:linear-gradient(270deg,rgba(127,182,214,0.45),#5b8fb0); box-shadow:0 0 14px rgba(91,143,176,0.25); }
+.cmp { padding:11px 2px; }
+.cmp + .cmp { border-top:1px solid rgba(255,255,255,0.06); }
+.cmp-top { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; }
+.cmp-v { font-size:17px; font-weight:700; font-variant-numeric:tabular-nums; color:rgba(255,255,255,0.45); }
+.cmp-v.h { text-align:left; } .cmp-v.a { text-align:right; }
+.cmp-v.lead { color:#fff; }
+.cmp-lab { font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:rgba(255,255,255,0.5); padding:0 14px; text-align:center; white-space:nowrap; }
+.cmp-bar { display:flex; height:5px; gap:3px; margin-top:8px; }
+.cmp-bar span { border-radius:99px; min-width:2px; }
+.cmp-bar .h { background:linear-gradient(90deg,rgba(232,184,75,0.40),#e8b84b); }
+.cmp-bar .a { background:linear-gradient(270deg,rgba(127,182,214,0.40),#5b8fb0); }
+.cmp-bar .h.dim, .cmp-bar .a.dim { opacity:.32; }
+/* tab chrome */
+.stTabs [data-baseweb="tab-list"] { gap:3px; }
+.stTabs [data-baseweb="tab"] { height:36px; padding:0 13px; color:rgba(255,255,255,0.55); font-size:12.5px; font-weight:600; letter-spacing:.01em; }
+.stTabs [aria-selected="true"] { color:#e8b84b !important; }
+.stTabs [data-baseweb="tab-highlight"] { background-color:#e8b84b !important; }
+.stTabs [data-baseweb="tab-border"] { background-color:rgba(255,255,255,0.08); }
 </style>
 """
 
@@ -1406,6 +1442,163 @@ def _odds_html(mid):
             '(latest seen price)</div><div class="frm-line">' + "<br>".join(rows) + '</div>')
 
 
+# Every team stat TheStatsAPI exposes for a match, grouped into tabs. Each entry is
+# (label, section, key, kind) where section is a /stats top-level block and kind is
+# how to format/scale it: "count" (proportional bar), "pct" (already a %), "float"
+# (decimals, e.g. xG). "__passacc__" is derived from passes / accurate_passes.
+STAT_GROUPS = [
+    ("Shooting", [
+        ("Expected goals (xG)", "overview", "expected_goals", "float"),
+        ("Total shots", "shots", "total_shots", "count"),
+        ("Shots on target", "shots", "shots_on_target", "count"),
+        ("Shots off target", "shots", "shots_off_target", "count"),
+        ("Blocked shots", "shots", "blocked_shots", "count"),
+        ("Shots inside box", "shots", "shots_inside_box", "count"),
+        ("Shots outside box", "shots", "shots_outside_box", "count"),
+        ("Hit woodwork", "shots", "hit_woodwork", "count"),
+        ("Big chances", "overview", "big_chances", "count"),
+        ("Big chances missed", "attack", "big_chances_missed", "count"),
+    ]),
+    ("Passing", [
+        ("Possession", "overview", "ball_possession", "pct"),
+        ("Passes", "overview", "passes", "count"),
+        ("Accurate passes", "overview", "accurate_passes", "count"),
+        ("Pass accuracy", "__passacc__", None, "pct"),
+        ("Accurate crosses", "passes", "accurate_crosses", "count"),
+        ("Accurate long balls", "passes", "accurate_long_balls", "count"),
+        ("Final-third entries", "passes", "final_third_entries", "count"),
+        ("Touches in box", "attack", "touches_in_penalty_area", "count"),
+        ("Throw-ins", "passes", "throw_ins", "count"),
+    ]),
+    ("Duels & defending", [
+        ("Duels won", "duels", "duels_won_percentage", "pct"),
+        ("Ground duels won", "duels", "ground_duels_percentage", "pct"),
+        ("Aerial duels won", "duels", "aerial_duels_percentage", "pct"),
+        ("Dribbles", "duels", "dribbles_percentage", "pct"),
+        ("Dispossessed", "duels", "dispossessed", "count"),
+        ("Tackles", "defending", "tackles", "count"),
+        ("Tackles won", "defending", "tackles_won_percentage", "pct"),
+        ("Interceptions", "defending", "interceptions", "count"),
+        ("Clearances", "defending", "clearances", "count"),
+        ("Ball recoveries", "defending", "ball_recoveries", "count"),
+    ]),
+    ("Goalkeeping", [
+        ("Saves", "goalkeeping", "saves", "count"),
+        ("Goals prevented", "goalkeeping", "goals_prevented", "float"),
+        ("Goal kicks", "goalkeeping", "goal_kicks", "count"),
+        ("High claims", "goalkeeping", "high_claims", "count"),
+    ]),
+    ("Discipline & set pieces", [
+        ("Fouls", "overview", "fouls", "count"),
+        ("Fouled in final third", "attack", "fouled_in_final_third", "count"),
+        ("Offsides", "attack", "offsides", "count"),
+        ("Yellow cards", "overview", "yellow_cards", "count"),
+        ("Red cards", "overview", "red_cards", "count"),
+        ("Corners", "overview", "corner_kicks", "count"),
+        ("Free kicks", "overview", "free_kicks", "count"),
+    ]),
+]
+
+
+def _stat_get(full, section, key, side):
+    try:
+        return full[section][key]["all"][side]
+    except Exception:
+        return None
+
+
+def _n(x, pct=False):
+    if x is None:
+        return "—"
+    if isinstance(x, float):
+        x = int(x) if float(x).is_integer() else round(x, 2)
+    return f"{x}%" if pct else f"{x}"
+
+
+def _cmp_row(label, hv, av, kind):
+    if hv is None and av is None:
+        return ""
+    try:
+        hn = float(hv) if hv is not None else 0.0
+        an = float(av) if av is not None else 0.0
+    except (TypeError, ValueError):
+        hn, an = 0.0, 0.0
+    lh = " lead" if hn > an else ""
+    la = " lead" if an > hn else ""
+    bar = ""
+    if hn >= 0 and an >= 0 and (hn + an) > 0:
+        hp = hn / (hn + an) * 100
+        dh = " dim" if hn < an else ""
+        da = " dim" if an < hn else ""
+        bar = (f'<div class="cmp-bar"><span class="h{dh}" style="width:{hp:.1f}%"></span>'
+               f'<span class="a{da}" style="width:{100 - hp:.1f}%"></span></div>')
+    pct = (kind == "pct")
+    return (f'<div class="cmp"><div class="cmp-top">'
+            f'<span class="cmp-v h{lh}">{_n(hv, pct)}</span>'
+            f'<span class="cmp-lab">{label}</span>'
+            f'<span class="cmp-v a{la}">{_n(av, pct)}</span></div>{bar}</div>')
+
+
+def _stats_hero(home, away, full):
+    hp, ap = _stat_get(full, "overview", "ball_possession", "home"), _stat_get(full, "overview", "ball_possession", "away")
+    hx, ax = _stat_get(full, "overview", "expected_goals", "home"), _stat_get(full, "overview", "expected_goals", "away")
+    legend = (f'<div class="sh-legend"><div class="th h">{_flag_img(home, 22)}<span>{_esc(home)}</span></div>'
+              f'<div class="th a"><span>{_esc(away)}</span>{_flag_img(away, 22)}</div></div>')
+    try:
+        ph, pa = float(hp or 0), float(ap or 0)
+    except (TypeError, ValueError):
+        ph, pa = 0.0, 0.0
+    tot = ph + pa or 1
+    poss = (f'<div class="sh-poss"><span class="sh-big h">{_n(hp, True)}</span>'
+            f'<span class="sh-mid">Possession</span>'
+            f'<span class="sh-big a">{_n(ap, True)}</span></div>'
+            f'<div class="sh-bar"><span class="h" style="width:{ph / tot * 100:.1f}%"></span>'
+            f'<span class="a" style="width:{pa / tot * 100:.1f}%"></span></div>')
+    xg = ""
+    if hx is not None or ax is not None:
+        try:
+            xh, xa = float(hx or 0), float(ax or 0)
+        except (TypeError, ValueError):
+            xh, xa = 0.0, 0.0
+        xt = xh + xa or 1
+        xg = (f'<div class="sh-xg"><span class="sh-xv h">{_n(hx)}</span>'
+              f'<span class="sh-mid">Expected goals (xG)</span>'
+              f'<span class="sh-xv a">{_n(ax)}</span></div>'
+              f'<div class="sh-bar"><span class="h" style="width:{xh / xt * 100:.1f}%"></span>'
+              f'<span class="a" style="width:{xa / xt * 100:.1f}%"></span></div>')
+    return f'<div class="lv-card sh">{legend}{poss}{xg}</div>'
+
+
+def _render_match_stats(mid, home, away):
+    try:
+        full = wc_match_stats(mid)
+    except Exception:
+        full = {}
+    if not full.get("overview"):
+        st.caption("No detailed team stats published for this match yet.")
+        return
+    _section("Match stats")
+    st.markdown(_stats_hero(home, away, full), unsafe_allow_html=True)
+    tabs = st.tabs([g[0] for g in STAT_GROUPS])
+    for tab, (_title, rows) in zip(tabs, STAT_GROUPS):
+        with tab:
+            html = []
+            for label, section, key, kind in rows:
+                if section == "__passacc__":
+                    hp_, ap_ = _stat_get(full, "overview", "passes", "home"), _stat_get(full, "overview", "passes", "away")
+                    ha_, aa_ = _stat_get(full, "overview", "accurate_passes", "home"), _stat_get(full, "overview", "accurate_passes", "away")
+                    hv = round(ha_ / hp_ * 100) if hp_ else None
+                    av = round(aa_ / ap_ * 100) if ap_ else None
+                else:
+                    hv, av = _stat_get(full, section, key, "home"), _stat_get(full, section, key, "away")
+                html.append(_cmp_row(label, hv, av, kind))
+            body = "".join(x for x in html if x)
+            if body:
+                _card(body, pad="4px 20px 10px")
+            else:
+                st.caption("Not published for this match.")
+
+
 def match_page():
     mid = st.query_params.get("match")
     st.markdown(_glow_background_css(), unsafe_allow_html=True)
@@ -1467,33 +1660,7 @@ def match_page():
             _section("Key events")
             _card(tl, pad="8px 18px")
 
-        ov = {}
-        try:
-            ov = wc_match_stats(mid).get("overview", {})
-        except Exception:
-            ov = {}
-        rows = []
-        for lab, key, unit in MATCH_STAT_ROWS:
-            hv, av = stat_val(ov, key, "home"), stat_val(ov, key, "away")
-            if hv is None and av is None:
-                continue
-            try:
-                hn, an = float(hv or 0), float(av or 0)
-            except (TypeError, ValueError):
-                hn, an = 0.0, 0.0
-            hpct = max(0.0, min(100.0, hn / ((hn + an) or 1) * 100))
-            rows.append(
-                '<div class="ms-row">'
-                f'<div class="ms-v">{_fmt_stat(hv, unit)}</div>'
-                f'<div class="ms-lab">{lab}</div>'
-                f'<div class="ms-v r">{_fmt_stat(av, unit)}</div></div>'
-                f'<div class="ms-bar"><div class="ms-h" style="width:{hpct:.0f}%"></div>'
-                f'<div class="ms-a" style="width:{100 - hpct:.0f}%"></div></div>')
-        if rows:
-            _section("Match stats")
-            _card("".join(rows))
-        else:
-            st.caption("No detailed team stats published for this match yet.")
+        _render_match_stats(mid, home, away)
 
         # Player ratings & MOTM — heavier (extra API call), so gated behind a button.
         _section("Player ratings & Man of the Match")
