@@ -1217,6 +1217,31 @@ MATCH_CSS = """
 .stTabs [aria-selected="true"] { color:#e8b84b !important; }
 .stTabs [data-baseweb="tab-highlight"] { background-color:#e8b84b !important; }
 .stTabs [data-baseweb="tab-border"] { background-color:rgba(255,255,255,0.08); }
+/* ---- goalscorers in the score header ---- */
+.lv-scorers { display:flex; justify-content:space-between; gap:12px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); }
+.lv-scorers .sc { flex:1; font-size:12.5px; color:rgba(255,255,255,0.88); line-height:1.85; }
+.lv-scorers .sc.a { text-align:right; }
+.lv-scorers .sc .min { color:rgba(255,255,255,0.5); font-weight:600; }
+/* ---- formation pitch ---- */
+.pteam { display:flex; align-items:center; gap:8px; font-weight:700; font-size:14px; padding:5px 2px; }
+.pteam img { border-radius:3px; }
+.pteam .fchip { margin-left:4px; }
+.pteam.a { color:#bfe0f2; } .pteam.h { color:#f3d489; margin-top:8px; }
+.pitch { position:relative; width:100%; padding-bottom:142%; border-radius:12px; overflow:hidden; margin:4px 0;
+  background:#11652f;
+  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,0.05) 0 70px, rgba(0,0,0,0.05) 70px 140px); }
+.pmark { position:absolute; inset:0; width:100%; height:100%; }
+.pl { position:absolute; transform:translate(-50%,-50%); width:62px; text-align:center; z-index:2; }
+.pl .jersey { width:32px; height:32px; line-height:32px; margin:0 auto; border-radius:50%; font-weight:800; font-size:13px; font-variant-numeric:tabular-nums; box-shadow:0 2px 5px rgba(0,0,0,0.45); }
+.pl.h .jersey { background:linear-gradient(160deg,#f0c659,#e0a82f); color:#241803; }
+.pl.a .jersey { background:linear-gradient(160deg,#8fc0dd,#5b8fb0); color:#042231; }
+.pl .nm { font-size:9.5px; color:#fff; margin-top:3px; line-height:1.1; font-weight:600; text-shadow:0 1px 3px rgba(0,0,0,0.95); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+/* ---- substitutions ---- */
+.sub-pair { display:flex; align-items:center; gap:8px; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.sub-pair:last-child { border-bottom:none; }
+.sub-min { min-width:38px; color:#e8b84b; font-weight:700; font-size:12px; }
+.sub-pair .on { color:#37b86b; font-weight:600; }
+.sub-pair .off { color:#e98a88; }
 </style>
 """
 
@@ -1239,78 +1264,6 @@ def _esc(s):
     return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def _team_finished(team_id, exclude_id=None):
-    out = []
-    for mm in finished:
-        h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
-        if team_id not in (h.get("id"), a.get("id")):
-            continue
-        if mm.get("score", {}).get("home") is None:
-            continue
-        out.append(mm)
-    out.sort(key=lambda mm: (_match_dt(mm) or datetime.min), reverse=True)
-    return out
-
-
-def _result_for(team_id, mm):
-    h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
-    hs, as_ = mm.get("score", {}).get("home"), mm.get("score", {}).get("away")
-    is_home = h.get("id") == team_id
-    gf, ga = (hs, as_) if is_home else (as_, hs)
-    opp = (a if is_home else h).get("name", "?")
-    res = "W" if gf > ga else ("L" if gf < ga else "D")
-    return res, gf, ga, opp, is_home
-
-
-def _form_html(team_id):
-    ms = _team_finished(team_id)[:5]
-    if not ms:
-        return '<div class="md-muted">No completed matches yet.</div>'
-    pills, lines = [], []
-    for mm in ms:
-        res, gf, ga, opp, is_home = _result_for(team_id, mm)
-        pills.append(f'<span class="{res.lower()}">{res}</span>')
-        loc = "v" if is_home else "@"
-        lines.append(f'{res} &nbsp;{loc} {_esc(opp)} &nbsp;<b style="color:#fff;">{gf}–{ga}</b>')
-    return ('<div class="frm">' + "".join(pills) + '</div>'
-            '<div class="frm-line">' + "<br>".join(lines) + '</div>')
-
-
-def _h2h_html(hid, aid, home, away, current_mid=None):
-    rows, hw, aw, dr = [], 0, 0, 0
-    for mm in finished:
-        if current_mid is not None and str(mm.get("id")) == str(current_mid):
-            continue  # don't count the match being viewed as its own head-to-head
-        h, a = (mm.get("home_team") or {}), (mm.get("away_team") or {})
-        if {h.get("id"), a.get("id")} != {hid, aid}:
-            continue
-        hs, as_ = mm.get("score", {}).get("home"), mm.get("score", {}).get("away")
-        if hs is None:
-            continue
-        gf, ga = (hs, as_) if h.get("id") == hid else (as_, hs)
-        hw, aw, dr = hw + (gf > ga), aw + (ga > gf), dr + (gf == ga)
-        dt = _match_dt(mm)
-        rows.append(f'{dt.strftime("%d %b") if dt else ""} · {_esc(h.get("name"))} '
-                    f'{hs}–{as_} {_esc(a.get("name"))}')
-    if not rows:
-        return None
-    return (f'<div class="md-muted" style="margin-bottom:6px;">{_esc(home)} {hw} · '
-            f'{dr} draw{"s" if dr != 1 else ""} · {aw} {_esc(away)}</div>'
-            '<div class="frm-line">' + "<br>".join(rows) + '</div>')
-
-
-def _group_html(name):
-    for g, df in groups.items():
-        if name in df["Team"].values:
-            idx = int(df.index[df["Team"] == name][0])
-            row = df.loc[idx]
-            return (f'<b style="color:#fff;">{_esc(name)}</b> — Group {g} · {_ordinal(idx + 1)} · '
-                    f'{int(row["Pts"])} pts '
-                    f'<span class="md-muted">({int(row["W"])}W {int(row["D"])}D {int(row["L"])}L, '
-                    f'GD {int(row["GD"]):+d})</span>')
-    return None
-
-
 def _timeline_html(mid, hid, aid):
     evs = [e for e in match_timeline(mid) if isinstance(e, dict) and e.get("type") in EVENT_ICON]
     if not evs:
@@ -1329,29 +1282,6 @@ def _timeline_html(mid, hid, aid):
                    f'<span class="tl-ic">{EVENT_ICON[t]}</span>'
                    f'<span><span class="tl-pl">{_esc(pl)}</span>{sub}</span></div>')
     return "".join(out)
-
-
-def _xi_html(side):
-    if not side:
-        return None
-    xi = side.get("starting_xi") or []
-    subs = side.get("substitutes") or []
-    if not xi:
-        return None
-
-    def li(p):
-        return (f'<li><span class="num">{p.get("jersey_number", "") or ""}</span>'
-                f'<span>{_esc(p.get("name", ""))}</span>'
-                f'<span class="pos">{_esc(p.get("position", "") or "")}</span></li>')
-
-    fm = side.get("formation")
-    head = (f'<div class="sub-h">{_esc(side.get("name", ""))}'
-            + (f'<span class="fchip">{_esc(fm)}</span>' if fm else "") + '</div>')
-    html = head + '<ul class="xi">' + "".join(li(p) for p in xi) + '</ul>'
-    if subs:
-        html += ('<div class="md-muted" style="margin-top:10px;">Substitutes</div>'
-                 '<ul class="xi">' + "".join(li(p) for p in subs) + '</ul>')
-    return html
 
 
 def _ratings_block(mid, hid, aid, home, away):
@@ -1403,43 +1333,6 @@ def _predict_html(home, away):
             f'<b style="color:#fff;">{_esc(home)} {i}–{j} {_esc(away)}</b> · '
             f'expected goals {p["la"]:.2f} – {p["lb"]:.2f}</div>')
     return bar + labels + foot
-
-
-def _odds_html(mid):
-    od = match_odds(mid)
-    bks = od.get("bookmakers") or []
-    if not bks:
-        return None
-    bk = bks[0]
-    mk = bk.get("markets") or {}
-
-    def px(d, *keys):
-        for k in keys:
-            v = d.get(k) if isinstance(d, dict) else None
-            if isinstance(v, dict):
-                p = v.get("last_seen") or v.get("opening")
-                if p:
-                    return p
-        return "—"
-
-    rows = []
-    mo = mk.get("match_odds") or {}
-    if mo:
-        rows.append(f'<b>1X2</b> &nbsp; Home {px(mo, "home")} &nbsp;·&nbsp; '
-                    f'Draw {px(mo, "draw")} &nbsp;·&nbsp; Away {px(mo, "away")}')
-    bt = mk.get("btts") or {}
-    if bt:
-        rows.append(f'<b>Both teams to score</b> &nbsp; Yes {px(bt, "yes")} &nbsp;·&nbsp; '
-                    f'No {px(bt, "no")}')
-    tg = mk.get("total_goals") or {}
-    if isinstance(tg.get("2.5"), dict):
-        o = tg["2.5"]
-        rows.append(f'<b>Over/Under 2.5</b> &nbsp; Over {px(o, "over")} &nbsp;·&nbsp; '
-                    f'Under {px(o, "under")}')
-    if not rows:
-        return None
-    return (f'<div class="md-muted" style="margin-bottom:8px;">Source: {_esc(bk.get("bookmaker", "bookmaker"))} '
-            '(latest seen price)</div><div class="frm-line">' + "<br>".join(rows) + '</div>')
 
 
 # Every team stat TheStatsAPI exposes for a match, grouped into tabs. Each entry is
@@ -1539,48 +1432,33 @@ def _cmp_row(label, hv, av, kind):
             f'<span class="cmp-v a{la}">{_n(av, pct)}</span></div>{bar}</div>')
 
 
-def _stats_hero(home, away, full):
-    hp, ap = _stat_get(full, "overview", "ball_possession", "home"), _stat_get(full, "overview", "ball_possession", "away")
-    hx, ax = _stat_get(full, "overview", "expected_goals", "home"), _stat_get(full, "overview", "expected_goals", "away")
-    legend = (f'<div class="sh-legend"><div class="th h">{_flag_img(home, 22)}<span>{_esc(home)}</span></div>'
-              f'<div class="th a"><span>{_esc(away)}</span>{_flag_img(away, 22)}</div></div>')
-    try:
-        ph, pa = float(hp or 0), float(ap or 0)
-    except (TypeError, ValueError):
-        ph, pa = 0.0, 0.0
-    tot = ph + pa or 1
-    poss = (f'<div class="sh-poss"><span class="sh-big h">{_n(hp, True)}</span>'
-            f'<span class="sh-mid">Possession</span>'
-            f'<span class="sh-big a">{_n(ap, True)}</span></div>'
-            f'<div class="sh-bar"><span class="h" style="width:{ph / tot * 100:.1f}%"></span>'
-            f'<span class="a" style="width:{pa / tot * 100:.1f}%"></span></div>')
-    xg = ""
-    if hx is not None or ax is not None:
-        try:
-            xh, xa = float(hx or 0), float(ax or 0)
-        except (TypeError, ValueError):
-            xh, xa = 0.0, 0.0
-        xt = xh + xa or 1
-        xg = (f'<div class="sh-xg"><span class="sh-xv h">{_n(hx)}</span>'
-              f'<span class="sh-mid">Expected goals (xG)</span>'
-              f'<span class="sh-xv a">{_n(ax)}</span></div>'
-              f'<div class="sh-bar"><span class="h" style="width:{xh / xt * 100:.1f}%"></span>'
-              f'<span class="a" style="width:{xa / xt * 100:.1f}%"></span></div>')
-    return f'<div class="lv-card sh">{legend}{poss}{xg}</div>'
+def _team_legend(home, away):
+    """Slim colour key (home = gold, away = blue) shown above the tabbed panel."""
+    return (f'<div class="lv-card" style="padding:13px 20px;"><div class="sh-legend" style="margin:0;">'
+            f'<div class="th h">{_flag_img(home, 22)}<span>{_esc(home)}</span></div>'
+            f'<div class="th a"><span>{_esc(away)}</span>{_flag_img(away, 22)}</div></div></div>')
 
 
-def _render_match_stats(mid, home, away):
+def _render_match_centre(mid, hid, aid, home, away):
+    """The single tabbed home for BOTH the key-events timeline and every team stat
+    (split across category tabs). No separate stats panel / no separate events block."""
     try:
         full = wc_match_stats(mid)
     except Exception:
         full = {}
-    if not full.get("overview"):
-        st.caption("No detailed team stats published for this match yet.")
+    tl = _timeline_html(mid, hid, aid)
+    has_stats = bool(full.get("overview"))
+    if not tl and not has_stats:
+        st.caption("No stats or events published for this match yet.")
         return
-    _section("Match stats")
-    st.markdown(_stats_hero(home, away, full), unsafe_allow_html=True)
-    tabs = st.tabs([g[0] for g in STAT_GROUPS])
-    for tab, (_title, rows) in zip(tabs, STAT_GROUPS):
+    st.markdown(_team_legend(home, away), unsafe_allow_html=True)
+    tabs = st.tabs(["Key events"] + [g[0] for g in STAT_GROUPS])
+    with tabs[0]:
+        if tl:
+            _card(tl, pad="8px 18px")
+        else:
+            st.caption("No key events recorded for this match.")
+    for tab, (_title, rows) in zip(tabs[1:], STAT_GROUPS):
         with tab:
             html = []
             for label, section, key, kind in rows:
@@ -1597,6 +1475,136 @@ def _render_match_stats(mid, home, away):
                 _card(body, pad="4px 20px 10px")
             else:
                 st.caption("Not published for this match.")
+
+
+def _scorers_strip(g):
+    """Goalscorers per side (grouped by player, minutes listed) for the score header."""
+    def col(items, right=False):
+        cls = "sc a" if right else "sc"
+        if not items:
+            return f'<div class="{cls}"></div>'
+        order, mins = [], {}
+        for mtxt, scorer, assist, own in items:
+            key = (scorer or "Goal", own)
+            if key not in mins:
+                mins[key] = []
+                order.append(key)
+            if mtxt:
+                mins[key].append(mtxt)
+        lines = []
+        for (scorer, own) in order:
+            ms = ", ".join(mins[(scorer, own)])
+            og = " (OG)" if own else ""
+            lines.append(f'⚽ {_esc(scorer)}{og} <span class="min">{ms}</span>')
+        return f'<div class="{cls}">' + "<br>".join(lines) + "</div>"
+    return f'<div class="lv-scorers">{col(g["home"])}{col(g["away"], right=True)}</div>'
+
+
+def _short_name(name):
+    parts = (name or "").split()
+    return parts[-1] if parts else ""
+
+
+def _formation_rows(side):
+    """(goalkeeper, [outfield rows]) for a side, ordered defence -> attack.
+    Uses the stated formation when it matches the XI, else falls back to D/M/F counts."""
+    xi = (side or {}).get("starting_xi") or []
+    if not xi:
+        return None, []
+    gk = next((p for p in xi if (p.get("position") or "").upper().startswith("G")), xi[0])
+    out = [p for p in xi if p is not gk]
+    nums = [int(x) for x in (side.get("formation") or "").split("-") if x.strip().isdigit()]
+    lines = nums if (nums and sum(nums) == len(out)) else []
+    if not lines:
+        buckets = {"D": [], "M": [], "F": []}
+        for p in out:
+            c = (p.get("position") or "M").upper()[:1]
+            buckets[c if c in buckets else "M"].append(p)
+        out = buckets["D"] + buckets["M"] + buckets["F"]
+        lines = [len(buckets[c]) for c in ("D", "M", "F") if buckets[c]]
+    if not lines or sum(lines) != len(out):
+        lines = [len(out)]
+    rows, idx = [], 0
+    for n in lines:
+        rows.append(out[idx:idx + n])
+        idx += n
+    return gk, rows
+
+
+def _pitch_nodes(side, is_home):
+    gk, rows = _formation_rows(side)
+    if not gk:
+        return ""
+    allrows = [[gk]] + [r for r in rows if r]
+    n = len(allrows)
+    nodes = []
+    for r, row in enumerate(allrows):
+        frac = (r / (n - 1)) if n > 1 else 0.5
+        y = (95 - frac * (95 - 54)) if is_home else (5 + frac * (46 - 5))
+        m = len(row)
+        for i, p in enumerate(row):
+            x = (i + 1) / (m + 1) * 100
+            num = p.get("jersey_number") or ""
+            nm = _esc(_short_name(p.get("name", "")))
+            nodes.append(f'<div class="pl {"h" if is_home else "a"}" style="left:{x:.1f}%;top:{y:.1f}%;">'
+                         f'<div class="jersey">{num}</div><div class="nm">{nm}</div></div>')
+    return "".join(nodes)
+
+
+PITCH_SVG = ("<svg class='pmark' viewBox='0 0 680 1050' preserveAspectRatio='none' "
+             "xmlns='http://www.w3.org/2000/svg'>"
+             "<g fill='none' stroke='#ffffff' stroke-opacity='0.22' stroke-width='3'>"
+             "<rect x='8' y='8' width='664' height='1034' rx='4'/>"
+             "<line x1='8' y1='525' x2='672' y2='525'/><circle cx='340' cy='525' r='95'/>"
+             "<rect x='150' y='877' width='380' height='165'/><rect x='250' y='977' width='180' height='65'/>"
+             "<rect x='150' y='8' width='380' height='165'/><rect x='250' y='8' width='180' height='65'/></g>"
+             "<circle cx='340' cy='525' r='4' fill='#ffffff' fill-opacity='0.3'/></svg>")
+
+
+def _pitch_html(lu, home, away):
+    hs, as_ = (lu or {}).get("home"), (lu or {}).get("away")
+    if not ((hs and hs.get("starting_xi")) or (as_ and as_.get("starting_xi"))):
+        return None
+    af, hf = (as_ or {}).get("formation"), (hs or {}).get("formation")
+    top = (f'<div class="pteam a">{_flag_img(away, 20)}<span>{_esc(away)}</span>'
+           + (f'<span class="fchip">{_esc(af)}</span>' if af else "") + '</div>')
+    bot = (f'<div class="pteam h">{_flag_img(home, 20)}<span>{_esc(home)}</span>'
+           + (f'<span class="fchip">{_esc(hf)}</span>' if hf else "") + '</div>')
+    pitch = f'<div class="pitch">{PITCH_SVG}{_pitch_nodes(as_, False)}{_pitch_nodes(hs, True)}</div>'
+    return top + pitch + bot
+
+
+def _subs_html(mid, hid, aid, home, away):
+    """Who came on for who, from player-stats: a starter's `player_subbed_on` is the
+    player who replaced them, at their minutes_played minute."""
+    try:
+        ps = match_player_stats(mid)
+    except Exception:
+        ps = []
+    if not ps:
+        return None
+    name = {p.get("player_id"): p.get("player_name") for p in ps}
+    pairs = {hid: [], aid: []}
+    for p in ps:
+        on_id = (p.get("general") or {}).get("player_subbed_on")
+        if p.get("started") and on_id and p.get("team_id") in pairs:
+            pairs[p["team_id"]].append((p.get("minutes_played") or 0,
+                                        p.get("player_name"), name.get(on_id, "—")))
+    if not pairs[hid] and not pairs[aid]:
+        return None
+
+    def col(tid):
+        rows = sorted(pairs[tid], key=lambda x: x[0])
+        if not rows:
+            return '<div class="md-muted">No substitutions</div>'
+        return "".join(f'<div class="sub-pair"><span class="sub-min">{mn}\'</span>'
+                       f'<span class="on">▲ {_esc(on)}</span>'
+                       f'<span class="md-muted">for</span>'
+                       f'<span class="off">▼ {_esc(off)}</span></div>'
+                       for mn, off, on in rows)
+    return (f'<div class="md-grid">'
+            f'<div><div class="sub-h">{_flag_img(home, 20)}{_esc(home)}</div>{col(hid)}</div>'
+            f'<div><div class="sub-h">{_flag_img(away, 20)}{_esc(away)}</div>{col(aid)}</div></div>')
 
 
 def match_page():
@@ -1637,6 +1645,12 @@ def match_page():
         badge = f'<span class="lv-badge lv-up">{dt.strftime("%d %b · %H:%M") if dt else "UPCOMING"}</span>'
     grp = m.get("group_label")
     score = f"{hs} – {a_s}" if hs is not None and a_s is not None else "vs"
+    # Goalscorers live in the score header itself (no separate goals block).
+    scorers = ""
+    if state in ("live", "ft"):
+        g = _match_goal_lines(mid, hid, aid)
+        if g["home"] or g["away"]:
+            scorers = _scorers_strip(g)
     st.markdown(
         '<div class="lv-card" style="padding:20px 22px;">'
         f'<div class="lv-top">{badge}{(" · Group " + grp) if grp else ""}</div>'
@@ -1644,23 +1658,11 @@ def match_page():
         f'<div class="lv-team">{_flag_img(home, 34)}<span style="font-size:19px;">{home}</span></div>'
         f'<div class="lv-score" style="font-size:34px;">{score}</div>'
         f'<div class="lv-team r"><span style="font-size:19px;">{away}</span>{_flag_img(away, 34)}</div>'
-        '</div></div>', unsafe_allow_html=True)
+        '</div>' + scorers + '</div>', unsafe_allow_html=True)
 
-    # ---- Goals + key-events timeline + match stats (played matches only) ----
+    # ---- Stats & events: one tabbed panel (played matches) ----
     if state in ("live", "ft"):
-        g = _match_goal_lines(mid, hid, aid)
-        if g["home"] or g["away"]:
-            _section("Goals")
-            st.markdown('<div class="lv-card"><div class="lv-goals" style="border-top:none;margin-top:0;'
-                        'padding-top:0;">' + _goals_col(g["home"]) + _goals_col(g["away"], right=True)
-                        + '</div></div>', unsafe_allow_html=True)
-
-        tl = _timeline_html(mid, hid, aid)
-        if tl:
-            _section("Key events")
-            _card(tl, pad="8px 18px")
-
-        _render_match_stats(mid, home, away)
+        _render_match_centre(mid, hid, aid, home, away)
 
         # Player ratings & MOTM — heavier (extra API call), so gated behind a button.
         _section("Player ratings & Man of the Match")
@@ -1678,8 +1680,8 @@ def match_page():
     else:
         when = dt.strftime("%A %d %B, %H:%M") if dt else "a time to be confirmed"
         st.info(f"This match hasn't kicked off yet — scheduled for {when}. "
-                "The model prediction, line-ups, form and head-to-head are below; "
-                "goals and live stats will appear here once it's under way.")
+                "The model prediction and line-ups are below; the score, stats and "
+                "event timeline will appear here once it's under way.")
 
     # ---- Model prediction (pure compute, no API) ----
     pred = _predict_html(home, away)
@@ -1687,55 +1689,23 @@ def match_page():
         _section("Model prediction" if state == "up" else "Pre-match model prediction")
         _card(pred)
 
-    # ---- Line-ups & formations ----
+    # ---- Line-ups: formation pitch view + substitutions ----
     lu = {}
     try:
         lu = match_lineups(mid)
     except Exception:
         lu = {}
-    hx, ax = _xi_html(lu.get("home")), _xi_html(lu.get("away"))
-    if hx or ax:
-        conf = "Confirmed line-ups" if lu.get("confirmed") else "Predicted line-ups"
-        _section(conf)
-        _card(f'<div class="md-grid">{hx or ""}{ax or ""}</div>')
+    pitch = _pitch_html(lu, home, away)
+    if pitch:
+        _section("Confirmed line-ups" if lu.get("confirmed") else "Predicted line-ups")
+        st.markdown(f'<div class="lv-card" style="padding:14px 14px 10px;">{pitch}</div>',
+                    unsafe_allow_html=True)
+        subs = _subs_html(mid, hid, aid, home, away) if state in ("live", "ft") else None
+        if subs:
+            _card(f'<div class="sub-h" style="margin-bottom:10px;">Substitutions</div>{subs}')
     else:
         _section("Line-ups")
         st.caption("Line-ups not published yet for this match.")
-
-    # ---- Recent form (computed from finished matches) ----
-    _section("Recent form")
-    _card(f'<div class="md-grid">'
-          f'<div><div class="sub-h">{_flag_img(home, 22)}{home}</div>{_form_html(hid)}</div>'
-          f'<div><div class="sub-h">{_flag_img(away, 22)}{away}</div>{_form_html(aid)}</div></div>')
-
-    # ---- Head-to-head (only what this data source has = this tournament) ----
-    h2h = _h2h_html(hid, aid, home, away, current_mid=mid)
-    _section("Head-to-head")
-    if h2h:
-        _card(h2h)
-    else:
-        st.caption("No previous meeting in this tournament — and TheStatsAPI doesn't expose "
-                   "cross-tournament head-to-head history, so none is shown rather than guessed.")
-
-    # ---- Group / league context ----
-    gh, ga2 = _group_html(home), _group_html(away)
-    if gh or ga2:
-        _section("Group standings context")
-        _card("<br>".join(x for x in (gh, ga2) if x))
-
-    # ---- Live / closing odds — extra API call, gated ----
-    _section("Betting odds")
-    ok = f"show_od_{mid}"
-    if st.button("Show bookmaker odds", key=f"btn_od_{mid}"):
-        st.session_state[ok] = True
-    if st.session_state.get(ok):
-        oh = _odds_html(mid)
-        if oh:
-            _card(oh)
-        else:
-            st.caption("No bookmaker odds available for this match.")
-    else:
-        st.caption("Tap to fetch live 1X2 / BTTS / over-under prices for this match.")
 
     # ---- AI match summary — gated (token cost) ----
     _section("AI match summary")
