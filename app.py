@@ -989,7 +989,7 @@ def _goals_col(items, right=False):
     return f'<div class="{cls}">' + "<br>".join(rows) + "</div>"
 
 
-def _score_row(m, status, dt):
+def _score_row(m, status, dt, anchor=False):
     """One compact, clickable match row (live-score-site style)."""
     mid = m.get("id")
     home = (m.get("home_team") or {}).get("name", "?")
@@ -1016,8 +1016,9 @@ def _score_row(m, status, dt):
         sc = f'<div class="lvr-sc"><div>{hs}</div><div>{a_s}</div></div>'
     else:
         sc = '<div class="lvr-sc up"><div>–</div><div>–</div></div>'
+    aid_attr = ' id="lv-focus"' if anchor else ""
     return (
-        f'<a class="lvr" href="?view=match&match={mid}" target="_self">'
+        f'<a class="lvr"{aid_attr} href="?view=match&match={mid}" target="_self">'
         f'{st_html}'
         '<div class="lvr-tms">'
         f'<div class="lvr-tm top{hcls}">{_flag_img(home, 22)}<span>{home}</span></div>'
@@ -1053,6 +1054,9 @@ def section_bracket():
 
     parts = []
     have_today = False
+    has_past = False
+    focus_set = False
+    has_live = any(s == "live" for _, _, s in dated)
     if dated:
         by_day = {}
         for m, dt, status in dated:
@@ -1061,22 +1065,31 @@ def section_bracket():
             rows = sorted(by_day[d], key=lambda e: e[1])
             is_today = (d == today)
             have_today = have_today or is_today
+            has_past = has_past or (d < today)
             label = (("Today · " if is_today else "")
                      + f"{d.strftime('%A')} {d.day} {d.strftime('%B')}")
-            anchor = ' id="lv-today"' if is_today else ""
+            # Focus anchor: a live match if there is one, otherwise the Today header.
+            head_anchor = ""
+            if is_today and not has_live and not focus_set:
+                head_anchor = ' id="lv-focus"'
+                focus_set = True
             cls = "lvr-date today" if is_today else "lvr-date"
-            parts.append(f'<div class="{cls}"{anchor}>{label}</div>')
-            parts += [_score_row(m, status, dt) for m, dt, status in rows]
+            parts.append(f'<div class="{cls}"{head_anchor}>{label}</div>')
+            for m, dt, status in rows:
+                row_anchor = has_live and not focus_set and status == "live"
+                if row_anchor:
+                    focus_set = True
+                parts.append(_score_row(m, status, dt, anchor=row_anchor))
     if undated:
         parts.append('<div class="lvr-date">Other matches</div>')
         parts += [_score_row(e[0], e[2], e[1]) for e in undated]
     st.markdown("".join(parts), unsafe_allow_html=True)
 
-    if have_today and any(d < today for d in by_day):
+    if focus_set and has_past:
         components.html(
             "<script>const d=window.parent.document;"
-            "function s(){const e=d.getElementById('lv-today');"
-            "if(e){e.scrollIntoView({block:'start'});}}"
+            "function s(){const e=d.getElementById('lv-focus');"
+            "if(e){e.scrollIntoView({block:'center'});}}"
             "setTimeout(s,80);setTimeout(s,350);</script>", height=0)
 
     st.markdown('<div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.6);">Tap any match '
