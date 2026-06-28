@@ -28,7 +28,7 @@ from core import data, predict, ai
 
 predict.predict("Brazil", "Spain")          # structured prediction dict
 data.match_stats("mt_986262946")            # full /stats payload
-ai.ask_ai(ai.match_summary_prompt([...]))   # needs ANTHROPIC_API_KEY
+ai.ask_ai("\n".join(facts), system=ai.match_summary_prompt())  # needs ANTHROPIC_API_KEY
 ```
 
 Run from the repo root (so `core` and `research/` are importable), e.g.
