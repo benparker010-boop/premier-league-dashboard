@@ -476,11 +476,41 @@ def render_profile(player, stats, team_names):
             st.dataframe(cat_df(block), hide_index=True)
 
 
-def ask_ai(prompt, model=AI_MODEL, temperature=1.0):
-    client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
-    msg = client.messages.create(model=model, max_tokens=700, temperature=temperature,
-                                 messages=[{"role": "user", "content": prompt}])
-    return msg.content[0].text
+@st.cache_resource
+def _claude():
+    """Build the Anthropic client once and reuse it across reruns and sessions
+    (Streamlit singleton). Avoids rebuilding the connection pool on every call."""
+    return anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
+
+
+def ask_ai(prompt, system=None, model=AI_MODEL, temperature=0.3, max_tokens=700,
+           cache_context=None):
+    """Send a prompt to Claude and return the text.
+
+    system        — role/instructions, kept separate from the data so the model
+                    follows them more reliably.
+    cache_context — a large, reused context block (e.g. the standings) placed in a
+                    cached slot so repeated reads are ~90% cheaper (prompt caching).
+    Errors are caught here so every feature degrades gracefully.
+    """
+    sys_blocks = []
+    if system:
+        sys_blocks.append({"type": "text", "text": system})
+    if cache_context:
+        sys_blocks.append({"type": "text", "text": cache_context,
+                           "cache_control": {"type": "ephemeral"}})
+    kwargs = {"model": model, "max_tokens": max_tokens, "temperature": temperature,
+              "messages": [{"role": "user", "content": prompt}]}
+    if sys_blocks:
+        kwargs["system"] = sys_blocks
+    try:
+        return _claude().messages.create(**kwargs).content[0].text
+    except anthropic.RateLimitError:
+        return "The AI is busy right now — please try again in a moment."
+    except anthropic.APIConnectionError:
+        return "Sorry — couldn't reach the AI (network issue). Please try again."
+    except anthropic.APIStatusError as e:
+        return f"Sorry — the AI couldn't respond right now. ({e.status_code})"
 
 
 # ===================== Landing page (hero + launcher) =====================
@@ -1724,9 +1754,11 @@ def match_page():
         try:
             with st.spinner("Writing summary..."):
                 st.session_state[ak] = ask_ai(
-                    "You are a football reporter. Using ONLY these facts, write a tight 3-4 sentence "
-                    "summary of this World Cup match. Don't invent anything not in the data.\n\n"
-                    + "\n".join(facts), temperature=0.3)
+                    "\n".join(facts),
+                    system="You are a football reporter. Using ONLY these facts, write a tight "
+                           "3-4 sentence summary of this World Cup match. Don't invent anything "
+                           "not in the data.",
+                    temperature=0.3)
         except Exception as e:
             st.session_state[ak] = f"Couldn't generate a summary right now. ({e})"
     if st.session_state.get(ak):
@@ -2139,10 +2171,10 @@ def section_ai():
         try:
             with st.spinner("Analysing..."):
                 st.session_state.wc_analysis = ask_ai(
-                    "You are an expert analyst covering the 2026 World Cup group stage (in progress). "
-                    "Standings:\n" + groups_text + team_stats_text +
-                    "\n\nWrite a punchy 4-6 sentence analysis. Use the stats where useful. "
-                    "Plain English, no bullet points.")
+                    "Standings:\n" + groups_text + team_stats_text,
+                    system="You are an expert analyst covering the 2026 World Cup group stage "
+                           "(in progress). Write a punchy 4-6 sentence analysis. Use the stats "
+                           "where useful. Plain English, no bullet points.")
         except Exception as e:
             st.session_state.wc_analysis = f"Sorry — couldn't analyse. ({e})"
     if st.session_state.wc_analysis:
@@ -2158,13 +2190,16 @@ def section_ai():
     if st.button("Ask"):
         if uq.strip():
             with st.spinner("Thinking..."):
-                prompt = ("You are a World Cup 2026 stats assistant. Answer the user's question using "
-                          "ONLY the data below. If the answer isn't in the data (for example a stat "
-                          "like tackles that isn't tracked here), say you don't have that stat rather "
-                          "than guessing. Be concise and specific.\n\nDATA:\n" + _stats_context() +
-                          "\n\nQUESTION: " + uq)
                 try:
-                    ans = ask_ai(prompt, temperature=0.2)
+                    ans = ask_ai(
+                        "QUESTION: " + uq,
+                        system="You are a World Cup 2026 stats assistant. Answer the user's "
+                               "question using ONLY the data provided. If the answer isn't in "
+                               "the data (for example a stat like tackles that isn't tracked "
+                               "here), say you don't have that stat rather than guessing. Be "
+                               "concise and specific.",
+                        cache_context="DATA:\n" + _stats_context(),
+                        temperature=0.2)
                 except Exception as e:
                     ans = f"Sorry — couldn't answer right now. ({e})"
             st.session_state.chat_q = uq
@@ -2187,17 +2222,22 @@ def section_ai():
         else:
             r32 = rounds[0][1]
             fixtures = "\n".join(f"{r['Home']} vs {r['Away']}" for _, r in r32.iterrows())
-            prompt = ("You are predicting the 2026 World Cup knockout stage. Below are the first-round "
-                      "fixtures, seeded from current standings:\n" + fixtures +
-                      "\n\nPredict the FULL knockout bracket round by round: Round of 32, Round of 16, "
-                      "Quarter-finals, Semi-finals, then the Final. For every match give a predicted "
-                      "scoreline and put the winner in **bold**, and carry the winners forward "
-                      "consistently between rounds. Use ONLY the teams above. Format as markdown with "
-                      "a heading per round and one line per match like '**Brazil** 2-1 Mexico'. End "
-                      "with a line: 'Predicted champion: <team>'.")
+            prompt = ("First-round fixtures, seeded from current standings:\n" + fixtures)
+            bracket_system = (
+                "You are predicting the 2026 World Cup knockout stage. Predict the FULL "
+                "knockout bracket round by round: Round of 32, Round of 16, Quarter-finals, "
+                "Semi-finals, then the Final. For every match give a predicted scoreline and "
+                "put the winner in **bold**, and carry the winners forward consistently "
+                "between rounds. Use ONLY the teams provided. Format as markdown with a "
+                "heading per round and one line per match like '**Brazil** 2-1 Mexico'. End "
+                "with a line: 'Predicted champion: <team>'.")
             with st.spinner("Predicting the bracket..."):
                 try:
-                    st.session_state.ai_bracket = ask_ai(prompt, model=PREDICT_MODEL, temperature=0.4)
+                    # max_tokens raised: a full 32-team bracket needs far more than the
+                    # 700-token default, which would truncate the prediction mid-way.
+                    st.session_state.ai_bracket = ask_ai(
+                        prompt, system=bracket_system, model=PREDICT_MODEL,
+                        temperature=0.4, max_tokens=4000)
                 except Exception as e:
                     st.session_state.ai_bracket = f"Sorry — couldn't predict. ({e})"
     if st.session_state.get("ai_bracket"):
