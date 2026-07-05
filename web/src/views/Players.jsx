@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useData } from '../data/DataContext.jsx'
+import Flag from '../components/Flag.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -161,7 +162,7 @@ export default function Players() {
               >
                 <span style={mono({ fontSize: 11, fontWeight: 700, color: rankCol(i) })}>{i + 1}</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: 2, background: pl.color, flex: 'none', boxShadow: `0 0 6px ${pl.color}` }} />
+                  <Flag code={pl.code} color={pl.color} height={11} glow />
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pl.name}</div>
                     <div style={mono({ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '.04em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>

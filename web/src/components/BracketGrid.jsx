@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { useData } from '../data/DataContext.jsx'
+import Flag from './Flag.jsx'
 
 /*
   The knockout bracket — the most important screen in the app.
@@ -53,7 +54,7 @@ function MatchCard({ m, x, y, final = false }) {
   const row = (code, col, textCol, score, scoreCol, glowDot) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span style={{ width: 6, height: 6, borderRadius: 2, background: col, flex: 'none', boxShadow: glowDot ? `0 0 5px ${col}` : undefined }} />
+        <Flag code={code} color={col} height={10} glow={glowDot} />
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11.5, fontWeight: 600, color: textCol }}>{code}</span>
       </div>
       <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: scoreCol }}>{score}</span>

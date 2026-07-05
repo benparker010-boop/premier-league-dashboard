@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import LogoMark from '../components/LogoMark.jsx'
+import Flag from '../components/Flag.jsx'
 import BracketGrid from '../components/BracketGrid.jsx'
 import BracketLegend from '../components/BracketLegend.jsx'
 import ChatMessages from '../components/ChatMessages.jsx'
@@ -120,7 +121,7 @@ function PredictedChampionCard({ champions, modelVersion }) {
           <div key={c.code}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color }} />
+                <Flag code={c.code} color={c.color} height={11} />
                 <span style={mono({ fontSize: 12, letterSpacing: '.08em', color: '#cdd8e4' })}>{c.code}</span>
                 <span style={{ fontSize: 12.5, color: '#7c8b9c' }}>{c.name}</span>
               </div>
@@ -177,12 +178,12 @@ function NextMatchCard({ nextMatch, goBracket }) {
         <span style={mono({ fontSize: 9, letterSpacing: '.08em', color: 'var(--text-muted)' })}>{nm.round}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 8, height: 8, borderRadius: 2, background: nm.home.color, boxShadow: `0 0 8px ${nm.home.color}`, flex: 'none' }} />
+        <Flag code={nm.home.code} color={nm.home.color} height={12} glow />
         <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-brightest)' }}>{nm.home.name}</span>
       </div>
       <div style={mono({ fontSize: 9.5, color: 'var(--text-dim)', margin: '4px 0 4px 17px' })}>vs</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 8, height: 8, borderRadius: 2, background: nm.away.color, boxShadow: `0 0 8px ${nm.away.color}`, flex: 'none' }} />
+        <Flag code={nm.away.code} color={nm.away.color} height={12} glow />
         <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-brightest)' }}>{nm.away.name}</span>
       </div>
       <div style={mono({ marginTop: 12, fontSize: 10, color: 'var(--text-secondary-2)' })}>
@@ -216,7 +217,7 @@ function LastResultCard({ lastMatch, goFixtures }) {
   const row = (team, score) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 8, height: 8, borderRadius: 2, background: team.color, flex: 'none' }} />
+        <Flag code={team.code} color={team.color} height={11} />
         <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body)' }}>{team.name}</span>
       </div>
       <span style={mono({ fontSize: 15, fontWeight: 700, color: '#fff' })}>{score}</span>

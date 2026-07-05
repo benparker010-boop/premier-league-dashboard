@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useData } from '../data/DataContext.jsx'
+import Flag from '../components/Flag.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -95,13 +96,13 @@ export default function Fixtures({ openMatchLab, goBracket }) {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end', width: 110 }}>
                   <span style={mono({ fontSize: 13, fontWeight: 600, color: 'var(--text-body)' })}>{f.hCode}</span>
-                  <span style={{ width: 7, height: 7, borderRadius: 2, background: f.hCol, flex: 'none' }} />
+                  <Flag code={f.hCode} color={f.hCol} height={11} />
                 </div>
                 <span style={mono({ fontSize: 15, fontWeight: 700, color: done ? 'var(--text-brightest)' : 'var(--text-dim-2)', width: 44, textAlign: 'center' })}>
                   {f.sh}–{f.sa}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: 110 }}>
-                  <span style={{ width: 7, height: 7, borderRadius: 2, background: f.aCol, flex: 'none' }} />
+                  <Flag code={f.aCode} color={f.aCol} height={11} />
                   <span style={mono({ fontSize: 13, fontWeight: 600, color: 'var(--text-body)' })}>{f.aCode}</span>
                 </div>
               </div>

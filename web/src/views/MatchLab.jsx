@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import useTween from '../hooks/useTween.js'
 import { useData } from '../data/DataContext.jsx'
+import Flag from '../components/Flag.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -204,10 +205,10 @@ function LineupsTab({ m, h, a }) {
   }
   const homePlayers = layout(lh.xi, true)
   const awayPlayers = layout(la.xi, false)
-  const teamBlock = (line, color, name) => (
+  const teamBlock = (line, color, name, code) => (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
-        <span style={{ width: 9, height: 9, borderRadius: 2, background: color }} />
+        <Flag code={code} color={color} height={12} />
         <span style={{ fontSize: 14, fontWeight: 600 }}>{name}</span>
         <span style={mono({ fontSize: 10.5, color: '#6f8093', letterSpacing: '.1em' })}>{line.formation}</span>
       </div>
@@ -242,8 +243,8 @@ function LineupsTab({ m, h, a }) {
         {dots(homePlayers, h.color)}
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-        {teamBlock(lh, h.color, h.name)}
-        {teamBlock(la, a.color, a.name)}
+        {teamBlock(lh, h.color, h.name, h.code)}
+        {teamBlock(la, a.color, a.name, a.code)}
       </div>
     </div>
   )
@@ -319,7 +320,7 @@ export default function MatchLab({ match, setMatch }) {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                      <span style={{ width: 7, height: 7, borderRadius: 2, background: g.home.color }} />
+                      <Flag code={g.home.code} color={g.home.color} height={11} />
                       <span style={mono({ fontSize: 13, color: 'var(--text-body)' })}>{g.home.code}</span>
                     </div>
                     <span style={mono({ fontSize: 13, fontWeight: 700, color: '#fff' })}>
@@ -327,7 +328,7 @@ export default function MatchLab({ match, setMatch }) {
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
                       <span style={mono({ fontSize: 13, color: 'var(--text-body)' })}>{g.away.code}</span>
-                      <span style={{ width: 7, height: 7, borderRadius: 2, background: g.away.color }} />
+                      <Flag code={g.away.code} color={g.away.color} height={11} />
                     </div>
                   </div>
                 </div>
@@ -340,7 +341,7 @@ export default function MatchLab({ match, setMatch }) {
         <div style={{ background: 'linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01))', border: '1px solid rgba(255,255,255,.09)', borderRadius: 18, overflow: 'hidden' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 20, padding: '24px 28px 18px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'flex-start' }}>
-              <span style={{ width: 12, height: 12, borderRadius: 3, background: h.color, boxShadow: `0 0 12px ${h.color}` }} />
+              <Flag code={h.code} color={h.color} height={16} glow />
               <div>
                 <div style={{ fontSize: 18, fontWeight: 600 }}>{h.name}</div>
                 <div style={mono({ fontSize: 10, color: '#6f8093', letterSpacing: '.1em' })}>HOME</div>
@@ -359,7 +360,7 @@ export default function MatchLab({ match, setMatch }) {
                 <div style={{ fontSize: 18, fontWeight: 600 }}>{a.name}</div>
                 <div style={mono({ fontSize: 10, color: '#6f8093', letterSpacing: '.1em' })}>AWAY</div>
               </div>
-              <span style={{ width: 12, height: 12, borderRadius: 3, background: a.color, boxShadow: `0 0 12px ${a.color}` }} />
+              <Flag code={a.code} color={a.color} height={16} glow />
             </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap', padding: '0 28px 18px', fontFamily: 'var(--font-mono)', fontSize: 10.5, color: '#6f8093', letterSpacing: '.03em' }}>

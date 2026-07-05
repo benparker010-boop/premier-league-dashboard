@@ -1,4 +1,5 @@
 import { useData } from '../data/DataContext.jsx'
+import Flag from '../components/Flag.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -53,7 +54,7 @@ export default function Groups() {
                   }}
                 >
                   <span style={mono({ fontSize: 10, color: 'var(--text-dim)', width: 10, textAlign: 'center', flex: 'none' })}>{i + 1}</span>
-                  <span style={{ width: 7, height: 7, borderRadius: 2, background: t.color, flex: 'none' }} />
+                  <Flag code={t.code} color={t.color} height={11} />
                   <span style={mono({ fontSize: 10.5, fontWeight: 600, color: qual ? 'var(--text-body)' : 'var(--text-dim-2)', flex: 1, minWidth: 0 })}>{t.code}</span>
                   <div style={{ display: 'flex', fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--text-dim-2)' }}>
                     <span style={{ width: 16, textAlign: 'center' }}>{t.p}</span>
