@@ -3,7 +3,6 @@ import Background from './components/Background.jsx'
 import Header from './components/Header.jsx'
 import Ticker from './components/Ticker.jsx'
 import BootIntro from './components/BootIntro.jsx'
-import DockedParker from './components/DockedParker.jsx'
 import Overview from './views/Overview.jsx'
 import BracketView from './views/BracketView.jsx'
 import Groups from './views/Groups.jsx'
@@ -87,8 +86,6 @@ export default function App() {
     setView('matchlab')
   }
 
-  const contextLabel = view === 'matchlab' ? 'this match' : 'the tournament'
-
   return (
     <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       <Background />
@@ -102,7 +99,6 @@ export default function App() {
         {view === 'players' && <Players />}
       </div>
       <Ticker />
-      {view !== 'overview' && <DockedParker chat={chat} contextLabel={contextLabel} />}
       {intro !== 'done' && <BootIntro onDone={() => setIntro('done')} />}
     </div>
   )
