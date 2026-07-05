@@ -287,7 +287,7 @@ export default function MatchLab({ match, setMatch }) {
         <span style={mono({ fontSize: 10.5, letterSpacing: '.12em', color: 'var(--text-muted)' })}>{MATCHES.length} MATCHES</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: 22, alignItems: 'start' }}>
+      <div className="pk-matchlab" style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: 22, alignItems: 'start' }}>
         {/* left rail */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 9, maxHeight: 720, overflowY: 'auto' }}>
           {MATCHES.map((g) => {

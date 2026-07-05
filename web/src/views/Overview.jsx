@@ -266,7 +266,7 @@ export default function Overview({ chat, setView }) {
 
   return (
     <div>
-      <main style={{ display: 'grid', gridTemplateColumns: '1.32fr .92fr', gap: 34, alignItems: 'start', marginTop: 46 }}>
+      <main className="pk-hero" style={{ display: 'grid', gridTemplateColumns: '1.32fr .92fr', gap: 34, alignItems: 'start', marginTop: 46 }}>
         {/* left: AI panel */}
         <section>
           <div style={mono({ fontSize: 11, letterSpacing: '.26em', color: 'var(--text-muted-2)' })}>

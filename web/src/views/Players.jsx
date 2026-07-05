@@ -127,7 +127,7 @@ export default function Players() {
         </span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 20 }}>
+      <div className="pk-2col" style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: 20 }}>
         {/* leaderboard */}
         <div
           style={{

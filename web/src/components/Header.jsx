@@ -12,7 +12,7 @@ const NAV = [
 
 export default function Header({ view, setView }) {
   return (
-    <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <header className="pk-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 13, flex: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: 4 }}>
           <LogoMark size={44} />
@@ -22,6 +22,7 @@ export default function Header({ view, setView }) {
         </div>
       </div>
       <nav
+        className="pk-nav"
         style={{
           display: 'flex',
           alignItems: 'center',

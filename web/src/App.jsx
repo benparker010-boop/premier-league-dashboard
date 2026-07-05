@@ -92,7 +92,7 @@ export default function App() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       <Background />
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '26px 32px 0' }}>
+      <div className="pk-shell" style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '26px 32px 0' }}>
         <Header view={view} setView={setView} />
         {view === 'overview' && <Overview chat={chat} setView={setView} />}
         {view === 'bracket' && <BracketView />}

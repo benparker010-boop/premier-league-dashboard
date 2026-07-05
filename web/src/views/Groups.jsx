@@ -21,7 +21,7 @@ export default function Groups() {
           </span>
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
+      <div className="pk-groups" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
         {GROUPS_DATA.map((grp) => (
           <div
             key={grp.name}

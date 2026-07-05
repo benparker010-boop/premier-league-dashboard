@@ -112,3 +112,45 @@ input {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- responsive (desktop-first design degrades to tablet/mobile) ---------- */
+/* Nav pills stay reachable by scrolling horizontally when they overflow. */
+.pk-nav {
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pk-nav::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .pk-shell {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+  /* stack all the two-column view layouts */
+  .pk-hero,
+  .pk-2col {
+    grid-template-columns: 1fr !important;
+  }
+  .pk-groups {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .pk-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .pk-hero h1 {
+    font-size: 40px !important;
+  }
+  .pk-groups {
+    grid-template-columns: 1fr !important;
+  }
+  .pk-matchlab {
+    grid-template-columns: 1fr !important;
+  }
+}
