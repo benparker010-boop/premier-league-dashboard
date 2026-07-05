@@ -1267,9 +1267,9 @@
   "hCol": "#5b8cff",
   "aCode": "NOR",
   "aCol": "#f5c451",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 1,
+  "sa": 2,
+  "status": "done",
   "matchId": "mt_625866124",
   "group": false
  },

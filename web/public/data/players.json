@@ -1,6 +1,16 @@
 {
  "players": [
   {
+   "name": "Erling Haaland",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 7,
+   "assists": 0,
+   "xg": 4.1,
+   "yc": 0
+  },
+  {
    "name": "Kylian Mbappé",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -21,16 +31,6 @@
    "yc": 0
   },
   {
-   "name": "Erling Haaland",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 5,
-   "assists": 0,
-   "xg": 3.7,
-   "yc": 0
-  },
-  {
    "name": "Harry Kane",
    "code": "ENG",
    "color": "#2ecc71",
@@ -47,7 +47,7 @@
    "nation": "Brazil",
    "goals": 4,
    "assists": 1,
-   "xg": 3.7,
+   "xg": 3.9,
    "yc": 0
   },
   {
@@ -161,22 +161,22 @@
    "yc": 0
   },
   {
-   "name": "Julián Quiñones",
-   "code": "MEX",
-   "color": "#ef7d52",
-   "nation": "Mexico",
-   "goals": 3,
-   "assists": 1,
-   "xg": 1.3,
-   "yc": 0
-  },
-  {
    "name": "Matheus Cunha",
    "code": "BRA",
    "color": "#5b8cff",
    "nation": "Brazil",
    "goals": 3,
    "assists": 0,
+   "xg": 1.4,
+   "yc": 0
+  },
+  {
+   "name": "Julián Quiñones",
+   "code": "MEX",
+   "color": "#ef7d52",
+   "nation": "Mexico",
+   "goals": 3,
+   "assists": 1,
    "xg": 1.3,
    "yc": 0
   },
@@ -661,6 +661,16 @@
    "yc": 0
   },
   {
+   "name": "Neymar",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.8,
+   "yc": 1
+  },
+  {
    "name": "Promise David",
    "code": "CAN",
    "color": "#ef7d52",
@@ -791,6 +801,16 @@
    "yc": 0
   },
   {
+   "name": "Casemiro",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.6,
+   "yc": 2
+  },
+  {
    "name": "Dan Ndoye",
    "code": "SUI",
    "color": "#e8475e",
@@ -819,16 +839,6 @@
    "assists": 0,
    "xg": 0.6,
    "yc": 0
-  },
-  {
-   "name": "Casemiro",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.6,
-   "yc": 2
   },
   {
    "name": "Junya Ito",
@@ -941,6 +951,16 @@
    "yc": 1
   },
   {
+   "name": "Gabriel Martinelli",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
    "name": "Désiré Doué",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -1011,16 +1031,6 @@
    "yc": 1
   },
   {
-   "name": "Gabriel Martinelli",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Nizar Mahmoud Al-Rashdan",
    "code": "JOR",
    "color": "#f5c451",
@@ -1048,6 +1058,16 @@
    "goals": 1,
    "assists": 0,
    "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Leo Østigård",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.3,
    "yc": 0
   },
   {
@@ -1105,16 +1125,6 @@
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Leo Østigård",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 1,
    "assists": 0,
    "xg": 0.3,
@@ -1331,6 +1341,26 @@
    "yc": 1
   },
   {
+   "name": "Antonio Nusa",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Thelo Aasgaard",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
    "name": "Matías Galarza",
    "code": "PAR",
    "color": "#9d5fb5",
@@ -1511,26 +1541,6 @@
    "yc": 0
   },
   {
-   "name": "Antonio Nusa",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Thelo Aasgaard",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Virgil van Dijk",
    "code": "NED",
    "color": "#2ecc71",
@@ -1671,6 +1681,16 @@
    "yc": 0
   },
   {
+   "name": "Martin Ødegaard",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 3,
+   "xg": 1.1,
+   "yc": 0
+  },
+  {
    "name": "Omar Marmoush",
    "code": "EGY",
    "color": "#5b8cff",
@@ -1678,6 +1698,26 @@
    "goals": 0,
    "assists": 0,
    "xg": 1.1,
+   "yc": 0
+  },
+  {
+   "name": "Bruno Guimarães",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 4,
+   "xg": 1.0,
+   "yc": 0
+  },
+  {
+   "name": "Jørgen Strand Larsen",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 1.0,
    "yc": 0
   },
   {
@@ -1721,16 +1761,6 @@
    "yc": 0
   },
   {
-   "name": "Jørgen Strand Larsen",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 1.0,
-   "yc": 0
-  },
-  {
    "name": "Son Heung-min",
    "code": "KOR",
    "color": "#e8475e",
@@ -1748,6 +1778,16 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.9,
+   "yc": 0
+  },
+  {
+   "name": "Rayan",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.8,
    "yc": 0
   },
   {
@@ -1801,16 +1841,6 @@
    "yc": 0
   },
   {
-   "name": "Martin Ødegaard",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 3,
-   "xg": 0.8,
-   "yc": 0
-  },
-  {
    "name": "Florian Wirtz",
    "code": "GER",
    "color": "#9d5fb5",
@@ -1818,6 +1848,16 @@
    "goals": 0,
    "assists": 3,
    "xg": 0.8,
+   "yc": 0
+  },
+  {
+   "name": "Endrick",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.7,
    "yc": 0
   },
   {
@@ -1871,16 +1911,6 @@
    "yc": 0
   },
   {
-   "name": "Rayan",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
    "name": "Evidence Makgopa",
    "code": "RSA",
    "color": "#c3cfdc",
@@ -1908,6 +1938,16 @@
    "goals": 0,
    "assists": 1,
    "xg": 0.7,
+   "yc": 0
+  },
+  {
+   "name": "Igor Thiago",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
    "yc": 0
   },
   {
@@ -1965,16 +2005,6 @@
    "code": "ENG",
    "color": "#2ecc71",
    "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.6,
-   "yc": 0
-  },
-  {
-   "name": "Igor Thiago",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
    "goals": 0,
    "assists": 0,
    "xg": 0.6,
@@ -2051,6 +2081,16 @@
    "yc": 0
   },
   {
+   "name": "Oscar Bobb",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
    "name": "Richard Ríos",
    "code": "COL",
    "color": "#5b8cff",
@@ -2121,16 +2161,6 @@
    "yc": 1
   },
   {
-   "name": "Oscar Bobb",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
    "name": "Ismael Díaz",
    "code": "PAN",
    "color": "#9d5fb5",
@@ -2179,6 +2209,36 @@
    "assists": 0,
    "xg": 0.5,
    "yc": 1
+  },
+  {
+   "name": "Torbjørn Heggem",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Alexander Sørloth",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Raphinha",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
   },
   {
    "name": "Neil El Aynaoui",
@@ -2341,26 +2401,6 @@
    "yc": 0
   },
   {
-   "name": "Alexander Sørloth",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Torbjørn Heggem",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Yan Diomande",
    "code": "CIV",
    "color": "#9d5fb5",
@@ -2451,13 +2491,13 @@
    "yc": 0
   },
   {
-   "name": "Raphinha",
+   "name": "Éderson",
    "code": "BRA",
    "color": "#5b8cff",
    "nation": "Brazil",
    "goals": 0,
    "assists": 0,
-   "xg": 0.4,
+   "xg": 0.3,
    "yc": 0
   },
   {
@@ -2809,6 +2849,26 @@
    "assists": 0,
    "xg": 0.3,
    "yc": 1
+  },
+  {
+   "name": "Kristoffer Ajer",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Kristian Thorstvedt",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
   },
   {
    "name": "Manu Koné",
@@ -3241,16 +3301,6 @@
    "yc": 0
   },
   {
-   "name": "Kristoffer Ajer",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Ghislain Konan",
    "code": "CIV",
    "color": "#9d5fb5",
@@ -3275,16 +3325,6 @@
    "code": "CIV",
    "color": "#9d5fb5",
    "nation": "Côte d'Ivoire",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Kristian Thorstvedt",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
@@ -3321,16 +3361,6 @@
    "yc": 0
   },
   {
-   "name": "Bruno Guimarães",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 4,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Takehiro Tomiyasu",
    "code": "JPN",
    "color": "#ef7d52",
@@ -3345,16 +3375,6 @@
    "code": "JPN",
    "color": "#ef7d52",
    "nation": "Japan",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Éderson",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
@@ -3578,6 +3598,76 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Patrick Berg",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 2,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Gabriel Magalhães",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Danilo",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 2
+  },
+  {
+   "name": "Marquinhos",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Douglas Santos",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Andreas Schjelderup",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 3,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Danilo Santos",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
    "yc": 0
   },
   {
@@ -4551,16 +4641,6 @@
    "yc": 0
   },
   {
-   "name": "Patrick Berg",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "Guéla Doué",
    "code": "CIV",
    "color": "#9d5fb5",
@@ -4587,16 +4667,6 @@
    "nation": "Côte d'Ivoire",
    "goals": 0,
    "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Andreas Schjelderup",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.1,
    "yc": 0
   },
@@ -4667,56 +4737,6 @@
    "nation": "Germany",
    "goals": 0,
    "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Marquinhos",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Douglas Santos",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Gabriel Magalhães",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Danilo Santos",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Endrick",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
    "xg": 0.1,
    "yc": 0
   },
@@ -5448,6 +5468,216 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "David Møller Wolfe",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Julian Ryerson",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sander Berge",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ørjan Nyland",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Alisson",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Fredrik Aursnes",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Egil Selvik",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sander Tangvik",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Fredrik André Bjørkan",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sondre Langås",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Henrik Sælebakke Falchener",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Morten Thorsby",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Jens Petter Hauge",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ederson",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Weverton",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Léo Pereira",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Bremer",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Alex Sandro",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Roger Ibañez",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Fabinho",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Luiz Henrique",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
    "yc": 0
   },
   {
@@ -8711,36 +8941,6 @@
    "yc": 0
   },
   {
-   "name": "Sander Berge",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "David Møller Wolfe",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ørjan Nyland",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Ibrahim Sangaré",
    "code": "CIV",
    "color": "#9d5fb5",
@@ -8771,16 +8971,6 @@
    "yc": 0
   },
   {
-   "name": "Fredrik Aursnes",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Bazoumana Touré",
    "code": "CIV",
    "color": "#9d5fb5",
@@ -8795,86 +8985,6 @@
    "code": "CIV",
    "color": "#9d5fb5",
    "nation": "Côte d'Ivoire",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sander Tangvik",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Egil Selvik",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Fredrik André Bjørkan",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Henrik Sælebakke Falchener",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sondre Langås",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Morten Thorsby",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Julian Ryerson",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Jens Petter Hauge",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -9211,26 +9321,6 @@
    "yc": 0
   },
   {
-   "name": "Alisson",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Danilo",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 2
-  },
-  {
    "name": "Ritsu Doan",
    "code": "JPN",
    "color": "#ef7d52",
@@ -9271,16 +9361,6 @@
    "yc": 0
   },
   {
-   "name": "Fabinho",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
    "name": "Junnosuke Suzuki",
    "code": "JPN",
    "color": "#ef7d52",
@@ -9295,86 +9375,6 @@
    "code": "JPN",
    "color": "#ef7d52",
    "nation": "Japan",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ederson",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Weverton",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Roger Ibañez",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Bremer",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Alex Sandro",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Léo Pereira",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Luiz Henrique",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Neymar",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -12472,9 +12472,9 @@
   }
  ],
  "totals": {
-  "goals": 247,
-  "xg": 224.2,
-  "assists": 188,
+  "goals": 250,
+  "xg": 227.7,
+  "assists": 190,
   "tracked": 1247
  }
 }
