@@ -1,0 +1,433 @@
+{
+ "generatedAt": "2026-07-05T18:55:25.262258+00:00",
+ "modelVersion": "v2.6",
+ "champions": [
+  {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5",
+   "v": 21.5
+  },
+  {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc",
+   "v": 11.6
+  },
+  {
+   "code": "MAR",
+   "name": "Morocco",
+   "color": "#e8475e",
+   "v": 9.7
+  },
+  {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc",
+   "v": 8.2
+  },
+  {
+   "code": "COL",
+   "name": "Colombia",
+   "color": "#5b8cff",
+   "v": 7.6
+  },
+  {
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71",
+   "v": 6.6
+  }
+ ],
+ "bracket": {
+  "r16": [
+   {
+    "home": {
+     "code": "CAN",
+     "name": "Canada",
+     "color": "#ef7d52"
+    },
+    "away": {
+     "code": "MAR",
+     "name": "Morocco",
+     "color": "#e8475e"
+    },
+    "done": true,
+    "sh": 0,
+    "sa": 3,
+    "winner": "away",
+    "favHome": false,
+    "prob": 51,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "result"
+   },
+   {
+    "home": {
+     "code": "PAR",
+     "name": "Paraguay",
+     "color": "#9d5fb5"
+    },
+    "away": {
+     "code": "FRA",
+     "name": "France",
+     "color": "#9d5fb5"
+    },
+    "done": true,
+    "sh": 0,
+    "sa": 1,
+    "winner": "away",
+    "favHome": false,
+    "prob": 78,
+    "projScore": [
+     0,
+     2
+    ],
+    "tier": "result"
+   },
+   {
+    "home": {
+     "code": "BRA",
+     "name": "Brazil",
+     "color": "#5b8cff"
+    },
+    "away": {
+     "code": "NOR",
+     "name": "Norway",
+     "color": "#f5c451"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 60,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   },
+   {
+    "home": {
+     "code": "MEX",
+     "name": "Mexico",
+     "color": "#ef7d52"
+    },
+    "away": {
+     "code": "ENG",
+     "name": "England",
+     "color": "#2ecc71"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 50,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   },
+   {
+    "home": {
+     "code": "POR",
+     "name": "Portugal",
+     "color": "#5ec8e0"
+    },
+    "away": {
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": false,
+    "prob": 63,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   },
+   {
+    "home": {
+     "code": "USA",
+     "name": "USA",
+     "color": "#5ec8e0"
+    },
+    "away": {
+     "code": "BEL",
+     "name": "Belgium",
+     "color": "#e8475e"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 51,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   },
+   {
+    "home": {
+     "code": "ARG",
+     "name": "Argentina",
+     "color": "#c3cfdc"
+    },
+    "away": {
+     "code": "EGY",
+     "name": "Egypt",
+     "color": "#5b8cff"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 60,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   },
+   {
+    "home": {
+     "code": "SUI",
+     "name": "Switzerland",
+     "color": "#e8475e"
+    },
+    "away": {
+     "code": "COL",
+     "name": "Colombia",
+     "color": "#5b8cff"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": false,
+    "prob": 54,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "confirmed"
+   }
+  ],
+  "qf": [
+   {
+    "home": {
+     "code": "MAR",
+     "name": "Morocco",
+     "color": "#e8475e"
+    },
+    "away": {
+     "code": "FRA",
+     "name": "France",
+     "color": "#9d5fb5"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": false,
+    "prob": 60,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   },
+   {
+    "home": {
+     "code": "BRA",
+     "name": "Brazil",
+     "color": "#5b8cff"
+    },
+    "away": {
+     "code": "MEX",
+     "name": "Mexico",
+     "color": "#ef7d52"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": false,
+    "prob": 51,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   },
+   {
+    "home": {
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
+    },
+    "away": {
+     "code": "USA",
+     "name": "USA",
+     "color": "#5ec8e0"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 59,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   },
+   {
+    "home": {
+     "code": "ARG",
+     "name": "Argentina",
+     "color": "#c3cfdc"
+    },
+    "away": {
+     "code": "COL",
+     "name": "Colombia",
+     "color": "#5b8cff"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": false,
+    "prob": 50,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   }
+  ],
+  "sf": [
+   {
+    "home": {
+     "code": "FRA",
+     "name": "France",
+     "color": "#9d5fb5"
+    },
+    "away": {
+     "code": "MEX",
+     "name": "Mexico",
+     "color": "#ef7d52"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 58,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   },
+   {
+    "home": {
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
+    },
+    "away": {
+     "code": "COL",
+     "name": "Colombia",
+     "color": "#5b8cff"
+    },
+    "done": false,
+    "sh": null,
+    "sa": null,
+    "winner": null,
+    "favHome": true,
+    "prob": 54,
+    "projScore": [
+     1,
+     1
+    ],
+    "tier": "projected"
+   }
+  ],
+  "final": {
+   "home": {
+    "code": "FRA",
+    "name": "France",
+    "color": "#9d5fb5"
+   },
+   "away": {
+    "code": "ESP",
+    "name": "Spain",
+    "color": "#c3cfdc"
+   },
+   "done": false,
+   "sh": null,
+   "sa": null,
+   "winner": null,
+   "favHome": true,
+   "prob": 52,
+   "projScore": [
+    1,
+    1
+   ],
+   "tier": "projected",
+   "champion": "France"
+  }
+ },
+ "nextMatch": {
+  "round": "ROUND OF 16",
+  "date": "Sun, Jul 5",
+  "time": "20:00 UTC",
+  "venue": "MetLife Stadium, East Rutherford",
+  "home": {
+   "code": "BRA",
+   "name": "Brazil",
+   "color": "#5b8cff"
+  },
+  "away": {
+   "code": "NOR",
+   "name": "Norway",
+   "color": "#f5c451"
+  },
+  "favCode": "BRA",
+  "prob": 60,
+  "probHome": 60
+ },
+ "lastMatch": {
+  "round": "ROUND OF 16",
+  "date": "Sat, Jul 4",
+  "venue": "Lincoln Financial Field, Philadelphia",
+  "home": {
+   "code": "PAR",
+   "name": "Paraguay",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "sh": 0,
+  "sa": 1,
+  "scorers": "Kylian Mbappé 70'"
+ }
+}

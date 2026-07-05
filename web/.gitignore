@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.env.local
+.vercel
+
+# data build cache (raw API responses)
+scripts/.cache/
