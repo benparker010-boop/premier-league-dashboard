@@ -1,0 +1,56 @@
+name: Refresh PARKER data
+
+# Regenerates web/public/data/*.json (results, standings, model predictions)
+# from the live stats API every 15 minutes, commits the change, and pushes.
+# Vercel auto-deploys on every push to main, so this keeps the live site
+# current without ever running the Python model in the request path.
+#
+# One-time setup required: add a repository secret named STATS_API_KEY
+# (Settings -> Secrets and variables -> Actions -> New repository secret).
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Build data
+        env:
+          STATS_API_KEY: ${{ secrets.STATS_API_KEY }}
+        run: python web/scripts/build_data.py
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "parker-data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/public/data
+          if git diff --cached --quiet; then
+            echo "No data changes this run."
+          else
+            git commit -m "Auto-refresh data [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi

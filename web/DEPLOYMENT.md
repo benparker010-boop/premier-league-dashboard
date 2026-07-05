@@ -45,10 +45,17 @@ Vercel auto-deploys on push, so the site updates. (The key is read from the env
 var, or from `.streamlit/secrets.toml` for local runs — it never enters the repo
 or the browser.)
 
-For hands-off freshness, schedule the command above as a GitHub Action on a cron
-(e.g. every few hours) that commits the refreshed JSON; each commit triggers a
-Vercel redeploy. This keeps the Python model out of the request path (it only
-runs at generation time) while the site stays current.
+**This is now automated.** `.github/workflows/refresh-data.yml` runs the command
+above every 15 minutes, commits the refreshed JSON if anything changed, and
+pushes — each push triggers a Vercel redeploy, so the live site (results,
+standings, and predictions) is never more than ~15 minutes stale, without ever
+running the Python model in the request path.
+
+One-time setup: add a repository secret named `STATS_API_KEY` (GitHub repo →
+Settings → Secrets and variables → Actions → New repository secret). Without
+it the workflow runs but fails at the build-data step. You can also trigger a
+refresh manually any time from the Actions tab → "Refresh PARKER data" → Run
+workflow.
 
 ## Local development
 
