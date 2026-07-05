@@ -193,7 +193,13 @@ def matchup(home, away):
         ph = p["result"]["home_win"] + p["result"]["draw"] / 2
         pa = p["result"]["away_win"] + p["result"]["draw"] / 2
         tot = ph + pa or 1
-        out = {"pHome": ph / tot, "pAway": pa / tot, "score": p.get("scoreline") or [1, 1]}
+        # Scoreline consistent with the pick: most likely score in which the
+        # favoured side wins (the unconditional mode is ~always 1-1 in football,
+        # which contradicts a card that names a predicted winner).
+        fav_home = ph >= pa
+        win_score = p.get("scoreline_home_win") if fav_home else p.get("scoreline_away_win")
+        out = {"pHome": ph / tot, "pAway": pa / tot,
+               "score": win_score or p.get("scoreline") or [1, 1]}
     _pred_cache[ckey] = out
     return out
 

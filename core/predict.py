@@ -91,11 +91,25 @@ def predict(home, away, min_games=2, model=None):
     la, lb = model.goal_lambdas(h, a)
     pH, pD, pA = m_result(grid)
     tops = [{"score": [i, j], "prob": p} for (i, j), p in m_top_scores(grid, 5)]
+
+    # Most likely scoreline conditional on each side winning (for knockout
+    # projections, where a card pairs a predicted winner with a scoreline —
+    # the unconditional mode is almost always 1-1 and can contradict the pick).
+    def _win_mode(cmp):
+        best, bp = None, -1.0
+        for i in range(len(grid)):
+            for j in range(len(grid)):
+                if cmp(i, j) and grid[i][j] > bp:
+                    best, bp = [i, j], grid[i][j]
+        return best
+
     return {
         "home": home, "away": away, "available": True, "reason": None,
         "result": {"home_win": pH, "draw": pD, "away_win": pA},
         "expected_goals": {"home": la, "away": lb},
         "scoreline": list(tops[0]["score"]) if tops else None,
+        "scoreline_home_win": _win_mode(lambda i, j: i > j),
+        "scoreline_away_win": _win_mode(lambda i, j: j > i),
         "top_scorelines": tops,
         "totals": {f"over_{ln}": m_over(grid, ln) for ln in (1.5, 2.5, 3.5)},
         "btts": m_btts(grid),
