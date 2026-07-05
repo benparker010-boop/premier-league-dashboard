@@ -5,4 +5,4 @@ dist
 .vercel
 
 # data build cache (raw API responses)
-web/scripts/.cache/
+scripts/.cache/
