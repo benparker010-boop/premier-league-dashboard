@@ -2275,6 +2275,557 @@ def section_ai():
                            "Model output — not betting advice.")
 
 
+# ============================================================================ #
+#  PARKER REDESIGN — Step 1: global design system + the Overview (home) page.   #
+#  Presentation only: every number below comes from the existing data/compute   #
+#  functions (predict_fixture core, build_team_stats, snapshot scorers, etc.).  #
+# ============================================================================ #
+import random as _random
+
+PK_EMERALD = "#2EE6A8"
+TEAM_COLORS = {
+    "France": "#3f6fd6", "Argentina": "#74b3e6", "England": "#e23b4a",
+    "Brazil": "#e8b84b", "Spain": "#e8762e", "Portugal": "#2faa55",
+    "Germany": "#cfd3d8", "Netherlands": "#e8762e", "Belgium": "#c0392b",
+    "Croatia": "#d23b4a", "Uruguay": "#5fa8d3", "Mexico": "#2faa55",
+}
+_CODE_OVERRIDE = {"Spain": "ESP", "Netherlands": "NED", "Croatia": "CRO",
+                  "Portugal": "POR", "Switzerland": "SUI", "Uruguay": "URU"}
+
+
+def _code(name):
+    return _CODE_OVERRIDE.get(name) or (name or "?")[:3].upper()
+
+
+def _team_color(name):
+    return TEAM_COLORS.get(name, PK_EMERALD)
+
+
+def _constellation_bg():
+    """Page-wide faint dot/line constellation + two radar rings (deterministic)."""
+    rng = _random.Random(20260629)
+    W, H = 1600, 1000
+    pts = [(rng.randint(0, W), rng.randint(0, H)) for _ in range(54)]
+    dots = "".join(f"<circle cx='{x}' cy='{y}' r='{rng.choice([1, 1, 1.5, 2])}' "
+                   f"fill='#ffffff' fill-opacity='0.10'/>" for x, y in pts)
+    lines = ""
+    for i, (x, y) in enumerate(pts):
+        nxt = min((p for p in pts[i + 1:]),
+                  key=lambda p: (p[0] - x) ** 2 + (p[1] - y) ** 2, default=None)
+        if nxt and (nxt[0] - x) ** 2 + (nxt[1] - y) ** 2 < 240 ** 2:
+            lines += (f"<line x1='{x}' y1='{y}' x2='{nxt[0]}' y2='{nxt[1]}' "
+                      f"stroke='#ffffff' stroke-opacity='0.045' stroke-width='1'/>")
+    rings = (f"<circle cx='320' cy='300' r='300' fill='none' stroke='{PK_EMERALD}' "
+             "stroke-opacity='0.06' stroke-width='1.5'/>"
+             f"<circle cx='320' cy='300' r='185' fill='none' stroke='{PK_EMERALD}' "
+             "stroke-opacity='0.05' stroke-width='1.5'/>")
+    svg = (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' "
+           f"preserveAspectRatio='xMidYMid slice'>{lines}{dots}{rings}</svg>")
+    uri = "data:image/svg+xml," + urllib.parse.quote(svg)
+    return (f"<style>.stApp{{background-color:#04070c !important;"
+            f"background-image:url(\"{uri}\");background-size:cover;"
+            "background-position:center;background-attachment:fixed;}</style>")
+
+
+PARKER_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+:root{
+  --bg:#04070c; --card:rgba(13,20,26,0.72); --card2:rgba(10,16,22,0.6);
+  --border:rgba(46,230,168,0.16); --border2:rgba(255,255,255,0.07);
+  --emerald:#2EE6A8; --emerald2:#00e0c6; --gold:#e8b84b; --live:#ff4d4d;
+  --text:#eef4f1; --muted:rgba(238,244,241,0.62); --muted2:rgba(238,244,241,0.38);
+}
+.block-container{padding-top:1.1rem !important; max-width:1280px;}
+#MainMenu, footer, header[data-testid="stHeader"]{display:none;}
+.pk *{font-family:'Inter',sans-serif;}
+.pk h1,.pk h2,.pk .cond,.pk-eyebrow,.pk-tab,.pk-label,.pk-num{font-family:'Saira Condensed',sans-serif;}
+.pk-up{text-transform:uppercase; letter-spacing:.14em;}
+/* nav */
+.pk-nav{display:flex; align-items:center; gap:18px; padding:8px 4px 18px; border-bottom:1px solid var(--border2); margin-bottom:26px;}
+.pk-brand{display:flex; align-items:center; gap:11px;}
+.pk-logo{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--emerald), #0c6f57); box-shadow:0 0 16px rgba(46,230,168,0.5);}
+.pk-word{font-family:'Saira Condensed'; font-weight:700; color:#fff; font-size:19px; letter-spacing:.22em; line-height:1;}
+.pk-word small{display:block; font-size:8.5px; letter-spacing:.26em; color:var(--muted2); margin-top:3px;}
+.pk-tabs{display:flex; gap:6px; margin:0 auto;}
+.pk-tab{font-family:'Saira Condensed'; font-weight:600; font-size:13.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding:7px 15px; border-radius:20px;}
+.pk-tab:hover{color:var(--text);}
+.pk-tab.active{color:#04130d; background:var(--emerald); box-shadow:0 0 18px rgba(46,230,168,0.35);}
+.pk-live{display:flex; align-items:center; gap:7px; font-family:'Saira Condensed'; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:#ffd9d9; background:rgba(255,77,77,0.12); border:1px solid rgba(255,77,77,0.35); padding:6px 12px; border-radius:20px;}
+.pk-live .dot{width:7px; height:7px; border-radius:50%; background:var(--live); box-shadow:0 0 8px var(--live); animation:pkpulse 1.4s infinite;}
+@keyframes pkpulse{0%,100%{opacity:1}50%{opacity:.35}}
+.pk-cta{font-family:'Saira Condensed'; font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--emerald); text-decoration:none; border:1px solid var(--border); padding:7px 14px; border-radius:20px;}
+.pk-cta:hover{background:rgba(46,230,168,0.1);}
+/* hero */
+.pk-eyebrow{color:var(--emerald); font-size:12.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; margin-bottom:14px;}
+.pk-head{font-family:'Saira Condensed'; font-weight:700; color:#fff; font-size:52px; line-height:1.02; letter-spacing:.005em; margin:0 0 14px;}
+.pk-head .em{color:var(--emerald);}
+.pk-subp{color:var(--muted); font-size:15px; line-height:1.55; max-width:520px; margin-bottom:20px;}
+.pk-chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px;}
+/* cards */
+.pk-card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:17px 19px; backdrop-filter:blur(6px); margin-bottom:16px;}
+.pk-card-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;}
+.pk-card-t{font-family:'Saira Condensed'; font-weight:600; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--text);}
+.pk-tag{font-family:'Saira Condensed'; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--emerald); border:1px solid var(--border); padding:2px 8px; border-radius:10px;}
+/* champion rows */
+.pk-row{display:flex; align-items:center; gap:11px; margin:11px 0;}
+.pk-row img{width:24px; border-radius:3px;}
+.pk-row .nm{font-size:13.5px; color:var(--text); width:96px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pk-track{flex:1; height:8px; background:rgba(255,255,255,0.06); border-radius:6px; overflow:hidden;}
+.pk-fill{height:100%; border-radius:6px;}
+.pk-pct{font-family:'Saira Condensed'; font-weight:700; font-size:16px; color:#fff; width:48px; text-align:right;}
+/* golden boot */
+.pk-gb{display:flex; align-items:center; gap:11px; padding:8px 0; border-bottom:1px solid var(--border2);}
+.pk-gb:last-child{border-bottom:none;}
+.pk-gb .rk{font-family:'Saira Condensed'; font-weight:700; color:var(--muted2); width:18px;}
+.pk-gb img{width:22px; border-radius:3px;}
+.pk-gb .pl{flex:1; font-size:13.5px; color:var(--text);}
+.pk-gb .cc{font-size:11px; color:var(--muted2); letter-spacing:.08em;}
+.pk-gb .gl{font-family:'Saira Condensed'; font-weight:700; font-size:19px; color:var(--gold); width:30px; text-align:right;}
+/* radar */
+.pk-rstat{display:flex; align-items:center; gap:10px; font-size:12.5px; margin:7px 0;}
+.pk-rstat .l{width:120px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-size:11px;}
+.pk-rstat .t{flex:1; height:6px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden;}
+.pk-rstat .f{height:100%; background:var(--emerald); border-radius:4px;}
+.pk-rstat .v{width:32px; text-align:right; color:var(--text); font-weight:600;}
+/* pulse */
+.pk-pulse{display:grid; grid-template-columns:1fr 1fr; gap:13px;}
+.pk-pcell{background:var(--card2); border-left:3px solid var(--emerald); border-radius:8px; padding:13px 15px;}
+.pk-pcell.g{border-left-color:var(--gold);} .pk-pcell.b{border-left-color:#3f6fd6;} .pk-pcell.r{border-left-color:var(--live);}
+.pk-pnum{font-family:'Saira Condensed'; font-weight:700; font-size:34px; color:#fff; line-height:1;}
+.pk-plab{font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:5px;}
+/* ticker */
+.pk-ticker{display:flex; gap:10px; align-items:stretch; margin-top:8px; flex-wrap:wrap;}
+.pk-tk{display:flex; align-items:center; gap:9px; background:var(--card2); border:1px solid var(--border2); border-radius:10px; padding:8px 13px;}
+.pk-tk .tag{font-family:'Saira Condensed'; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald); margin-right:4px;}
+.pk-tk .tag.up{color:var(--gold);}
+.pk-tk .m{font-size:12.5px; color:var(--text); white-space:nowrap;}
+.pk-tk img{width:18px; border-radius:2px; vertical-align:middle;}
+.pk-tk .sc{font-family:'Saira Condensed'; font-weight:700; color:#fff;}
+.pk-note{color:var(--muted2); font-size:11px; margin-top:5px;}
+/* native widgets themed */
+.pk-ask div[data-testid="stTextInput"] input{background:var(--card) !important; border:1px solid var(--border) !important; color:#fff !important; border-radius:11px !important; height:46px; font-size:15px;}
+.stButton button{background:rgba(46,230,168,0.08); border:1px solid var(--border); color:var(--emerald); border-radius:20px; font-size:12.5px; font-weight:600; letter-spacing:.04em; padding:5px 13px;}
+.stButton button:hover{background:var(--emerald); color:#04130d; border-color:var(--emerald);}
+</style>
+"""
+
+PK_TABS = [("Overview", "home"), ("Bracket", "bracket"), ("Groups", "standings"),
+           ("Match Lab", "ai"), ("Players", "players")]
+PK_CHIPS = ["Who's most likely to win the World Cup?", "Predict the final",
+            "Best xG in the tournament?", "Who wins the Golden Boot?",
+            "Argentina vs Spain — who advances?"]
+
+
+def _pk_live_label():
+    try:
+        n = len(wc_live_matches())
+    except Exception:
+        n = 0
+    if n:
+        return f'<span class="dot"></span>LIVE · {n} NOW'
+    # stage = group stage until every group has 3+ games per team
+    done = all((row["P"] >= 3).all() for row in groups.values()) if groups else False
+    return f'<span class="dot"></span>{"KNOCKOUTS" if done else "GROUP STAGE"}'
+
+
+def _pk_nav(active="home"):
+    tabs = "".join(
+        f'<a class="pk-tab{" active" if slug == active else ""}" href="?view={slug}" '
+        f'target="_self">{label}</a>' for label, slug in PK_TABS)
+    return (
+        '<div class="pk-nav">'
+        '<div class="pk-brand"><div class="pk-logo"></div>'
+        '<div class="pk-word">PARKER<small>WORLD CUP INTELLIGENCE</small></div></div>'
+        f'<div class="pk-tabs">{tabs}</div>'
+        f'<div class="pk-live">{_pk_live_label()}</div>'
+        '<a class="pk-cta" href="?view=menu" target="_self">Explore the dashboard →</a>'
+        '</div>')
+
+
+def _championship_probs(sims=2000, n_top=6):
+    """Monte-Carlo champion odds using the predictor's goals+Elo+Poisson core
+    (xG blend omitted here to keep the landing page API-free), seeded from the
+    current projected qualifiers. Returns [(team, prob), ...]. API-free."""
+    if not wc_ok or not groups:
+        return []
+    qualified = qualified_from_groups(groups)
+    if len(qualified) < 2:
+        return []
+    teams = sorted(qualified, key=lambda t: t["key"], reverse=True)
+    size = _largest_pow2(len(teams))
+    if size < 2:
+        return []
+    seeds = {i + 1: t for i, t in enumerate(teams[:size])}
+    field0 = [seeds[s]["name"] for s in _seed_order(size)]
+    F, A, G, league = _goal_rates(finished)
+    elo = _elo_ratings(finished)
+    memo = {}
+
+    def padv(a, b):
+        if (a, b) in memo:
+            return memo[(a, b)]
+        la = max(0.05, league * _str_factor(a, F, G, league) * _str_factor(b, A, G, league))
+        lb = max(0.05, league * _str_factor(b, F, G, league) * _str_factor(a, A, G, league))
+        sup = (elo.get(a, 1500.0) - elo.get(b, 1500.0)) / 400.0
+        la, lb = max(0.05, la * 10 ** (0.10 * sup)), max(0.05, lb * 10 ** (-0.10 * sup))
+        pH, pD, pA = _poisson_outcome(la, lb)
+        eH, eD, eA = _elo_probs(elo.get(a, 1500.0) - elo.get(b, 1500.0))
+        pHf, pDf, pAf = 0.4 * eH + 0.6 * pH, 0.4 * eD + 0.6 * pD, 0.4 * eA + 0.6 * pA
+        p = (pHf + 0.5 * pDf) / (pHf + pDf + pAf)
+        memo[(a, b)] = p
+        return p
+
+    rng = _random.Random(20260629)
+    wins = {}
+    for _ in range(sims):
+        field = list(field0)
+        while len(field) > 1:
+            field = [(field[i] if rng.random() < padv(field[i], field[i + 1]) else field[i + 1])
+                     for i in range(0, len(field), 2)]
+        wins[field[0]] = wins.get(field[0], 0) + 1
+    out = sorted(((t, wins.get(t, 0) / sims) for t in set(field0)), key=lambda x: -x[1])
+    return out[:n_top]
+
+
+def _pk_team_stats():
+    """Cached per-game team stats (build_team_stats). Also feeds the AI context."""
+    if st.session_state.get("wc_team_stats") is None:
+        try:
+            df, _d, _f = build_team_stats(finished)
+            st.session_state["wc_team_stats"] = df
+        except Exception:
+            st.session_state["wc_team_stats"] = pd.DataFrame()
+    return st.session_state["wc_team_stats"]
+
+
+def _goal_pg():
+    """Goals for/against per game per team, straight from results (API-free)."""
+    gf, ga, gp = {}, {}, {}
+    for m in finished:
+        hs, as_ = m["score"]["home"], m["score"]["away"]
+        if hs is None or as_ is None:
+            continue
+        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        gf[h] = gf.get(h, 0) + hs; ga[h] = ga.get(h, 0) + as_; gp[h] = gp.get(h, 0) + 1
+        gf[a] = gf.get(a, 0) + as_; ga[a] = ga.get(a, 0) + hs; gp[a] = gp.get(a, 0) + 1
+    return gf, ga, gp
+
+
+# Radar axes: (label, source). "Set pieces" uses corners as a proxy; "Pace" is
+# not in the data, so Big Chances stands in for it (both flagged to the user).
+PK_RADAR_AXES = ["Attack", "Defense", "Possession", "Expected goals", "Set pieces", "Big chances"]
+
+
+def _radar_values(team, tsdf, gf, ga, gp):
+    row = tsdf[tsdf["Team"] == team]
+    poss = float(row["Avg Poss %"].iloc[0]) if not row.empty else None
+    xg = float(row["xG/game"].iloc[0]) if not row.empty else None
+    corners = float(row["Corners/game"].iloc[0]) if not row.empty else None
+    big = float(row["Big chances/game"].iloc[0]) if not row.empty else None
+    g = gp.get(team, 0) or 1
+    attack = gf.get(team, 0) / g
+    defense = ga.get(team, 0) / g  # lower is better -> inverted at normalise
+    return {"Attack": attack, "Defense": defense, "Possession": poss,
+            "Expected goals": xg, "Set pieces": corners, "Big chances": big}
+
+
+def _radar_svg(values01):
+    """Hexagon radar from six 0..1 values (in PK_RADAR_AXES order)."""
+    import math as _m
+    cx, cy, R = 130, 125, 88
+    ang = [(-90 + 60 * i) * _m.pi / 180 for i in range(6)]
+    grid = ""
+    for ring in (0.25, 0.5, 0.75, 1.0):
+        pts = " ".join(f"{cx + _m.cos(a) * R * ring:.1f},{cy + _m.sin(a) * R * ring:.1f}" for a in ang)
+        grid += f"<polygon points='{pts}' fill='none' stroke='#ffffff' stroke-opacity='0.08'/>"
+    for a in ang:
+        grid += (f"<line x1='{cx}' y1='{cy}' x2='{cx + _m.cos(a) * R:.1f}' "
+                 f"y2='{cy + _m.sin(a) * R:.1f}' stroke='#ffffff' stroke-opacity='0.06'/>")
+    dpts = " ".join(f"{cx + _m.cos(a) * R * max(0.05, v):.1f},{cy + _m.sin(a) * R * max(0.05, v):.1f}"
+                    for a, v in zip(ang, values01))
+    labels = ""
+    for a, lab in zip(ang, PK_RADAR_AXES):
+        lx, ly = cx + _m.cos(a) * (R + 22), cy + _m.sin(a) * (R + 14)
+        anc = "middle" if abs(_m.cos(a)) < 0.3 else ("start" if _m.cos(a) > 0 else "end")
+        labels += (f"<text x='{lx:.0f}' y='{ly:.0f}' fill='rgba(238,244,241,0.55)' "
+                   f"font-size='9' text-anchor='{anc}' font-family='Saira Condensed' "
+                   f"letter-spacing='1'>{lab.upper()}</text>")
+    return (f"<svg viewBox='0 0 260 250' width='100%' style='max-width:300px;'>"
+            f"{grid}<polygon points='{dpts}' fill='{PK_EMERALD}' fill-opacity='0.22' "
+            f"stroke='{PK_EMERALD}' stroke-width='2'/>{labels}</svg>")
+
+
+def _pulse_html():
+    played = sum(1 for m in finished if m["score"]["home"] is not None)
+    cs = sum((1 if m["score"]["away"] == 0 else 0) + (1 if m["score"]["home"] == 0 else 0)
+             for m in finished if m["score"]["home"] is not None)
+    avg = (n_goals / played) if played else 0
+    cells = [("Matches Played", played, ""), ("Goals", n_goals, "g"),
+             ("Avg Goals / Game", f"{avg:.2f}", "b"), ("Clean Sheets", cs, "r")]
+    inner = "".join(f'<div class="pk-pcell {c}"><div class="pk-pnum">{v}</div>'
+                    f'<div class="pk-plab">{lab}</div></div>' for lab, v, c in cells)
+    return f'<div class="pk-pulse">{inner}</div>'
+
+
+def _ticker_html():
+    fin = sorted([m for m in finished if m["score"]["home"] is not None],
+                 key=lambda m: (_match_dt(m) or datetime.min), reverse=True)[:5]
+    up = sorted([m for m in upcoming if _match_dt(m)], key=lambda m: _match_dt(m))[:5]
+
+    def tk(m, result=True):
+        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        if result:
+            mid = (f'{_flag_img(h, 18)} {_code(h)} <span class="sc">{m["score"]["home"]}'
+                   f'–{m["score"]["away"]}</span> {_code(a)} {_flag_img(a, 18)}')
+            tag = '<span class="tag">RES</span>'
+        else:
+            dt = _match_dt(m)
+            mid = (f'{_flag_img(h, 18)} {_code(h)} <span style="color:var(--muted2)">vs</span> '
+                   f'{_code(a)} {_flag_img(a, 18)}'
+                   f'<span style="color:var(--muted2);margin-left:4px">'
+                   f'{dt.strftime("%d %b") if dt else ""}</span>')
+            tag = '<span class="tag up">NEXT</span>'
+        return f'<div class="pk-tk">{tag}<span class="m">{mid}</span></div>'
+
+    res = "".join(tk(m, True) for m in fin) or '<div class="pk-tk"><span class="m">No results yet</span></div>'
+    nxt = "".join(tk(m, False) for m in up) or '<div class="pk-tk"><span class="m">No fixtures scheduled</span></div>'
+    return f'<div class="pk-ticker">{res}{nxt}</div>'
+
+
+_PK_INTRO_STYLE = """
+<style>
+@keyframes pkCore{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.09);opacity:1}}
+@keyframes pkBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes pkPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes pkFlash{0%{opacity:0}26%{opacity:.95}100%{opacity:0}}
+@keyframes pkScan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+</style>
+"""
+
+_PK_INTRO_HTML = """
+<div id="pk-intro" style="position:fixed;inset:0;z-index:99999;overflow:hidden;background:#000;cursor:pointer">
+  <div id="pk-intro-scene" style="position:absolute;inset:0;transition:transform .7s cubic-bezier(.7,0,.3,1),opacity .7s ease;transform:scale(1);opacity:1">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 42%,rgba(0,20,18,0) 0%,transparent 72%)"></div>
+    <canvas id="pk-intro-cv" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+    <div style="position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,rgba(0,224,198,.9),rgba(180,120,255,.7),transparent);box-shadow:0 0 22px 6px rgba(0,224,198,.5);animation:pkScan 6s linear infinite"></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div style="position:relative;display:grid;place-items:center">
+        <div style="position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(0,224,198,.15) 0%,rgba(120,80,220,.09) 50%,transparent 72%);animation:pkCore 3.5s ease-in-out infinite"></div>
+        <div id="pk-intro-logo" style="animation:pkBob 5s ease-in-out infinite;transition:transform .3s ease,filter .3s ease">__LOGO__</div>
+      </div>
+      <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:10px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.38em;color:#00e0c6;animation:pkPulse 3s ease-in-out infinite">WORLD CUP 2026 &nbsp;·&nbsp; AI ANALYTICS</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:rgba(255,255,255,.28);animation:pkPulse 4.2s ease-in-out infinite .8s">MOVE CURSOR OR CLICK TO ENTER</div>
+      </div>
+    </div>
+    <div style="position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 180px 40px rgba(0,0,0,.65)"></div>
+  </div>
+  <div id="pk-intro-flash" style="position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 44%,rgba(220,255,250,.98),rgba(0,224,198,.6) 28%,transparent 65%)"></div>
+</div>
+"""
+
+_PK_INTRO_JS = """
+<script>
+(function(){
+  var d=window.parent.document;
+  function init(){
+    var cv=d.getElementById('pk-intro-cv'), wrap=d.getElementById('pk-intro');
+    if(!cv||!wrap){ setTimeout(init,100); return; }
+    var ctx=cv.getContext('2d');
+    function rs(){ cv.width=cv.offsetWidth; cv.height=cv.offsetHeight; }
+    rs(); window.parent.addEventListener('resize',rs);
+    var N=90, pts=[];
+    for(var i=0;i<N;i++){ pts.push({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,r:Math.random()*1.8+.6,c:Math.random()<.12?'rgba(180,120,255,':'rgba(0,224,198,'}); }
+    var raf;
+    function tick(){
+      if(!d.getElementById('pk-intro-cv')){ cancelAnimationFrame(raf); return; }
+      var W=cv.width,H=cv.height; ctx.clearRect(0,0,W,H);
+      for(var i=0;i<N;i++){ var p=pts[i]; p.x=(p.x+p.vx+1)%1; p.y=(p.y+p.vy+1)%1; }
+      for(var i=0;i<N;i++) for(var j=i+1;j<N;j++){ var dx=(pts[i].x-pts[j].x)*W, dy=(pts[i].y-pts[j].y)*H, dd=Math.sqrt(dx*dx+dy*dy); if(dd<120){ ctx.beginPath(); ctx.moveTo(pts[i].x*W,pts[i].y*H); ctx.lineTo(pts[j].x*W,pts[j].y*H); ctx.strokeStyle='rgba(0,224,198,'+(.18*(1-dd/120)).toFixed(3)+')'; ctx.lineWidth=.7; ctx.stroke(); } }
+      for(var i=0;i<N;i++){ var p=pts[i]; ctx.beginPath(); ctx.arc(p.x*W,p.y*H,p.r,0,7); ctx.fillStyle=p.c+'.7)'; ctx.shadowBlur=8; ctx.shadowColor=p.c+'1)'; ctx.fill(); ctx.shadowBlur=0; }
+      raf=requestAnimationFrame(tick);
+    }
+    tick();
+    var leaving=false;
+    function go(){
+      if(leaving) return; leaving=true;
+      var scene=d.getElementById('pk-intro-scene'), logo=d.getElementById('pk-intro-logo'), flash=d.getElementById('pk-intro-flash');
+      wrap.style.pointerEvents='none';
+      if(logo){ logo.style.transform='scale(1.1)'; logo.style.filter='drop-shadow(0 0 60px rgba(0,224,198,.95)) drop-shadow(0 0 120px rgba(0,224,198,.5))'; }
+      setTimeout(function(){ if(flash) flash.style.animation='pkFlash .55s ease forwards'; if(scene){ scene.style.transform='scale(1.15)'; scene.style.opacity='0'; } },180);
+      setTimeout(function(){ if(wrap&&wrap.parentNode) wrap.parentNode.removeChild(wrap); cancelAnimationFrame(raf); },950);
+    }
+    wrap.addEventListener('mousemove',go);
+    wrap.addEventListener('click',go);
+  }
+  init();
+})();
+</script>
+"""
+
+
+def _pk_intro_overlay():
+    """Faithful animated landing from the uploaded design — shown once per session."""
+    b64 = ""
+    try:
+        from parker_assets import PARKER_LOGO_B64
+        b64 = PARKER_LOGO_B64
+    except Exception:
+        try:
+            with open("images/parker-logo.png", "rb") as f:
+                b64 = base64.b64encode(f.read()).decode()
+        except Exception:
+            b64 = ""
+    if b64:
+        logo = ('<img src="data:image/png;base64,' + b64 + '" alt="PARKER" '
+                'style="width:330px;height:330px;object-fit:contain;display:block;'
+                'filter:drop-shadow(0 0 36px rgba(0,224,198,.7)) drop-shadow(0 0 80px rgba(0,224,198,.35))">')
+    else:
+        logo = ('<div style="font-family:\'JetBrains Mono\',monospace;color:#00e0c6;'
+                'font-size:90px;font-weight:700">P</div>')
+    st.markdown(_PK_INTRO_STYLE + _PK_INTRO_HTML.replace("__LOGO__", logo), unsafe_allow_html=True)
+    components.html(_PK_INTRO_JS, height=0)
+
+
+def render_parker_home():
+    if not st.session_state.get("_pk_intro_seen"):
+        _pk_intro_overlay()
+        st.session_state["_pk_intro_seen"] = True
+    st.markdown(_constellation_bg(), unsafe_allow_html=True)
+    st.markdown(PARKER_CSS, unsafe_allow_html=True)
+    st.markdown('<div class="pk">', unsafe_allow_html=True)
+    st.markdown(_pk_nav("home"), unsafe_allow_html=True)
+    if not wc_ok:
+        st.warning("Couldn't load World Cup data right now — try again shortly.")
+        st.markdown('</div>', unsafe_allow_html=True)
+        return
+
+    left, right = st.columns([1.25, 1], gap="large")
+
+    # ---- HERO (left): eyebrow, headline, Ask Parker (wired to ask_ai) -------
+    with left:
+        st.markdown(
+            '<div class="pk-eyebrow pk-up">FIFA World Cup 2026 — USA · Canada · México</div>'
+            '<div class="pk-head">Ask <span class="em">Parker</span> anything<br>'
+            'about the World Cup.</div>'
+            '<div class="pk-subp">Live tournament intelligence — model-backed predictions, '
+            'team strength, scorers and pulse, all from real data.</div>', unsafe_allow_html=True)
+        # chip click prefills the question (handled before the input is created)
+        if "_pk_chip" in st.session_state:
+            st.session_state["_pk_q"] = st.session_state.pop("_pk_chip")
+        st.markdown('<div class="pk-ask">', unsafe_allow_html=True)
+        qcol, bcol = st.columns([5, 1])
+        q = qcol.text_input("Ask Parker", key="_pk_q", label_visibility="collapsed",
+                            placeholder="Ask Parker about the World Cup…")
+        ask = bcol.button("Ask", key="_pk_ask")
+        st.markdown('</div>', unsafe_allow_html=True)
+        chip_cols = st.columns(len(PK_CHIPS))
+        for i, (cc, chip) in enumerate(zip(chip_cols, PK_CHIPS)):
+            if cc.button(chip, key=f"_pk_chip_{i}"):
+                st.session_state["_pk_chip"] = chip
+                st.session_state["_pk_go"] = True
+                st.rerun()
+        if (ask or st.session_state.pop("_pk_go", False)) and (q or "").strip():
+            try:
+                with st.spinner("Parker is thinking…"):
+                    st.session_state["_pk_ans"] = ask_ai(
+                        q, system="You are Parker, a World Cup 2026 stats assistant. Answer ONLY "
+                        "from the data provided; if a stat isn't present, say so plainly. Be concise.",
+                        cache_context=_stats_context(), temperature=0.2)
+            except Exception as e:
+                st.session_state["_pk_ans"] = f"Parker can't answer right now. ({e})"
+        if st.session_state.get("_pk_ans"):
+            st.info(st.session_state["_pk_ans"])
+
+    # ---- HERO (right): Predicted champion + Golden boot --------------------
+    with right:
+        champs = _championship_probs()
+        if champs:
+            mx = max(p for _, p in champs) or 1
+            rows = "".join(
+                f'<div class="pk-row">{_flag_img(t, 24)}<span class="nm">{t}</span>'
+                f'<div class="pk-track"><div class="pk-fill" style="width:{p / mx * 100:.0f}%;'
+                f'background:{_team_color(t)}"></div></div>'
+                f'<span class="pk-pct">{p * 100:.0f}%</span></div>' for t, p in champs)
+        else:
+            rows = '<div class="pk-note">Not enough results yet to project a champion.</div>'
+        st.markdown(
+            '<div class="pk-card"><div class="pk-card-h">'
+            '<span class="pk-card-t">Predicted Champion</span><span class="pk-tag">Model v2.0</span>'
+            f'</div>{rows}</div>', unsafe_allow_html=True)
+
+        gsnap, _a, stamp = load_scorer_snapshot()
+        if gsnap is not None and not gsnap.empty:
+            gb = "".join(
+                f'<div class="pk-gb"><span class="rk">{i + 1}</span>{_flag_img(r["Team"], 22)}'
+                f'<span class="pl">{r["Player"]} <span class="cc">{_code(r["Team"])}</span></span>'
+                f'<span class="gl">{int(r["Goals"])}</span></div>'
+                for i, r in gsnap.head(5).iterrows())
+            note = f'<div class="pk-note">Snapshot · {stamp or "see Scorers tab for live"}</div>'
+        else:
+            gb = '<div class="pk-note">Scorer data unavailable.</div>'
+            note = ""
+        st.markdown(
+            '<div class="pk-card"><div class="pk-card-h">'
+            f'<span class="pk-card-t">Golden Boot Race</span></div>{gb}{note}</div>',
+            unsafe_allow_html=True)
+
+    # ---- LOWER ROW: Team strength radar + Tournament pulse ------------------
+    lc, rc = st.columns([1, 1], gap="large")
+    with lc:
+        tsdf = _pk_team_stats()
+        st.markdown('<div class="pk-card"><div class="pk-card-h">'
+                    '<span class="pk-card-t">Team Strength Index</span>'
+                    '<span class="pk-tag">Per-game</span></div>', unsafe_allow_html=True)
+        if tsdf is not None and not tsdf.empty:
+            gf, ga, gp = _goal_pg()
+            opts = tsdf.sort_values("xG/game", ascending=False)["Team"].head(6).tolist()
+            pick = st.radio("team", opts, horizontal=True, label_visibility="collapsed", key="_pk_radar")
+            raw = {t: _radar_values(t, tsdf, gf, ga, gp) for t in opts}
+            norm = {}
+            for ax in PK_RADAR_AXES:
+                vals = [raw[t][ax] for t in opts if raw[t][ax] is not None]
+                lo, hi = (min(vals), max(vals)) if vals else (0, 1)
+                for t in opts:
+                    v = raw[t][ax]
+                    if v is None:
+                        n = 0.4
+                    elif hi == lo:
+                        n = 0.7
+                    else:
+                        n = (v - lo) / (hi - lo)
+                        if ax == "Defense":           # fewer conceded = stronger
+                            n = 1 - n
+                    norm.setdefault(t, {})[ax] = 0.15 + 0.85 * n
+            vals01 = [norm[pick][ax] for ax in PK_RADAR_AXES]
+            bars = "".join(
+                f'<div class="pk-rstat"><span class="l">{ax}</span><div class="t">'
+                f'<div class="f" style="width:{norm[pick][ax] * 100:.0f}%"></div></div>'
+                f'<span class="v">{("—" if raw[pick][ax] is None else round(raw[pick][ax], 1))}</span></div>'
+                for ax in PK_RADAR_AXES)
+            cL, cR = st.columns([1, 1])
+            cL.markdown(_radar_svg(vals01), unsafe_allow_html=True)
+            cR.markdown(bars, unsafe_allow_html=True)
+            st.markdown('<div class="pk-note">Set Pieces ≈ corners/game (proxy); '
+                        '"Pace" is not in the data, so Big Chances stands in.</div>',
+                        unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="pk-note">Team stats are still loading / unavailable.</div>',
+                        unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+    with rc:
+        st.markdown('<div class="pk-card"><div class="pk-card-h">'
+                    '<span class="pk-card-t">Tournament Pulse</span>'
+                    '<span class="pk-tag">Live</span></div>'
+                    + _pulse_html() + '</div>', unsafe_allow_html=True)
+
+    # ---- TICKER ------------------------------------------------------------
+    st.markdown('<div class="pk-card" style="margin-top:6px;">'
+                + _ticker_html() + '</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
 SECTIONS = {
     "standings": ("Group standings", section_standings),
     "scorers": ("Top 10 scorers & assists", section_scorers),
@@ -2318,11 +2869,4 @@ elif view in SECTIONS:
         st.warning(f"Couldn't load World Cup data right now: {wc_err}")
     else:
         title, render_fn = SECTIONS[view]
-        if view not in ("stats", "standings"):
-            render_banner(title, view)
-        render_fn()
-else:
-    # Home: full-screen hero + the menu of boxes
-    render_home(len(finished), n_goals, len(groups))
-    if not wc_ok:
-        st.warning(f"Couldn't load World Cup data right now: {wc_err}")
+        if view not i

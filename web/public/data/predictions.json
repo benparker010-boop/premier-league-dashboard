@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-05T18:55:25.262258+00:00",
+ "generatedAt": "2026-07-05T21:08:51.243171+00:00",
  "modelVersion": "v2.6",
  "champions": [
   {
@@ -59,7 +59,7 @@
     "favHome": false,
     "prob": 51,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "result"
@@ -105,7 +105,7 @@
     "favHome": true,
     "prob": 60,
     "projScore": [
-     1,
+     2,
      1
     ],
     "tier": "confirmed"
@@ -129,7 +129,7 @@
     "prob": 50,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "confirmed"
    },
@@ -151,7 +151,7 @@
     "favHome": false,
     "prob": 63,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -175,7 +175,7 @@
     "prob": 51,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "confirmed"
    },
@@ -198,7 +198,7 @@
     "prob": 60,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "confirmed"
    },
@@ -220,7 +220,7 @@
     "favHome": false,
     "prob": 54,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -245,7 +245,7 @@
     "favHome": false,
     "prob": 60,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "projected"
@@ -268,7 +268,7 @@
     "favHome": false,
     "prob": 51,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "projected"
@@ -292,7 +292,7 @@
     "prob": 59,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    },
@@ -314,7 +314,7 @@
     "favHome": false,
     "prob": 50,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "projected"
@@ -340,7 +340,7 @@
     "prob": 58,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    },
@@ -363,7 +363,7 @@
     "prob": 54,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    }
@@ -387,7 +387,7 @@
    "prob": 52,
    "projScore": [
     1,
-    1
+    0
    ],
    "tier": "projected",
    "champion": "France"
