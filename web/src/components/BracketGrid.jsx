@@ -30,8 +30,8 @@ function tierProps(m) {
   const favCode = m.favHome ? m.home.code : m.away.code
   return {
     hCode: m.home.code, hCol: m.home.color, aCode: m.away.code, aCol: m.away.color,
-    sh: m.done && m.sh != null ? String(m.sh) : '–',
-    sa: m.done && m.sa != null ? String(m.sa) : '–',
+    sh: m.done && m.sh != null ? String(m.sh) : m.projScore ? String(m.projScore[0]) : '–',
+    sa: m.done && m.sa != null ? String(m.sa) : m.projScore ? String(m.projScore[1]) : '–',
     hTextCol: hOn ? '#e8f8f5' : '#3d4f60', aTextCol: aOn ? '#e8f8f5' : '#3d4f60',
     hScoreCol: hOn ? '#ffffff' : '#3d4f60', aScoreCol: aOn ? '#ffffff' : '#3d4f60',
     bg: isResult
