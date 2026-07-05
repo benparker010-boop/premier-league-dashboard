@@ -12,24 +12,9 @@ import MatchLab from './views/MatchLab.jsx'
 import Players from './views/Players.jsx'
 import { useData } from './data/DataContext.jsx'
 
-/* Phase 3 stand-in answer — replaced by the real LLM endpoint in Phase 5. */
+/* Shown only if the Ask Parker route is unreachable (e.g. no API key set). */
 const FALLBACK =
-  "Parker's live engine comes online in a later phase — but the model currently has France as the clear title favourite, with Spain, Morocco and Argentina its next-most-likely champions."
-
-/* Build the Match Lab context string that silently enriches the AI prompt when
-   a match is open. Consumed by the real LLM route in Phase 5. */
-function matchContext(m) {
-  if (!m) return ''
-  const s = m.stats || {}
-  const p = (k) => (s[k] || [null, null])
-  const scorers = (m.timeline || []).filter((e) => e.type === 'g').map((e) => `${e.player} ${e.min}'`).join(', ')
-  return (
-    `\n\nThe user is currently viewing this match in Match Lab — ground answers about 'this match/game' in it: ` +
-    `${m.home.name} ${m.score[0]}-${m.score[1]} ${m.away.name} (${m.round}, ${m.date}). ` +
-    `Possession ${p('possession')[0]}%-${p('possession')[1]}%, xG ${p('xg')[0]}-${p('xg')[1]}, ` +
-    `shots ${p('shots')[0]}-${p('shots')[1]} (on target ${p('sot')[0]}-${p('sot')[1]}). Scorers: ${scorers}.`
-  )
-}
+  "Parker's live engine isn't reachable right now — but the model has France as the clear title favourite, with Spain, Morocco and Argentina its next most-likely champions."
 
 export default function App() {
   const { data } = useData()
@@ -67,20 +52,32 @@ export default function App() {
     }, 16)
   }
 
-  const ask = (text) => {
+  const ask = async (text) => {
     const q = (text || '').trim()
     if (!q || pending) return
-    // context-aware enrichment (used by the real LLM in Phase 5)
-    const curMatch = (data?.matches || []).find((x) => x.id === matchRef.current) || (data?.matches || [])[0]
-    const context = viewRef.current === 'matchlab' ? matchContext(curMatch) : ''
-    void context
+    const history = [...messages, { role: 'user', content: q }]
     setMessages((s) => [...s, { role: 'user', content: q, id: 'u' + Date.now() }])
     setQuery('')
     setPending(true)
-    setTimeout(() => {
+    // The route builds the grounded prompt server-side from our real prediction
+    // data + (in Match Lab) the open match; the API key never touches the client.
+    try {
+      const r = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: history.map((m) => ({ role: m.role, content: m.content })),
+          view: viewRef.current,
+          matchId: matchRef.current,
+        }),
+      })
+      const data = await r.json()
+      setPending(false)
+      typeOut(data.text || FALLBACK)
+    } catch (e) {
       setPending(false)
       typeOut(FALLBACK)
-    }, 900)
+    }
   }
 
   const chat = { query, setQuery, messages, pending, ask }
