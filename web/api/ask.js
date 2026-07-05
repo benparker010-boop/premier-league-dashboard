@@ -106,9 +106,17 @@ export default async function handler(req, res) {
     const base = { ok: true, hasKey: k.length > 0, keyLooksValid: k.startsWith('sk-ant-'), keyLen: k.length, model: MODEL }
     if ((req.url || '').includes('test=1') && k) {
       try {
+        const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`
+        const [predictions, players] = await Promise.all([loadData(origin, 'predictions'), loadData(origin, 'players')])
+        const context = buildContext(predictions, players, null)
         const client = new Anthropic({ apiKey: k })
-        const r = await client.messages.create({ model: MODEL, max_tokens: 16, messages: [{ role: 'user', content: 'ping' }] })
-        return send(res, 200, { ...base, testOk: true, respModel: r.model })
+        const r = await client.messages.create({
+          model: MODEL, max_tokens: 400,
+          system: SYSTEM_BASE + '\n\nModel snapshot:\n' + context,
+          messages: [{ role: 'user', content: "Who's most likely to win the World Cup?" }],
+        })
+        const text = (r.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('').trim()
+        return send(res, 200, { ...base, testOk: true, dataLoaded: !!predictions, answer: text })
       } catch (e) {
         return send(res, 200, { ...base, testOk: false, errStatus: e && e.status, errType: e && e.name, errMsg: String(e && e.message).slice(0, 300) })
       }
