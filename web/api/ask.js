@@ -100,6 +100,11 @@ const FALLBACK =
   "Parker's live engine isn't reachable right now, but the model has France as the clear title favourite, with Spain, Morocco and Argentina its next most-likely champions. Open the dashboard to explore the full bracket."
 
 export default async function handler(req, res) {
+  // Safe health check: reports only whether the key is visible (never its value).
+  if (req.method === 'GET') {
+    const k = process.env.ANTHROPIC_API_KEY || ''
+    return send(res, 200, { ok: true, hasKey: k.length > 0, keyLooksValid: k.startsWith('sk-ant-'), keyLen: k.length })
+  }
   if (req.method !== 'POST') return send(res, 405, { error: 'method not allowed' })
   const body = await readJsonBody(req)
   const { messages = [], view, matchId } = body
