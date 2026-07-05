@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PLAYERS_DATA } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -14,6 +14,9 @@ const KEY = { goals: 'goals', xg: 'xg', assists: 'assists', cards: 'yc' }
 export default function Players() {
   const [tab, setTab] = useState('goals')
   const [search, setSearch] = useState('')
+  const { data } = useData()
+  const PLAYERS_DATA = data?.players?.players || []
+  const totals = data?.players?.totals || { goals: 0, xg: 0, assists: 0, tracked: 0 }
 
   const key = KEY[tab] || 'goals'
   const q = search.trim().toLowerCase()
@@ -24,11 +27,11 @@ export default function Players() {
     : PLAYERS_DATA
   const maxV = filtered.reduce((m, x) => Math.max(m, x[key] || 0), 0) || 1
   const sorted = [...filtered].sort((a, b) => (b[key] || 0) - (a[key] || 0))
-  const overallTop = [...PLAYERS_DATA].sort((a, b) => b.goals - a.goals)[0]
+  const overallTop = [...PLAYERS_DATA].sort((a, b) => b.goals - a.goals)[0] || { code: '', name: '—', goals: 0, xg: 0, assists: 0 }
 
-  const tourneyGoals = PLAYERS_DATA.reduce((s, x) => s + x.goals, 0)
-  const tourneyXG = PLAYERS_DATA.reduce((s, x) => s + x.xg, 0).toFixed(1)
-  const tourneyAssists = PLAYERS_DATA.reduce((s, x) => s + x.assists, 0)
+  const tourneyGoals = totals.goals
+  const tourneyXG = totals.xg.toFixed(1)
+  const tourneyAssists = totals.assists
 
   const rankCol = (i) => (i === 0 ? '#f5c451' : i === 1 ? '#c0c8d4' : i === 2 ? '#c87830' : '#56708a')
 
@@ -120,7 +123,7 @@ export default function Players() {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10, padding: '0 2px' }}>
         <span style={mono({ fontSize: 10, letterSpacing: '.08em', color: 'var(--text-dim)' })}>
-          {sorted.length} of {PLAYERS_DATA.length} players
+          {sorted.length} of {totals.tracked} players
         </span>
       </div>
 
@@ -241,7 +244,7 @@ export default function Players() {
               {[
                 [tourneyGoals, 'GOALS SCORED', '#f5c451'],
                 [tourneyXG, 'TOTAL xG', '#5b8cff'],
-                [PLAYERS_DATA.length, 'PLAYERS TRACKED', '#00e0c6'],
+                [totals.tracked, 'PLAYERS TRACKED', '#00e0c6'],
                 [tourneyAssists, 'ASSISTS', '#ef7d52'],
               ].map(([val, label, accent]) => (
                 <div key={label} style={{ borderLeft: `2px solid ${accent}`, paddingLeft: 12 }}>

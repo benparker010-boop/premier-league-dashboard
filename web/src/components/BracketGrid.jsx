@@ -1,36 +1,37 @@
 import { useLayoutEffect, useRef } from 'react'
-import { B_R16, B_QF, B_SF, B_F } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
 
 /*
   The knockout bracket — the most important screen in the app.
 
-  Three semantic tiers (per spec, do not simplify):
-  1. RESULT      — played match. Solid teal border, teal tint, real score.
-                   Winner bright, loser dimmed. Tag "RESULT", right side "FT".
-  2. CONFIRMED   — both teams locked in, score is Parker's forecast. Solid
-                   neutral gray-white border. Predicted winner bright. Tag
-                   "CONFIRMED" (gray), right side favored code + win% (teal).
-  3. PROJECTED   — the matchup itself is a forecast. DASHED amber border +
-                   amber tint. Tag "PROJECTED" (amber). The Final reads
-                   "PREDICTED CHAMPION" and gets a gold glow.
+  Three semantic tiers (per spec, do not simplify), driven by real data:
+  1. RESULT      — a played Round-of-16 match. Solid teal border, teal tint,
+                   real score. Winner bright, loser dimmed. Tag "RESULT", "FT".
+  2. CONFIRMED   — a real R16 fixture not yet played. Solid neutral border.
+                   Parker's predicted winner bright, underdog dim. Tag
+                   "CONFIRMED", favored code + model win% (teal).
+  3. PROJECTED   — QF/SF/Final: the matchup itself is Parker's forecast, built
+                   by simulating the R16 winners forward. Dashed amber border +
+                   amber tint. Tag "PROJECTED". The Final reads "PREDICTED
+                   CHAMPION" and gets a gold glow.
 
-  Fit: natural size 980×810. The wrapper measures its width and scales the
-  inner block by min(1, width/980) — never upscales, never scrolls
-  horizontally. Wrapper height is set to scrollHeight*scale.
+  Fit: natural size 980×810, scaled by min(1, width/980) via ResizeObserver —
+  never upscales, never scrolls horizontally.
 */
 
-// tier: 'result' | 'confirmed' | 'projected'
-function tierProps(m, kind) {
-  const predSide = m.done ? m.winner : m.prob >= 50 ? 'home' : 'away'
+// card object from predictions.json: {home:{code,color}, away:{code,color},
+// done, sh, sa, winner, favHome, prob, tier}
+function tierProps(m) {
+  const predSide = m.done ? m.winner : m.favHome ? 'home' : 'away'
   const hOn = predSide === 'home'
   const aOn = predSide === 'away'
-  const isResult = kind === 'result'
-  const isProjected = kind === 'projected'
-  const favCode = m.prob >= 50 ? m.home.code : m.away.code
-  const favProb = m.prob >= 50 ? m.prob : 100 - m.prob
+  const isResult = m.tier === 'result'
+  const isProjected = m.tier === 'projected'
+  const favCode = m.favHome ? m.home.code : m.away.code
   return {
     hCode: m.home.code, hCol: m.home.color, aCode: m.away.code, aCol: m.away.color,
-    sh: m.done ? String(m.sh) : '–', sa: m.done ? String(m.sa) : '–',
+    sh: m.done && m.sh != null ? String(m.sh) : '–',
+    sa: m.done && m.sa != null ? String(m.sa) : '–',
     hTextCol: hOn ? '#e8f8f5' : '#3d4f60', aTextCol: aOn ? '#e8f8f5' : '#3d4f60',
     hScoreCol: hOn ? '#ffffff' : '#3d4f60', aScoreCol: aOn ? '#ffffff' : '#3d4f60',
     bg: isResult
@@ -42,13 +43,13 @@ function tierProps(m, kind) {
     bStyle: isProjected ? 'dashed' : 'solid',
     tagText: isResult ? 'RESULT' : isProjected ? 'PROJECTED' : 'CONFIRMED',
     tagCol: isResult ? '#00e0c6' : isProjected ? '#f5c451' : '#c3cfdc',
-    probText: isResult ? 'FT' : favCode + ' ' + favProb + '%',
+    probText: isResult ? 'FT' : favCode + ' ' + m.prob + '%',
     probCol: isResult ? '#3d4f60' : isProjected ? '#f5c451' : '#00e0c6',
   }
 }
 
-function MatchCard({ m, kind, x, y, final = false }) {
-  const t = tierProps(m, kind)
+function MatchCard({ m, x, y, final = false }) {
+  const t = tierProps(m)
   const row = (code, col, textCol, score, scoreCol, glowDot) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -79,7 +80,7 @@ function MatchCard({ m, kind, x, y, final = false }) {
           {final ? 'PREDICTED CHAMPION' : t.tagText}
         </span>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 700, color: final ? '#f5c451' : t.probCol }}>
-          {t.probText}
+          {final ? t.hCode + ' ' + m.prob + '%' : t.probText}
         </span>
       </div>
     </div>
@@ -88,7 +89,7 @@ function MatchCard({ m, kind, x, y, final = false }) {
     return (
       <div style={{ position: 'absolute', left: 780, top: 344, width: 200 }}>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '.14em', color: '#f5c451', textAlign: 'center', marginBottom: 5 }}>
-          PROJECTED FINAL · Jul 19
+          PROJECTED FINAL
         </div>
         {card}
       </div>
@@ -112,6 +113,7 @@ const colLabel = {
 export default function BracketGrid() {
   const wrapRef = useRef(null)
   const innerRef = useRef(null)
+  const { data } = useData()
 
   useLayoutEffect(() => {
     const wrap = wrapRef.current
@@ -121,7 +123,6 @@ export default function BracketGrid() {
     const fit = () => {
       const w = wrap.offsetWidth
       if (!w) return
-      // quantize to avoid sub-pixel jitter loops
       const scale = Math.round(Math.min(1, w / 980) * 1000) / 1000
       if (last === scale) return
       last = scale
@@ -133,7 +134,13 @@ export default function BracketGrid() {
     const ro = new ResizeObserver(fit)
     ro.observe(wrap)
     return () => ro.disconnect()
-  }, [])
+  }, [data])
+
+  const bracket = data?.predictions?.bracket
+  const r16 = bracket?.r16 || []
+  const qf = bracket?.qf || []
+  const sf = bracket?.sf || []
+  const final = bracket?.final
 
   return (
     <div ref={wrapRef} style={{ width: '100%', overflow: 'hidden', position: 'relative' }}>
@@ -164,16 +171,16 @@ export default function BracketGrid() {
               <circle cx="750" cy="396" r="4" style={{ filter: 'drop-shadow(0 0 6px rgba(0,224,198,.8))' }} />
             </g>
           </svg>
-          {B_R16.map((m, i) => (
-            <MatchCard key={m.label} m={m} kind="result" x={0} y={R16Y[i]} />
+          {r16.map((m, i) => (
+            <MatchCard key={'r16' + i} m={m} x={0} y={R16Y[i]} />
           ))}
-          {B_QF.map((m, i) => (
-            <MatchCard key={m.label} m={m} kind="confirmed" x={260} y={QFY[i]} />
+          {qf.map((m, i) => (
+            <MatchCard key={'qf' + i} m={m} x={260} y={QFY[i]} />
           ))}
-          {B_SF.map((m, i) => (
-            <MatchCard key={m.label} m={m} kind="projected" x={520} y={SFY[i]} />
+          {sf.map((m, i) => (
+            <MatchCard key={'sf' + i} m={m} x={520} y={SFY[i]} />
           ))}
-          <MatchCard m={B_F} kind="projected" final />
+          {final && <MatchCard m={final} final />}
         </div>
       </div>
     </div>

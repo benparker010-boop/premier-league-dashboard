@@ -4,7 +4,15 @@ import BracketGrid from '../components/BracketGrid.jsx'
 import BracketLegend from '../components/BracketLegend.jsx'
 import ChatMessages from '../components/ChatMessages.jsx'
 import useTween from '../hooks/useTween.js'
-import { CHAMPIONS, SUGGESTIONS, NEXT_MATCH, LAST_MATCH } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
+
+const SUGGESTIONS = [
+  "Who's most likely to win the World Cup?",
+  'Predict the final',
+  'Best xG in the tournament?',
+  'Who wins the Golden Boot?',
+  'Argentina vs Spain — who advances?',
+]
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
@@ -87,9 +95,9 @@ function QueryBar({ query, setQuery, onSubmit, placeholder }) {
   )
 }
 
-function PredictedChampionCard() {
+function PredictedChampionCard({ champions, modelVersion }) {
   const p = useTween(1300)
-  const maxV = Math.max(...CHAMPIONS.map((c) => c.v))
+  const maxV = Math.max(...champions.map((c) => c.v), 0.001)
   return (
     <div
       style={{
@@ -105,10 +113,10 @@ function PredictedChampionCard() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(0,224,198,.5),transparent)' }} />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <span style={mono({ fontSize: 11, letterSpacing: '.2em', color: 'var(--text-secondary-2)' })}>PREDICTED CHAMPION</span>
-        <span style={mono({ fontSize: 9.5, letterSpacing: '.1em', color: '#4f6075' })}>MODEL v2.6</span>
+        <span style={mono({ fontSize: 9.5, letterSpacing: '.1em', color: '#4f6075' })}>MODEL {modelVersion || 'v2.6'}</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
-        {CHAMPIONS.map((c, i) => (
+        {champions.map((c, i) => (
           <div key={c.code}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
@@ -149,8 +157,9 @@ function PredictedChampionCard() {
   )
 }
 
-function NextMatchCard({ goBracket }) {
-  const nm = NEXT_MATCH
+function NextMatchCard({ nextMatch, goBracket }) {
+  const nm = nextMatch
+  if (!nm) return null
   return (
     <div
       style={{
@@ -185,10 +194,10 @@ function NextMatchCard({ goBracket }) {
       <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
         <span style={mono({ fontSize: 9, letterSpacing: '.06em', color: 'var(--text-muted)', flex: 'none' })}>PICK</span>
         <div style={{ flex: 1, height: 5, borderRadius: 3, background: 'rgba(255,255,255,.07)', overflow: 'hidden' }}>
-          <div style={{ height: '100%', width: `${nm.prob}%`, background: `linear-gradient(90deg,${nm.home.color},#00e0c6)`, borderRadius: 3 }} />
+          <div style={{ height: '100%', width: `${nm.prob}%`, background: `linear-gradient(90deg,${nm.favCode === nm.home.code ? nm.home.color : nm.away.color},#00e0c6)`, borderRadius: 3 }} />
         </div>
         <span style={mono({ fontSize: 11, fontWeight: 700, color: 'var(--teal)', flex: 'none' })}>
-          {nm.home.code} {nm.prob}%
+          {nm.favCode} {nm.prob}%
         </span>
       </div>
       <button
@@ -201,8 +210,9 @@ function NextMatchCard({ goBracket }) {
   )
 }
 
-function LastResultCard({ goFixtures }) {
-  const lm = LAST_MATCH
+function LastResultCard({ lastMatch, goFixtures }) {
+  const lm = lastMatch
+  if (!lm) return null
   const row = (team, score) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
@@ -246,11 +256,13 @@ function LastResultCard({ goFixtures }) {
 
 export default function Overview({ chat, setView }) {
   const { query, setQuery, messages, pending, ask } = chat
+  const { data } = useData()
   const [ph, setPh] = useState(0)
   useEffect(() => {
     const t = setInterval(() => setPh((x) => (x + 1) % SUGGESTIONS.length), 3000)
     return () => clearInterval(t)
   }, [])
+  const pred = data?.predictions
 
   return (
     <div>
@@ -324,9 +336,9 @@ export default function Overview({ chat, setView }) {
 
         {/* right: predictions sidebar */}
         <aside style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <PredictedChampionCard />
-          <NextMatchCard goBracket={() => setView('bracket')} />
-          <LastResultCard goFixtures={() => setView('fixtures')} />
+          {pred && <PredictedChampionCard champions={pred.champions} modelVersion={pred.modelVersion} />}
+          <NextMatchCard nextMatch={pred?.nextMatch} goBracket={() => setView('bracket')} />
+          <LastResultCard lastMatch={pred?.lastMatch} goFixtures={() => setView('fixtures')} />
         </aside>
       </main>
 

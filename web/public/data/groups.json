@@ -1,0 +1,638 @@
+[
+ {
+  "name": "A",
+  "teams": [
+   {
+    "code": "MEX",
+    "color": "#ef7d52",
+    "name": "Mexico",
+    "p": 3,
+    "w": 3,
+    "d": 0,
+    "l": 0,
+    "gd": 6,
+    "pts": 9,
+    "qual": "q1"
+   },
+   {
+    "code": "RSA",
+    "color": "#c3cfdc",
+    "name": "South Africa",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": -1,
+    "pts": 4,
+    "qual": "q2"
+   },
+   {
+    "code": "KOR",
+    "color": "#e8475e",
+    "name": "South Korea",
+    "p": 3,
+    "w": 1,
+    "d": 0,
+    "l": 2,
+    "gd": -1,
+    "pts": 3,
+    "qual": "x"
+   },
+   {
+    "code": "CZE",
+    "color": "#c3cfdc",
+    "name": "Czechia",
+    "p": 3,
+    "w": 0,
+    "d": 1,
+    "l": 2,
+    "gd": -4,
+    "pts": 1,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "B",
+  "teams": [
+   {
+    "code": "SUI",
+    "color": "#e8475e",
+    "name": "Switzerland",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 4,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "CAN",
+    "color": "#ef7d52",
+    "name": "Canada",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 5,
+    "pts": 4,
+    "qual": "q2"
+   },
+   {
+    "code": "BIH",
+    "color": "#1faf6b",
+    "name": "Bosnia & Herzegovina",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": -1,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "QAT",
+    "color": "#1faf6b",
+    "name": "Qatar",
+    "p": 3,
+    "w": 0,
+    "d": 1,
+    "l": 2,
+    "gd": -8,
+    "pts": 1,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "C",
+  "teams": [
+   {
+    "code": "BRA",
+    "color": "#5b8cff",
+    "name": "Brazil",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 6,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "MAR",
+    "color": "#e8475e",
+    "name": "Morocco",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 3,
+    "pts": 7,
+    "qual": "q2"
+   },
+   {
+    "code": "SCO",
+    "color": "#1faf6b",
+    "name": "Scotland",
+    "p": 3,
+    "w": 1,
+    "d": 0,
+    "l": 2,
+    "gd": -3,
+    "pts": 3,
+    "qual": "x"
+   },
+   {
+    "code": "HAI",
+    "color": "#f5c451",
+    "name": "Haiti",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -6,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "D",
+  "teams": [
+   {
+    "code": "USA",
+    "color": "#5ec8e0",
+    "name": "USA",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gd": 4,
+    "pts": 6,
+    "qual": "q1"
+   },
+   {
+    "code": "AUS",
+    "color": "#ef7d52",
+    "name": "Australia",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 0,
+    "pts": 4,
+    "qual": "q2"
+   },
+   {
+    "code": "PAR",
+    "color": "#9d5fb5",
+    "name": "Paraguay",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": -2,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "TUR",
+    "color": "#f5c451",
+    "name": "Türkiye",
+    "p": 3,
+    "w": 1,
+    "d": 0,
+    "l": 2,
+    "gd": -2,
+    "pts": 3,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "E",
+  "teams": [
+   {
+    "code": "GER",
+    "color": "#9d5fb5",
+    "name": "Germany",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gd": 6,
+    "pts": 6,
+    "qual": "q1"
+   },
+   {
+    "code": "CIV",
+    "color": "#9d5fb5",
+    "name": "Côte d'Ivoire",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gd": 2,
+    "pts": 6,
+    "qual": "q2"
+   },
+   {
+    "code": "ECU",
+    "color": "#c3cfdc",
+    "name": "Ecuador",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 0,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "CUW",
+    "color": "#ef7d52",
+    "name": "Curaçao",
+    "p": 3,
+    "w": 0,
+    "d": 1,
+    "l": 2,
+    "gd": -8,
+    "pts": 1,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "F",
+  "teams": [
+   {
+    "code": "NED",
+    "color": "#2ecc71",
+    "name": "Netherlands",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 6,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "JPN",
+    "color": "#ef7d52",
+    "name": "Japan",
+    "p": 3,
+    "w": 1,
+    "d": 2,
+    "l": 0,
+    "gd": 4,
+    "pts": 5,
+    "qual": "q2"
+   },
+   {
+    "code": "SWE",
+    "color": "#2ecc71",
+    "name": "Sweden",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 0,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "TUN",
+    "color": "#5ec8e0",
+    "name": "Tunisia",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -10,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "G",
+  "teams": [
+   {
+    "code": "BEL",
+    "color": "#e8475e",
+    "name": "Belgium",
+    "p": 3,
+    "w": 1,
+    "d": 2,
+    "l": 0,
+    "gd": 4,
+    "pts": 5,
+    "qual": "q1"
+   },
+   {
+    "code": "EGY",
+    "color": "#5b8cff",
+    "name": "Egypt",
+    "p": 3,
+    "w": 1,
+    "d": 2,
+    "l": 0,
+    "gd": 2,
+    "pts": 5,
+    "qual": "q2"
+   },
+   {
+    "code": "IRN",
+    "color": "#f5c451",
+    "name": "Iran",
+    "p": 3,
+    "w": 0,
+    "d": 3,
+    "l": 0,
+    "gd": 0,
+    "pts": 3,
+    "qual": "x"
+   },
+   {
+    "code": "NZL",
+    "color": "#e8475e",
+    "name": "New Zealand",
+    "p": 3,
+    "w": 0,
+    "d": 1,
+    "l": 2,
+    "gd": -6,
+    "pts": 1,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "H",
+  "teams": [
+   {
+    "code": "ESP",
+    "color": "#c3cfdc",
+    "name": "Spain",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 5,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "CPV",
+    "color": "#f5c451",
+    "name": "Cape Verde",
+    "p": 3,
+    "w": 0,
+    "d": 3,
+    "l": 0,
+    "gd": 0,
+    "pts": 3,
+    "qual": "q2"
+   },
+   {
+    "code": "URU",
+    "color": "#5b8cff",
+    "name": "Uruguay",
+    "p": 3,
+    "w": 0,
+    "d": 2,
+    "l": 1,
+    "gd": -1,
+    "pts": 2,
+    "qual": "x"
+   },
+   {
+    "code": "KSA",
+    "color": "#5b8cff",
+    "name": "Saudi Arabia",
+    "p": 3,
+    "w": 0,
+    "d": 2,
+    "l": 1,
+    "gd": -4,
+    "pts": 2,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "I",
+  "teams": [
+   {
+    "code": "FRA",
+    "color": "#9d5fb5",
+    "name": "France",
+    "p": 3,
+    "w": 3,
+    "d": 0,
+    "l": 0,
+    "gd": 8,
+    "pts": 9,
+    "qual": "q1"
+   },
+   {
+    "code": "NOR",
+    "color": "#f5c451",
+    "name": "Norway",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gd": 1,
+    "pts": 6,
+    "qual": "q2"
+   },
+   {
+    "code": "SEN",
+    "color": "#9d5fb5",
+    "name": "Senegal",
+    "p": 3,
+    "w": 1,
+    "d": 0,
+    "l": 2,
+    "gd": 2,
+    "pts": 3,
+    "qual": "x"
+   },
+   {
+    "code": "IRQ",
+    "color": "#9d5fb5",
+    "name": "Iraq",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -11,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "J",
+  "teams": [
+   {
+    "code": "ARG",
+    "color": "#c3cfdc",
+    "name": "Argentina",
+    "p": 3,
+    "w": 3,
+    "d": 0,
+    "l": 0,
+    "gd": 7,
+    "pts": 9,
+    "qual": "q1"
+   },
+   {
+    "code": "AUT",
+    "color": "#2ecc71",
+    "name": "Austria",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 0,
+    "pts": 4,
+    "qual": "q2"
+   },
+   {
+    "code": "ALG",
+    "color": "#f5c451",
+    "name": "Algeria",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": -2,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "JOR",
+    "color": "#f5c451",
+    "name": "Jordan",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -5,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "K",
+  "teams": [
+   {
+    "code": "COL",
+    "color": "#5b8cff",
+    "name": "Colombia",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 3,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "POR",
+    "color": "#5ec8e0",
+    "name": "Portugal",
+    "p": 3,
+    "w": 1,
+    "d": 2,
+    "l": 0,
+    "gd": 5,
+    "pts": 5,
+    "qual": "q2"
+   },
+   {
+    "code": "COD",
+    "color": "#5b8cff",
+    "name": "DR Congo",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 1,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "UZB",
+    "color": "#e8475e",
+    "name": "Uzbekistan",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -9,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ },
+ {
+  "name": "L",
+  "teams": [
+   {
+    "code": "ENG",
+    "color": "#2ecc71",
+    "name": "England",
+    "p": 3,
+    "w": 2,
+    "d": 1,
+    "l": 0,
+    "gd": 4,
+    "pts": 7,
+    "qual": "q1"
+   },
+   {
+    "code": "CRO",
+    "color": "#2ecc71",
+    "name": "Croatia",
+    "p": 3,
+    "w": 2,
+    "d": 0,
+    "l": 1,
+    "gd": 0,
+    "pts": 6,
+    "qual": "q2"
+   },
+   {
+    "code": "GHA",
+    "color": "#e8475e",
+    "name": "Ghana",
+    "p": 3,
+    "w": 1,
+    "d": 1,
+    "l": 1,
+    "gd": 0,
+    "pts": 4,
+    "qual": "x"
+   },
+   {
+    "code": "PAN",
+    "color": "#9d5fb5",
+    "name": "Panama",
+    "p": 3,
+    "w": 0,
+    "d": 0,
+    "l": 3,
+    "gd": -4,
+    "pts": 0,
+    "qual": "x"
+   }
+  ]
+ }
+]

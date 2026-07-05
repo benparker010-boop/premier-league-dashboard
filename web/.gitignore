@@ -3,3 +3,6 @@ dist
 .env
 .env.local
 .vercel
+
+# data build cache (raw API responses)
+web/scripts/.cache/

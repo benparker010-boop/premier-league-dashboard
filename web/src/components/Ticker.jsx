@@ -1,4 +1,4 @@
-import { TICKER_RESULTS, TICKER_R16 } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
 
 const seg = {
   fontFamily: 'var(--font-mono)',
@@ -11,14 +11,26 @@ const seg = {
 }
 
 export default function Ticker() {
+  const { data } = useData()
+  const fixtures = data?.fixtures || []
+  const done = fixtures.filter((f) => f.status === 'done').slice(-10)
+  const upcoming = fixtures.filter((f) => f.status === 'upcoming').slice(0, 6)
+  const resultsText = done.map((f) => `${f.hCode} ${f.sh}–${f.sa} ${f.aCode}`).join(' · ')
+  const upcomingText = upcoming.map((f) => `${f.hCode} v ${f.aCode} · ${f.date}`).join(' · ')
+  if (!resultsText && !upcomingText) return null
+
   const block = (
     <>
-      <span style={seg}>
-        <span style={{ color: 'var(--teal)' }}>RESULTS</span>&nbsp;&nbsp;{TICKER_RESULTS}
-      </span>
-      <span style={seg}>
-        <span style={{ color: 'var(--gold)' }}>ROUND OF 16</span>&nbsp;&nbsp;{TICKER_R16}
-      </span>
+      {resultsText && (
+        <span style={seg}>
+          <span style={{ color: 'var(--teal)' }}>RESULTS</span>&nbsp;&nbsp;{resultsText}
+        </span>
+      )}
+      {upcomingText && (
+        <span style={seg}>
+          <span style={{ color: 'var(--gold)' }}>UPCOMING</span>&nbsp;&nbsp;{upcomingText}
+        </span>
+      )}
     </>
   )
   return (

@@ -1,32 +1,7 @@
 import { useState } from 'react'
-import { MATCHES, TEAMS } from '../data/wcdata.js'
-import { B_R16, B_QF, B_SF, B_F, B_R16_DATES, B_R16_VENUES } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
-
-function buildRows({ openMatchLab, goBracket }) {
-  const rows = []
-  const mk = (round, date, venue, hCode, hCol, aCode, aCol, sh, sa, status, on) => ({
-    round, date, venue, hCode, hCol, aCode, aCol,
-    sh: status === 'done' ? String(sh) : '–',
-    sa: status === 'done' ? String(sa) : '–',
-    status, on,
-  })
-  MATCHES.forEach((m) => {
-    const h = TEAMS[m.home] || {}
-    const a = TEAMS[m.away] || {}
-    rows.push(
-      mk(m.group ? m.group.toUpperCase() : 'GROUP STAGE', m.date, `${m.venue}, ${m.city}`, m.home, h.color || '#5b8cff', m.away, a.color || '#e8475e', m.score[0], m.score[1], 'done', () => openMatchLab(m.id)),
-    )
-  })
-  B_R16.forEach((m, i) =>
-    rows.push(mk('ROUND OF 16', B_R16_DATES[i], B_R16_VENUES[i], m.home.code, m.home.color, m.away.code, m.away.color, m.sh, m.sa, m.done ? 'done' : 'upcoming', goBracket)),
-  )
-  B_QF.forEach((m) => rows.push(mk('QUARTER-FINAL', m.date, m.venue, m.home.code, m.home.color, m.away.code, m.away.color, m.sh, m.sa, m.done ? 'done' : 'upcoming', goBracket)))
-  B_SF.forEach((m) => rows.push(mk('SEMI-FINAL', m.date, m.venue, m.home.code, m.home.color, m.away.code, m.away.color, m.sh, m.sa, m.done ? 'done' : 'upcoming', goBracket)))
-  rows.push(mk('FINAL', B_F.date, B_F.venue, B_F.home.code, B_F.home.color, B_F.away.code, B_F.away.color, B_F.sh, B_F.sa, B_F.done ? 'done' : 'upcoming', goBracket))
-  return rows
-}
 
 const TABS = [
   ['all', 'All'],
@@ -36,7 +11,17 @@ const TABS = [
 
 export default function Fixtures({ openMatchLab, goBracket }) {
   const [filter, setFilter] = useState('all')
-  const all = buildRows({ openMatchLab, goBracket })
+  const { data } = useData()
+  const fixtures = data?.fixtures || []
+  const labIds = new Set((data?.matches || []).map((m) => m.id))
+  const all = fixtures.map((f) => ({
+    ...f,
+    sh: f.status === 'done' && f.sh != null ? String(f.sh) : '–',
+    sa: f.status === 'done' && f.sa != null ? String(f.sa) : '–',
+    // group-stage matches with lab detail deep-link into Match Lab; others jump to the bracket
+    on: labIds.has(f.matchId) ? () => openMatchLab(f.matchId) : goBracket,
+    venue: '',
+  }))
   const rows = all.filter((f) => filter === 'all' || f.status === filter)
 
   return (

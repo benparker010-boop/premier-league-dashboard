@@ -10,34 +10,32 @@ import Groups from './views/Groups.jsx'
 import Fixtures from './views/Fixtures.jsx'
 import MatchLab from './views/MatchLab.jsx'
 import Players from './views/Players.jsx'
-import { MATCHES, TEAMS } from './data/wcdata.js'
+import { useData } from './data/DataContext.jsx'
 
 /* Phase 3 stand-in answer — replaced by the real LLM endpoint in Phase 5. */
 const FALLBACK =
-  "Parker's live engine comes online in a later phase, but the model has France leading the title race at 18.4%, with Argentina (16.1%) and England (13.7%) just behind."
+  "Parker's live engine comes online in a later phase — but the model currently has France as the clear title favourite, with Spain, Morocco and Argentina its next-most-likely champions."
 
 /* Build the Match Lab context string that silently enriches the AI prompt when
-   a match is open. Wired now; consumed by the real LLM route in Phase 5. */
-function matchContext(matchId) {
-  const m = MATCHES.find((x) => x.id === matchId)
+   a match is open. Consumed by the real LLM route in Phase 5. */
+function matchContext(m) {
   if (!m) return ''
-  const h = TEAMS[m.home] || {}
-  const a = TEAMS[m.away] || {}
-  const s = m.stats
-  const scorers = m.timeline.filter((e) => e.type === 'g').map((e) => `${e.player} ${e.min}'`).join(', ')
+  const s = m.stats || {}
+  const p = (k) => (s[k] || [null, null])
+  const scorers = (m.timeline || []).filter((e) => e.type === 'g').map((e) => `${e.player} ${e.min}'`).join(', ')
   return (
     `\n\nThe user is currently viewing this match in Match Lab — ground answers about 'this match/game' in it: ` +
-    `${h.name} ${m.score[0]}-${m.score[1]} ${a.name} (${m.group}, ${m.date}). ` +
-    `Possession ${s.possession[0]}%-${s.possession[1]}%, xG ${s.xg[0]}-${s.xg[1]}, shots ${s.shots[0]}-${s.shots[1]} ` +
-    `(on target ${s.sot[0]}-${s.sot[1]}), big chances ${s.big[0]}-${s.big[1]}, corners ${s.corners[0]}-${s.corners[1]}, ` +
-    `pass accuracy ${s.passAcc[0]}%-${s.passAcc[1]}%. Scorers: ${scorers}.`
+    `${m.home.name} ${m.score[0]}-${m.score[1]} ${m.away.name} (${m.round}, ${m.date}). ` +
+    `Possession ${p('possession')[0]}%-${p('possession')[1]}%, xG ${p('xg')[0]}-${p('xg')[1]}, ` +
+    `shots ${p('shots')[0]}-${p('shots')[1]} (on target ${p('sot')[0]}-${p('sot')[1]}). Scorers: ${scorers}.`
   )
 }
 
 export default function App() {
+  const { data } = useData()
   // landing view is Bracket per latest direction (Overview stays a nav item)
   const [view, setView] = useState('bracket')
-  const [match, setMatch] = useState('esp-jpn')
+  const [match, setMatch] = useState(null)
   const [intro, setIntro] = useState(() => {
     try {
       return sessionStorage.getItem('parker_seen') ? 'done' : 'booting'
@@ -73,7 +71,8 @@ export default function App() {
     const q = (text || '').trim()
     if (!q || pending) return
     // context-aware enrichment (used by the real LLM in Phase 5)
-    const context = viewRef.current === 'matchlab' ? matchContext(matchRef.current) : ''
+    const curMatch = (data?.matches || []).find((x) => x.id === matchRef.current) || (data?.matches || [])[0]
+    const context = viewRef.current === 'matchlab' ? matchContext(curMatch) : ''
     void context
     setMessages((s) => [...s, { role: 'user', content: q, id: 'u' + Date.now() }])
     setQuery('')

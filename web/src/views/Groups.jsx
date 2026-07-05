@@ -1,8 +1,10 @@
-import { GROUPS_DATA } from '../data/mock.js'
+import { useData } from '../data/DataContext.jsx'
 
 const mono = (extra) => ({ fontFamily: 'var(--font-mono)', ...extra })
 
 export default function Groups() {
+  const { data } = useData()
+  const GROUPS_DATA = data?.groups || []
   return (
     <div style={{ animation: 'vfade .4s ease both', marginTop: 32, paddingBottom: 150 }}>
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24 }}>
