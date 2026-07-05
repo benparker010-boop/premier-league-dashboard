@@ -15,7 +15,7 @@ export default function Header({ view, setView }) {
     <header className="pk-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 13, flex: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: 4 }}>
-          <LogoMark size={44} />
+          <LogoMark size={58} />
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '.34em', color: 'var(--text-muted)' }}>
             WORLD CUP INTELLIGENCE
           </span>
