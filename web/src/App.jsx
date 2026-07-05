@@ -15,10 +15,20 @@ import { useData } from './data/DataContext.jsx'
 const FALLBACK =
   "Parker's live engine isn't reachable right now — but the model has France as the clear title favourite, with Spain, Morocco and Argentina its next most-likely champions."
 
+const VALID_VIEWS = new Set(['overview', 'bracket', 'groups', 'fixtures', 'matchlab', 'players'])
+
 export default function App() {
   const { data } = useData()
-  // landing view is Bracket per latest direction (Overview stays a nav item)
-  const [view, setView] = useState('bracket')
+  // Overview is the landing view for a fresh visit; a refresh (or in-session
+  // nav) restores whatever tab the user was last on via sessionStorage.
+  const [view, setView] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('parker_view')
+      return saved && VALID_VIEWS.has(saved) ? saved : 'overview'
+    } catch (e) {
+      return 'overview'
+    }
+  })
   const [match, setMatch] = useState(null)
   const [intro, setIntro] = useState(() => {
     try {
@@ -81,20 +91,30 @@ export default function App() {
 
   const chat = { query, setQuery, messages, pending, ask }
 
+  // Persist every tab switch so a page refresh reopens on the same tab.
+  const changeView = (v) => {
+    setView(v)
+    try {
+      sessionStorage.setItem('parker_view', v)
+    } catch (e) {
+      /* ignore (private browsing etc.) */
+    }
+  }
+
   const openMatchLab = (id) => {
     setMatch(id)
-    setView('matchlab')
+    changeView('matchlab')
   }
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       <Background />
       <div className="pk-shell" style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '26px 32px 0' }}>
-        <Header view={view} setView={setView} />
-        {view === 'overview' && <Overview chat={chat} setView={setView} />}
+        <Header view={view} setView={changeView} />
+        {view === 'overview' && <Overview chat={chat} setView={changeView} />}
         {view === 'bracket' && <BracketView />}
         {view === 'groups' && <Groups />}
-        {view === 'fixtures' && <Fixtures openMatchLab={openMatchLab} goBracket={() => setView('bracket')} />}
+        {view === 'fixtures' && <Fixtures openMatchLab={openMatchLab} goBracket={() => changeView('bracket')} />}
         {view === 'matchlab' && <MatchLab match={match} setMatch={setMatch} />}
         {view === 'players' && <Players />}
       </div>
