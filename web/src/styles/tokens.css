@@ -1,0 +1,114 @@
+/* ============================================================
+   PARKER — Global Design Tokens
+   Source of truth: design_handoff/README.md ("Global Design Tokens")
+   ============================================================ */
+
+:root {
+  /* Background */
+  --bg: #05080f;
+
+  /* Primary accent (brand / AI) */
+  --teal: #00e0c6;
+
+  /* Secondary accents (team colors, chips, chart series) */
+  --blue: #5b8cff;
+  --cyan: #5ec8e0;
+  --red: #e8475e;
+  --gold: #f5c451;
+  --orange: #ef7d52;
+  --green: #1faf6b;
+  --green-2: #2ecc71;
+  --gray-blue: #c3cfdc;
+  --purple: #9d5fb5;
+
+  /* Danger / live (kept as token only — LIVE badge removed per spec) */
+  --danger: #ff4d5e;
+
+  /* Text hierarchy */
+  --text-brightest: #e8f8f5;
+  --text-body: #dbe5ef;
+  --text-secondary: #8a99ab;
+  --text-secondary-2: #7d8da0;
+  --text-muted: #5d6e80;
+  --text-muted-2: #56708a;
+  --text-dim: #3d4f60;
+  --text-dim-2: #4a5d6e;
+
+  /* Fonts */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Card treatment */
+  --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  --card-border: 1px solid rgba(255, 255, 255, 0.09);
+  --card-radius: 16px;
+  --hairline-teal: linear-gradient(90deg, transparent, rgba(0, 224, 198, 0.4), transparent);
+  --hairline-gold: linear-gradient(90deg, transparent, rgba(245, 196, 81, 0.6), transparent);
+
+  /* Active pill state */
+  --pill-active-bg: linear-gradient(135deg, rgba(0, 224, 198, 0.22), rgba(0, 224, 198, 0.1));
+  --pill-active-border: 1px solid rgba(0, 224, 198, 0.5);
+  --pill-active-glow: 0 0 14px rgba(0, 224, 198, 0.15);
+}
+
+/* ---------- base ---------- */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: #e8edf2;
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: rgba(0, 224, 198, 0.25);
+}
+input {
+  font-family: inherit;
+}
+::placeholder {
+  color: #56657a;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+/* ---------- keyframes (from the design reference) ---------- */
+@keyframes rise { from { transform: translateY(16px); } to { transform: translateY(0); } }
+@keyframes coreP { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.09); opacity: 1; } }
+@keyframes ringspin { to { transform: rotate(360deg); } }
+@keyframes ringspin2 { to { transform: rotate(-360deg); } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes dotb { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes vfade { from { transform: translateY(10px); } to { transform: translateY(0); } }
+@keyframes growx { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes seamglow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes scandown { 0% { transform: translateY(-120px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(105vh); opacity: 0; } }
+@keyframes robotbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes flashpop { 0% { opacity: 0; } 26% { opacity: 0.95; } 100% { opacity: 0; } }
+@keyframes hzpulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes dash { to { stroke-dashoffset: -200; } }
+@keyframes shimmer { to { background-position: 200% center; } }
+@keyframes barshine { 0% { left: -100%; } 100% { left: 200%; } }
+
+/* Reduced motion: stop decorative animation globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
