@@ -103,7 +103,17 @@ export default async function handler(req, res) {
   // Safe health check: reports only whether the key is visible (never its value).
   if (req.method === 'GET') {
     const k = process.env.ANTHROPIC_API_KEY || ''
-    return send(res, 200, { ok: true, hasKey: k.length > 0, keyLooksValid: k.startsWith('sk-ant-'), keyLen: k.length })
+    const base = { ok: true, hasKey: k.length > 0, keyLooksValid: k.startsWith('sk-ant-'), keyLen: k.length, model: MODEL }
+    if ((req.url || '').includes('test=1') && k) {
+      try {
+        const client = new Anthropic({ apiKey: k })
+        const r = await client.messages.create({ model: MODEL, max_tokens: 16, messages: [{ role: 'user', content: 'ping' }] })
+        return send(res, 200, { ...base, testOk: true, respModel: r.model })
+      } catch (e) {
+        return send(res, 200, { ...base, testOk: false, errStatus: e && e.status, errType: e && e.name, errMsg: String(e && e.message).slice(0, 300) })
+      }
+    }
+    return send(res, 200, base)
   }
   if (req.method !== 'POST') return send(res, 405, { error: 'method not allowed' })
   const body = await readJsonBody(req)
