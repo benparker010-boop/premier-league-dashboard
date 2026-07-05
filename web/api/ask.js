@@ -100,28 +100,9 @@ const FALLBACK =
   "Parker's live engine isn't reachable right now, but the model has France as the clear title favourite, with Spain, Morocco and Argentina its next most-likely champions. Open the dashboard to explore the full bracket."
 
 export default async function handler(req, res) {
-  // Safe health check: reports only whether the key is visible (never its value).
+  // Lightweight health check — reports only that the key is configured, never its value.
   if (req.method === 'GET') {
-    const k = process.env.ANTHROPIC_API_KEY || ''
-    const base = { ok: true, hasKey: k.length > 0, keyLooksValid: k.startsWith('sk-ant-'), keyLen: k.length, model: MODEL }
-    if ((req.url || '').includes('test=1') && k) {
-      try {
-        const origin = `${req.headers['x-forwarded-proto'] || 'https'}://${req.headers.host}`
-        const [predictions, players] = await Promise.all([loadData(origin, 'predictions'), loadData(origin, 'players')])
-        const context = buildContext(predictions, players, null)
-        const client = new Anthropic({ apiKey: k })
-        const r = await client.messages.create({
-          model: MODEL, max_tokens: 400,
-          system: SYSTEM_BASE + '\n\nModel snapshot:\n' + context,
-          messages: [{ role: 'user', content: "Who's most likely to win the World Cup?" }],
-        })
-        const text = (r.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('').trim()
-        return send(res, 200, { ...base, testOk: true, dataLoaded: !!predictions, answer: text })
-      } catch (e) {
-        return send(res, 200, { ...base, testOk: false, errStatus: e && e.status, errType: e && e.name, errMsg: String(e && e.message).slice(0, 300) })
-      }
-    }
-    return send(res, 200, base)
+    return send(res, 200, { ok: true, ready: !!process.env.ANTHROPIC_API_KEY })
   }
   if (req.method !== 'POST') return send(res, 405, { error: 'method not allowed' })
   const body = await readJsonBody(req)
