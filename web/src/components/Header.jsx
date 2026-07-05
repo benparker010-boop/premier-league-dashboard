@@ -14,10 +14,21 @@ export default function Header({ view, setView }) {
   return (
     <header className="pk-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 13, flex: 1 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: 4 }}>
-          <LogoMark size={58} />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '.34em', color: 'var(--text-muted)' }}>
-            WORLD CUP INTELLIGENCE
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 1 }}>
+          <LogoMark size={72} />
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 24,
+              fontWeight: 600,
+              letterSpacing: '-.01em',
+              color: 'var(--text-brightest)',
+              lineHeight: 1,
+              marginLeft: -2,
+              marginBottom: 12,
+            }}
+          >
+            arker AI
           </span>
         </div>
       </div>
