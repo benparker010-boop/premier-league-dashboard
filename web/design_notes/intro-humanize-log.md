@@ -4,6 +4,16 @@ Persistent memory for the recurring "humanize-intro-parker-kit" task. Every
 iteration: analyze → self-prompt → execute → verify → record here. Never
 re-attempt an idea marked FAILED/REVERTED without a genuinely new approach.
 
+## Standing user directives
+
+- 2026-07-06: Focus on APPEARANCE, not the kick. Spend iterations on visual
+  anatomy and rendering (silhouette, proportions, musculature, head/face,
+  hands, kit detail, shading, ground shadows). The kick animation is accepted
+  as-is — do not rework biomechanics/timing/easing; touch motion code only if
+  it visibly breaks appearance (detached or interpenetrating limbs). This
+  supersedes the motion-related ideas queued below (foot roll, toe point,
+  shoulder counter-rotation, forward-lean scaling) — SKIP those.
+
 ## Iteration 1 — 2026-07-06
 
 Analysis: figure reads as a capsule mannequin. Tube limbs (no musculature),
