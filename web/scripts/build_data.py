@@ -225,6 +225,7 @@ def main():
     predictions_json = build_predictions(fin, sched)
     players_json = build_players(fin)
     lab_json = build_match_lab(fin)
+    matchpreds_json = build_matchpreds(sched)
 
     for fname, payload in [
         ("groups.json", groups_json),
@@ -232,6 +233,7 @@ def main():
         ("predictions.json", predictions_json),
         ("players.json", players_json),
         ("matches.json", lab_json),
+        ("matchpreds.json", matchpreds_json),
     ]:
         with open(os.path.join(OUT_DIR, fname), "w", encoding="utf-8") as fh:
             json.dump(payload, fh, ensure_ascii=False, indent=1)
@@ -419,6 +421,54 @@ def build_predictions(fin, sched):
         "nextMatch": next_match,
         "lastMatch": last_match,
     }
+
+
+def build_matchpreds(sched, cap=12):
+    """Full model card per upcoming fixture — result probs, advance, expected
+    goals, most likely scorelines, totals/BTTS and every stat market. This is
+    what grounds Ask Parker's score/stat answers (web/api/ask.js)."""
+    ups = [m for m in sched
+           if not is_placeholder(m["home_team"]["name"])
+           and not is_placeholder(m["away_team"]["name"]) and parse_dt(m)]
+    ups.sort(key=lambda m: parse_dt(m).timestamp())
+    out = []
+    for m in ups[:cap]:
+        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        try:
+            p = predict(h, a, model=MODEL)
+        except Exception:
+            continue
+        if not p.get("available"):
+            continue
+        adv = p.get("advance")
+        fav_home = (adv if adv is not None else p["result"]["home_win"]) >= 0.5
+        proj = (p.get("scoreline_home_win") if fav_home
+                else p.get("scoreline_away_win")) or p.get("scoreline")
+        pct = lambda x: round(x * 100)
+        pair = lambda d: [round(d["home"], 1), round(d["away"], 1)] if d else None
+        out.append({
+            "round": round_label(m), "date": fmt_daydate(parse_dt(m)),
+            "home": team_obj(h), "away": team_obj(a),
+            "result": {"home": pct(p["result"]["home_win"]),
+                       "draw": pct(p["result"]["draw"]),
+                       "away": pct(p["result"]["away_win"])},
+            "advance": pct(adv) if adv is not None else None,
+            "projScore": proj,
+            "topScores": [{"score": t["score"], "pct": round(t["prob"] * 100, 1)}
+                          for t in p.get("top_scorelines", [])[:3]],
+            "xg": [round(p["expected_goals"]["home"], 2),
+                   round(p["expected_goals"]["away"], 2)],
+            "totals": {"o15": pct(p["totals"]["over_1.5"]),
+                       "o25": pct(p["totals"]["over_2.5"]),
+                       "o35": pct(p["totals"]["over_3.5"])},
+            "btts": pct(p["btts"]),
+            "stats": {k: pair(v) for k, v in (p.get("stats") or {}).items()},
+            "possession": ([round(p["possession"]["home"] * 100),
+                            round(p["possession"]["away"] * 100)]
+                           if p.get("possession") else None),
+        })
+    print(f"  matchpreds: {len(out)} upcoming fixture cards")
+    return out
 
 
 def monte_carlo(r16):

@@ -41,8 +41,36 @@ async function loadData(origin, file) {
 }
 
 // Build the grounding block from real data — the only numbers the model may cite.
-export function buildContext(predictions, players, matchLab) {
+export function buildContext(predictions, players, matchLab, matchpreds) {
   const lines = []
+  if (matchpreds?.length) {
+    lines.push(
+      'Full model cards for upcoming fixtures (stat pairs are home-away; "advance" = chance the home-listed side goes through incl. extra time/pens):',
+    )
+    for (const c of matchpreds) {
+      const st = c.stats || {}
+      const pr = (v) => (v ? `${v[0]}-${v[1]}` : null)
+      const parts = [
+        `win ${c.result.home}% / draw ${c.result.draw}% / ${c.result.away}%` +
+          (c.advance != null ? `, ${c.home.name} advance ${c.advance}%` : ''),
+        c.projScore ? `predicted score ${c.projScore[0]}-${c.projScore[1]}` : null,
+        c.topScores?.length
+          ? `most likely scorelines ${c.topScores.map((t) => `${t.score[0]}-${t.score[1]} (${t.pct}%)`).join(', ')}`
+          : null,
+        c.xg ? `expected goals ${c.xg[0]}-${c.xg[1]}` : null,
+        pr(st.shots) ? `shots ${pr(st.shots)}` : null,
+        pr(st.sot) ? `on target ${pr(st.sot)}` : null,
+        pr(st.corners) ? `corners ${pr(st.corners)}` : null,
+        pr(st.cards) ? `cards ${pr(st.cards)}` : null,
+        pr(st.fouls) ? `fouls ${pr(st.fouls)}` : null,
+        c.possession ? `possession ${c.possession[0]}%-${c.possession[1]}%` : null,
+        c.totals ? `over 2.5 goals ${c.totals.o25}%` : null,
+        c.btts != null ? `both teams score ${c.btts}%` : null,
+      ].filter(Boolean)
+      lines.push(`  ${c.home.name} v ${c.away.name} (${c.round}, ${c.date}): ` +
+        parts.join('; ') + '.')
+    }
+  }
   if (predictions?.champions?.length) {
     lines.push(
       'Predicted champion probability (our model, Monte-Carlo over the knockout bracket): ' +
@@ -114,14 +142,18 @@ export default async function handler(req, res) {
   if (!key) return send(res, 200, { text: FALLBACK, grounded: false })
 
   const origin = `${(req.headers['x-forwarded-proto'] || 'http')}://${req.headers.host}`
-  const [predictions, players] = await Promise.all([loadData(origin, 'predictions'), loadData(origin, 'players')])
+  const [predictions, players, matchpreds] = await Promise.all([
+    loadData(origin, 'predictions'),
+    loadData(origin, 'players'),
+    loadData(origin, 'matchpreds'),
+  ])
   let matchLab = null
   if (view === 'matchlab') {
     const matches = await loadData(origin, 'matches')
     matchLab = (matches || []).find((m) => m.id === matchId) || (matches || [])[0] || null
   }
 
-  const context = buildContext(predictions, players, matchLab)
+  const context = buildContext(predictions, players, matchLab, matchpreds)
   const system = SYSTEM_BASE + '\n\nModel snapshot (reference these figures naturally, never dump them verbatim):\n' + context
 
   try {

@@ -1,0 +1,500 @@
+[
+ {
+  "round": "ROUND OF 16",
+  "date": "Mon, Jul 6",
+  "home": {
+   "code": "MEX",
+   "name": "Mexico",
+   "color": "#ef7d52"
+  },
+  "away": {
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71"
+  },
+  "result": {
+   "home": 28,
+   "draw": 26,
+   "away": 46
+  },
+  "advance": 40,
+  "projScore": [
+   0,
+   1
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 12.3
+   },
+   {
+    "score": [
+     0,
+     1
+    ],
+    "pct": 11.4
+   },
+   {
+    "score": [
+     1,
+     2
+    ],
+    "pct": 9.1
+   }
+  ],
+  "xg": [
+   1.08,
+   1.48
+  ],
+  "totals": {
+   "o15": 73,
+   "o25": 49,
+   "o35": 26
+  },
+  "btts": 52,
+  "stats": {
+   "shots": [
+    12.2,
+    11.7
+   ],
+   "sot": [
+    3.7,
+    4.1
+   ],
+   "corners": [
+    4.2,
+    4.8
+   ],
+   "cards": [
+    1.2,
+    2.1
+   ],
+   "fouls": [
+    13.1,
+    10.5
+   ]
+  },
+  "possession": [
+   48,
+   52
+  ]
+ },
+ {
+  "round": "ROUND OF 16",
+  "date": "Mon, Jul 6",
+  "home": {
+   "code": "POR",
+   "name": "Portugal",
+   "color": "#5ec8e0"
+  },
+  "away": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "result": {
+   "home": 21,
+   "draw": 24,
+   "away": 55
+  },
+  "advance": 30,
+  "projScore": [
+   0,
+   1
+  ],
+  "topScores": [
+   {
+    "score": [
+     0,
+     1
+    ],
+    "pct": 12.6
+   },
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 11.4
+   },
+   {
+    "score": [
+     0,
+     2
+    ],
+    "pct": 10.6
+   }
+  ],
+  "xg": [
+   0.91,
+   1.69
+  ],
+  "totals": {
+   "o15": 73,
+   "o25": 49,
+   "o35": 26
+  },
+  "btts": 50,
+  "stats": {
+   "shots": [
+    10.0,
+    15.0
+   ],
+   "sot": [
+    2.9,
+    4.9
+   ],
+   "corners": [
+    3.3,
+    5.5
+   ],
+   "cards": [
+    1.5,
+    1.0
+   ],
+   "fouls": [
+    9.4,
+    11.3
+   ]
+  },
+  "possession": [
+   48,
+   52
+  ]
+ },
+ {
+  "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
+  "home": {
+   "code": "USA",
+   "name": "USA",
+   "color": "#5ec8e0"
+  },
+  "away": {
+   "code": "BEL",
+   "name": "Belgium",
+   "color": "#e8475e"
+  },
+  "result": {
+   "home": 29,
+   "draw": 25,
+   "away": 46
+  },
+  "advance": 41,
+  "projScore": [
+   0,
+   1
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 11.9
+   },
+   {
+    "score": [
+     0,
+     1
+    ],
+    "pct": 10.2
+   },
+   {
+    "score": [
+     1,
+     2
+    ],
+    "pct": 9.3
+   }
+  ],
+  "xg": [
+   1.17,
+   1.57
+  ],
+  "totals": {
+   "o15": 76,
+   "o25": 53,
+   "o35": 29
+  },
+  "btts": 55,
+  "stats": {
+   "shots": [
+    12.3,
+    14.1
+   ],
+   "sot": [
+    3.9,
+    4.1
+   ],
+   "corners": [
+    4.8,
+    3.9
+   ],
+   "cards": [
+    1.4,
+    1.7
+   ],
+   "fouls": [
+    11.4,
+    13.0
+   ]
+  },
+  "possession": [
+   50,
+   50
+  ]
+ },
+ {
+  "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
+  "home": {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "EGY",
+   "name": "Egypt",
+   "color": "#5b8cff"
+  },
+  "result": {
+   "home": 76,
+   "draw": 15,
+   "away": 8
+  },
+  "advance": 87,
+  "projScore": [
+   2,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     2,
+     0
+    ],
+    "pct": 13.3
+   },
+   {
+    "score": [
+     3,
+     0
+    ],
+    "pct": 11.0
+   },
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 10.7
+   }
+  ],
+  "xg": [
+   2.48,
+   0.66
+  ],
+  "totals": {
+   "o15": 82,
+   "o25": 61,
+   "o35": 39
+  },
+  "btts": 46,
+  "stats": {
+   "shots": [
+    13.4,
+    12.0
+   ],
+   "sot": [
+    4.5,
+    3.3
+   ],
+   "corners": [
+    4.0,
+    4.8
+   ],
+   "cards": [
+    1.3,
+    1.6
+   ],
+   "fouls": [
+    12.4,
+    11.6
+   ]
+  },
+  "possession": [
+   52,
+   48
+  ]
+ },
+ {
+  "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
+  "home": {
+   "code": "SUI",
+   "name": "Switzerland",
+   "color": "#e8475e"
+  },
+  "away": {
+   "code": "COL",
+   "name": "Colombia",
+   "color": "#5b8cff"
+  },
+  "result": {
+   "home": 31,
+   "draw": 27,
+   "away": 42
+  },
+  "advance": 43,
+  "projScore": [
+   0,
+   1
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 12.7
+   },
+   {
+    "score": [
+     0,
+     1
+    ],
+    "pct": 11.2
+   },
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 9.2
+   }
+  ],
+  "xg": [
+   1.14,
+   1.37
+  ],
+  "totals": {
+   "o15": 71,
+   "o25": 47,
+   "o35": 24
+  },
+  "btts": 52,
+  "stats": {
+   "shots": [
+    11.7,
+    13.1
+   ],
+   "sot": [
+    3.6,
+    4.9
+   ],
+   "corners": [
+    4.3,
+    4.2
+   ],
+   "cards": [
+    1.1,
+    1.7
+   ],
+   "fouls": [
+    11.5,
+    12.5
+   ]
+  },
+  "possession": [
+   49,
+   51
+  ]
+ },
+ {
+  "round": "QUARTER-FINAL",
+  "date": "Thu, Jul 9",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "MAR",
+   "name": "Morocco",
+   "color": "#e8475e"
+  },
+  "result": {
+   "home": 58,
+   "draw": 23,
+   "away": 19
+  },
+  "advance": 73,
+  "projScore": [
+   1,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 11.9
+   },
+   {
+    "score": [
+     2,
+     0
+    ],
+    "pct": 10.8
+   },
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 10.8
+   }
+  ],
+  "xg": [
+   1.82,
+   0.91
+  ],
+  "totals": {
+   "o15": 76,
+   "o25": 52,
+   "o35": 29
+  },
+  "btts": 51,
+  "stats": {
+   "shots": [
+    12.7,
+    10.3
+   ],
+   "sot": [
+    4.7,
+    3.6
+   ],
+   "corners": [
+    5.8,
+    4.0
+   ],
+   "cards": [
+    1.3,
+    0.9
+   ],
+   "fouls": [
+    13.0,
+    10.7
+   ]
+  },
+  "possession": [
+   50,
+   50
+  ]
+ }
+]

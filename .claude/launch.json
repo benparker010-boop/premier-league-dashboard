@@ -11,8 +11,9 @@
     {
       "name": "parker-web",
       "runtimeExecutable": "cmd.exe",
-      "runtimeArgs": ["/c", "set PATH=C:\\Program Files\\nodejs;%PATH% && npm run dev --prefix web"],
-      "port": 5173
+      "runtimeArgs": ["/c", "set PATH=C:\\Program Files\\nodejs;%PATH% && npm run dev --prefix web -- --port %PORT%"],
+      "port": 5173,
+      "autoPort": true
     }
   ]
 }
