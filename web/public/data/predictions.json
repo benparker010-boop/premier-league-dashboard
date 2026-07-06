@@ -1,42 +1,42 @@
 {
- "generatedAt": "2026-07-06T18:46:06.098736+00:00",
+ "generatedAt": "2026-07-06T23:38:08.813350+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 23.4
+   "v": 33.7
   },
   {
    "code": "FRA",
    "name": "France",
    "color": "#9d5fb5",
-   "v": 23.2
+   "v": 21.3
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 19.2
+   "v": 17.4
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 14.6
+   "v": 13.5
   },
   {
    "code": "COL",
    "name": "Colombia",
    "color": "#5b8cff",
-   "v": 4.4
+   "v": 3.9
   },
   {
-   "code": "POR",
-   "name": "Portugal",
-   "color": "#5ec8e0",
-   "v": 4.0
+   "code": "NOR",
+   "name": "Norway",
+   "color": "#f5c451",
+   "v": 3.5
   }
  ],
  "bracket": {
@@ -144,17 +144,17 @@
      "name": "Spain",
      "color": "#c3cfdc"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 0,
+    "sa": 1,
+    "winner": "away",
     "favHome": false,
     "prob": 70,
     "projScore": [
      0,
      1
     ],
-    "tier": "confirmed"
+    "tier": "result"
    },
    {
     "home": {
@@ -395,8 +395,26 @@
  },
  "nextMatch": {
   "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
+  "time": "00:00 UTC",
+  "venue": "Lumen Field, Seattle",
+  "home": {
+   "code": "USA",
+   "name": "USA",
+   "color": "#5ec8e0"
+  },
+  "away": {
+   "code": "BEL",
+   "name": "Belgium",
+   "color": "#e8475e"
+  },
+  "favCode": "BEL",
+  "prob": 59,
+  "probHome": 41
+ },
+ "lastMatch": {
+  "round": "ROUND OF 16",
   "date": "Mon, Jul 6",
-  "time": "19:00 UTC",
   "venue": "AT&T Stadium, Arlington",
   "home": {
    "code": "POR",
@@ -408,26 +426,8 @@
    "name": "Spain",
    "color": "#c3cfdc"
   },
-  "favCode": "ESP",
-  "prob": 70,
-  "probHome": 30
- },
- "lastMatch": {
-  "round": "ROUND OF 16",
-  "date": "Mon, Jul 6",
-  "venue": "Estadio Azteca, Mexico City",
-  "home": {
-   "code": "MEX",
-   "name": "Mexico",
-   "color": "#ef7d52"
-  },
-  "away": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
-  },
-  "sh": 2,
-  "sa": 3,
-  "scorers": "Julián Quiñones 42' · Raúl Jiménez 69' · Jude Bellingham 36' · Jude Bellingham 38' · Harry Kane 60'"
+  "sh": 0,
+  "sa": 1,
+  "scorers": "Mikel Merino 90'"
  }
 }

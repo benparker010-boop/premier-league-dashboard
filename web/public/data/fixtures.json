@@ -1295,9 +1295,9 @@
   "hCol": "#5ec8e0",
   "aCode": "ESP",
   "aCol": "#c3cfdc",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 0,
+  "sa": 1,
+  "status": "done",
   "matchId": "mt_197411346",
   "group": false
  },

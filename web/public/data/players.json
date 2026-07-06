@@ -7,7 +7,7 @@
    "nation": "Norway",
    "goals": 7,
    "assists": 0,
-   "xg": 4.1,
+   "xg": 4.2,
    "yc": 0
   },
   {
@@ -67,7 +67,7 @@
    "nation": "Spain",
    "goals": 4,
    "assists": 1,
-   "xg": 2.3,
+   "xg": 2.9,
    "yc": 0
   },
   {
@@ -101,6 +101,16 @@
    "yc": 0
   },
   {
+   "name": "Cristiano Ronaldo",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 3,
+   "assists": 0,
+   "xg": 3.2,
+   "yc": 0
+  },
+  {
    "name": "Jonathan David",
    "code": "CAN",
    "color": "#ef7d52",
@@ -109,16 +119,6 @@
    "assists": 0,
    "xg": 2.9,
    "yc": 1
-  },
-  {
-   "name": "Cristiano Ronaldo",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 3,
-   "assists": 0,
-   "xg": 2.9,
-   "yc": 0
   },
   {
    "name": "Raúl Jiménez",
@@ -517,7 +517,7 @@
    "nation": "Spain",
    "goals": 1,
    "assists": 0,
-   "xg": 1.2,
+   "xg": 1.3,
    "yc": 0
   },
   {
@@ -711,6 +711,26 @@
    "yc": 0
   },
   {
+   "name": "Pedro Porro",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.7,
+   "yc": 0
+  },
+  {
+   "name": "Mikel Merino",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.7,
+   "yc": 0
+  },
+  {
    "name": "Marcus Rashford",
    "code": "ENG",
    "color": "#2ecc71",
@@ -737,16 +757,6 @@
    "nation": "Egypt",
    "goals": 1,
    "assists": 1,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Pedro Porro",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 1,
-   "assists": 0,
    "xg": 0.7,
    "yc": 0
   },
@@ -951,6 +961,16 @@
    "yc": 1
   },
   {
+   "name": "Alex Baena",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.4,
+   "yc": 1
+  },
+  {
    "name": "Mateo Chávez",
    "code": "MEX",
    "color": "#ef7d52",
@@ -1061,6 +1081,16 @@
    "yc": 0
   },
   {
+   "name": "Rafael Leão",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
    "name": "Leo Østigård",
    "code": "NOR",
    "color": "#f5c451",
@@ -1085,16 +1115,6 @@
    "code": "EGY",
    "color": "#5b8cff",
    "nation": "Egypt",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Rafael Leão",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
    "goals": 1,
    "assists": 1,
    "xg": 0.3,
@@ -1161,6 +1181,26 @@
    "yc": 0
   },
   {
+   "name": "Nuno Mendes",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "João Neves",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
    "name": "Álvaro Fidalgo",
    "code": "MEX",
    "color": "#ef7d52",
@@ -1201,16 +1241,6 @@
    "yc": 0
   },
   {
-   "name": "Nuno Mendes",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Nikola Vlašić",
    "code": "CRO",
    "color": "#2ecc71",
@@ -1229,16 +1259,6 @@
    "assists": 1,
    "xg": 0.2,
    "yc": 2
-  },
-  {
-   "name": "Alex Baena",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.2,
-   "yc": 1
   },
   {
    "name": "Kerim Alajbegović",
@@ -1339,6 +1359,16 @@
    "assists": 0,
    "xg": 0.2,
    "yc": 1
+  },
+  {
+   "name": "Gonçalo Ramos",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
   },
   {
    "name": "Luis Romo",
@@ -1471,16 +1501,6 @@
    "yc": 0
   },
   {
-   "name": "João Neves",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Petar Sučić",
    "code": "CRO",
    "color": "#2ecc71",
@@ -1495,16 +1515,6 @@
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Gonçalo Ramos",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
    "goals": 1,
    "assists": 0,
    "xg": 0.1,
@@ -1646,9 +1656,9 @@
    "color": "#c3cfdc",
    "nation": "Spain",
    "goals": 0,
-   "assists": 0,
+   "assists": 1,
    "xg": 1.5,
-   "yc": 0
+   "yc": 1
   },
   {
    "name": "Enner Valencia",
@@ -1671,6 +1681,16 @@
    "yc": 0
   },
   {
+   "name": "Martin Ødegaard",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 3,
+   "xg": 1.2,
+   "yc": 0
+  },
+  {
    "name": "Ibrahim Maza",
    "code": "ALG",
    "color": "#f5c451",
@@ -1681,16 +1701,6 @@
    "yc": 0
   },
   {
-   "name": "Martin Ødegaard",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 3,
-   "xg": 1.1,
-   "yc": 0
-  },
-  {
    "name": "Omar Marmoush",
    "code": "EGY",
    "color": "#5b8cff",
@@ -1698,6 +1708,16 @@
    "goals": 0,
    "assists": 0,
    "xg": 1.1,
+   "yc": 0
+  },
+  {
+   "name": "Bruno Fernandes",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 1,
+   "xg": 1.0,
    "yc": 0
   },
   {
@@ -1727,16 +1747,6 @@
    "nation": "Norway",
    "goals": 0,
    "assists": 0,
-   "xg": 1.0,
-   "yc": 0
-  },
-  {
-   "name": "Bruno Fernandes",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 1,
    "xg": 1.0,
    "yc": 0
   },
@@ -1781,6 +1791,16 @@
    "yc": 0
   },
   {
+   "name": "João Félix",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.8,
+   "yc": 0
+  },
+  {
    "name": "Rayan",
    "code": "BRA",
    "color": "#5b8cff",
@@ -1821,16 +1841,6 @@
    "yc": 0
   },
   {
-   "name": "João Félix",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.8,
-   "yc": 0
-  },
-  {
    "name": "Marco Pašalić",
    "code": "CRO",
    "color": "#2ecc71",
@@ -1848,16 +1858,6 @@
    "goals": 0,
    "assists": 3,
    "xg": 0.8,
-   "yc": 0
-  },
-  {
-   "name": "Endrick",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.7,
    "yc": 0
   },
   {
@@ -1941,10 +1941,30 @@
    "yc": 0
   },
   {
+   "name": "Dani Olmo",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.6,
+   "yc": 0
+  },
+  {
    "name": "Ezri Konsa",
    "code": "ENG",
    "color": "#2ecc71",
    "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
+   "yc": 0
+  },
+  {
+   "name": "Endrick",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
    "goals": 0,
    "assists": 0,
    "xg": 0.6,
@@ -2211,6 +2231,16 @@
    "yc": 1
   },
   {
+   "name": "Renato Veiga",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 2
+  },
+  {
    "name": "Noni Madueke",
    "code": "ENG",
    "color": "#2ecc71",
@@ -2221,7 +2251,7 @@
    "yc": 0
   },
   {
-   "name": "Torbjørn Heggem",
+   "name": "Alexander Sørloth",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
@@ -2231,7 +2261,7 @@
    "yc": 0
   },
   {
-   "name": "Alexander Sørloth",
+   "name": "Torbjørn Heggem",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
@@ -2341,32 +2371,12 @@
    "yc": 1
   },
   {
-   "name": "Renato Veiga",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 1
-  },
-  {
    "name": "Igor Matanović",
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
    "goals": 0,
    "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Dani Olmo",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.4,
    "yc": 0
   },
@@ -2488,6 +2498,26 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Marc Cucurella",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 2,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
+   "name": "Fabián Ruiz",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
    "yc": 0
   },
   {
@@ -2615,26 +2645,6 @@
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Marc Cucurella",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Fabián Ruiz",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
@@ -2849,6 +2859,46 @@
    "assists": 0,
    "xg": 0.3,
    "yc": 1
+  },
+  {
+   "name": "Pedri",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 1
+  },
+  {
+   "name": "Aymeric Laporte",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Rodri",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Bernardo Silva",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 2
   },
   {
    "name": "Elliot Anderson",
@@ -3161,50 +3211,10 @@
    "yc": 0
   },
   {
-   "name": "Rodri",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Aymeric Laporte",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Pedri",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 1
-  },
-  {
    "name": "Nicolas Seiwald",
    "code": "AUT",
    "color": "#2ecc71",
    "nation": "Austria",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Mikel Merino",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
@@ -3618,6 +3628,66 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Pau Cubarsí",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "João Cancelo",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Vitinha",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Francisco Conceição",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Pablo Gavi",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Francisco Trincão",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
    "yc": 0
   },
   {
@@ -4161,26 +4231,6 @@
    "yc": 0
   },
   {
-   "name": "Vitinha",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "João Cancelo",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Marin Pongračić",
    "code": "CRO",
    "color": "#2ecc71",
@@ -4191,40 +4241,10 @@
    "yc": 0
   },
   {
-   "name": "Francisco Conceição",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Francisco Trincão",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Luka Sučić",
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Pau Cubarsí",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
@@ -4255,16 +4275,6 @@
    "code": "AUT",
    "color": "#2ecc71",
    "nation": "Austria",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Pablo Gavi",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
@@ -5481,6 +5491,256 @@
    "yc": 0
   },
   {
+   "name": "Unai Simón",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Pedro Neto",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Diogo Costa",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Rúben Dias",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Borja Iglesias",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Diogo Dalot",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nélson Semedo",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Joan García",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "David Raya",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Eric García",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marcos Llorente",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marc Pubill",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Alejandro Grimaldo",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nico Williams",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Martín Zubimendi",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Víctor Muñoz",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Yéremy Pino",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "José Sá",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Rui Silva",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Gonçalo Inácio",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Matheus Nunes",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Tomás Araújo",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Rúben Neves",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Samú Costa",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Gonçalo Guedes",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "John Stones",
    "code": "ENG",
    "color": "#2ecc71",
@@ -5741,12 +6001,12 @@
    "yc": 0
   },
   {
-   "name": "David Møller Wolfe",
+   "name": "Ørjan Nyland",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
    "goals": 0,
-   "assists": 1,
+   "assists": 0,
    "xg": 0.0,
    "yc": 0
   },
@@ -5761,17 +6021,17 @@
    "yc": 0
   },
   {
-   "name": "Sander Berge",
+   "name": "David Møller Wolfe",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
    "goals": 0,
-   "assists": 0,
+   "assists": 1,
    "xg": 0.0,
    "yc": 0
   },
   {
-   "name": "Ørjan Nyland",
+   "name": "Sander Berge",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
@@ -5801,16 +6061,6 @@
    "yc": 0
   },
   {
-   "name": "Egil Selvik",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Sander Tangvik",
    "code": "NOR",
    "color": "#f5c451",
@@ -5821,7 +6071,17 @@
    "yc": 0
   },
   {
-   "name": "Fredrik André Bjørkan",
+   "name": "Egil Selvik",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Henrik Sælebakke Falchener",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
@@ -5841,7 +6101,7 @@
    "yc": 0
   },
   {
-   "name": "Henrik Sælebakke Falchener",
+   "name": "Fredrik André Bjørkan",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
@@ -5891,7 +6151,7 @@
    "yc": 0
   },
   {
-   "name": "Léo Pereira",
+   "name": "Alex Sandro",
    "code": "BRA",
    "color": "#5b8cff",
    "nation": "Brazil",
@@ -5911,16 +6171,6 @@
    "yc": 0
   },
   {
-   "name": "Alex Sandro",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Roger Ibañez",
    "code": "BRA",
    "color": "#5b8cff",
@@ -5931,14 +6181,14 @@
    "yc": 1
   },
   {
-   "name": "Fabinho",
+   "name": "Léo Pereira",
    "code": "BRA",
    "color": "#5b8cff",
    "nation": "Brazil",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
-   "yc": 1
+   "yc": 0
   },
   {
    "name": "Luiz Henrique",
@@ -5949,6 +6199,16 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 0
+  },
+  {
+   "name": "Fabinho",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
   },
   {
    "name": "Jules Koundé",
@@ -7581,36 +7841,6 @@
    "yc": 0
   },
   {
-   "name": "Diogo Costa",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Rúben Dias",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Pedro Neto",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Josip Stanišić",
    "code": "CRO",
    "color": "#2ecc71",
@@ -7641,120 +7871,10 @@
    "yc": 1
   },
   {
-   "name": "Nélson Semedo",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Bernardo Silva",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Rúben Neves",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Andrej Kramarić",
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Rui Silva",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "José Sá",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Gonçalo Inácio",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Diogo Dalot",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Matheus Nunes",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Tomás Araújo",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Samú Costa",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Gonçalo Guedes",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -7841,16 +7961,6 @@
    "yc": 0
   },
   {
-   "name": "Unai Simón",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Konrad Laimer",
    "code": "AUT",
    "color": "#2ecc71",
@@ -7891,16 +8001,6 @@
    "yc": 0
   },
   {
-   "name": "Marc Pubill",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Alexander Prass",
    "code": "AUT",
    "color": "#2ecc71",
@@ -7915,106 +8015,6 @@
    "code": "AUT",
    "color": "#2ecc71",
    "nation": "Austria",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "David Raya",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Joan García",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marcos Llorente",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Eric García",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Martín Zubimendi",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Alejandro Grimaldo",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nico Williams",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Yéremy Pino",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Borja Iglesias",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Víctor Muñoz",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -12472,9 +12472,9 @@
   }
  ],
  "totals": {
-  "goals": 255,
-  "xg": 230.7,
-  "assists": 192,
+  "goals": 256,
+  "xg": 233.0,
+  "assists": 193,
   "tracked": 1247
  }
 }
