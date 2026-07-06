@@ -37,6 +37,7 @@ export const INTRO_SEEN_KEY = 'parker_intro_seen'
 const TL = {
   assembleEnd: 1.2,
   strideAt: 1.5,
+  stepAt: 1.65,
   plantAt: 1.8,
   contactAt: 2.2,
   followAt: 2.45,
@@ -54,12 +55,18 @@ const TL = {
    Joint order: 0 headTop, 1 head, 2 neck, 3 chest, 4 waist,
    5 shoulderF, 6 elbowF, 7 handF (kicking side), 8 shoulderB, 9 elbowB,
    10 handB, 11 hipF, 12 kneeF, 13 ankleF, 14 toeF, 15 hipB, 16 kneeB,
-   17 ankleB, 18 toeB. */
-const P_IDLE = [[0.06,0.02],[0.05,0.09],[0.02,0.18],[0.01,0.29],[0.0,0.43],[0.06,0.21],[0.11,0.32],[0.16,0.41],[-0.04,0.21],[-0.1,0.31],[-0.14,0.4],[0.04,0.46],[0.07,0.68],[0.06,0.92],[0.13,0.95],[-0.04,0.46],[-0.05,0.69],[-0.07,0.93],[0.0,0.95]]
-const P_STRIDE = [[0.11,0.01],[0.1,0.08],[0.07,0.17],[0.05,0.28],[0.02,0.42],[0.1,0.2],[0.02,0.3],[-0.05,0.36],[0.02,0.2],[0.13,0.25],[0.21,0.19],[0.06,0.45],[0.2,0.55],[0.15,0.75],[0.21,0.79],[-0.02,0.45],[-0.13,0.62],[-0.24,0.79],[-0.31,0.83]]
-const P_PLANT = [[0.09,0.03],[0.08,0.1],[0.05,0.19],[0.03,0.3],[0.01,0.44],[0.08,0.22],[0.17,0.28],[0.25,0.23],[-0.03,0.22],[-0.13,0.27],[-0.21,0.21],[0.04,0.47],[-0.07,0.6],[-0.17,0.78],[-0.23,0.82],[-0.03,0.46],[-0.05,0.7],[-0.07,0.94],[-0.01,0.96]]
-const P_CONTACT = [[0.0,0.03],[0.0,0.1],[-0.01,0.19],[-0.02,0.3],[-0.02,0.44],[0.03,0.21],[0.13,0.26],[0.21,0.32],[-0.07,0.22],[-0.16,0.28],[-0.23,0.34],[0.02,0.46],[0.13,0.68],[0.24,0.86],[0.31,0.93],[-0.06,0.46],[-0.08,0.7],[-0.1,0.94],[-0.04,0.96]]
-const P_FOLLOW = [[-0.06,0.06],[-0.06,0.13],[-0.06,0.21],[-0.06,0.31],[-0.04,0.44],[-0.01,0.23],[0.09,0.28],[0.17,0.22],[-0.11,0.24],[-0.2,0.3],[-0.27,0.23],[0.0,0.46],[0.15,0.51],[0.28,0.44],[0.36,0.4],[-0.07,0.46],[-0.09,0.7],[-0.11,0.94],[-0.05,0.96]]
+   17 ankleB, 18 toeB.
+   Posed from a reference photo of a full-force strike: run-up stride, a
+   transition step onto the kicking foot, then the signature backswing —
+   kicking leg extended high behind, torso pitched forward over the ball,
+   head down watching it, arms flung wide (lead arm up-forward, kicking-side
+   arm trailing) — through contact and a high follow-through. */
+const P_IDLE = [[0.035,0.055],[0.03,0.13],[0.02,0.2],[0.01,0.29],[0.0,0.43],[0.06,0.21],[0.09,0.33],[0.11,0.43],[-0.03,0.21],[-0.07,0.32],[-0.09,0.42],[0.04,0.46],[0.06,0.69],[0.05,0.92],[0.12,0.95],[-0.04,0.46],[-0.04,0.69],[-0.06,0.92],[0.01,0.95]]
+const P_STRIDE = [[0.1,0.05],[0.09,0.12],[0.08,0.19],[0.06,0.28],[0.02,0.42],[0.09,0.2],[-0.01,0.27],[-0.09,0.31],[0.06,0.2],[0.16,0.25],[0.24,0.2],[0.06,0.45],[0.2,0.56],[0.16,0.74],[0.22,0.77],[-0.01,0.45],[-0.12,0.63],[-0.23,0.78],[-0.3,0.81]]
+const P_STEP = [[0.14,0.06],[0.12,0.13],[0.1,0.2],[0.07,0.29],[0.02,0.43],[0.11,0.21],[0.0,0.25],[-0.1,0.29],[0.08,0.21],[0.18,0.18],[0.27,0.13],[0.03,0.46],[0.0,0.68],[-0.04,0.91],[0.03,0.945],[-0.02,0.46],[0.1,0.6],[0.14,0.8],[0.2,0.83]]
+const P_PLANT = [[0.17,0.115],[0.14,0.155],[0.1,0.215],[0.07,0.3],[0.03,0.44],[0.11,0.22],[0.01,0.27],[-0.1,0.31],[0.07,0.225],[0.1,0.11],[0.16,0.01],[0.02,0.47],[-0.14,0.4],[-0.28,0.3],[-0.34,0.28],[-0.03,0.47],[0.03,0.68],[0.0,0.92],[0.07,0.95]]
+const P_CONTACT = [[0.08,0.085],[0.05,0.14],[0.03,0.21],[0.02,0.3],[0.0,0.44],[0.03,0.22],[-0.09,0.26],[-0.19,0.3],[0.0,0.22],[0.06,0.15],[0.14,0.1],[0.03,0.46],[0.14,0.64],[0.25,0.82],[0.31,0.89],[-0.03,0.46],[0.02,0.68],[-0.01,0.92],[0.06,0.95]]
+const P_FOLLOW = [[-0.1,0.075],[-0.09,0.145],[-0.08,0.22],[-0.06,0.31],[-0.02,0.44],[-0.04,0.23],[0.06,0.26],[0.15,0.24],[-0.1,0.24],[-0.18,0.31],[-0.24,0.38],[0.02,0.46],[0.18,0.52],[0.32,0.4],[0.38,0.33],[-0.04,0.46],[-0.02,0.69],[-0.06,0.92],[0.01,0.95]]
 
 /* satellite nodes riding the skeleton (index 19+): [a, b, lerp, offX, offY] */
 const SATS = [
@@ -72,8 +79,10 @@ const SATS = [
   [16, 17, 0.5, -0.016, 0.01],
   [3, 4, 0.5, 0.05, 0],
   [3, 4, 0.42, -0.05, 0.012],
-  [1, 1, 0, -0.048, 0.004],
-  [1, 1, 0, 0.042, -0.022],
+  // face and back-of-skull points: with headTop + neck they close a small
+  // head outline that tilts with the pose (head down at the plant/contact)
+  [1, 1, 0, 0.048, 0.002],
+  [1, 1, 0, -0.044, -0.008],
 ]
 const FIG_NODES = 19 + SATS.length
 
@@ -86,7 +95,7 @@ const FIG_EDGES = [
   [4, 15], [15, 24], [24, 16], [16, 25], [25, 17], [17, 18],
   [5, 8], [5, 3], [8, 3], [11, 15], [3, 11], [3, 15],
   [3, 26], [4, 26], [3, 27], [4, 27],
-  [1, 5], [1, 8], [28, 1], [28, 0], [29, 1], [29, 0], [28, 2],
+  [0, 28], [28, 2], [0, 29], [29, 2],
 ]
 
 const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x)
@@ -236,9 +245,33 @@ export default function CinematicIntro({ onDone }) {
     const poseAt = (t) => {
       if (t <= TL.assembleEnd) return P_IDLE
       if (t <= TL.strideAt) return mixPose(P_IDLE, P_STRIDE, easeInOut((t - TL.assembleEnd) / (TL.strideAt - TL.assembleEnd)))
-      if (t <= TL.plantAt) return mixPose(P_STRIDE, P_PLANT, easeInOut((t - TL.strideAt) / (TL.plantAt - TL.strideAt)))
-      if (t <= TL.contactAt) return mixPose(P_PLANT, P_CONTACT, kickWarp((t - TL.plantAt) / (TL.contactAt - TL.plantAt)))
-      if (t <= TL.followAt) return mixPose(P_CONTACT, P_FOLLOW, easeOutCubic((t - TL.contactAt) / (TL.followAt - TL.contactAt)))
+      if (t <= TL.stepAt) return mixPose(P_STRIDE, P_STEP, easeInOut((t - TL.strideAt) / (TL.stepAt - TL.strideAt)))
+      if (t <= TL.plantAt) return mixPose(P_STEP, P_PLANT, easeInOut((t - TL.stepAt) / (TL.plantAt - TL.stepAt)))
+      if (t <= TL.contactAt) {
+        // the foot whips DOWN through the grass and into the ball, not in a
+        // straight line from the backswing — arc the kicking leg's chain
+        const u = kickWarp((t - TL.plantAt) / (TL.contactAt - TL.plantAt))
+        const pose = mixPose(P_PLANT, P_CONTACT, u)
+        const arc = Math.sin(Math.PI * u)
+        pose[12][1] += 0.12 * arc
+        pose[13][0] += 0.02 * arc
+        pose[13][1] += 0.33 * arc
+        pose[14][0] += 0.03 * arc
+        pose[14][1] += 0.36 * arc
+        return pose
+      }
+      if (t <= TL.followAt) {
+        // follow-through sweeps forward in an arc around the hip
+        const u = easeOutCubic((t - TL.contactAt) / (TL.followAt - TL.contactAt))
+        const pose = mixPose(P_CONTACT, P_FOLLOW, u)
+        const arc = Math.sin(Math.PI * u)
+        pose[12][0] += 0.03 * arc
+        pose[13][0] += 0.08 * arc
+        pose[13][1] += 0.02 * arc
+        pose[14][0] += 0.1 * arc
+        pose[14][1] += 0.02 * arc
+        return pose
+      }
       return P_FOLLOW
     }
 
@@ -397,11 +430,11 @@ export default function CinematicIntro({ onDone }) {
         g.fillStyle = gr
         g.beginPath(); g.arc(x, y, r * 2.1, 0, 7); g.fill()
       }
-      if (t >= TL.contactAt && t < TL.contactAt + 0.4) {
-        const q = (t - TL.contactAt) / 0.4
-        g.strokeStyle = `rgba(180,255,240,${((1 - q) * 0.7).toFixed(3)})`
+      if (t >= TL.contactAt && t < TL.contactAt + 0.22) {
+        const q = (t - TL.contactAt) / 0.22
+        g.strokeStyle = `rgba(180,255,240,${((1 - q) * 0.6).toFixed(3)})`
         g.lineWidth = 2 * (1 - q) + 0.5
-        g.beginPath(); g.arc(L.ballGX, L.groundY - r0, r0 * (1 + q * 5), 0, 7); g.stroke()
+        g.beginPath(); g.arc(L.ballGX, L.groundY - r0, r0 * (1 + q * 2.6), 0, 7); g.stroke()
       }
       if (t >= TL.flightEnd && t < TL.flightEnd + 0.5) {
         const q = (t - TL.flightEnd) / 0.5
