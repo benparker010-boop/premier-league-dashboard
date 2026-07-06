@@ -71,6 +71,7 @@ const KIT = {
   socks: ['#0f4f48', '#0a3733'],
   boots: ['#0b1119', '#080d13'],
   trim: ['#2fe8cf', '#1da591'],
+  hair: '#0c1520',
 }
 
 const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x)
@@ -330,23 +331,70 @@ export default function CinematicIntro({ onDone }) {
       g.save()
       g.globalAlpha = alpha
       const limb = (a, b, w1, w2, color) => capsule(a[0], a[1], b[0], b[1], w1 * fh, w2 * fh, color)
+      /* -- anatomy helpers: shading + muscled bezier limbs ---------------- */
+      const rgbOf = (hx) => [parseInt(hx.slice(1, 3), 16), parseInt(hx.slice(3, 5), 16), parseInt(hx.slice(5, 7), 16)]
+      const shade = (hx, f) => {
+        const [r, gr, b] = rgbOf(hx)
+        const m = f < 0 ? 0 : 255
+        const k = Math.abs(f)
+        return `rgb(${Math.round(r + (m - r) * k)},${Math.round(gr + (m - gr) * k)},${Math.round(b + (m - b) * k)})`
+      }
+      // cross-axis gradient: one consistent key light from the upper-left
+      const crossGrad = (a, b, w, color) => {
+        const dx = b[0] - a[0]
+        const dy = b[1] - a[1]
+        const len = Math.hypot(dx, dy) || 1
+        let nx = -dy / len
+        let ny = dx / len
+        if (nx * -0.45 + ny * -0.9 < 0) { nx = -nx; ny = -ny }
+        const mx = (a[0] + b[0]) / 2
+        const my = (a[1] + b[1]) / 2
+        const gr = g.createLinearGradient(mx + nx * w, my + ny * w, mx - nx * w, my - ny * w)
+        gr.addColorStop(0, shade(color, 0.13))
+        gr.addColorStop(1, shade(color, -0.24))
+        return gr
+      }
+      // muscled limb segment: bezier outline with a mid-bulge, not a tube
+      const muscle = (a, b, w1, bulge, tB, w2, color) => {
+        const dx = b[0] - a[0]
+        const dy = b[1] - a[1]
+        const len = Math.hypot(dx, dy) || 1
+        const nx = -dy / len
+        const ny = dx / len
+        const ang = Math.atan2(dy, dx)
+        const W1 = w1 * fh
+        const W2 = w2 * fh
+        const WB = 2 * bulge * fh - (W1 + W2) / 2 // control point so the curve peaks at `bulge`
+        const qx = a[0] + dx * tB
+        const qy = a[1] + dy * tB
+        g.fillStyle = crossGrad(a, b, Math.max(W1, bulge * fh), color)
+        g.beginPath()
+        g.arc(a[0], a[1], W1, ang + Math.PI / 2, ang - Math.PI / 2)
+        g.quadraticCurveTo(qx - nx * WB, qy - ny * WB, b[0] - nx * W2, b[1] - ny * W2)
+        g.arc(b[0], b[1], W2, ang - Math.PI / 2, ang + Math.PI / 2)
+        g.quadraticCurveTo(qx + nx * WB, qy + ny * WB, a[0] + nx * W1, a[1] + ny * W1)
+        g.closePath()
+        g.fill()
+      }
       const arm = (sh, el, ha, side) => {
-        limb(sh, lerpPt(sh, el, 0.55), 0.03, 0.025, KIT.shirt[side]) // sleeve
-        limb(lerpPt(sh, el, 0.5), lerpPt(sh, el, 0.6), 0.026, 0.024, KIT.trim[side]) // cuff
-        limb(lerpPt(sh, el, 0.58), el, 0.023, 0.02, KIT.skin[side])
-        limb(el, ha, 0.019, 0.013, KIT.skin[side])
+        muscle(sh, el, 0.024, 0.029, 0.38, 0.016, KIT.skin[side]) // deltoid + bicep
+        muscle(el, ha, 0.016, 0.02, 0.28, 0.009, KIT.skin[side]) // forearm taper
+        muscle(sh, lerpPt(sh, el, 0.52), 0.029, 0.032, 0.42, 0.023, KIT.shirt[side]) // sleeve over
+        limb(lerpPt(sh, el, 0.5), lerpPt(sh, el, 0.56), 0.017, 0.015, KIT.trim[side]) // cuff band
         g.fillStyle = KIT.skin[side]
-        g.beginPath(); g.arc(ha[0], ha[1], 0.014 * fh, 0, 7); g.fill()
+        g.beginPath(); g.arc(ha[0], ha[1], 0.013 * fh, 0, 7); g.fill()
       }
       const leg = (hip, kn, an, to, side) => {
-        limb(hip, lerpPt(hip, kn, 0.5), 0.048, 0.04, KIT.shorts[side]) // shorts
-        limb(lerpPt(hip, kn, 0.4), kn, 0.038, 0.032, KIT.skin[side]) // lower thigh + knee
-        limb(kn, lerpPt(kn, an, 0.5), 0.03, 0.025, KIT.skin[side]) // upper calf
-        limb(lerpPt(kn, an, 0.42), lerpPt(kn, an, 0.54), 0.027, 0.025, KIT.trim[side]) // sock top
-        limb(lerpPt(kn, an, 0.5), an, 0.025, 0.018, KIT.socks[side]) // sock
-        limb(an, to, 0.02, 0.024, KIT.boots[side]) // boot
+        muscle(hip, kn, 0.048, 0.055, 0.35, 0.025, KIT.skin[side]) // thigh (quad/ham mass)
+        g.fillStyle = KIT.skin[side]
+        g.beginPath(); g.arc(kn[0], kn[1], 0.025 * fh, 0, 7); g.fill() // knee
+        muscle(kn, an, 0.023, 0.035, 0.3, 0.011, KIT.skin[side]) // calf bulge → slim ankle
+        muscle(hip, lerpPt(hip, kn, 0.52), 0.05, 0.053, 0.5, 0.037, KIT.shorts[side]) // shorts
+        limb(lerpPt(kn, an, 0.4), lerpPt(kn, an, 0.52), 0.025, 0.023, KIT.trim[side]) // sock top
+        muscle(lerpPt(kn, an, 0.46), an, 0.024, 0.025, 0.3, 0.014, KIT.socks[side]) // sock
+        limb(an, to, 0.018, 0.022, KIT.boots[side]) // boot
         g.fillStyle = KIT.boots[side]
-        g.beginPath(); g.arc(an[0], an[1], 0.022 * fh, 0, 7); g.fill() // heel
+        g.beginPath(); g.arc(an[0], an[1], 0.02 * fh, 0, 7); g.fill() // heel
         limb(lerpPt(an, to, 0.15), lerpPt(an, to, 0.7), 0.006, 0.005, KIT.trim[side]) // boot flash
       }
       const torso = () => {
@@ -355,15 +403,17 @@ export default function CinematicIntro({ onDone }) {
           const ang = Math.atan2(q[1] - p[1], q[0] - p[0])
           return [Math.cos(ang + Math.PI / 2) * w * fh, Math.sin(ang + Math.PI / 2) * w * fh]
         }
-        const n1 = pAt(neck, chest, 0.068)
-        const n2 = pAt(neck, waist, 0.06)
-        const n3 = pAt(chest, waist, 0.052)
-        g.fillStyle = KIT.shirt[0]
+        const n1 = pAt(neck, chest, 0.062)
+        const n2 = pAt(neck, waist, 0.058)
+        const n3 = pAt(chest, waist, 0.05)
+        // +n is the player's back (he faces +x): scapula → lumbar hollow
+        // down the back, fuller chest curve on the front
+        g.fillStyle = crossGrad(neck, waist, 0.065 * fh, KIT.shirt[0])
         g.beginPath()
         g.moveTo(neck[0] + n1[0], neck[1] + n1[1])
-        g.quadraticCurveTo(chest[0] + n2[0], chest[1] + n2[1], waist[0] + n3[0], waist[1] + n3[1])
+        g.quadraticCurveTo(chest[0] + n2[0] * 0.92, chest[1] + n2[1] * 0.92, waist[0] + n3[0] * 0.84, waist[1] + n3[1] * 0.84)
         g.lineTo(waist[0] - n3[0], waist[1] - n3[1])
-        g.quadraticCurveTo(chest[0] - n2[0], chest[1] - n2[1], neck[0] - n1[0], neck[1] - n1[1])
+        g.quadraticCurveTo(chest[0] - n2[0] * 1.18, chest[1] - n2[1] * 1.18, neck[0] - n1[0], neck[1] - n1[1])
         g.closePath()
         g.fill()
         // shoulder caps
@@ -415,14 +465,27 @@ export default function CinematicIntro({ onDone }) {
         g.restore()
       }
       const headDraw = () => {
-        limb(neck, head, 0.022, 0.018, KIT.skin[0]) // neck
-        const r = 0.048 * fh
+        limb(neck, head, 0.02, 0.016, KIT.skin[0]) // neck
+        const r = 0.042 * fh
         // skull biased toward the jaw so it stays seated on the neck even
         // when the crown swings with the head-tracking tilt
-        const cx = head[0] + (headTop[0] - head[0]) * 0.35
-        const cy = head[1] + (headTop[1] - head[1]) * 0.35
-        g.fillStyle = KIT.skin[0]
-        g.beginPath(); g.arc(cx, cy, r, 0, 7); g.fill()
+        const cx = head[0] + (headTop[0] - head[0]) * 0.3
+        const cy = head[1] + (headTop[1] - head[1]) * 0.3
+        const aC = Math.atan2(headTop[1] - head[1], headTop[0] - head[0])
+        // face direction: the +x side of the crown axis (he faces the ball)
+        const s = Math.cos(aC + Math.PI / 2) >= 0 ? 1 : -1
+        // jaw/chin wedge hung forward-down off the cranium
+        const jd = aC + Math.PI - s * 1.05
+        const chin = [cx + Math.cos(jd) * r * 1.15, cy + Math.sin(jd) * r * 1.15]
+        capsule(cx, cy, chin[0], chin[1], r * 0.78, r * 0.32, KIT.skin[0])
+        g.fillStyle = crossGrad(head, headTop, r, KIT.skin[0])
+        g.beginPath(); g.arc(cx, cy, r, 0, 7); g.fill() // cranium
+        // hair crescent over the top-back of the skull, rotating with tilt
+        g.strokeStyle = KIT.hair
+        g.lineWidth = r * 0.5
+        g.beginPath()
+        g.arc(cx, cy, r * 0.82, aC - s * 1.9, aC + s * 0.55, s < 0)
+        g.stroke()
       }
 
       // teal rim light on the whole figure — kept subtle so shapes stay crisp
