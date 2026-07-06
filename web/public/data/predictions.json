@@ -1,42 +1,42 @@
 {
- "generatedAt": "2026-07-06T18:42:40.062702+00:00",
+ "generatedAt": "2026-07-06T18:46:06.098736+00:00",
  "modelVersion": "v3.0",
  "champions": [
-  {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5",
-   "v": 24.5
-  },
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 23.8
+   "v": 23.4
+  },
+  {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5",
+   "v": 23.2
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 19.3
+   "v": 19.2
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 8.8
-  },
-  {
-   "code": "NOR",
-   "name": "Norway",
-   "color": "#f5c451",
-   "v": 4.6
+   "v": 14.6
   },
   {
    "code": "COL",
    "name": "Colombia",
    "color": "#5b8cff",
-   "v": 4.5
+   "v": 4.4
+  },
+  {
+   "code": "POR",
+   "name": "Portugal",
+   "color": "#5ec8e0",
+   "v": 4.0
   }
  ],
  "bracket": {
@@ -121,17 +121,17 @@
      "name": "England",
      "color": "#2ecc71"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 2,
+    "sa": 3,
+    "winner": "away",
     "favHome": false,
     "prob": 60,
     "projScore": [
      0,
      1
     ],
-    "tier": "confirmed"
+    "tier": "result"
    },
    {
     "home": {
@@ -396,7 +396,25 @@
  "nextMatch": {
   "round": "ROUND OF 16",
   "date": "Mon, Jul 6",
-  "time": "00:00 UTC",
+  "time": "19:00 UTC",
+  "venue": "AT&T Stadium, Arlington",
+  "home": {
+   "code": "POR",
+   "name": "Portugal",
+   "color": "#5ec8e0"
+  },
+  "away": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "favCode": "ESP",
+  "prob": 70,
+  "probHome": 30
+ },
+ "lastMatch": {
+  "round": "ROUND OF 16",
+  "date": "Mon, Jul 6",
   "venue": "Estadio Azteca, Mexico City",
   "home": {
    "code": "MEX",
@@ -408,26 +426,8 @@
    "name": "England",
    "color": "#2ecc71"
   },
-  "favCode": "ENG",
-  "prob": 60,
-  "probHome": 40
- },
- "lastMatch": {
-  "round": "ROUND OF 16",
-  "date": "Sun, Jul 5",
-  "venue": "MetLife Stadium, East Rutherford",
-  "home": {
-   "code": "BRA",
-   "name": "Brazil",
-   "color": "#5b8cff"
-  },
-  "away": {
-   "code": "NOR",
-   "name": "Norway",
-   "color": "#f5c451"
-  },
-  "sh": 1,
-  "sa": 2,
-  "scorers": "Neymar 90' · Erling Haaland 79' · Erling Haaland 90'"
+  "sh": 2,
+  "sa": 3,
+  "scorers": "Julián Quiñones 42' · Raúl Jiménez 69' · Jude Bellingham 36' · Jude Bellingham 38' · Harry Kane 60'"
  }
 }

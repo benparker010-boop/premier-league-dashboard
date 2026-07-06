@@ -129,8 +129,11 @@ def api(path, params=None, cache=True, retries=4):
 
 
 def matches(status):
+    # never cache the match lists — they are what changes between runs; a stale
+    # list makes finished games show as upcoming (per-match stats stay cached,
+    # they're immutable once a game is over)
     return api("/football/matches", {"competition_id": WC_COMP, "season_id": WC_SEASON,
-                                     "status": status, "per_page": 100})
+                                     "status": status, "per_page": 100}, cache=False)
 
 
 def match_detail(mid):
