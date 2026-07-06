@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import Background from './components/Background.jsx'
 import Header from './components/Header.jsx'
 import Ticker from './components/Ticker.jsx'
-import BootIntro from './components/BootIntro.jsx'
+import CinematicIntro, { INTRO_SEEN_KEY } from './components/CinematicIntro.jsx'
 import Overview from './views/Overview.jsx'
 import BracketView from './views/BracketView.jsx'
 import Groups from './views/Groups.jsx'
@@ -17,6 +17,9 @@ const FALLBACK =
 
 const VALID_VIEWS = new Set(['overview', 'bracket', 'groups', 'fixtures', 'matchlab', 'players'])
 
+const reducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 export default function App() {
   const { data } = useData()
   // Overview is the landing view for a fresh visit; a refresh (or in-session
@@ -30,13 +33,20 @@ export default function App() {
     }
   })
   const [match, setMatch] = useState(null)
+  // Cinematic intro: plays once ever per visitor (localStorage), is skipped
+  // entirely under prefers-reduced-motion, and can be replayed on demand by
+  // clicking the header logo.
   const [intro, setIntro] = useState(() => {
+    if (reducedMotion()) return 'done'
     try {
-      return sessionStorage.getItem('parker_seen') ? 'done' : 'booting'
+      return localStorage.getItem(INTRO_SEEN_KEY) ? 'done' : 'playing'
     } catch (e) {
-      return 'booting'
+      return 'playing'
     }
   })
+  const replayIntro = () => {
+    if (!reducedMotion()) setIntro('playing')
+  }
 
   // Ask Parker chat state (shared by the Overview hero and the docked bar)
   const [query, setQuery] = useState('')
@@ -110,7 +120,7 @@ export default function App() {
     <div style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', background: 'var(--bg)' }}>
       <Background />
       <div className="pk-shell" style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '26px 32px 0' }}>
-        <Header view={view} setView={changeView} />
+        <Header view={view} setView={changeView} onLogoClick={replayIntro} hideLogo={intro === 'playing'} />
         {view === 'overview' && <Overview chat={chat} setView={changeView} />}
         {view === 'bracket' && <BracketView />}
         {view === 'groups' && <Groups />}
@@ -119,7 +129,7 @@ export default function App() {
         {view === 'players' && <Players />}
       </div>
       <Ticker />
-      {intro !== 'done' && <BootIntro onDone={() => setIntro('done')} />}
+      {intro === 'playing' && <CinematicIntro onDone={() => setIntro('done')} />}
     </div>
   )
 }

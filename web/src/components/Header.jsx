@@ -10,12 +10,20 @@ const NAV = [
   ['players', 'Players'],
 ]
 
-export default function Header({ view, setView }) {
+export default function Header({ view, setView, onLogoClick, hideLogo }) {
   return (
     <header className="pk-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 13, flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 1 }}>
-          <LogoMark size={108} />
+          {/* #pk-header-logo is the intro's FLIP handoff target; clicking replays it */}
+          <div
+            id="pk-header-logo"
+            onClick={onLogoClick}
+            title="Replay intro"
+            style={{ cursor: 'pointer', flex: 'none', visibility: hideLogo ? 'hidden' : 'visible' }}
+          >
+            <LogoMark size={108} />
+          </div>
           <span
             style={{
               fontFamily: 'var(--font-display)',
