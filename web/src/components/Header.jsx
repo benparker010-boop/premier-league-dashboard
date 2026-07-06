@@ -15,17 +15,17 @@ export default function Header({ view, setView }) {
     <header className="pk-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 13, flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 1 }}>
-          <LogoMark size={72} />
+          <LogoMark size={108} />
           <span
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 24,
+              fontSize: 28,
               fontWeight: 600,
               letterSpacing: '-.01em',
               color: 'var(--text-brightest)',
               lineHeight: 1,
-              marginLeft: -2,
-              marginBottom: 12,
+              marginLeft: -4,
+              marginBottom: 0,
             }}
           >
             arker AI
