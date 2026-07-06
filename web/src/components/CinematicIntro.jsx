@@ -2,51 +2,43 @@ import { useEffect, useRef, useState } from 'react'
 import LogoMark, { ND, ED, BX, BY, BR, CROP_FRAC, OFFSET_X_FRAC, OFFSET_Y_FRAC } from './LogoMark.jsx'
 
 /*
-  Cinematic boot intro (~6s, canvas + rAF, no dependencies).
+  Cinematic boot intro (~3.9s + handoff, canvas + rAF, zero dependencies).
 
-  Sequence:
-    0.0–1.2s  a constellation-style football player (30 nodes + thin teal
-              edges, same visual language as the logo mesh) assembles out of
-              converging glowing particles on the left of a dark pitch scene.
-    1.2–2.2s  short run-up and kick across 4 keyframe poses (idle → stride →
-              plant-and-swing → follow-through) with a slow-motion beat right
-              at the moment of contact.
-    2.2–4.1s  the ball (the same spinning geodesic wireframe art the logo
-              uses, /parker-logo-ball.webp) launches off the boot with a teal
-              light trail and arcs toward the logo position while the player
-              dissolves back into drifting particles.
-    3.7–5.1s  the ball decelerates into the exact spot the football occupies
-              inside the P (derived from the LogoMark BX/BY/BR + crop
-              constants) and the P's constellation mesh (the real ND/ED data)
-              draws itself around it — nodes pop in radiating out from the
-              ball, edges draw on — crossfading into the real <LogoMark>
-              element so the idle animation (twinkle, pulses, rotating ball)
-              takes over seamlessly.
-    5.0–5.9s  "PARKER" + "WORLD CUP 2026 · AI ANALYTICS" fade in beneath the
-              logo, then the alive logo FLIP-glides into the header logo's
-              measured rect (#pk-header-logo) while the overlay fades,
-              revealing the site.
+  A silhouetted footballer (articulated 19-joint skeleton skinned with
+  tapered-capsule limbs — shirt, shorts, socks, boots, teal rim light)
+  materialises from sparks, breathes through a short idle, takes a two-step
+  run-up and strikes the ball: slow wind-up into the reference backswing,
+  explosive accelerating swing arced down through the grass, contact squash +
+  dust burst, high follow-through. The ball (the logo's own geodesic art)
+  arcs with spin, motion-blur ghosts and a light trail into the exact spot
+  the football occupies inside the P (LogoMark BX/BY/BR + crop constants);
+  the P's real constellation mesh (ND/ED) draws itself around it radiating
+  outward and crossfades into the live <LogoMark>, which lands with a spring
+  settle + ripple. Wordmark fades in, then the alive logo FLIP-glides onto
+  the header logo's measured rect (#pk-header-logo) as the site is revealed.
 
-  Behaviour: plays once ever (localStorage), any click/keypress skips
-  straight to the header handoff, clicking the header logo replays it, and
-  prefers-reduced-motion skips it entirely (gated in App.jsx).
+  Behaviour: plays once ever (localStorage — deliberate, so Ben can demo via
+  the header-logo replay), a SKIP button plus any click/tap/keypress jump
+  straight to the handoff, and prefers-reduced-motion skips the whole thing
+  (gated in App.jsx). Dev-only: ?introt=<sec> freezes the timeline.
 */
 
 export const INTRO_SEEN_KEY = 'parker_intro_seen'
 
+const MATERIALIZE = 0.45
 const TL = {
-  assembleEnd: 1.2,
-  strideAt: 1.5,
-  stepAt: 1.65,
-  plantAt: 1.8,
-  contactAt: 2.2,
-  followAt: 2.45,
-  dissolveAt: 2.65,
-  flightEnd: 4.1,
-  meshAt: 3.7,
-  logoFadeAt: 4.4,
-  textAt: 4.95,
-  handoffAt: 5.9,
+  idleEnd: 1.0,
+  strideAt: 1.3,
+  stepAt: 1.55,
+  plantAt: 1.82,
+  contactAt: 2.08,
+  followAt: 2.34,
+  fadeOutAt: 2.6, // player fades while the eye follows the ball
+  meshAt: 2.7,
+  flightEnd: 2.95,
+  logoFadeAt: 3.0,
+  textAt: 3.2,
+  handoffAt: 3.85,
 }
 
 /* ---- figure keyframe poses ------------------------------------------------
@@ -68,43 +60,22 @@ const P_PLANT = [[0.17,0.115],[0.14,0.155],[0.1,0.215],[0.07,0.3],[0.03,0.44],[0
 const P_CONTACT = [[0.08,0.085],[0.05,0.14],[0.03,0.21],[0.02,0.3],[0.0,0.44],[0.03,0.22],[-0.09,0.26],[-0.19,0.3],[0.0,0.22],[0.06,0.15],[0.14,0.1],[0.03,0.46],[0.14,0.64],[0.25,0.82],[0.31,0.89],[-0.03,0.46],[0.02,0.68],[-0.01,0.92],[0.06,0.95]]
 const P_FOLLOW = [[-0.1,0.075],[-0.09,0.145],[-0.08,0.22],[-0.06,0.31],[-0.02,0.44],[-0.04,0.23],[0.06,0.26],[0.15,0.24],[-0.1,0.24],[-0.18,0.31],[-0.24,0.38],[0.02,0.46],[0.18,0.52],[0.32,0.4],[0.38,0.33],[-0.04,0.46],[-0.02,0.69],[-0.06,0.92],[0.01,0.95]]
 
-/* satellite nodes riding the skeleton (index 19+): [a, b, lerp, offX, offY] */
-const SATS = [
-  [5, 6, 0.5, 0.015, -0.012],
-  [6, 7, 0.5, -0.012, 0.012],
-  [8, 9, 0.5, -0.015, -0.012],
-  [11, 12, 0.5, 0.022, 0],
-  [12, 13, 0.5, 0.016, 0.01],
-  [15, 16, 0.5, -0.022, 0],
-  [16, 17, 0.5, -0.016, 0.01],
-  [3, 4, 0.5, 0.05, 0],
-  [3, 4, 0.42, -0.05, 0.012],
-  // face and back-of-skull points: with headTop + neck they close a small
-  // head outline that tilts with the pose (head down at the plant/contact)
-  [1, 1, 0, 0.048, 0.002],
-  [1, 1, 0, -0.044, -0.008],
-]
-const FIG_NODES = 19 + SATS.length
-
-/* bones (routed through the satellite nodes) + constellation cross-links */
-const FIG_EDGES = [
-  [0, 1], [1, 2], [2, 3], [3, 4],
-  [2, 5], [5, 19], [19, 6], [6, 20], [20, 7],
-  [2, 8], [8, 21], [21, 9], [9, 10],
-  [4, 11], [11, 22], [22, 12], [12, 23], [23, 13], [13, 14],
-  [4, 15], [15, 24], [24, 16], [16, 25], [25, 17], [17, 18],
-  [5, 8], [5, 3], [8, 3], [11, 15], [3, 11], [3, 15],
-  [3, 26], [4, 26], [3, 27], [4, 27],
-  [0, 28], [28, 2], [0, 29], [29, 2],
-]
+/* silhouette palette: near-side limbs bright, far side shaded for depth */
+const KIT = {
+  skin: ['#243645', '#182530'],
+  shirt: ['#124a44', '#0c332f'],
+  shorts: ['#13253a', '#0d1a29'],
+  socks: ['#11463f', '#0c302c'],
+  boots: ['#0b1119', '#080d13'],
+}
 
 const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x)
 const easeInOut = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2)
 const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3)
 const easeOutBack = (x) => 1 + 2.70158 * Math.pow(x - 1, 3) + 1.70158 * Math.pow(x - 1, 2)
-/* swing covers 85% of its arc in the first half, then crawls into contact —
-   the slow-motion beat */
-const kickWarp = (p) => (p < 0.55 ? (p / 0.55) * 0.85 : 0.85 + ((p - 0.55) / 0.45) * 0.15)
+/* biomechanics of the swing: slow loading, then the shank whips through —
+   velocity peaks right at contact */
+const kickWarp = (p) => Math.pow(p, 2.4)
 
 function computeLayout() {
   const w = window.innerWidth
@@ -113,13 +84,17 @@ function computeLayout() {
   const left = w / 2 - s / 2
   const top = h * 0.42 - s / 2
   const fullW = s / CROP_FRAC
-  const fh = Math.min(h * 0.44, 380, w * 0.42)
+  const fh = Math.min(h * 0.4, 340, w * 0.34)
   const groundY = h * 0.66
-  const axK = Math.max(w * 0.2, fh * 0.9)
+  // pin the kick spot well left of the logo so the shot always travels a
+  // real diagonal (never straight up under the badge)
+  const ballGX = Math.max(w * 0.24, fh * 0.68)
+  const axK = ballGX - fh * 0.32
   return {
     w, h, s, left, top, fullW, fh, groundY, axK,
-    ax0: axK - fh * 0.5,
-    ballGX: axK + fh * 0.32,
+    // run-up start, clamped so the idle figure stays fully on-screen
+    ax0: Math.max(axK - fh * 0.45, fh * 0.16),
+    ballGX,
     // exact spot the football occupies inside the P (LogoMark constants)
     ballFX: left + (BX - OFFSET_X_FRAC) * fullW,
     ballFY: top + (BY - OFFSET_Y_FRAC) * fullW,
@@ -132,6 +107,7 @@ export default function CinematicIntro({ onDone }) {
   const bgRef = useRef(null)
   const canvasRef = useRef(null)
   const logoRef = useRef(null)
+  const settleRef = useRef(null)
   const textRef = useRef(null)
   const onDoneRef = useRef(onDone)
   onDoneRef.current = onDone
@@ -143,9 +119,10 @@ export default function CinematicIntro({ onDone }) {
     const cvs = canvasRef.current
     const wrap = wrapRef.current
     const logoEl = logoRef.current
+    const settleEl = settleRef.current
     const textEl = textRef.current
     const bgEl = bgRef.current
-    if (!cvs || !wrap || !logoEl || !textEl || !bgEl) return undefined
+    if (!cvs || !wrap || !logoEl || !settleEl || !textEl || !bgEl) return undefined
     const g = cvs.getContext('2d')
 
     // "once ever" is marked as soon as the intro starts playing
@@ -161,7 +138,6 @@ export default function CinematicIntro({ onDone }) {
     let doneTimer = null
     let lastT = 0
     let ballRot = 0
-    const trail = []
 
     const dpr = Math.min(2, window.devicePixelRatio || 1)
     const sizeCanvas = () => {
@@ -181,21 +157,20 @@ export default function CinematicIntro({ onDone }) {
     const ballImg = new Image()
     ballImg.src = '/parker-logo-ball.webp'
 
-    // per-node randoms: assembly origin, twinkle, dissolve drift
-    const fx = Array.from({ length: FIG_NODES }, () => ({
+    // materialise sparks: converge onto random joints as the player fades in
+    const sparks = Array.from({ length: 26 }, () => ({
+      j: Math.floor(Math.random() * 19),
+      jx: (Math.random() - 0.5) * 0.12,
+      jy: (Math.random() - 0.5) * 0.12,
       ang: Math.random() * Math.PI * 2,
-      dist: 0.18 + Math.random() * 0.45,
-      delay: Math.random() * 0.35,
-      ph: Math.random() * 7,
-      sp: 0.8 + Math.random() * 1.6,
-      dAng: Math.random() * Math.PI * 2,
-      dSpd: 0.4 + Math.random() * 0.8,
-      dDelay: Math.random() * 0.45,
+      dist: 0.15 + Math.random() * 0.35,
+      delay: Math.random() * 0.18,
     }))
-    const dust = Array.from({ length: 16 }, () => ({
-      x: Math.random(), y: Math.random(),
-      vx: (Math.random() - 0.5) * 0.02, vy: (Math.random() - 0.5) * 0.02,
-      ph: Math.random() * 7, sp: 0.6 + Math.random() * 1.2,
+    // contact dust burst: deterministic ballistic particles
+    const dust = Array.from({ length: 12 }, () => ({
+      ang: -0.15 - Math.random() * 1.1, // up-forward spray
+      spd: 0.25 + Math.random() * 0.55,
+      size: 0.6 + Math.random() * 1.2,
     }))
 
     // mesh nodes pop in radiating outward from the ball's resting spot
@@ -203,7 +178,7 @@ export default function CinematicIntro({ onDone }) {
     ND.map((d, i) => ({ i, d: Math.hypot(d[0] - BX, d[1] - BY) }))
       .sort((a, b) => a.d - b.d)
       .forEach((r, k) => {
-        popT[r.i] = TL.meshAt + (k / ND.length) * 0.65 + Math.random() * 0.08
+        popT[r.i] = TL.meshAt + (k / ND.length) * 0.5 + Math.random() * 0.06
       })
     const meshCol = ND.map((d) => {
       const m = 255 / Math.max(d[3], d[4], d[5])
@@ -219,6 +194,7 @@ export default function CinematicIntro({ onDone }) {
       cvs.style.opacity = '0'
       textEl.style.transition = 'opacity .3s ease, transform .3s ease'
       textEl.style.opacity = '0'
+      settleEl.style.transform = ''
       logoEl.style.transition = 'opacity .2s ease'
       logoEl.style.opacity = '1'
       requestAnimationFrame(() => {
@@ -243,57 +219,170 @@ export default function CinematicIntro({ onDone }) {
 
     const mixPose = (A, B, u) => A.map((p, i) => [p[0] + (B[i][0] - p[0]) * u, p[1] + (B[i][1] - p[1]) * u])
     const poseAt = (t) => {
-      if (t <= TL.assembleEnd) return P_IDLE
-      if (t <= TL.strideAt) return mixPose(P_IDLE, P_STRIDE, easeInOut((t - TL.assembleEnd) / (TL.strideAt - TL.assembleEnd)))
-      if (t <= TL.stepAt) return mixPose(P_STRIDE, P_STEP, easeInOut((t - TL.strideAt) / (TL.stepAt - TL.strideAt)))
-      if (t <= TL.plantAt) return mixPose(P_STEP, P_PLANT, easeInOut((t - TL.stepAt) / (TL.plantAt - TL.stepAt)))
-      if (t <= TL.contactAt) {
+      let pose
+      if (t <= TL.idleEnd) pose = P_IDLE.map((p) => [p[0], p[1]])
+      else if (t <= TL.strideAt) pose = mixPose(P_IDLE, P_STRIDE, easeInOut((t - TL.idleEnd) / (TL.strideAt - TL.idleEnd)))
+      else if (t <= TL.stepAt) pose = mixPose(P_STRIDE, P_STEP, easeInOut((t - TL.strideAt) / (TL.stepAt - TL.strideAt)))
+      else if (t <= TL.plantAt) pose = mixPose(P_STEP, P_PLANT, easeInOut((t - TL.stepAt) / (TL.plantAt - TL.stepAt))) // slow wind-up
+      else if (t <= TL.contactAt) {
         // the foot whips DOWN through the grass and into the ball, not in a
         // straight line from the backswing — arc the kicking leg's chain
         const u = kickWarp((t - TL.plantAt) / (TL.contactAt - TL.plantAt))
-        const pose = mixPose(P_PLANT, P_CONTACT, u)
+        pose = mixPose(P_PLANT, P_CONTACT, u)
         const arc = Math.sin(Math.PI * u)
         pose[12][1] += 0.12 * arc
         pose[13][0] += 0.02 * arc
         pose[13][1] += 0.33 * arc
         pose[14][0] += 0.03 * arc
         pose[14][1] += 0.36 * arc
-        return pose
-      }
-      if (t <= TL.followAt) {
+      } else if (t <= TL.followAt) {
         // follow-through sweeps forward in an arc around the hip
         const u = easeOutCubic((t - TL.contactAt) / (TL.followAt - TL.contactAt))
-        const pose = mixPose(P_CONTACT, P_FOLLOW, u)
+        pose = mixPose(P_CONTACT, P_FOLLOW, u)
         const arc = Math.sin(Math.PI * u)
         pose[12][0] += 0.03 * arc
         pose[13][0] += 0.08 * arc
         pose[13][1] += 0.02 * arc
         pose[14][0] += 0.1 * arc
         pose[14][1] += 0.02 * arc
-        return pose
+      } else pose = P_FOLLOW.map((p) => [p[0], p[1]])
+
+      // idle life: breathing + weight shift, blended out as the run begins
+      const amp = t < TL.idleEnd ? 1 : clamp01(1 - (t - TL.idleEnd) / 0.3)
+      if (amp > 0) {
+        const br = Math.sin(t * 3.3) * amp
+        const sw = Math.sin(t * 2.1 + 1.2) * amp
+        pose[0][1] -= 0.008 * br; pose[1][1] -= 0.008 * br
+        pose[2][1] -= 0.006 * br; pose[3][1] -= 0.005 * br
+        pose[5][1] -= 0.005 * br; pose[8][1] -= 0.005 * br
+        pose[4][0] += 0.008 * sw; pose[11][0] += 0.008 * sw; pose[15][0] += 0.008 * sw
+        pose[0][0] -= 0.004 * sw; pose[1][0] -= 0.004 * sw
+        pose[6][0] += 0.004 * br; pose[9][0] -= 0.004 * br
       }
-      return P_FOLLOW
+      return pose
     }
 
     const figurePoints = (t, L) => {
       const pose = poseAt(t)
       let ax
-      if (t < TL.assembleEnd) ax = L.ax0
-      else if (t < TL.plantAt) ax = L.ax0 + (L.axK - L.ax0) * easeInOut((t - TL.assembleEnd) / (TL.plantAt - TL.assembleEnd))
+      if (t < TL.idleEnd) ax = L.ax0
+      else if (t < TL.plantAt) ax = L.ax0 + (L.axK - L.ax0) * easeInOut((t - TL.idleEnd) / (TL.plantAt - TL.idleEnd))
       else ax = L.axK
       const topY = L.groundY - L.fh
-      const pts = pose.map((p) => [ax + p[0] * L.fh, topY + p[1] * L.fh])
-      for (const [a, b, u, ox, oy] of SATS) {
-        pts.push([
-          pts[a][0] + (pts[b][0] - pts[a][0]) * u + ox * L.fh,
-          pts[a][1] + (pts[b][1] - pts[a][1]) * u + oy * L.fh,
-        ])
+      return pose.map((p) => [ax + p[0] * L.fh, topY + p[1] * L.fh])
+    }
+
+    /* ---- silhouette skinning ------------------------------------------- */
+    const capsule = (x1, y1, x2, y2, w1, w2, color) => {
+      const ang = Math.atan2(y2 - y1, x2 - x1)
+      g.fillStyle = color
+      g.beginPath()
+      g.arc(x1, y1, w1, ang + Math.PI / 2, ang - Math.PI / 2)
+      g.arc(x2, y2, w2, ang - Math.PI / 2, ang + Math.PI / 2)
+      g.closePath()
+      g.fill()
+    }
+    const lerpPt = (a, b, u) => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]
+
+    const drawPlayer = (t, L) => {
+      if (t > TL.fadeOutAt + 0.55) return
+      const pts = figurePoints(t, L)
+      const fh = L.fh
+      let alpha = easeOutCubic(clamp01(t / MATERIALIZE))
+      if (t > TL.fadeOutAt) alpha *= clamp01(1 - (t - TL.fadeOutAt) / 0.5)
+      if (alpha <= 0.01) return
+
+      const [headTop, head, neck, chest, waist, shF, elF, haF, shB, elB, haB, hipF, knF, anF, toF, hipB, knB, anB, toB] = pts
+
+      g.save()
+      g.globalAlpha = alpha
+      const limb = (a, b, w1, w2, color) => capsule(a[0], a[1], b[0], b[1], w1 * fh, w2 * fh, color)
+      const arm = (sh, el, ha, side) => {
+        limb(sh, lerpPt(sh, el, 0.55), 0.03, 0.025, KIT.shirt[side]) // sleeve
+        limb(lerpPt(sh, el, 0.45), el, 0.024, 0.02, KIT.skin[side])
+        limb(el, ha, 0.019, 0.013, KIT.skin[side])
+        g.fillStyle = KIT.skin[side]
+        g.beginPath(); g.arc(ha[0], ha[1], 0.014 * fh, 0, 7); g.fill()
       }
-      return pts
+      const leg = (hip, kn, an, to, side) => {
+        limb(hip, lerpPt(hip, kn, 0.5), 0.048, 0.04, KIT.shorts[side]) // shorts
+        limb(lerpPt(hip, kn, 0.4), kn, 0.038, 0.032, KIT.skin[side]) // lower thigh + knee
+        limb(kn, lerpPt(kn, an, 0.5), 0.03, 0.025, KIT.skin[side]) // upper calf
+        limb(lerpPt(kn, an, 0.42), an, 0.026, 0.018, KIT.socks[side]) // sock
+        limb(an, to, 0.02, 0.024, KIT.boots[side]) // boot
+        g.fillStyle = KIT.boots[side]
+        g.beginPath(); g.arc(an[0], an[1], 0.022 * fh, 0, 7); g.fill() // heel
+      }
+      const torso = () => {
+        // tapered trunk: shoulders → chest → waist, then the shorts seat
+        const pAt = (p, q, w) => {
+          const ang = Math.atan2(q[1] - p[1], q[0] - p[0])
+          return [Math.cos(ang + Math.PI / 2) * w * fh, Math.sin(ang + Math.PI / 2) * w * fh]
+        }
+        const n1 = pAt(neck, chest, 0.068)
+        const n2 = pAt(neck, waist, 0.06)
+        const n3 = pAt(chest, waist, 0.052)
+        g.fillStyle = KIT.shirt[0]
+        g.beginPath()
+        g.moveTo(neck[0] + n1[0], neck[1] + n1[1])
+        g.quadraticCurveTo(chest[0] + n2[0], chest[1] + n2[1], waist[0] + n3[0], waist[1] + n3[1])
+        g.lineTo(waist[0] - n3[0], waist[1] - n3[1])
+        g.quadraticCurveTo(chest[0] - n2[0], chest[1] - n2[1], neck[0] - n1[0], neck[1] - n1[1])
+        g.closePath()
+        g.fill()
+        // shoulder caps
+        g.beginPath(); g.arc(shF[0], shF[1], 0.031 * fh, 0, 7); g.fill()
+        g.beginPath(); g.arc(shB[0], shB[1], 0.031 * fh, 0, 7); g.fill()
+        // shorts seat bridging the hips
+        g.fillStyle = KIT.shorts[0]
+        capsule(hipB[0], hipB[1], hipF[0], hipF[1], 0.044 * fh, 0.044 * fh, KIT.shorts[0])
+        capsule(waist[0], waist[1], (hipF[0] + hipB[0]) / 2, (hipF[1] + hipB[1]) / 2, 0.05 * fh, 0.046 * fh, KIT.shorts[0])
+      }
+      const headDraw = () => {
+        limb(neck, head, 0.022, 0.018, KIT.skin[0]) // neck
+        const r = 0.048 * fh
+        // skull centred between crown and jaw so the tilt from the pose reads
+        const cx = (head[0] + headTop[0]) / 2
+        const cy = (head[1] + headTop[1]) / 2
+        g.fillStyle = KIT.skin[0]
+        g.beginPath(); g.arc(cx, cy, r, 0, 7); g.fill()
+      }
+
+      // teal rim light on the whole figure — kept subtle so shapes stay crisp
+      g.shadowColor = 'rgba(0,224,198,0.26)'
+      g.shadowBlur = 6 * (fh / 350)
+      // far side first (shaded), then trunk, near side on top
+      arm(shB, elB, haB, 1)
+      leg(hipB, knB, anB, toB, 1)
+      torso()
+      headDraw()
+      leg(hipF, knF, anF, toF, 0)
+      arm(shF, elF, haF, 0)
+      g.shadowBlur = 0
+      g.restore()
+
+      // materialise sparks converging onto the body
+      if (t < MATERIALIZE + 0.35) {
+        g.globalCompositeOperation = 'lighter'
+        for (const sp of sparks) {
+          const p = clamp01((t - sp.delay) / 0.5)
+          if (p <= 0 || p >= 1) continue
+          const target = pts[sp.j]
+          const tx = target[0] + sp.jx * fh
+          const ty = target[1] + sp.jy * fh
+          const d0 = sp.dist * Math.min(L.w, L.h)
+          const e = easeOutCubic(p)
+          const x = tx + Math.cos(sp.ang) * d0 * (1 - e)
+          const y = ty + Math.sin(sp.ang) * d0 * (1 - e)
+          g.fillStyle = `rgba(0,224,198,${(Math.sin(Math.PI * p) * 0.7).toFixed(3)})`
+          g.beginPath(); g.arc(x, y, 1.4, 0, 7); g.fill()
+        }
+        g.globalCompositeOperation = 'source-over'
+      }
     }
 
     const drawGround = (t, L) => {
-      const a0 = t < TL.dissolveAt ? 1 : clamp01(1 - (t - TL.dissolveAt) / 0.9)
+      const a0 = t < TL.fadeOutAt ? 1 : clamp01(1 - (t - TL.fadeOutAt) / 0.6)
       if (a0 <= 0) return
       const x0 = L.ax0 - L.fh * 0.45
       const x1 = L.ballGX + L.fh * 0.55
@@ -309,153 +398,113 @@ export default function CinematicIntro({ onDone }) {
       g.stroke()
     }
 
-    const drawFigure = (t, L) => {
-      if (t > 3.9) return
-      const pts = figurePoints(t, L)
-      const scale = L.fh / 350
-      const alphas = new Array(pts.length)
-      for (let i = 0; i < pts.length; i++) {
-        const f = fx[i]
-        let [x, y] = pts[i]
-        let a = 1
-        if (t < TL.assembleEnd + 0.05) {
-          const p = clamp01((t - f.delay) / 0.7)
-          const e = easeOutCubic(p)
-          const d0 = f.dist * Math.min(L.w, L.h)
-          x += Math.cos(f.ang) * d0 * (1 - e)
-          y += Math.sin(f.ang) * d0 * (1 - e)
-          a = clamp01(p * 1.8)
-        }
-        if (t > TL.dissolveAt) {
-          const p = clamp01((t - TL.dissolveAt - f.dDelay) / 0.85)
-          const e = easeOutCubic(p)
-          const dr = e * L.fh * 0.4 * f.dSpd
-          x += Math.cos(f.dAng) * dr
-          y += Math.sin(f.dAng) * dr - e * L.fh * 0.12
-          a *= 1 - p
-        }
-        pts[i] = [x, y]
-        alphas[i] = a
+    /* ball centre/radius as a pure function of time — lets the trail and
+       motion-blur ghosts sample the true path (works under ?introt too) */
+    const ballState = (t, L) => {
+      const r0 = Math.max(9, L.fh * 0.052)
+      if (t < TL.contactAt) return { x: L.ballGX, y: L.groundY - r0, r: r0, e: 0 }
+      const p = clamp01((t - TL.contactAt) / (TL.flightEnd - TL.contactAt))
+      const e = 1 - Math.pow(1 - p, 3.2)
+      const x0 = L.ballGX
+      const y0 = L.groundY - r0
+      const cx = x0 + (L.ballFX - x0) * 0.5
+      const cy = Math.min(y0, L.ballFY) - Math.max(80, L.h * 0.1)
+      const v = 1 - e
+      return {
+        x: v * v * x0 + 2 * v * e * cx + e * e * L.ballFX,
+        y: v * v * y0 + 2 * v * e * cy + e * e * L.ballFY,
+        r: r0 + (L.ballFR - r0) * e,
+        e,
       }
-      g.globalCompositeOperation = 'lighter'
-      g.lineWidth = Math.max(0.8, 1.1 * scale)
-      // edges die faster than nodes so the dissolve reads as drifting
-      // particles, not a stretched web
-      const edgeGate = t > TL.dissolveAt ? clamp01(1 - (t - TL.dissolveAt) / 0.45) : 1
-      for (const [a, b] of FIG_EDGES) {
-        const ea = Math.min(alphas[a], alphas[b]) * edgeGate
-        if (ea <= 0.02) continue
-        g.strokeStyle = `rgba(0,224,198,${(ea * 0.42).toFixed(3)})`
-        g.beginPath()
-        g.moveTo(pts[a][0], pts[a][1])
-        g.lineTo(pts[b][0], pts[b][1])
-        g.stroke()
-      }
-      for (let i = 0; i < pts.length; i++) {
-        const a = alphas[i]
-        if (a <= 0.02) continue
-        const f = fx[i]
-        const tw = 0.65 + 0.35 * Math.sin(t * f.sp * 2 + f.ph)
-        const base = (i === 1 ? 3.4 : i < 19 ? 2.5 : 1.7) * scale
-        const R = base * 3.1
-        const [x, y] = pts[i]
-        const rg = g.createRadialGradient(x, y, 0, x, y, R)
-        rg.addColorStop(0, `rgba(160,255,238,${(a * tw * 0.85).toFixed(3)})`)
-        rg.addColorStop(0.35, `rgba(0,224,198,${(a * tw * 0.4).toFixed(3)})`)
-        rg.addColorStop(1, 'rgba(0,224,198,0)')
-        g.fillStyle = rg
-        g.beginPath(); g.arc(x, y, R, 0, 7); g.fill()
-        g.fillStyle = `rgba(235,255,250,${(a * (0.5 + tw * 0.5)).toFixed(3)})`
-        g.beginPath(); g.arc(x, y, Math.max(1, base * 0.55), 0, 7); g.fill()
-      }
-      for (const d of dust) {
-        d.x = (d.x + d.vx * 0.016 + 1) % 1
-        d.y = (d.y + d.vy * 0.016 + 1) % 1
-        const gate = t < 1.4 ? clamp01((t - 0.3) / 0.8) : t > TL.dissolveAt ? clamp01(1 - (t - TL.dissolveAt)) : 1
-        if (gate <= 0.02) continue
-        const tw = 0.5 + 0.5 * Math.sin(t * d.sp + d.ph)
-        const x = L.ax0 - L.fh * 0.3 + d.x * L.fh * 1.6
-        const y = L.groundY - L.fh * 1.15 + d.y * L.fh * 1.2
-        g.fillStyle = `rgba(0,224,198,${(gate * tw * 0.22).toFixed(3)})`
-        g.beginPath(); g.arc(x, y, 1.2 * scale + 0.4, 0, 7); g.fill()
-      }
-      g.globalCompositeOperation = 'source-over'
     }
 
     const drawBall = (t, dt, L) => {
-      if (t < 0.9) return
-      const r0 = Math.max(9, L.fh * 0.052)
-      const appear = clamp01((t - 0.9) / 0.4)
-      let x = L.ballGX
-      let y = L.groundY - r0
-      let r = r0
-      if (t >= TL.contactAt) {
-        const p = clamp01((t - TL.contactAt) / (TL.flightEnd - TL.contactAt))
-        const e = 1 - Math.pow(1 - p, 3.4)
-        const x2 = L.ballFX
-        const y2 = L.ballFY
-        const cx = x + (x2 - x) * 0.48
-        const cy = Math.min(y, y2) - Math.max(150, L.h * 0.24)
-        const v = 1 - e
-        const bx = v * v * x + 2 * v * e * cx + e * e * x2
-        const by = v * v * y + 2 * v * e * cy + e * e * y2
-        x = bx
-        y = by
-        r = r0 + (L.ballFR - r0) * e
-        ballRot += dt * (16 * (1 - e) + 0.12)
-        if (e < 0.985 && !Number.isFinite(freeze)) trail.push({ x, y, t })
-      }
+      if (t < 0.55) return
+      const appear = clamp01((t - 0.55) / 0.35)
+      const B = ballState(t, L)
+      if (B.e > 0 && B.e < 1) ballRot += dt * (15 * (1 - B.e) + 0.12)
       // canvas ball hands over to the DOM logo's own rotating ball
-      const A = appear * (1 - clamp01((t - (TL.logoFadeAt + 0.15)) / 0.45))
+      const A = appear * (1 - clamp01((t - (TL.logoFadeAt + 0.12)) / 0.35))
+
       g.globalCompositeOperation = 'lighter'
-      for (let i = trail.length - 1; i >= 0; i--) {
-        if (t - trail[i].t > 0.55) trail.splice(i, 1)
-      }
-      g.lineCap = 'round'
-      for (let i = 1; i < trail.length; i++) {
-        const age = (t - trail[i].t) / 0.55
-        const a = (1 - age) * 0.5 * A
-        if (a <= 0.01) continue
-        g.strokeStyle = `rgba(0,224,198,${a.toFixed(3)})`
-        g.lineWidth = Math.max(0.6, (1 - age) * r * 0.5)
-        g.beginPath()
-        g.moveTo(trail[i - 1].x, trail[i - 1].y)
-        g.lineTo(trail[i].x, trail[i].y)
-        g.stroke()
+      // light trail: sampled from the true path just behind the ball
+      if (B.e > 0.01 && B.e < 0.97 && A > 0.02) {
+        for (let k = 1; k <= 9; k++) {
+          const Bp = ballState(t - k * 0.022, L)
+          const Bq = ballState(t - (k - 1) * 0.022, L)
+          const f = 1 - k / 10
+          g.strokeStyle = `rgba(0,224,198,${(f * 0.45 * A).toFixed(3)})`
+          g.lineWidth = Math.max(0.6, B.r * 0.55 * f)
+          g.lineCap = 'round'
+          g.beginPath(); g.moveTo(Bp.x, Bp.y); g.lineTo(Bq.x, Bq.y); g.stroke()
+        }
       }
       if (A > 0.01) {
-        const gr = g.createRadialGradient(x, y, 0, x, y, r * 2.1)
+        const gr = g.createRadialGradient(B.x, B.y, 0, B.x, B.y, B.r * 2.1)
         gr.addColorStop(0, `rgba(0,224,198,${(0.4 * A).toFixed(3)})`)
         gr.addColorStop(1, 'rgba(0,224,198,0)')
         g.fillStyle = gr
-        g.beginPath(); g.arc(x, y, r * 2.1, 0, 7); g.fill()
+        g.beginPath(); g.arc(B.x, B.y, B.r * 2.1, 0, 7); g.fill()
       }
-      if (t >= TL.contactAt && t < TL.contactAt + 0.22) {
-        const q = (t - TL.contactAt) / 0.22
+      // impact: quick ring + dust burst off the turf
+      if (t >= TL.contactAt && t < TL.contactAt + 0.2) {
+        const q = (t - TL.contactAt) / 0.2
         g.strokeStyle = `rgba(180,255,240,${((1 - q) * 0.6).toFixed(3)})`
         g.lineWidth = 2 * (1 - q) + 0.5
-        g.beginPath(); g.arc(L.ballGX, L.groundY - r0, r0 * (1 + q * 2.6), 0, 7); g.stroke()
+        g.beginPath(); g.arc(L.ballGX, L.groundY - B.r, B.r * (1 + q * 2.2), 0, 7); g.stroke()
       }
-      if (t >= TL.flightEnd && t < TL.flightEnd + 0.5) {
-        const q = (t - TL.flightEnd) / 0.5
+      if (t >= TL.contactAt && t < TL.contactAt + 0.5) {
+        const dT = t - TL.contactAt
+        for (const d of dust) {
+          const a = (1 - dT / 0.5) * 0.55
+          if (a <= 0.02) continue
+          const x = L.ballGX + Math.cos(d.ang) * d.spd * dT * L.fh
+          const y = L.groundY - 4 + Math.sin(d.ang) * d.spd * dT * L.fh + 0.9 * L.fh * dT * dT
+          g.fillStyle = `rgba(140,230,215,${a.toFixed(3)})`
+          g.beginPath(); g.arc(x, y, d.size, 0, 7); g.fill()
+        }
+      }
+      // landing ripple as the ball settles into the P
+      if (t >= TL.flightEnd && t < TL.flightEnd + 0.45) {
+        const q = (t - TL.flightEnd) / 0.45
         g.strokeStyle = `rgba(0,224,198,${((1 - q) * 0.45).toFixed(3)})`
         g.lineWidth = 1.4 * (1 - q) + 0.3
         g.beginPath(); g.arc(L.ballFX, L.ballFY, L.ballFR * (1 + q * 1.2), 0, 7); g.stroke()
       }
       g.globalCompositeOperation = 'source-over'
+
       if (A > 0.01) {
+        // motion-blur ghosts trailing the ball mid-flight
+        if (B.e > 0.03 && B.e < 0.9 && ballImg.complete && ballImg.naturalWidth) {
+          for (let k = 3; k >= 1; k--) {
+            const Bp = ballState(t - k * 0.03, L)
+            g.save()
+            g.globalAlpha = A * (0.2 - k * 0.05)
+            g.translate(Bp.x, Bp.y)
+            g.rotate(ballRot - k * 0.1)
+            g.drawImage(ballImg, -Bp.r, -Bp.r, Bp.r * 2, Bp.r * 2)
+            g.restore()
+          }
+        }
         g.save()
         g.globalAlpha = A
-        g.translate(x, y)
+        g.translate(B.x, B.y)
+        // contact squash along the launch direction
+        if (t >= TL.contactAt && t < TL.contactAt + 0.12) {
+          const q = Math.sin((Math.PI * (t - TL.contactAt)) / 0.12)
+          g.rotate(-0.6)
+          g.scale(1 + q * 0.12, 1 - q * 0.2)
+          g.rotate(0.6)
+        }
         g.rotate(ballRot)
         if (ballImg.complete && ballImg.naturalWidth) {
-          g.drawImage(ballImg, -r, -r, r * 2, r * 2)
+          g.drawImage(ballImg, -B.r, -B.r, B.r * 2, B.r * 2)
         } else {
           g.strokeStyle = 'rgba(0,224,198,.9)'
           g.lineWidth = 1.2
-          g.beginPath(); g.arc(0, 0, r, 0, 7); g.stroke()
-          g.beginPath(); g.ellipse(0, 0, r, r * 0.45, 0, 0, 7); g.stroke()
-          g.beginPath(); g.ellipse(0, 0, r * 0.45, r, 0, 0, 7); g.stroke()
+          g.beginPath(); g.arc(0, 0, B.r, 0, 7); g.stroke()
+          g.beginPath(); g.ellipse(0, 0, B.r, B.r * 0.45, 0, 0, 7); g.stroke()
+          g.beginPath(); g.ellipse(0, 0, B.r * 0.45, B.r, 0, 0, 7); g.stroke()
         }
         g.restore()
       }
@@ -463,15 +512,15 @@ export default function CinematicIntro({ onDone }) {
 
     const drawMesh = (t, L) => {
       if (t < TL.meshAt) return
-      const meshA = 1 - clamp01((t - (TL.logoFadeAt + 0.45)) / 0.45)
+      const meshA = 1 - clamp01((t - (TL.logoFadeAt + 0.35)) / 0.35)
       if (meshA <= 0) return
       const fw = L.fullW
       const px = (i) => L.left + (ND[i][0] - OFFSET_X_FRAC) * fw
       const py = (i) => L.top + (ND[i][1] - OFFSET_Y_FRAC) * fw
       g.globalCompositeOperation = 'lighter'
       for (const [a, b] of ED) {
-        const st = Math.max(popT[a], popT[b]) + 0.05
-        const q = easeOutCubic(clamp01((t - st) / 0.3))
+        const st = Math.max(popT[a], popT[b]) + 0.04
+        const q = easeOutCubic(clamp01((t - st) / 0.25))
         if (q <= 0) continue
         const x0 = px(a)
         const y0 = py(a)
@@ -483,7 +532,7 @@ export default function CinematicIntro({ onDone }) {
         g.stroke()
       }
       for (let i = 0; i < ND.length; i++) {
-        const p = clamp01((t - popT[i]) / 0.24)
+        const p = clamp01((t - popT[i]) / 0.2)
         if (p <= 0) continue
         const s = easeOutBack(p)
         const [cr, cg, cb] = meshCol[i]
@@ -514,11 +563,17 @@ export default function CinematicIntro({ onDone }) {
       const L = layoutRef.current
       g.clearRect(0, 0, L.w, L.h)
       drawGround(t, L)
-      drawFigure(t, L)
+      drawPlayer(t, L)
       drawBall(t, dt, L)
       drawMesh(t, L)
-      logoEl.style.opacity = String(clamp01((t - TL.logoFadeAt) / 0.5))
-      const tf = easeOutCubic(clamp01((t - TL.textAt) / 0.55))
+      logoEl.style.opacity = String(clamp01((t - TL.logoFadeAt) / 0.35))
+      // spring settle as the logo takes over from the landed ball
+      const sd = t - (TL.logoFadeAt + 0.2)
+      if (sd > 0 && sd < 1.2) {
+        const sc = 1 + 0.05 * Math.exp(-4.5 * sd) * Math.sin(11 * sd)
+        settleEl.style.transform = `scale(${sc.toFixed(4)})`
+      }
+      const tf = easeOutCubic(clamp01((t - TL.textAt) / 0.4))
       textEl.style.opacity = String(tf)
       textEl.style.transform = `translateY(${((1 - tf) * 14).toFixed(1)}px)`
       if (t >= TL.handoffAt) {
@@ -572,7 +627,9 @@ export default function CinematicIntro({ onDone }) {
           willChange: 'transform,opacity',
         }}
       >
-        <LogoMark size={layout.s} glow={false} />
+        <div ref={settleRef} style={{ width: '100%', height: '100%', transformOrigin: '50% 50%' }}>
+          <LogoMark size={layout.s} glow={false} />
+        </div>
       </div>
       <div
         ref={textRef}
@@ -612,6 +669,22 @@ export default function CinematicIntro({ onDone }) {
         >
           WORLD CUP 2026 · AI ANALYTICS
         </div>
+      </div>
+      {/* visible skip affordance — any click/tap/keypress skips too */}
+      <div
+        style={{
+          position: 'absolute',
+          right: 22,
+          bottom: 18,
+          fontFamily: 'var(--font-mono)',
+          fontSize: 11,
+          letterSpacing: '.22em',
+          color: 'rgba(255,255,255,.35)',
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}
+      >
+        SKIP ›
       </div>
     </div>
   )
