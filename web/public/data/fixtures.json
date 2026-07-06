@@ -1276,14 +1276,14 @@
  {
   "round": "ROUND OF 16",
   "date": "6 Jul 2026",
-  "ts": 1783296000.0,
+  "ts": 1783299600.0,
   "hCode": "MEX",
   "hCol": "#ef7d52",
   "aCode": "ENG",
   "aCol": "#2ecc71",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 2,
+  "sa": 3,
+  "status": "done",
   "matchId": "mt_362533068",
   "group": false
  },
@@ -1355,6 +1355,20 @@
   "sa": null,
   "status": "upcoming",
   "matchId": "mt_625866143",
+  "group": false
+ },
+ {
+  "round": "QUARTER-FINAL",
+  "date": "11 Jul 2026",
+  "ts": 1783803600.0,
+  "hCode": "NOR",
+  "hCol": "#f5c451",
+  "aCode": "ENG",
+  "aCol": "#2ecc71",
+  "sh": null,
+  "sa": null,
+  "status": "upcoming",
+  "matchId": "mt_362533071",
   "group": false
  }
 ]
