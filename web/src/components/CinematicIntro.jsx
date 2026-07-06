@@ -33,6 +33,7 @@ const TL = {
   plantAt: 1.82,
   contactAt: 2.08,
   followAt: 2.34,
+  recoverAt: 2.62, // kicking foot steps back down, body settles upright
   fadeOutAt: 2.6, // player fades while the eye follows the ball
   meshAt: 2.7,
   flightEnd: 2.95,
@@ -59,14 +60,17 @@ const P_STEP = [[0.14,0.06],[0.12,0.13],[0.1,0.2],[0.07,0.29],[0.02,0.43],[0.11,
 const P_PLANT = [[0.17,0.115],[0.14,0.155],[0.1,0.215],[0.07,0.3],[0.03,0.44],[0.11,0.22],[0.01,0.27],[-0.1,0.31],[0.07,0.225],[0.1,0.11],[0.16,0.01],[0.02,0.47],[-0.14,0.4],[-0.28,0.3],[-0.34,0.28],[-0.03,0.47],[0.03,0.68],[0.0,0.92],[0.07,0.95]]
 const P_CONTACT = [[0.08,0.085],[0.05,0.14],[0.03,0.21],[0.02,0.3],[0.0,0.44],[0.03,0.22],[-0.09,0.26],[-0.19,0.3],[0.0,0.22],[0.06,0.15],[0.14,0.1],[0.03,0.46],[0.14,0.64],[0.25,0.82],[0.31,0.89],[-0.03,0.46],[0.02,0.68],[-0.01,0.92],[0.06,0.95]]
 const P_FOLLOW = [[-0.1,0.075],[-0.09,0.145],[-0.08,0.22],[-0.06,0.31],[-0.02,0.44],[-0.04,0.23],[0.06,0.26],[0.15,0.24],[-0.1,0.24],[-0.18,0.31],[-0.24,0.38],[0.02,0.46],[0.18,0.52],[0.32,0.4],[0.38,0.33],[-0.04,0.46],[-0.02,0.69],[-0.06,0.92],[0.01,0.95]]
+const P_RECOVER = [[0.03,0.05],[0.025,0.125],[0.02,0.2],[0.01,0.29],[0.0,0.43],[0.05,0.21],[0.07,0.32],[0.09,0.42],[-0.03,0.21],[-0.06,0.32],[-0.08,0.42],[0.03,0.46],[0.09,0.68],[0.12,0.91],[0.19,0.94],[-0.04,0.46],[-0.06,0.69],[-0.09,0.92],[-0.02,0.95]]
 
-/* silhouette palette: near-side limbs bright, far side shaded for depth */
+/* PARKER club kit: dark base, teal trim, site palette. Index 0 = near-side
+   limbs, 1 = far side (shaded for depth). */
 const KIT = {
   skin: ['#243645', '#182530'],
-  shirt: ['#124a44', '#0c332f'],
+  shirt: ['#0f4f48', '#0a3733'],
   shorts: ['#13253a', '#0d1a29'],
-  socks: ['#11463f', '#0c302c'],
+  socks: ['#0f4f48', '#0a3733'],
   boots: ['#0b1119', '#080d13'],
+  trim: ['#2fe8cf', '#1da591'],
 }
 
 const clamp01 = (x) => (x < 0 ? 0 : x > 1 ? 1 : x)
@@ -245,7 +249,23 @@ export default function CinematicIntro({ onDone }) {
         pose[13][1] += 0.02 * arc
         pose[14][0] += 0.1 * arc
         pose[14][1] += 0.02 * arc
-      } else pose = P_FOLLOW.map((p) => [p[0], p[1]])
+      } else if (t <= TL.recoverAt) pose = mixPose(P_FOLLOW, P_RECOVER, easeInOut((t - TL.followAt) / (TL.recoverAt - TL.followAt)))
+      else pose = P_RECOVER.map((p) => [p[0], p[1]])
+
+      // weight: vertical bounce through the run-up strides…
+      if (t > TL.idleEnd && t < TL.plantAt) {
+        const rp = (t - TL.idleEnd) / (TL.plantAt - TL.idleEnd)
+        const dy = -0.014 * Math.abs(Math.sin(Math.PI * 2 * rp)) * Math.sin(Math.PI * rp)
+        for (let j = 0; j < 19; j++) {
+          if (j === 13 || j === 14 || j === 17 || j === 18) continue // feet stay grounded
+          pose[j][1] += dy
+        }
+      }
+      // …and a loading dip into the plant that releases through contact
+      if (t > TL.plantAt && t < TL.contactAt + 0.1) {
+        const dq = Math.sin(Math.PI * clamp01((t - TL.plantAt) / 0.32))
+        for (const j of [0, 1, 2, 3, 4, 11, 15]) pose[j][1] += 0.016 * dq
+      }
 
       // idle life: breathing + weight shift, blended out as the run begins
       const amp = t < TL.idleEnd ? 1 : clamp01(1 - (t - TL.idleEnd) / 0.3)
@@ -269,7 +289,20 @@ export default function CinematicIntro({ onDone }) {
       else if (t < TL.plantAt) ax = L.ax0 + (L.axK - L.ax0) * easeInOut((t - TL.idleEnd) / (TL.plantAt - TL.idleEnd))
       else ax = L.axK
       const topY = L.groundY - L.fh
-      return pose.map((p) => [ax + p[0] * L.fh, topY + p[1] * L.fh])
+      const pts = pose.map((p) => [ax + p[0] * L.fh, topY + p[1] * L.fh])
+      // head tracks the ball — down at it through the strike, up as it flies
+      if (t > TL.stepAt) {
+        const w = Math.min(clamp01((t - TL.stepAt) / 0.2), 0.65)
+        const hd = pts[1]
+        const B = ballState(t, L)
+        const r = Math.hypot(pts[0][0] - hd[0], pts[0][1] - hd[1]) || 1
+        const tilt = Math.max(-0.55, Math.min(0.85, Math.atan2(B.y - hd[1], B.x - hd[0]) * 0.7))
+        const want = -Math.PI / 2 + tilt
+        const cur = Math.atan2(pts[0][1] - hd[1], pts[0][0] - hd[0])
+        const a = cur + (want - cur) * w
+        pts[0] = [hd[0] + Math.cos(a) * r, hd[1] + Math.sin(a) * r]
+      }
+      return pts
     }
 
     /* ---- silhouette skinning ------------------------------------------- */
@@ -299,7 +332,8 @@ export default function CinematicIntro({ onDone }) {
       const limb = (a, b, w1, w2, color) => capsule(a[0], a[1], b[0], b[1], w1 * fh, w2 * fh, color)
       const arm = (sh, el, ha, side) => {
         limb(sh, lerpPt(sh, el, 0.55), 0.03, 0.025, KIT.shirt[side]) // sleeve
-        limb(lerpPt(sh, el, 0.45), el, 0.024, 0.02, KIT.skin[side])
+        limb(lerpPt(sh, el, 0.5), lerpPt(sh, el, 0.6), 0.026, 0.024, KIT.trim[side]) // cuff
+        limb(lerpPt(sh, el, 0.58), el, 0.023, 0.02, KIT.skin[side])
         limb(el, ha, 0.019, 0.013, KIT.skin[side])
         g.fillStyle = KIT.skin[side]
         g.beginPath(); g.arc(ha[0], ha[1], 0.014 * fh, 0, 7); g.fill()
@@ -308,10 +342,12 @@ export default function CinematicIntro({ onDone }) {
         limb(hip, lerpPt(hip, kn, 0.5), 0.048, 0.04, KIT.shorts[side]) // shorts
         limb(lerpPt(hip, kn, 0.4), kn, 0.038, 0.032, KIT.skin[side]) // lower thigh + knee
         limb(kn, lerpPt(kn, an, 0.5), 0.03, 0.025, KIT.skin[side]) // upper calf
-        limb(lerpPt(kn, an, 0.42), an, 0.026, 0.018, KIT.socks[side]) // sock
+        limb(lerpPt(kn, an, 0.42), lerpPt(kn, an, 0.54), 0.027, 0.025, KIT.trim[side]) // sock top
+        limb(lerpPt(kn, an, 0.5), an, 0.025, 0.018, KIT.socks[side]) // sock
         limb(an, to, 0.02, 0.024, KIT.boots[side]) // boot
         g.fillStyle = KIT.boots[side]
         g.beginPath(); g.arc(an[0], an[1], 0.022 * fh, 0, 7); g.fill() // heel
+        limb(lerpPt(an, to, 0.15), lerpPt(an, to, 0.7), 0.006, 0.005, KIT.trim[side]) // boot flash
       }
       const torso = () => {
         // tapered trunk: shoulders → chest → waist, then the shorts seat
@@ -333,17 +369,58 @@ export default function CinematicIntro({ onDone }) {
         // shoulder caps
         g.beginPath(); g.arc(shF[0], shF[1], 0.031 * fh, 0, 7); g.fill()
         g.beginPath(); g.arc(shB[0], shB[1], 0.031 * fh, 0, 7); g.fill()
+        // teal collar band under the neck
+        capsule(neck[0] + n1[0] * 0.55, neck[1] + n1[1] * 0.55, neck[0] - n1[0] * 0.55, neck[1] - n1[1] * 0.55, 0.013 * fh, 0.013 * fh, KIT.trim[0])
+        // front seam down the shirt
+        g.strokeStyle = 'rgba(47,232,207,0.55)'
+        g.lineWidth = Math.max(1, 0.006 * fh)
+        g.beginPath()
+        g.moveTo(chest[0] + n2[0] * 0.82, chest[1] + n2[1] * 0.82)
+        g.lineTo(waist[0] + n3[0] * 0.82, waist[1] + n3[1] * 0.82)
+        g.stroke()
         // shorts seat bridging the hips
         g.fillStyle = KIT.shorts[0]
         capsule(hipB[0], hipB[1], hipF[0], hipF[1], 0.044 * fh, 0.044 * fh, KIT.shorts[0])
         capsule(waist[0], waist[1], (hipF[0] + hipB[0]) / 2, (hipF[1] + hipB[1]) / 2, 0.05 * fh, 0.046 * fh, KIT.shorts[0])
+        // shorts trim hem
+        g.strokeStyle = 'rgba(47,232,207,0.45)'
+        g.beginPath()
+        g.moveTo(hipF[0] + 0.02 * fh, hipF[1] + 0.035 * fh)
+        g.lineTo(hipF[0] - 0.02 * fh, hipF[1] + 0.04 * fh)
+        g.stroke()
+      }
+      // "PARKER AI" printed on the shirt: tracks the torso's position and
+      // lean, auto-fits to the shirt width, skipped when too small to read
+      // as kit print
+      const wordmark = () => {
+        const mid = lerpPt(chest, waist, 0.38)
+        const angT = Math.atan2(waist[1] - chest[1], waist[0] - chest[0]) - Math.PI / 2
+        const maxW = 0.125 * fh
+        let fpx = 0.034 * fh
+        g.save()
+        g.font = `600 ${fpx}px "JetBrains Mono", monospace`
+        const tw = g.measureText('PARKER AI').width
+        if (tw > maxW) {
+          fpx *= maxW / tw
+          g.font = `600 ${fpx}px "JetBrains Mono", monospace`
+        }
+        if (fpx >= 5) {
+          g.translate(mid[0], mid[1])
+          g.rotate(angT)
+          g.textAlign = 'center'
+          g.textBaseline = 'middle'
+          g.fillStyle = 'rgba(150,255,238,0.92)'
+          g.fillText('PARKER AI', 0, 0)
+        }
+        g.restore()
       }
       const headDraw = () => {
         limb(neck, head, 0.022, 0.018, KIT.skin[0]) // neck
         const r = 0.048 * fh
-        // skull centred between crown and jaw so the tilt from the pose reads
-        const cx = (head[0] + headTop[0]) / 2
-        const cy = (head[1] + headTop[1]) / 2
+        // skull biased toward the jaw so it stays seated on the neck even
+        // when the crown swings with the head-tracking tilt
+        const cx = head[0] + (headTop[0] - head[0]) * 0.35
+        const cy = head[1] + (headTop[1] - head[1]) * 0.35
         g.fillStyle = KIT.skin[0]
         g.beginPath(); g.arc(cx, cy, r, 0, 7); g.fill()
       }
@@ -355,6 +432,7 @@ export default function CinematicIntro({ onDone }) {
       arm(shB, elB, haB, 1)
       leg(hipB, knB, anB, toB, 1)
       torso()
+      wordmark()
       headDraw()
       leg(hipF, knF, anF, toF, 0)
       arm(shF, elF, haF, 0)
@@ -478,6 +556,7 @@ export default function CinematicIntro({ onDone }) {
         if (B.e > 0.03 && B.e < 0.9 && ballImg.complete && ballImg.naturalWidth) {
           for (let k = 3; k >= 1; k--) {
             const Bp = ballState(t - k * 0.03, L)
+            if (Bp.e <= 0.001) continue // never ghost the pre-kick ball
             g.save()
             g.globalAlpha = A * (0.2 - k * 0.05)
             g.translate(Bp.x, Bp.y)
