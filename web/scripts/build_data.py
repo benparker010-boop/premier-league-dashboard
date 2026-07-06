@@ -226,6 +226,7 @@ def main():
     players_json = build_players(fin)
     lab_json = build_match_lab(fin)
     matchpreds_json = build_matchpreds(sched)
+    matchups_json = build_matchups()
 
     for fname, payload in [
         ("groups.json", groups_json),
@@ -234,6 +235,7 @@ def main():
         ("players.json", players_json),
         ("matches.json", lab_json),
         ("matchpreds.json", matchpreds_json),
+        ("matchups.json", matchups_json),
     ]:
         with open(os.path.join(OUT_DIR, fname), "w", encoding="utf-8") as fh:
             json.dump(payload, fh, ensure_ascii=False, indent=1)
@@ -468,6 +470,48 @@ def build_matchpreds(sched, cap=12):
                            if p.get("possession") else None),
         })
     print(f"  matchpreds: {len(out)} upcoming fixture cards")
+    return out
+
+
+def build_matchups():
+    """Every pairwise neutral-venue matchup of the 48 tournament teams (1,128
+    unordered pairs) as compact cards, keyed 'A|B' with names sorted. Powers Ask
+    Parker's hypothetical questions ('who'd win England vs Argentina?') — the
+    ask route detects the two team names and injects just the matching card."""
+    teams = sorted(KNOWN)
+    out = {}
+    for i, h in enumerate(teams):
+        for a in teams[i + 1:]:
+            try:
+                p = predict(h, a, model=MODEL)
+            except Exception:
+                continue
+            if not p.get("available"):
+                continue
+            adv = p.get("advance")
+            fav_home = (adv if adv is not None else p["result"]["home_win"]) >= 0.5
+            proj = (p.get("scoreline_home_win") if fav_home
+                    else p.get("scoreline_away_win")) or p.get("scoreline")
+            st = p.get("stats") or {}
+            pr = lambda d: [round(d["home"], 1), round(d["away"], 1)] if d else None
+            out[f"{h}|{a}"] = {
+                "result": [round(p["result"]["home_win"] * 100),
+                           round(p["result"]["draw"] * 100),
+                           round(p["result"]["away_win"] * 100)],
+                "adv": round(adv * 100) if adv is not None else None,
+                "score": proj,
+                "xg": [round(p["expected_goals"]["home"], 2),
+                       round(p["expected_goals"]["away"], 2)],
+                "shots": pr(st.get("shots")), "sot": pr(st.get("sot")),
+                "cor": pr(st.get("corners")), "crd": pr(st.get("cards")),
+                "fls": pr(st.get("fouls")),
+                "pos": ([round(p["possession"]["home"] * 100),
+                         round(p["possession"]["away"] * 100)]
+                        if p.get("possession") else None),
+                "o25": round(p["totals"]["over_2.5"] * 100),
+                "btts": round(p["btts"] * 100),
+            }
+    print(f"  matchups: {len(out)} pairwise hypothetical cards")
     return out
 
 

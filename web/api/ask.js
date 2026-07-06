@@ -40,9 +40,65 @@ async function loadData(origin, file) {
   }
 }
 
+// ---- hypothetical matchup detection --------------------------------------
+// Canonical team names (as they appear in the data) + common aliases users type.
+const TEAM_NAMES = [
+  'Algeria', 'Argentina', 'Australia', 'Austria', 'Belgium', 'Bosnia & Herzegovina',
+  'Brazil', 'Canada', 'Cape Verde', 'Colombia', 'Croatia', 'Curaçao', 'Czechia',
+  "Côte d'Ivoire", 'DR Congo', 'Ecuador', 'Egypt', 'England', 'France', 'Germany',
+  'Ghana', 'Haiti', 'Iran', 'Iraq', 'Japan', 'Jordan', 'Mexico', 'Morocco',
+  'Netherlands', 'New Zealand', 'Norway', 'Panama', 'Paraguay', 'Portugal', 'Qatar',
+  'Saudi Arabia', 'Scotland', 'Senegal', 'South Africa', 'South Korea', 'Spain',
+  'Sweden', 'Switzerland', 'Tunisia', 'Türkiye', 'USA', 'Uruguay', 'Uzbekistan',
+]
+const ALIASES = {
+  'united states': 'USA', 'america': 'USA', 'holland': 'Netherlands',
+  'turkey': 'Türkiye', 'turkiye': 'Türkiye', 'ivory coast': "Côte d'Ivoire",
+  'cote divoire': "Côte d'Ivoire", 'korea': 'South Korea', 'bosnia': 'Bosnia & Herzegovina',
+  'cabo verde': 'Cape Verde', 'drc': 'DR Congo', 'congo': 'DR Congo',
+  'curacao': 'Curaçao', 'czech republic': 'Czechia', 'saudi': 'Saudi Arabia',
+}
+
+export function detectTeams(text) {
+  const t = ' ' + String(text || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '') + ' '
+  const found = []
+  const scan = (needle, canonical) => {
+    const n = needle.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    const idx = t.search(new RegExp('(^|[^a-z])' + n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[^a-z])'))
+    if (idx >= 0 && !found.some((f) => f.name === canonical)) found.push({ name: canonical, idx })
+  }
+  for (const name of TEAM_NAMES) scan(name, name)
+  for (const [alias, canonical] of Object.entries(ALIASES)) scan(alias, canonical)
+  found.sort((a, b) => a.idx - b.idx)          // keep the order the user wrote
+  return found.map((f) => f.name)
+}
+
 // Build the grounding block from real data — the only numbers the model may cite.
-export function buildContext(predictions, players, matchLab, matchpreds) {
+export function buildContext(predictions, players, matchLab, matchpreds, hypo) {
   const lines = []
+  if (hypo) {
+    const c = hypo.card
+    const pr = (v) => (v ? `${v[0]}-${v[1]}` : null)
+    const parts = [
+      `win ${c.result[0]}% / draw ${c.result[1]}% / ${c.result[2]}%` +
+        (c.adv != null ? `, ${hypo.home} would advance a knockout tie ${c.adv}%` : ''),
+      c.score ? `predicted score ${c.score[0]}-${c.score[1]}` : null,
+      c.xg ? `expected goals ${c.xg[0]}-${c.xg[1]}` : null,
+      pr(c.shots) ? `shots ${pr(c.shots)}` : null,
+      pr(c.sot) ? `on target ${pr(c.sot)}` : null,
+      pr(c.cor) ? `corners ${pr(c.cor)}` : null,
+      pr(c.crd) ? `cards ${pr(c.crd)}` : null,
+      pr(c.fls) ? `fouls ${pr(c.fls)}` : null,
+      c.pos ? `possession ${c.pos[0]}%-${c.pos[1]}%` : null,
+      c.o25 != null ? `over 2.5 goals ${c.o25}%` : null,
+      c.btts != null ? `both teams score ${c.btts}%` : null,
+    ].filter(Boolean)
+    lines.push(
+      `The user is asking about ${hypo.home} v ${hypo.away}. This is NOT a scheduled fixture — ` +
+        `it is our model's hypothetical neutral-venue simulation (stat pairs are ${hypo.home}-${hypo.away}): ` +
+        parts.join('; ') + '.',
+    )
+  }
   if (matchpreds?.length) {
     lines.push(
       'Full model cards for upcoming fixtures (stat pairs are home-away; "advance" = chance the home-listed side goes through incl. extra time/pens):',
@@ -153,7 +209,28 @@ export default async function handler(req, res) {
     matchLab = (matches || []).find((m) => m.id === matchId) || (matches || [])[0] || null
   }
 
-  const context = buildContext(predictions, players, matchLab, matchpreds)
+  // hypothetical matchup: if the latest question names two teams and no
+  // scheduled fixture card covers them, inject the precomputed pairwise card
+  let hypo = null
+  const lastUser = userTurns[userTurns.length - 1].content
+  const named = detectTeams(lastUser)
+  if (named.length >= 2) {
+    const [t1, t2] = named
+    const scheduled = (matchpreds || []).some(
+      (c) => [c.home.name, c.away.name].includes(t1) && [c.home.name, c.away.name].includes(t2),
+    )
+    if (!scheduled) {
+      const matchups = await loadData(origin, 'matchups')
+      const key = [t1, t2].sort().join('|')
+      const card = matchups?.[key]
+      if (card) {
+        const [home, away] = [t1, t2].sort()   // card is stored home=alphabetical first
+        hypo = { home, away, card }
+      }
+    }
+  }
+
+  const context = buildContext(predictions, players, matchLab, matchpreds, hypo)
   const system = SYSTEM_BASE + '\n\nModel snapshot (reference these figures naturally, never dump them verbatim):\n' + context
 
   try {
