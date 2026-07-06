@@ -191,3 +191,154 @@ an edge that isn't there**.
 2. Tighten the **corners** over/under calibration (slightly over-confident at high lines).
 3. If desired, port the validated engine (esp. xG mean-matching + Dixon–Coles) into
    `app.py`'s `predict_fixture` — **pending Ben's go-ahead**.
+
+---
+
+# Pre-tournament priors (validated — the cold-start fix)
+
+The live predictor is **cold-start**: it knows only current-tournament form, so
+early predictions are noise and fixtures where a team has under `min_g` games
+can't be predicted at all. This upgrade seeds each team with a **prior rating**
+before a ball is kicked, implemented as **Bayesian pseudo-counts**
+(`Model.inject_prior` in `footy_model.py`): each team starts as if it had already
+played `g0` games at its prior strength, and real results wash the prior out at
+exactly the rate the shrinkage machinery already uses. Prediction math is
+untouched, and the `min_g` gate opens from game 1.
+
+## How it was tested (`prior_backtest.py`)
+
+On the 10 PL seasons, "last season's final strength + Elo (regressed, promoted
+teams get a below-average default)" plays the role of the pre-tournament rating.
+Three variants, identical validated knobs, walk-forward, scored on seasons 2–10:
+
+| Variant (3,057 common fixtures) | Accuracy | Brier | ECE |
+|---|---|---|---|
+| A — continuous (old backtest behaviour) | 0.541 | 0.572 | 0.015 |
+| B — cold start each season (= live predictor today) | 0.546 | 0.576 | 0.009 |
+| **C — cold start + priors** | **0.548** | **0.569** | **0.008** |
+
+- **Early window** (teams' first 0–5 games — the group-stage analog): priors cut
+  the cold-start Brier **0.611 → 0.581**, fully recovering the accuracy of a model
+  carrying 10 years of history.
+- **Coverage**: +363 fixtures (+12%) that the cold-start model could not predict
+  at all, priced at Brier 0.587 vs 0.657 for naive base rates.
+- **Holdout check**: knobs selected on seasons 2–6 confirm on unseen seasons 7–10
+  (C Brier 0.576 vs B 0.581, ECE 0.007).
+
+## Validated config
+
+`g0=10, carry=0.9, elo_carry=0.9` — a flat optimum across g0 10–14 and
+carry/elo_carry 0.9–1.0; beyond g0≈20 the prior overstays its welcome. Strengths
+carry almost unregressed because `strengths()` already includes the model's own
+smoothing.
+
+## Applying it to the World Cup
+
+There is no "last season", so seed from public pre-tournament ratings:
+
+1. **Elo**: World Football Elo Ratings (eloratings.net) map directly onto
+   `inject_prior(elo=...)` — same 1500-centred scale.
+2. **Attack/defence factors**: derive from the Elo gap to the field average
+   (e.g. `att = 10^(s·Δelo/400)`, `deff = 10^(−s·Δelo/400)` with s tuned so the
+   implied goal supremacy matches historical international results), or from
+   qualifying-stage goals data.
+3. Keep `g0≈10`: after the 3 group games the prior still carries ~77% weight —
+   correct, because 3 games carry almost no signal — and it fades through the
+   knockout rounds.
+
+**Implemented and validated on WC 2026** (`wc_priors.py`, seeded by default in
+`predict_fixture_live.py`; `--no-prior` reverts). Pre-tournament Elo comes from
+eloratings.net (snapshot `wc2026_elo.tsv`, reconstructed as current rating minus
+in-tournament change, so it is look-ahead-free); attack/defence factors are
+`10^(±s·Δelo/400)` with `s=0.30` (best calibration in the sweep). Walk-forward
+replay of the 91 tournament matches played so far:
+
+| | n | Accuracy | Brier |
+|---|---|---|---|
+| Cold start (old behaviour) | 43 | 0.558 | 0.590 |
+| **Prior-seeded, same fixtures** | 43 | **0.628** | **0.478** |
+| Prior-seeded, ALL matches | **91** | 0.604 | 0.538 |
+
+Priors also double coverage: the cold model couldn't price the first two rounds
+of group games at all.
+
+---
+
+# Stat markets: shots, shots on target, fouls, possession
+
+The count-market machinery (previously corners + cards only) is now generic
+(`Model.COUNTS` / `count_grid()` in `footy_model.py`): **shots**, **shots on
+target** and **fouls** each get their own opponent-adjusted shrinkage-Poisson
+grid, so per-team expected values and any over/under line come off the same
+engine. `wc_data.py` now also pulls fouls and possession from TheStatsAPI.
+
+## Validation (10 PL seasons, walk-forward — `markets_report.py`)
+
+| Market | Mean bias | Per-team MAE | vs naive MAE | O/U line ECE |
+|---|---|---|---|---|
+| Total shots | −0.11 | **3.83** | 4.39 | 0.026 (O24.5) |
+| Shots on target | −0.23 | **1.81** | 1.99 | 0.038 (O8.5) |
+| Fouls | +0.19 | **2.71** | 2.79 | 0.015 (O20.5) |
+| Corners | +0.09 | 2.24 | 2.38 | 0.036 (O9.5) |
+| Cards (unchanged) | −0.00 | 1.03 | 1.05 | 0.031 (O3.5) |
+
+All unbiased on the mean and all beat the naive league-average baseline. Shots
+carry the most team signal (13% MAE improvement); fouls the least (they're
+mostly referee/game-state noise — expectations are honest but flat).
+
+## Negative-binomial dispersion (validated — fixes the tail over-confidence)
+
+Real shot/corner/foul counts are over-dispersed vs Poisson (variance > mean), so
+pure-Poisson over/unders were too confident at high and low lines. Count grids
+now use **negative-binomial marginals** with one dispersion knob `r` per market
+(`Model.DISP`; variance = λ + λ²/r; r=∞ is Poisson). Tuned in `disp_tune.py`
+across a pool of lines per market, selected on the first 60% of fixtures,
+confirmed on the 40% holdout:
+
+- **Adopted**: corners r=20, shots r=40, fouls r=40 — holdout ECE at the
+  headline lines improved to the table above (corners 0.048→0.036, shots
+  0.040→0.026, fouls 0.023→0.015), with small Brier gains too.
+- **Rejected honestly**: cards (train win did not generalise to the holdout) and
+  shots on target (Poisson already optimal) stay Poisson.
+- Goals are untouched — they are well-modelled by Poisson + Dixon–Coles.
+
+## Possession
+
+`Model.possession_share(h, a)` predicts the possession split: each team's mean
+share is shrunk toward 50%, then combined Bradley-Terry style (log-odds), so
+strong-vs-weak widens and strong-vs-strong stays near 50/50. **Not backtested**
+— football-data CSVs carry no possession — so treat it as a sensible display
+estimate until enough World Cup matches accumulate to check it against
+(`wc_data` now records `hp`/`ap`).
+
+---
+
+# July 2026 upgrade batch (all validated before adoption)
+
+1. **Platt recalibration at the display layer** (`calib.py`, applied in the
+   fixture card). Coefficients fitted on all 3,704 PL fixtures: 1X2 A=0.96,
+   O/U2.5 A=0.90, BTTS A=0.83 — the model was mildly over-confident everywhere.
+   Approach holdout-validated earlier (1X2 ECE 0.035→0.006).
+2. **Market blend** (`blend_tune.py`, helper in `odds_tools.blend`). Against the
+   de-vigged EPL closing consensus the market alone is near-optimal (holdout
+   Brier 0.5510 at w=1.0 vs 0.5707 model-only); adopted **w=0.9 market share**
+   for live odds (softer/earlier than a closing line). Shown as "blended final
+   probabilities" in `predict_fixture_live --odds`.
+3. **Host advantage** (+100 Elo when USA/Mexico/Canada are the designated home
+   side; `Model.hosts`/`host_elo`, applied in prediction AND Elo ingestion).
+   Replay sweep improves host-game Brier 0.506→0.480 at +100, but only 9 host
+   home games exist — +100 is the historical standard, not a fitted optimum.
+4. **Referee strictness factor** for cards/fouls (`Model.ref_factor`,
+   `ref_backtest.py`). Referee announced pre-match = legitimate walk-forward
+   info. Holdout: cards Brier 0.1683→0.1670, fouls 0.1857→0.1827 (both with
+   better ECE and MAE). Shrinkage `ref_k`: cards 40, fouls 20. The main
+   calibration report now uses it.
+5. **Real xG for the WC** (cache rebuilt via `wc_ingest --rebuild`; all 91
+   matches now carry xG, fouls, possession). `Model.update` prefers real xG
+   over the shots proxy. WC replay improved again: all-91 Brier 0.538→0.533,
+   accuracy 60.4%→61.5%.
+6. **Knockout advance tool** (`wc_sim.py`): scheduled fixtures with calibrated
+   W/D/W plus P(advance) = P(win 90') + P(draw)·P(win ET/pens), where the
+   ET/pens leg carries half the Elo edge (shootouts are near-random).
+7. **Daily auto-ingest**: a scheduled task runs `wc_ingest.py` every morning at
+   08:00, so the cache (and therefore every prediction) refreshes itself.

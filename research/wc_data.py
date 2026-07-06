@@ -100,6 +100,9 @@ def match_record(m):
         hc=_sv(ov, "corner_kicks", "home"), ac=_sv(ov, "corner_kicks", "away"),
         hy=_sv(ov, "yellow_cards", "home"), ay=_sv(ov, "yellow_cards", "away"),
         hr=_sv(ov, "red_cards", "home"), ar=_sv(ov, "red_cards", "away"),
+        hf=_sv(ov, "fouls", "home"), af=_sv(ov, "fouls", "away"),
+        hp=_sv(ov, "ball_possession", "home"), ap=_sv(ov, "ball_possession", "away"),
+        hxg=_sv(ov, "expected_goals", "home"), axg=_sv(ov, "expected_goals", "away"),
     )
 
 

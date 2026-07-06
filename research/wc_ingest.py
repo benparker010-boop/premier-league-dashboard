@@ -20,6 +20,9 @@ does one request and appends nothing.
 USAGE
   python research/wc_ingest.py            # fetch new finished matches, append to cache
   python research/wc_ingest.py --status   # show what's in the cache, fetch nothing
+  python research/wc_ingest.py --rebuild  # re-fetch EVERY match (one stats request
+                                          # each) — use after new fields are added
+                                          # to match_record (e.g. xG/fouls/possession)
 
 TRIGGERING ON A SCHEDULE (Windows Task Scheduler) — run every 6 hours:
   schtasks /Create /TN "WC ingest" /SC HOURLY /MO 6 ^
@@ -95,6 +98,38 @@ def ingest(verbose=True):
     return added, total
 
 
+def rebuild(verbose=True):
+    """Re-fetch every finished match from scratch (one stats request each) and
+    atomically replace the cache. Use after match_record gains new fields; the
+    old cache is kept as wc_matches.jsonl.bak."""
+    ms = finished_matches()
+    if not ms:
+        print("[wc_ingest] cannot rebuild: no matches from the API (no key?).")
+        return 0
+    ms.sort(key=_date)
+    tmp = CACHE + ".tmp"
+    n = 0
+    with open(tmp, "w", encoding="utf-8") as fh:
+        for m in ms:
+            rec = match_record(m)
+            if rec is None:
+                continue
+            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            n += 1
+            if verbose and n % 10 == 0:
+                print(f"  ... {n} matches re-fetched")
+    if n == 0:
+        os.remove(tmp)
+        print("[wc_ingest] rebuild produced nothing; cache left untouched.")
+        return 0
+    if os.path.exists(CACHE):
+        os.replace(CACHE, CACHE + ".bak")
+    os.replace(tmp, CACHE)
+    print(f"[wc_ingest] rebuilt cache with {n} matches "
+          f"(old cache saved as {os.path.basename(CACHE)}.bak).")
+    return n
+
+
 def _status():
     rows = load_cache()
     print(f"Cache: {CACHE}")
@@ -108,5 +143,7 @@ def _status():
 if __name__ == "__main__":
     if "--status" in sys.argv:
         _status()
+    elif "--rebuild" in sys.argv:
+        rebuild()
     else:
         ingest()

@@ -54,3 +54,17 @@ def value_flag(model_p, raw_odds, devig_p, threshold=0.05):
     exceeds the market's margin-free estimate (so the edge isn't just vig).
     """
     return edge(model_p, raw_odds) > threshold and model_p > devig_p
+
+
+# The market is sharper than the model (blend_tune.py: at the EPL closing line
+# the de-vigged consensus alone is near-optimal). When live odds exist, the most
+# accurate displayed probability leans heavily on them; the model share hedges
+# against soft/early lines (live WC odds are not a closing line).
+BLEND_MARKET_W = 0.9
+
+
+def blend(model_probs, market_probs, w=BLEND_MARKET_W):
+    """w*market + (1-w)*model, renormalised."""
+    p = [w * b + (1 - w) * m for m, b in zip(model_probs, market_probs)]
+    s = sum(p) or 1.0
+    return [x / s for x in p]

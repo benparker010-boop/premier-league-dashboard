@@ -5,8 +5,10 @@
 __pycache__/
 *.pyc
 
-# Local World Cup result cache — rebuilt from the API by research/wc_ingest.py
-research/wc_matches.jsonl
+# World Cup result cache: TRACKED on purpose (public data, no secrets) — the
+# GitHub Actions data refresh needs it so the model trains on real results and
+# each run's re-fetch stays incremental. Only the .bak backup is ignored.
+research/wc_matches.jsonl.bak
 
 # Large PNG image originals — we commit the compressed .jpg versions instead
 images/*.png

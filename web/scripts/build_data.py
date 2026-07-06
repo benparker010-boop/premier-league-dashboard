@@ -179,7 +179,11 @@ _pred_cache = {}
 
 
 def matchup(home, away):
-    """Model win probabilities + most likely scoreline for a neutral fixture."""
+    """Model advance probabilities + most likely scoreline for a knockout tie.
+
+    Uses the engine's P(advance) — win in 90' plus draw x an Elo-tilted ET/pens
+    leg — rather than splitting the draw 50/50, so bracket projections and the
+    Monte-Carlo champion odds reflect who actually survives a drawn tie."""
     ckey = (home, away)
     if ckey in _pred_cache:
         return _pred_cache[ckey]
@@ -190,15 +194,15 @@ def matchup(home, away):
     if not p.get("available"):
         out = {"pHome": 0.5, "pAway": 0.5, "score": [1, 1]}
     else:
-        ph = p["result"]["home_win"] + p["result"]["draw"] / 2
-        pa = p["result"]["away_win"] + p["result"]["draw"] / 2
-        tot = ph + pa or 1
+        ph = p.get("advance")
+        if ph is None:
+            ph = p["result"]["home_win"] + p["result"]["draw"] / 2
         # Scoreline consistent with the pick: most likely score in which the
         # favoured side wins (the unconditional mode is ~always 1-1 in football,
         # which contradicts a card that names a predicted winner).
-        fav_home = ph >= pa
+        fav_home = ph >= 0.5
         win_score = p.get("scoreline_home_win") if fav_home else p.get("scoreline_away_win")
-        out = {"pHome": ph / tot, "pAway": pa / tot,
+        out = {"pHome": ph, "pAway": 1 - ph,
                "score": win_score or p.get("scoreline") or [1, 1]}
     _pred_cache[ckey] = out
     return out
@@ -409,7 +413,7 @@ def build_predictions(fin, sched):
 
     return {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
-        "modelVersion": "v2.6",
+        "modelVersion": "v3.0",   # priors + host adv + calibration + advance-prob KO
         "champions": champions,
         "bracket": {"r16": r16_cards, "qf": qf_cards, "sf": sf_cards, "final": final_card},
         "nextMatch": next_match,

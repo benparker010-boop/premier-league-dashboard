@@ -20,6 +20,7 @@ if _RESEARCH not in sys.path:
 
 from footy_model import Model, m_result, m_over, m_btts, m_top_scores  # noqa: E402
 from wc_data import resolve  # noqa: E402  (name-alias resolver)
+from calib import cal, cal_result  # noqa: E402  (Platt display calibration)
 
 CACHE = os.path.join(_RESEARCH, "wc_matches.jsonl")
 # Validated knobs (same as predict_fixture_live.py / live_value.py).
@@ -40,10 +41,27 @@ def load_cache():
     return out
 
 
-def build_model(min_games=2, matches=None):
-    """Train the neutral-venue WC model on the cached results."""
+def build_model(min_games=2, matches=None, refresh=True):
+    """Train the neutral-venue WC model on the results, with the validated
+    stack: live cache refresh, pre-tournament Elo priors and host advantage
+    (replay-validated: Brier 0.59 -> 0.48 vs cold start — see methodology.md).
+    Offline/keyless the refresh is skipped gracefully."""
+    if refresh and matches is None:
+        try:
+            from wc_ingest import ingest
+            ingest(verbose=False)
+        except Exception:
+            pass                       # no key / offline — cache still works
+    matches = matches if matches is not None else load_cache()
     model = Model(neutral=True, min_g=min_games, **BEST)
-    for mm in (matches if matches is not None else load_cache()):
+    try:
+        from wc_priors import seed, HOSTS, HOST_ELO
+        model.hosts, model.host_elo = HOSTS, HOST_ELO
+        teams = {m["home"] for m in matches} | {m["away"] for m in matches}
+        seed(model, teams or None)
+    except Exception as e:
+        print(f"[core.predict] priors unavailable ({e}); cold start.")
+    for mm in matches:
         model.update(mm)
     return model
 
@@ -89,8 +107,19 @@ def predict(home, away, min_games=2, model=None):
         return base
 
     la, lb = model.goal_lambdas(h, a)
-    pH, pD, pA = m_result(grid)
+    pH, pD, pA = cal_result(m_result(grid))    # Platt-calibrated for display
     tops = [{"score": [i, j], "prob": p} for (i, j), p in m_top_scores(grid, 5)]
+
+    # knockout quantity: P(h advances) = P(win 90') + P(draw) x P(win ET/pens),
+    # the ET/pens leg carrying half the Elo edge (shootouts are near-random)
+    d_elo = model.elo.get(h, 1500.0) - model.elo.get(a, 1500.0) + model._bonus(h)
+    e90 = 1 / (1 + 10 ** (-d_elo / 400))
+    advance = pH + pD * (0.5 + (e90 - 0.5) * 0.5)
+
+    # count-market expected values (None while a side lacks stat history)
+    counts = {name: model.count_lambdas(name, h, a)
+              for name in ("shots", "sot", "corners", "cards", "fouls")}
+    possession = model.possession_share(h, a)
 
     # Most likely scoreline conditional on each side winning (for knockout
     # projections, where a card pairs a predicted winner with a scoreline —
@@ -103,16 +132,24 @@ def predict(home, away, min_games=2, model=None):
                     best, bp = [i, j], grid[i][j]
         return best
 
+    totals = {f"over_{ln}": m_over(grid, ln) for ln in (1.5, 2.5, 3.5)}
+    totals["over_2.5"] = cal(totals["over_2.5"], "ou25")   # calibrated at 2.5
+
     return {
         "home": home, "away": away, "available": True, "reason": None,
         "result": {"home_win": pH, "draw": pD, "away_win": pA},
+        "advance": advance,            # P(home goes through a knockout tie)
         "expected_goals": {"home": la, "away": lb},
         "scoreline": list(tops[0]["score"]) if tops else None,
         "scoreline_home_win": _win_mode(lambda i, j: i > j),
         "scoreline_away_win": _win_mode(lambda i, j: j > i),
         "top_scorelines": tops,
-        "totals": {f"over_{ln}": m_over(grid, ln) for ln in (1.5, 2.5, 3.5)},
-        "btts": m_btts(grid),
+        "totals": totals,
+        "btts": cal(m_btts(grid), "btts"),
+        "stats": {name: ({"home": ls[0], "away": ls[1]} if ls else None)
+                  for name, ls in counts.items()},
+        "possession": ({"home": possession[0], "away": possession[1]}
+                       if possession else None),
         "elo": {"home": model.elo.get(h, 1500.0), "away": model.elo.get(a, 1500.0)},
         "games": {"home": model.G.get(h, 0), "away": model.G.get(a, 0)},
     }

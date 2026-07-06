@@ -1,42 +1,42 @@
 {
- "generatedAt": "2026-07-05T23:51:07.889393+00:00",
- "modelVersion": "v2.6",
+ "generatedAt": "2026-07-06T00:10:01.031199+00:00",
+ "modelVersion": "v3.0",
  "champions": [
-  {
-   "code": "NOR",
-   "name": "Norway",
-   "color": "#f5c451",
-   "v": 12.6
-  },
   {
    "code": "FRA",
    "name": "France",
    "color": "#9d5fb5",
-   "v": 12.5
+   "v": 24.4
   },
   {
-   "code": "MAR",
-   "name": "Morocco",
-   "color": "#e8475e",
-   "v": 12.4
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc",
+   "v": 23.8
   },
   {
-   "code": "USA",
-   "name": "USA",
-   "color": "#5ec8e0",
-   "v": 6.4
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc",
+   "v": 19.2
   },
   {
-   "code": "MEX",
-   "name": "Mexico",
-   "color": "#ef7d52",
-   "v": 6.3
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71",
+   "v": 8.7
   },
   {
-   "code": "BEL",
-   "name": "Belgium",
-   "color": "#e8475e",
-   "v": 6.3
+   "code": "NOR",
+   "name": "Norway",
+   "color": "#f5c451",
+   "v": 4.6
+  },
+  {
+   "code": "COL",
+   "name": "Colombia",
+   "color": "#5b8cff",
+   "v": 4.5
   }
  ],
  "bracket": {
@@ -56,10 +56,10 @@
     "sh": 0,
     "sa": 3,
     "winner": "away",
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 53,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "result"
@@ -79,11 +79,11 @@
     "sh": 0,
     "sa": 1,
     "winner": "away",
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 82,
     "projScore": [
-     1,
-     1
+     0,
+     2
     ],
     "tier": "result"
    },
@@ -103,9 +103,9 @@
     "sa": 2,
     "winner": "away",
     "favHome": true,
-    "prob": 50,
+    "prob": 62,
     "projScore": [
-     1,
+     2,
      1
     ],
     "tier": "result"
@@ -125,10 +125,10 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 59,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -148,10 +148,10 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 70,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -171,10 +171,10 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 59,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -195,10 +195,10 @@
     "sa": null,
     "winner": null,
     "favHome": true,
-    "prob": 50,
+    "prob": 87,
     "projScore": [
-     1,
-     1
+     2,
+     0
     ],
     "tier": "confirmed"
    },
@@ -217,10 +217,10 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 57,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "confirmed"
@@ -242,10 +242,10 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 73,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "projected"
@@ -257,42 +257,42 @@
      "color": "#f5c451"
     },
     "away": {
-     "code": "MEX",
-     "name": "Mexico",
-     "color": "#ef7d52"
+     "code": "ENG",
+     "name": "England",
+     "color": "#2ecc71"
     },
     "done": false,
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 50,
+    "favHome": false,
+    "prob": 65,
     "projScore": [
-     1,
+     0,
      1
     ],
     "tier": "projected"
    },
    {
     "home": {
-     "code": "POR",
-     "name": "Portugal",
-     "color": "#5ec8e0"
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
     },
     "away": {
-     "code": "USA",
-     "name": "USA",
-     "color": "#5ec8e0"
+     "code": "BEL",
+     "name": "Belgium",
+     "color": "#e8475e"
     },
     "done": false,
     "sh": null,
     "sa": null,
     "winner": null,
     "favHome": true,
-    "prob": 50,
+    "prob": 79,
     "projScore": [
-     1,
-     1
+     2,
+     0
     ],
     "tier": "projected"
    },
@@ -303,19 +303,19 @@
      "color": "#c3cfdc"
     },
     "away": {
-     "code": "SUI",
-     "name": "Switzerland",
-     "color": "#e8475e"
+     "code": "COL",
+     "name": "Colombia",
+     "color": "#5b8cff"
     },
     "done": false,
     "sh": null,
     "sa": null,
     "winner": null,
     "favHome": true,
-    "prob": 50,
+    "prob": 64,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    }
@@ -323,32 +323,32 @@
   "sf": [
    {
     "home": {
-     "code": "MAR",
-     "name": "Morocco",
-     "color": "#e8475e"
+     "code": "FRA",
+     "name": "France",
+     "color": "#9d5fb5"
     },
     "away": {
-     "code": "NOR",
-     "name": "Norway",
-     "color": "#f5c451"
+     "code": "ENG",
+     "name": "England",
+     "color": "#2ecc71"
     },
     "done": false,
     "sh": null,
     "sa": null,
     "winner": null,
     "favHome": true,
-    "prob": 50,
+    "prob": 57,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    },
    {
     "home": {
-     "code": "POR",
-     "name": "Portugal",
-     "color": "#5ec8e0"
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
     },
     "away": {
      "code": "ARG",
@@ -360,37 +360,37 @@
     "sa": null,
     "winner": null,
     "favHome": true,
-    "prob": 50,
+    "prob": 56,
     "projScore": [
      1,
-     1
+     0
     ],
     "tier": "projected"
    }
   ],
   "final": {
    "home": {
-    "code": "MAR",
-    "name": "Morocco",
-    "color": "#e8475e"
+    "code": "FRA",
+    "name": "France",
+    "color": "#9d5fb5"
    },
    "away": {
-    "code": "POR",
-    "name": "Portugal",
-    "color": "#5ec8e0"
+    "code": "ESP",
+    "name": "Spain",
+    "color": "#c3cfdc"
    },
    "done": false,
    "sh": null,
    "sa": null,
    "winner": null,
-   "favHome": true,
-   "prob": 50,
+   "favHome": false,
+   "prob": 59,
    "projScore": [
-    1,
+    0,
     1
    ],
    "tier": "projected",
-   "champion": "Morocco"
+   "champion": "Spain"
   }
  },
  "nextMatch": {
@@ -408,9 +408,9 @@
    "name": "England",
    "color": "#2ecc71"
   },
-  "favCode": "MEX",
-  "prob": 50,
-  "probHome": 50
+  "favCode": "ENG",
+  "prob": 59,
+  "probHome": 41
  },
  "lastMatch": {
   "round": "ROUND OF 16",
