@@ -3,89 +3,6 @@
   "round": "ROUND OF 16",
   "date": "Tue, Jul 7",
   "home": {
-   "code": "USA",
-   "name": "USA",
-   "color": "#5ec8e0"
-  },
-  "away": {
-   "code": "BEL",
-   "name": "Belgium",
-   "color": "#e8475e"
-  },
-  "result": {
-   "home": 29,
-   "draw": 25,
-   "away": 46
-  },
-  "advance": 41,
-  "projScore": [
-   0,
-   1
-  ],
-  "topScores": [
-   {
-    "score": [
-     1,
-     1
-    ],
-    "pct": 11.9
-   },
-   {
-    "score": [
-     0,
-     1
-    ],
-    "pct": 10.2
-   },
-   {
-    "score": [
-     1,
-     2
-    ],
-    "pct": 9.3
-   }
-  ],
-  "xg": [
-   1.17,
-   1.57
-  ],
-  "totals": {
-   "o15": 76,
-   "o25": 53,
-   "o35": 29
-  },
-  "btts": 55,
-  "stats": {
-   "shots": [
-    12.3,
-    14.1
-   ],
-   "sot": [
-    3.9,
-    4.1
-   ],
-   "corners": [
-    4.8,
-    3.9
-   ],
-   "cards": [
-    1.4,
-    1.7
-   ],
-   "fouls": [
-    11.4,
-    13.0
-   ]
-  },
-  "possession": [
-   50,
-   50
-  ]
- },
- {
-  "round": "ROUND OF 16",
-  "date": "Tue, Jul 7",
-  "home": {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc"
@@ -329,6 +246,89 @@
   "possession": [
    50,
    50
+  ]
+ },
+ {
+  "round": "QUARTER-FINAL",
+  "date": "Fri, Jul 10",
+  "home": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "BEL",
+   "name": "Belgium",
+   "color": "#e8475e"
+  },
+  "result": {
+   "home": 65,
+   "draw": 20,
+   "away": 15
+  },
+  "advance": 79,
+  "projScore": [
+   2,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     2,
+     0
+    ],
+    "pct": 11.9
+   },
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 11.6
+   },
+   {
+    "score": [
+     2,
+     1
+    ],
+    "pct": 9.8
+   }
+  ],
+  "xg": [
+   2.05,
+   0.82
+  ],
+  "totals": {
+   "o15": 78,
+   "o25": 55,
+   "o35": 33
+  },
+  "btts": 50,
+  "stats": {
+   "shots": [
+    14.4,
+    12.6
+   ],
+   "sot": [
+    4.6,
+    3.5
+   ],
+   "corners": [
+    5.5,
+    3.3
+   ],
+   "cards": [
+    1.1,
+    1.5
+   ],
+   "fouls": [
+    11.1,
+    10.6
+   ]
+  },
+  "possession": [
+   54,
+   46
   ]
  },
  {

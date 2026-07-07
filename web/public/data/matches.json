@@ -1,5 +1,462 @@
 [
  {
+  "id": "mt_974099669",
+  "home": {
+   "code": "USA",
+   "name": "USA",
+   "color": "#5ec8e0"
+  },
+  "away": {
+   "code": "BEL",
+   "name": "Belgium",
+   "color": "#e8475e"
+  },
+  "score": [
+   1,
+   4
+  ],
+  "round": "ROUND OF 16",
+  "date": "7 Jul 2026",
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Adham Mohammad",
+  "stats": {
+   "possession": [
+    56,
+    44
+   ],
+   "xg": [
+    0.67,
+    2.15
+   ],
+   "shots": [
+    7,
+    15
+   ],
+   "sot": [
+    2,
+    7
+   ],
+   "big": [
+    0,
+    4
+   ],
+   "corners": [
+    null,
+    null
+   ],
+   "passes": [
+    527,
+    410
+   ],
+   "passAcc": [
+    null,
+    null
+   ],
+   "fouls": [
+    11,
+    9
+   ],
+   "yellow": [
+    2,
+    0
+   ]
+  },
+  "timeline": [
+   {
+    "min": 9,
+    "type": "g",
+    "team": "away",
+    "player": "Charles De Ketelaere",
+    "assist": null
+   },
+   {
+    "min": 31,
+    "type": "g",
+    "team": "home",
+    "player": "Malik Tillman",
+    "assist": null
+   },
+   {
+    "min": 33,
+    "type": "g",
+    "team": "away",
+    "player": "Charles De Ketelaere",
+    "assist": null
+   },
+   {
+    "min": 35,
+    "type": "y",
+    "team": "home",
+    "player": "Weston McKennie",
+    "assist": null
+   },
+   {
+    "min": 57,
+    "type": "g",
+    "team": "away",
+    "player": "Hans Vanaken",
+    "assist": null
+   },
+   {
+    "min": 69,
+    "type": "y",
+    "team": "home",
+    "player": "Malik Tillman",
+    "assist": null
+   },
+   {
+    "min": 90,
+    "type": "g",
+    "team": "away",
+    "player": "Romelu Lukaku",
+    "assist": null
+   }
+  ],
+  "shots": [
+   {
+    "team": "away",
+    "player": "Leandro Trossard",
+    "xg": 0.05,
+    "outcome": "b",
+    "x": 20.1,
+    "y": 40.9,
+    "min": 1
+   },
+   {
+    "team": "away",
+    "player": "Youri Tielemans",
+    "xg": 0.06,
+    "outcome": "b",
+    "x": 19.1,
+    "y": 49.5,
+    "min": 1
+   },
+   {
+    "team": "away",
+    "player": "Timothy Castagne",
+    "xg": 0.03,
+    "outcome": "s",
+    "x": 25.4,
+    "y": 53.4,
+    "min": 1
+   },
+   {
+    "team": "away",
+    "player": "Charles De Ketelaere",
+    "xg": 0.02,
+    "outcome": "s",
+    "x": 10.7,
+    "y": 54.6,
+    "min": 2
+   },
+   {
+    "team": "away",
+    "player": "Youri Tielemans",
+    "xg": 0.28,
+    "outcome": "o",
+    "x": 8.1,
+    "y": 55.3,
+    "min": 8
+   },
+   {
+    "team": "away",
+    "player": "Charles De Ketelaere",
+    "xg": 0.85,
+    "outcome": "g",
+    "x": 2.4,
+    "y": 49.4,
+    "min": 9
+   },
+   {
+    "team": "away",
+    "player": "Leandro Trossard",
+    "xg": 0.03,
+    "outcome": "o",
+    "x": 27.5,
+    "y": 55.2,
+    "min": 14
+   },
+   {
+    "team": "home",
+    "player": "Malik Tillman",
+    "xg": 0.11,
+    "outcome": "g",
+    "x": 23.7,
+    "y": 48.1,
+    "min": 31
+   },
+   {
+    "team": "away",
+    "player": "Charles De Ketelaere",
+    "xg": 0.33,
+    "outcome": "g",
+    "x": 3.1,
+    "y": 51.9,
+    "min": 33
+   },
+   {
+    "team": "away",
+    "player": "Nicolas Raskin",
+    "xg": 0.05,
+    "outcome": "s",
+    "x": 5,
+    "y": 62,
+    "min": 39
+   },
+   {
+    "team": "away",
+    "player": "Dodi Lukebakio",
+    "xg": 0.16,
+    "outcome": "o",
+    "x": 8.9,
+    "y": 47.9,
+    "min": 43
+   },
+   {
+    "team": "away",
+    "player": "Dodi Lukebakio",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 13.2,
+    "y": 31.7,
+    "min": 45
+   },
+   {
+    "team": "home",
+    "player": "Alexander Freeman",
+    "xg": 0.06,
+    "outcome": "o",
+    "x": 9.1,
+    "y": 55.4,
+    "min": 45
+   },
+   {
+    "team": "home",
+    "player": "Folarin Balogun",
+    "xg": 0.27,
+    "outcome": "o",
+    "x": 5.7,
+    "y": 49.1,
+    "min": 45
+   },
+   {
+    "team": "away",
+    "player": "Hans Vanaken",
+    "xg": 0.09,
+    "outcome": "g",
+    "x": 29.6,
+    "y": 42.7,
+    "min": 57
+   },
+   {
+    "team": "away",
+    "player": "Leandro Trossard",
+    "xg": 0.05,
+    "outcome": "b",
+    "x": 13.2,
+    "y": 31.2,
+    "min": 62
+   },
+   {
+    "team": "home",
+    "player": "Alexander Freeman",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 11.3,
+    "y": 43.4,
+    "min": 66
+   },
+   {
+    "team": "home",
+    "player": "Sebastian Berhalter",
+    "xg": 0.06,
+    "outcome": "o",
+    "x": 19.8,
+    "y": 49.3,
+    "min": 79
+   },
+   {
+    "team": "home",
+    "player": "Folarin Balogun",
+    "xg": 0.08,
+    "outcome": "s",
+    "x": 8,
+    "y": 32.1,
+    "min": 82
+   },
+   {
+    "team": "home",
+    "player": "Folarin Balogun",
+    "xg": 0.09,
+    "outcome": "o",
+    "x": 7.7,
+    "y": 52.3,
+    "min": 83
+   },
+   {
+    "team": "away",
+    "player": "Leandro Trossard",
+    "xg": 0.06,
+    "outcome": "b",
+    "x": 12.5,
+    "y": 64,
+    "min": 86
+   },
+   {
+    "team": "away",
+    "player": "Romelu Lukaku",
+    "xg": 0.05,
+    "outcome": "g",
+    "x": 9.2,
+    "y": 33.3,
+    "min": 90
+   }
+  ],
+  "lineups": {
+   "home": {
+    "formation": "4-3-3",
+    "xi": [
+     {
+      "name": "Matthew Freese",
+      "pos": "gk",
+      "num": 49
+     },
+     {
+      "name": "Tim Ream",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Alexander Freeman",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Chris Richards",
+      "pos": "def",
+      "num": 26
+     },
+     {
+      "name": "Antonee Robinson",
+      "pos": "def",
+      "num": 33
+     },
+     {
+      "name": "Malik Tillman",
+      "pos": "mid",
+      "num": 10
+     },
+     {
+      "name": "Tyler Adams",
+      "pos": "mid",
+      "num": 12
+     },
+     {
+      "name": "Weston McKennie",
+      "pos": "mid",
+      "num": 22
+     },
+     {
+      "name": "Sergiño Dest",
+      "pos": "fwd",
+      "num": 8
+     },
+     {
+      "name": "Folarin Balogun",
+      "pos": "fwd",
+      "num": 9
+     },
+     {
+      "name": "Christian Pulišić",
+      "pos": "fwd",
+      "num": 11
+     }
+    ],
+    "subs": [
+     "Chris Brady",
+     "Matt Turner",
+     "Mark McKenzie",
+     "Auston Trusty",
+     "Miles Robinson",
+     "Joe Scally",
+     "Alex Zendejas",
+     "Brenden Aaronson"
+    ]
+   },
+   "away": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Thibaut Courtois",
+      "pos": "gk",
+      "num": 1
+     },
+     {
+      "name": "Nathan Ngoy",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Timothy Castagne",
+      "pos": "def",
+      "num": 21
+     },
+     {
+      "name": "Maxim De Cuyper",
+      "pos": "def",
+      "num": 29
+     },
+     {
+      "name": "Brandon Mechele",
+      "pos": "def",
+      "num": 44
+     },
+     {
+      "name": "Youri Tielemans",
+      "pos": "mid",
+      "num": 8
+     },
+     {
+      "name": "Amadou Onana",
+      "pos": "mid",
+      "num": 24
+     },
+     {
+      "name": "Nicolas Raskin",
+      "pos": "mid",
+      "num": 43
+     },
+     {
+      "name": "Dodi Lukebakio",
+      "pos": "fwd",
+      "num": 11
+     },
+     {
+      "name": "Charles De Ketelaere",
+      "pos": "fwd",
+      "num": 17
+     },
+     {
+      "name": "Leandro Trossard",
+      "pos": "fwd",
+      "num": 19
+     }
+    ],
+    "subs": [
+     "Mike Penders",
+     "Senne Lammens",
+     "Arthur Theate",
+     "Koni De Winter",
+     "Zeno Debast",
+     "Joaquin Seys",
+     "Thomas Meunier",
+     "Diego Moreira"
+    ]
+   }
+  }
+ },
+ {
   "id": "mt_197411346",
   "home": {
    "code": "POR",
@@ -26,8 +483,8 @@
     55
    ],
    "xg": [
-    0.6,
-    1.77
+    0.63,
+    1.69
    ],
    "shots": [
     10,
@@ -46,8 +503,8 @@
     null
    ],
    "passes": [
-    426,
-    531
+    427,
+    530
    ],
    "passAcc": [
     null,
@@ -2744,8 +3201,8 @@
      }
     ],
     "subs": [
-     "Álvaro Montero",
      "David Ospina",
+     "Álvaro Montero",
      "Santiago Arias",
      "Willer Ditta",
      "Yerry Mina",
@@ -5466,406 +5923,6 @@
      "Michael Svoboda",
      "Marco Friedl",
      "Phillipp Mwene"
-    ]
-   }
-  }
- },
- {
-  "id": "mt_974099603",
-  "home": {
-   "code": "USA",
-   "name": "USA",
-   "color": "#5ec8e0"
-  },
-  "away": {
-   "code": "BIH",
-   "name": "Bosnia & Herzegovina",
-   "color": "#1faf6b"
-  },
-  "score": [
-   2,
-   0
-  ],
-  "round": "ROUND OF 32",
-  "date": "2 Jul 2026",
-  "venue": "Levi's Stadium",
-  "city": "Santa Clara",
-  "ref": "Raphael Claus",
-  "stats": {
-   "possession": [
-    48,
-    52
-   ],
-   "xg": [
-    0.88,
-    0.25
-   ],
-   "shots": [
-    8,
-    10
-   ],
-   "sot": [
-    2,
-    3
-   ],
-   "big": [
-    2,
-    0
-   ],
-   "corners": [
-    null,
-    null
-   ],
-   "passes": [
-    415,
-    447
-   ],
-   "passAcc": [
-    null,
-    null
-   ],
-   "fouls": [
-    7,
-    13
-   ],
-   "yellow": [
-    0,
-    1
-   ]
-  },
-  "timeline": [
-   {
-    "min": 45,
-    "type": "g",
-    "team": "home",
-    "player": "Folarin Balogun",
-    "assist": null
-   },
-   {
-    "min": 64,
-    "type": "r",
-    "team": "home",
-    "player": "Folarin Balogun",
-    "assist": null
-   },
-   {
-    "min": 80,
-    "type": "y",
-    "team": "away",
-    "player": "Stjepan Radeljić",
-    "assist": null
-   },
-   {
-    "min": 82,
-    "type": "g",
-    "team": "home",
-    "player": "Malik Tillman",
-    "assist": null
-   }
-  ],
-  "shots": [
-   {
-    "team": "home",
-    "player": "Christian Pulišić",
-    "xg": 0.08,
-    "outcome": "b",
-    "x": 20.3,
-    "y": 51,
-    "min": 4
-   },
-   {
-    "team": "away",
-    "player": "Ermedin Demirović",
-    "xg": 0.05,
-    "outcome": "s",
-    "x": 14.2,
-    "y": 64.9,
-    "min": 10
-   },
-   {
-    "team": "home",
-    "player": "Folarin Balogun",
-    "xg": 0.17,
-    "outcome": "o",
-    "x": 10.1,
-    "y": 60.3,
-    "min": 15
-   },
-   {
-    "team": "home",
-    "player": "Folarin Balogun",
-    "xg": 0.06,
-    "outcome": "o",
-    "x": 4.2,
-    "y": 60.1,
-    "min": 42
-   },
-   {
-    "team": "home",
-    "player": "Folarin Balogun",
-    "xg": 0.19,
-    "outcome": "o",
-    "x": 5,
-    "y": 54.4,
-    "min": 45
-   },
-   {
-    "team": "home",
-    "player": "Folarin Balogun",
-    "xg": 0.2,
-    "outcome": "g",
-    "x": 13.4,
-    "y": 54.5,
-    "min": 45
-   },
-   {
-    "team": "away",
-    "player": "Nikola Katić",
-    "xg": 0.01,
-    "outcome": "o",
-    "x": 30.6,
-    "y": 75.9,
-    "min": 56
-   },
-   {
-    "team": "away",
-    "player": "Ermedin Demirović",
-    "xg": 0.04,
-    "outcome": "s",
-    "x": 15.7,
-    "y": 49.5,
-    "min": 66
-   },
-   {
-    "team": "away",
-    "player": "Esmir Bajraktarević",
-    "xg": 0.03,
-    "outcome": "s",
-    "x": 13.2,
-    "y": 26.4,
-    "min": 68
-   },
-   {
-    "team": "away",
-    "player": "Amar Dedić",
-    "xg": 0.01,
-    "outcome": "b",
-    "x": 24.9,
-    "y": 57.3,
-    "min": 74
-   },
-   {
-    "team": "away",
-    "player": "Kerim Alajbegović",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 18.5,
-    "y": 38.8,
-    "min": 77
-   },
-   {
-    "team": "home",
-    "player": "Malik Tillman",
-    "xg": 0.08,
-    "outcome": "b",
-    "x": 12.3,
-    "y": 48.7,
-    "min": 79
-   },
-   {
-    "team": "home",
-    "player": "Malik Tillman",
-    "xg": 0.07,
-    "outcome": "g",
-    "x": 18.4,
-    "y": 34.5,
-    "min": 82
-   },
-   {
-    "team": "away",
-    "player": "Ermin Mahmić",
-    "xg": 0.02,
-    "outcome": "o",
-    "x": 26.5,
-    "y": 66.5,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Ermin Mahmić",
-    "xg": 0.01,
-    "outcome": "o",
-    "x": 29.7,
-    "y": 32.2,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Amar Memić",
-    "xg": 0.02,
-    "outcome": "b",
-    "x": 2.9,
-    "y": 69.1,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Kerim Alajbegović",
-    "xg": 0.03,
-    "outcome": "o",
-    "x": 15.1,
-    "y": 25.5,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Alexander Freeman",
-    "xg": 0.04,
-    "outcome": "o",
-    "x": 14.7,
-    "y": 67,
-    "min": 90
-   }
-  ],
-  "lineups": {
-   "home": {
-    "formation": "4-2-3-1",
-    "xi": [
-     {
-      "name": "Matthew Freese",
-      "pos": "gk",
-      "num": 49
-     },
-     {
-      "name": "Alexander Freeman",
-      "pos": "def",
-      "num": 3
-     },
-     {
-      "name": "Tim Ream",
-      "pos": "def",
-      "num": 3
-     },
-     {
-      "name": "Chris Richards",
-      "pos": "def",
-      "num": 26
-     },
-     {
-      "name": "Antonee Robinson",
-      "pos": "def",
-      "num": 33
-     },
-     {
-      "name": "Malik Tillman",
-      "pos": "mid",
-      "num": 10
-     },
-     {
-      "name": "Tyler Adams",
-      "pos": "mid",
-      "num": 12
-     },
-     {
-      "name": "Weston McKennie",
-      "pos": "mid",
-      "num": 22
-     },
-     {
-      "name": "Sergiño Dest",
-      "pos": "fwd",
-      "num": 8
-     },
-     {
-      "name": "Folarin Balogun",
-      "pos": "fwd",
-      "num": 9
-     },
-     {
-      "name": "Christian Pulišić",
-      "pos": "fwd",
-      "num": 11
-     }
-    ],
-    "subs": [
-     "Chris Brady",
-     "Matt Turner",
-     "Auston Trusty",
-     "Miles Robinson",
-     "Joe Scally",
-     "Alex Zendejas",
-     "Brenden Aaronson",
-     "Giovanni Reyna"
-    ]
-   },
-   "away": {
-    "formation": "3-4-1-2",
-    "xi": [
-     {
-      "name": "Nikola Vasilj",
-      "pos": "gk",
-      "num": null
-     },
-     {
-      "name": "Stjepan Radeljić",
-      "pos": "def",
-      "num": 6
-     },
-     {
-      "name": "Amar Dedić",
-      "pos": "def",
-      "num": 17
-     },
-     {
-      "name": "Sead Kolašinac",
-      "pos": "def",
-      "num": 23
-     },
-     {
-      "name": "Nikola Katić",
-      "pos": "def",
-      "num": 25
-     },
-     {
-      "name": "Tarik Muharemović",
-      "pos": "def",
-      "num": 80
-     },
-     {
-      "name": "Ivan Šunjić",
-      "pos": "mid",
-      "num": 26
-     },
-     {
-      "name": "Kerim Alajbegović",
-      "pos": "mid",
-      "num": 27
-     },
-     {
-      "name": "Armin Gigović",
-      "pos": "mid",
-      "num": 37
-     },
-     {
-      "name": "Ermedin Demirović",
-      "pos": "fwd",
-      "num": 9
-     },
-     {
-      "name": "Edin Džeko",
-      "pos": "fwd",
-      "num": 10
-     }
-    ],
-    "subs": [
-     "Martin Zlomislić",
-     "Mladen Jurkas",
-     "Nihad Mujakić",
-     "Arjan Malić",
-     "Dennis Hadžikadunić",
-     "Amir Hadžiahmetović",
-     "Ivan Bašić",
-     "Benjamin Tahirović"
     ]
    }
   }

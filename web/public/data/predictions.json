@@ -1,36 +1,36 @@
 {
- "generatedAt": "2026-07-06T23:38:08.813350+00:00",
+ "generatedAt": "2026-07-07T10:41:12.158826+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 33.7
+   "v": 32.2
   },
   {
    "code": "FRA",
    "name": "France",
    "color": "#9d5fb5",
-   "v": 21.3
+   "v": 22.2
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 17.4
+   "v": 17.5
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 13.5
+   "v": 13.7
   },
   {
    "code": "COL",
    "name": "Colombia",
    "color": "#5b8cff",
-   "v": 3.9
+   "v": 4.0
   },
   {
    "code": "NOR",
@@ -167,17 +167,17 @@
      "name": "Belgium",
      "color": "#e8475e"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 1,
+    "sa": 4,
+    "winner": "away",
     "favHome": false,
     "prob": 59,
     "projScore": [
      0,
      1
     ],
-    "tier": "confirmed"
+    "tier": "result"
    },
    {
     "home": {
@@ -396,7 +396,25 @@
  "nextMatch": {
   "round": "ROUND OF 16",
   "date": "Tue, Jul 7",
-  "time": "00:00 UTC",
+  "time": "16:00 UTC",
+  "venue": "Mercedes-Benz Stadium, Atlanta",
+  "home": {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "EGY",
+   "name": "Egypt",
+   "color": "#5b8cff"
+  },
+  "favCode": "ARG",
+  "prob": 87,
+  "probHome": 87
+ },
+ "lastMatch": {
+  "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
   "venue": "Lumen Field, Seattle",
   "home": {
    "code": "USA",
@@ -408,26 +426,8 @@
    "name": "Belgium",
    "color": "#e8475e"
   },
-  "favCode": "BEL",
-  "prob": 59,
-  "probHome": 41
- },
- "lastMatch": {
-  "round": "ROUND OF 16",
-  "date": "Mon, Jul 6",
-  "venue": "AT&T Stadium, Arlington",
-  "home": {
-   "code": "POR",
-   "name": "Portugal",
-   "color": "#5ec8e0"
-  },
-  "away": {
-   "code": "ESP",
-   "name": "Spain",
-   "color": "#c3cfdc"
-  },
-  "sh": 0,
-  "sa": 1,
-  "scorers": "Mikel Merino 90'"
+  "sh": 1,
+  "sa": 4,
+  "scorers": "Malik Tillman 31' · Charles De Ketelaere 9' · Charles De Ketelaere 33' · Hans Vanaken 57' · Romelu Lukaku 90'"
  }
 }
