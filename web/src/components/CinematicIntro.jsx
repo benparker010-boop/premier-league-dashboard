@@ -380,7 +380,7 @@ export default function CinematicIntro({ onDone }) {
         muscle(sh, el, 0.024, 0.029, 0.38, 0.016, KIT.skin[side]) // deltoid + bicep
         muscle(el, ha, 0.016, 0.02, 0.28, 0.009, KIT.skin[side]) // forearm taper
         muscle(sh, lerpPt(sh, el, 0.52), 0.029, 0.032, 0.42, 0.023, KIT.shirt[side]) // sleeve over
-        limb(lerpPt(sh, el, 0.5), lerpPt(sh, el, 0.56), 0.017, 0.015, KIT.trim[side]) // cuff band
+        limb(lerpPt(sh, el, 0.44), lerpPt(sh, el, 0.6), 0.013, 0.011, KIT.trim[side]) // cuff band
         g.fillStyle = KIT.skin[side]
         g.beginPath(); g.arc(ha[0], ha[1], 0.013 * fh, 0, 7); g.fill()
       }
@@ -390,8 +390,9 @@ export default function CinematicIntro({ onDone }) {
         g.beginPath(); g.arc(kn[0], kn[1], 0.025 * fh, 0, 7); g.fill() // knee
         muscle(kn, an, 0.023, 0.035, 0.3, 0.011, KIT.skin[side]) // calf bulge → slim ankle
         muscle(hip, lerpPt(hip, kn, 0.52), 0.05, 0.053, 0.5, 0.037, KIT.shorts[side]) // shorts
-        limb(lerpPt(kn, an, 0.4), lerpPt(kn, an, 0.52), 0.025, 0.023, KIT.trim[side]) // sock top
-        muscle(lerpPt(kn, an, 0.46), an, 0.024, 0.025, 0.3, 0.014, KIT.socks[side]) // sock
+        muscle(lerpPt(kn, an, 0.42), an, 0.025, 0.026, 0.3, 0.014, KIT.socks[side]) // sock
+        limb(lerpPt(kn, an, 0.44), lerpPt(kn, an, 0.485), 0.026, 0.025, KIT.trim[side]) // sock stripe 1
+        limb(lerpPt(kn, an, 0.53), lerpPt(kn, an, 0.575), 0.025, 0.024, KIT.trim[side]) // sock stripe 2
         limb(an, to, 0.018, 0.022, KIT.boots[side]) // boot
         g.fillStyle = KIT.boots[side]
         g.beginPath(); g.arc(an[0], an[1], 0.02 * fh, 0, 7); g.fill() // heel
@@ -439,29 +440,69 @@ export default function CinematicIntro({ onDone }) {
         g.lineTo(hipF[0] - 0.02 * fh, hipF[1] + 0.04 * fh)
         g.stroke()
       }
-      // "PARKER AI" printed on the shirt: tracks the torso's position and
-      // lean, auto-fits to the shirt width, skipped when too small to read
-      // as kit print
+      // "PARKER AI" printed high on the back, just under the collar (matches
+      // the reference kit photo's name-band placement) — tracks the torso's
+      // position and lean, auto-fits to the shirt width, skipped when too
+      // small to read as kit print
       const wordmark = () => {
-        const mid = lerpPt(chest, waist, 0.38)
+        const mid = lerpPt(neck, chest, 0.62)
         const angT = Math.atan2(waist[1] - chest[1], waist[0] - chest[0]) - Math.PI / 2
-        const maxW = 0.125 * fh
-        let fpx = 0.034 * fh
+        const maxW = 0.1 * fh // must stay inside the chest span (~0.116fh) with margin
+        let fpx = 0.032 * fh
         g.save()
-        g.font = `600 ${fpx}px "JetBrains Mono", monospace`
+        g.font = `700 ${fpx}px "JetBrains Mono", monospace`
         const tw = g.measureText('PARKER AI').width
         if (tw > maxW) {
           fpx *= maxW / tw
-          g.font = `600 ${fpx}px "JetBrains Mono", monospace`
+          g.font = `700 ${fpx}px "JetBrains Mono", monospace`
         }
         if (fpx >= 5) {
           g.translate(mid[0], mid[1])
           g.rotate(angT)
           g.textAlign = 'center'
           g.textBaseline = 'middle'
-          g.fillStyle = 'rgba(150,255,238,0.92)'
+          g.fillStyle = 'rgba(160,255,240,0.95)'
           g.fillText('PARKER AI', 0, 0)
         }
+        g.restore()
+      }
+      // small glowing constellation-ball badge below the wordmark — echoes
+      // the geodesic ball that flies at the end and the logo's own mesh,
+      // matching the reference kit photo's back-of-shirt graphic
+      const BADGE_PTS = [[0, -1], [0.68, -0.72], [0.95, -0.05], [0.66, 0.7], [0, 0.98], [-0.7, 0.66], [-0.94, -0.08], [-0.62, -0.74]]
+      const BADGE_EDGES = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0], [0, 3], [1, 4], [2, 5], [3, 6], [0, 5]]
+      const shirtBadge = () => {
+        const mid = lerpPt(chest, waist, 0.58)
+        const angT = Math.atan2(waist[1] - chest[1], waist[0] - chest[0]) - Math.PI / 2
+        const rad = 0.052 * fh
+        if (rad < 3) return
+        const pt = (i) => [BADGE_PTS[i][0] * rad, BADGE_PTS[i][1] * rad]
+        g.save()
+        g.translate(mid[0], mid[1])
+        g.rotate(angT)
+        g.globalCompositeOperation = 'lighter'
+        g.strokeStyle = 'rgba(120,240,225,0.5)'
+        g.lineWidth = Math.max(0.5, rad * 0.045)
+        for (const [a, b] of BADGE_EDGES) {
+          const [ax, ay] = pt(a)
+          const [bx, by] = pt(b)
+          g.beginPath(); g.moveTo(ax, ay); g.lineTo(bx, by); g.stroke()
+        }
+        for (let i = 0; i < BADGE_PTS.length; i++) {
+          const [x, y] = pt(i)
+          const rg = g.createRadialGradient(x, y, 0, x, y, rad * 0.22)
+          rg.addColorStop(0, 'rgba(200,255,245,0.85)')
+          rg.addColorStop(1, 'rgba(0,224,198,0)')
+          g.fillStyle = rg
+          g.beginPath(); g.arc(x, y, rad * 0.22, 0, 7); g.fill()
+        }
+        const cg = g.createRadialGradient(0, 0, 0, 0, 0, rad * 0.55)
+        cg.addColorStop(0, 'rgba(230,255,250,0.95)')
+        cg.addColorStop(0.4, 'rgba(0,224,198,0.5)')
+        cg.addColorStop(1, 'rgba(0,224,198,0)')
+        g.fillStyle = cg
+        g.beginPath(); g.arc(0, 0, rad * 0.55, 0, 7); g.fill()
+        g.globalCompositeOperation = 'source-over'
         g.restore()
       }
       const headDraw = () => {
@@ -496,6 +537,7 @@ export default function CinematicIntro({ onDone }) {
       leg(hipB, knB, anB, toB, 1)
       torso()
       wordmark()
+      shirtBadge()
       headDraw()
       leg(hipF, knF, anF, toF, 0)
       arm(shF, elF, haF, 0)
