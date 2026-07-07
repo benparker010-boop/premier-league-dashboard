@@ -1,42 +1,42 @@
 {
- "generatedAt": "2026-07-07T10:41:12.158826+00:00",
+ "generatedAt": "2026-07-07T18:25:21.709361+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 32.2
+   "v": 31.9
   },
   {
    "code": "FRA",
    "name": "France",
    "color": "#9d5fb5",
-   "v": 22.2
+   "v": 20.8
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 17.5
+   "v": 20.3
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 13.7
-  },
-  {
-   "code": "COL",
-   "name": "Colombia",
-   "color": "#5b8cff",
-   "v": 4.0
+   "v": 13.6
   },
   {
    "code": "NOR",
    "name": "Norway",
    "color": "#f5c451",
-   "v": 3.5
+   "v": 3.6
+  },
+  {
+   "code": "COL",
+   "name": "Colombia",
+   "color": "#5b8cff",
+   "v": 3.3
   }
  ],
  "bracket": {
@@ -190,17 +190,17 @@
      "name": "Egypt",
      "color": "#5b8cff"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 3,
+    "sa": 2,
+    "winner": "home",
     "favHome": true,
     "prob": 87,
     "projScore": [
      2,
      0
     ],
-    "tier": "confirmed"
+    "tier": "result"
    },
    {
     "home": {
@@ -396,7 +396,25 @@
  "nextMatch": {
   "round": "ROUND OF 16",
   "date": "Tue, Jul 7",
-  "time": "16:00 UTC",
+  "time": "20:00 UTC",
+  "venue": "BC Place, Vancouver",
+  "home": {
+   "code": "SUI",
+   "name": "Switzerland",
+   "color": "#e8475e"
+  },
+  "away": {
+   "code": "COL",
+   "name": "Colombia",
+   "color": "#5b8cff"
+  },
+  "favCode": "COL",
+  "prob": 57,
+  "probHome": 43
+ },
+ "lastMatch": {
+  "round": "ROUND OF 16",
+  "date": "Tue, Jul 7",
   "venue": "Mercedes-Benz Stadium, Atlanta",
   "home": {
    "code": "ARG",
@@ -408,26 +426,8 @@
    "name": "Egypt",
    "color": "#5b8cff"
   },
-  "favCode": "ARG",
-  "prob": 87,
-  "probHome": 87
- },
- "lastMatch": {
-  "round": "ROUND OF 16",
-  "date": "Tue, Jul 7",
-  "venue": "Lumen Field, Seattle",
-  "home": {
-   "code": "USA",
-   "name": "USA",
-   "color": "#5ec8e0"
-  },
-  "away": {
-   "code": "BEL",
-   "name": "Belgium",
-   "color": "#e8475e"
-  },
-  "sh": 1,
-  "sa": 4,
-  "scorers": "Malik Tillman 31' · Charles De Ketelaere 9' · Charles De Ketelaere 33' · Hans Vanaken 57' · Romelu Lukaku 90'"
+  "sh": 3,
+  "sa": 2,
+  "scorers": "Cristian Romero 79' · Lionel Messi 83' · Enzo Fernández 90' · Yasser Ibrahim 15' · Mostafa Ziko 67'"
  }
 }

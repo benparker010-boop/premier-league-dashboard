@@ -1323,9 +1323,9 @@
   "hCol": "#c3cfdc",
   "aCode": "EGY",
   "aCol": "#5b8cff",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 3,
+  "sa": 2,
+  "status": "done",
   "matchId": "mt_583655765",
   "group": false
  },

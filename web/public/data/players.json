@@ -1,6 +1,16 @@
 {
  "players": [
   {
+   "name": "Lionel Messi",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 8,
+   "assists": 1,
+   "xg": 4.9,
+   "yc": 0
+  },
+  {
    "name": "Erling Haaland",
    "code": "NOR",
    "color": "#f5c451",
@@ -18,16 +28,6 @@
    "goals": 7,
    "assists": 2,
    "xg": 4.0,
-   "yc": 0
-  },
-  {
-   "name": "Lionel Messi",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 7,
-   "assists": 0,
-   "xg": 3.9,
    "yc": 0
   },
   {
@@ -331,6 +331,16 @@
    "yc": 0
   },
   {
+   "name": "Mostafa Ziko",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 2,
+   "assists": 1,
+   "xg": 1.3,
+   "yc": 0
+  },
+  {
    "name": "Charles De Ketelaere",
    "code": "BEL",
    "color": "#e8475e",
@@ -371,16 +381,6 @@
    "yc": 0
   },
   {
-   "name": "Malik Tillman",
-   "code": "USA",
-   "color": "#5ec8e0",
-   "nation": "USA",
-   "goals": 2,
-   "assists": 1,
-   "xg": 0.9,
-   "yc": 1
-  },
-  {
    "name": "Emam Ashour",
    "code": "EGY",
    "color": "#5b8cff",
@@ -389,6 +389,16 @@
    "assists": 0,
    "xg": 0.9,
    "yc": 0
+  },
+  {
+   "name": "Malik Tillman",
+   "code": "USA",
+   "color": "#5ec8e0",
+   "nation": "USA",
+   "goals": 2,
+   "assists": 1,
+   "xg": 0.9,
+   "yc": 1
   },
   {
    "name": "Rubén Vargas",
@@ -511,6 +521,16 @@
    "yc": 1
   },
   {
+   "name": "Lautaro Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 1,
+   "xg": 1.8,
+   "yc": 0
+  },
+  {
    "name": "Luis Díaz",
    "code": "COL",
    "color": "#5b8cff",
@@ -518,16 +538,6 @@
    "goals": 1,
    "assists": 1,
    "xg": 1.5,
-   "yc": 0
-  },
-  {
-   "name": "Lautaro Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 0,
-   "xg": 1.4,
    "yc": 0
   },
   {
@@ -621,6 +631,16 @@
    "yc": 0
   },
   {
+   "name": "Mohamed Salah",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 1,
+   "assists": 2,
+   "xg": 0.9,
+   "yc": 0
+  },
+  {
    "name": "Gessime Yassine",
    "code": "MAR",
    "color": "#e8475e",
@@ -639,16 +659,6 @@
    "assists": 0,
    "xg": 0.9,
    "yc": 1
-  },
-  {
-   "name": "Mohamed Salah",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 1,
-   "assists": 2,
-   "xg": 0.9,
-   "yc": 0
   },
   {
    "name": "Granit Xhaka",
@@ -721,6 +731,16 @@
    "yc": 0
   },
   {
+   "name": "Enzo Fernández",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.7,
+   "yc": 0
+  },
+  {
    "name": "Pedro Porro",
    "code": "ESP",
    "color": "#c3cfdc",
@@ -757,16 +777,6 @@
    "nation": "Australia",
    "goals": 1,
    "assists": 0,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Mostafa Ziko",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 1,
-   "assists": 1,
    "xg": 0.7,
    "yc": 0
   },
@@ -901,6 +911,16 @@
    "yc": 0
   },
   {
+   "name": "Cristian Romero",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
    "name": "Alexander Freeman",
    "code": "USA",
    "color": "#5ec8e0",
@@ -979,6 +999,16 @@
    "assists": 0,
    "xg": 0.5,
    "yc": 1
+  },
+  {
+   "name": "Mahmoud Trézéguet",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.4,
+   "yc": 0
   },
   {
    "name": "Hans Vanaken",
@@ -1141,16 +1171,6 @@
    "yc": 0
   },
   {
-   "name": "Mahmoud Trézéguet",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
    "name": "Marcel Sabitzer",
    "code": "AUT",
    "color": "#2ecc71",
@@ -1199,6 +1219,16 @@
    "assists": 0,
    "xg": 0.3,
    "yc": 0
+  },
+  {
+   "name": "Yasser Ibrahim",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 2
   },
   {
    "name": "Alexis Saelemaekers",
@@ -1381,6 +1411,36 @@
    "yc": 1
   },
   {
+   "name": "Lisandro Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Mahmoud Saber",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Giovani Lo Celso",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
    "name": "Sebastian Berhalter",
    "code": "USA",
    "color": "#5ec8e0",
@@ -1489,36 +1549,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 0
-  },
-  {
-   "name": "Lisandro Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Giovani Lo Celso",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Mahmoud Saber",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
   },
   {
    "name": "Rafik Belghali",
@@ -1811,6 +1841,16 @@
    "yc": 0
   },
   {
+   "name": "Julián Alvarez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.8,
+   "yc": 0
+  },
+  {
    "name": "João Félix",
    "code": "POR",
    "color": "#5ec8e0",
@@ -1961,16 +2001,6 @@
    "yc": 0
   },
   {
-   "name": "Weston McKennie",
-   "code": "USA",
-   "color": "#5ec8e0",
-   "nation": "USA",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.6,
-   "yc": 1
-  },
-  {
    "name": "Christian Pulišić",
    "code": "USA",
    "color": "#5ec8e0",
@@ -1979,6 +2009,16 @@
    "assists": 1,
    "xg": 0.6,
    "yc": 0
+  },
+  {
+   "name": "Weston McKennie",
+   "code": "USA",
+   "color": "#5ec8e0",
+   "nation": "USA",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
+   "yc": 1
   },
   {
    "name": "Ezri Konsa",
@@ -2111,6 +2151,26 @@
    "yc": 0
   },
   {
+   "name": "Alexis Mac Allister",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
+   "name": "Nicolás González",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
    "name": "Brandon Mechele",
    "code": "BEL",
    "color": "#e8475e",
@@ -2169,26 +2229,6 @@
    "assists": 0,
    "xg": 0.5,
    "yc": 1
-  },
-  {
-   "name": "Julián Alvarez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
-   "name": "Nicolás González",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.5,
-   "yc": 0
   },
   {
    "name": "Piero Hincapié",
@@ -2371,16 +2411,6 @@
    "yc": 0
   },
   {
-   "name": "Enzo Fernández",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Farès Chaïbi",
    "code": "ALG",
    "color": "#f5c451",
@@ -2531,6 +2561,16 @@
    "yc": 0
   },
   {
+   "name": "Marcos Senesi",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
    "name": "Matías Fernández-Pardo",
    "code": "BEL",
    "color": "#e8475e",
@@ -2635,16 +2675,6 @@
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Marcos Senesi",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
@@ -2879,6 +2909,26 @@
    "assists": 0,
    "xg": 0.3,
    "yc": 1
+  },
+  {
+   "name": "Mohanad Lasheen",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 2
+  },
+  {
+   "name": "Zizo",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
   },
   {
    "name": "Jérémy Doku",
@@ -3161,16 +3211,6 @@
    "yc": 0
   },
   {
-   "name": "Alexis Mac Allister",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Jamiro Monteiro",
    "code": "CPV",
    "color": "#f5c451",
@@ -3205,16 +3245,6 @@
    "code": "AUS",
    "color": "#ef7d52",
    "nation": "Australia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Zizo",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
@@ -3421,16 +3451,6 @@
    "yc": 1
   },
   {
-   "name": "Mohanad Lasheen",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 2
-  },
-  {
    "name": "Mohammad Ghorbani",
    "code": "IRN",
    "color": "#f5c451",
@@ -3631,12 +3651,72 @@
    "yc": 0
   },
   {
-   "name": "Nicolas Raskin",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
+   "name": "Mohamed Hany",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
    "goals": 0,
-   "assists": 2,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Rami Rabia",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Haissem Hassan",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 2
+  },
+  {
+   "name": "Marwan Attia",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 2
+  },
+  {
+   "name": "Gonzalo Montiel",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Nico Paz",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Thiago Almada",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
    "xg": 0.1,
    "yc": 0
   },
@@ -3667,6 +3747,16 @@
    "nation": "Belgium",
    "goals": 0,
    "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Nicolas Raskin",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 2,
    "xg": 0.1,
    "yc": 0
   },
@@ -4121,26 +4211,6 @@
    "yc": 0
   },
   {
-   "name": "Thiago Almada",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Cristian Romero",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Willy Semedo",
    "code": "CPV",
    "color": "#f5c451",
@@ -4149,16 +4219,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 0
-  },
-  {
-   "name": "Gonzalo Montiel",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
   },
   {
    "name": "Wagner Pina",
@@ -4181,50 +4241,10 @@
    "yc": 0
   },
   {
-   "name": "Nico Paz",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Aiden O'Neill",
    "code": "AUS",
    "color": "#ef7d52",
    "nation": "Australia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Marwan Attia",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Mohamed Hany",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Rami Rabia",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
@@ -4239,16 +4259,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 0
-  },
-  {
-   "name": "Haissem Hassan",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
   },
   {
    "name": "Tete Yengi",
@@ -5491,6 +5501,246 @@
    "yc": 0
   },
   {
+   "name": "Karim Hafez",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Mostafa Shobeir",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Nahuel Molina",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Leandro Paredes",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Emiliano Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Rodrigo De Paul",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nicolás Tagliafico",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Hamdy Fathy",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Nicolás Otamendi",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Facundo Medina",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Mohamed Alaa",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Mohamed El-Shenawy",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Mahdi Soliman",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Hossam Abdelmaguid",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Tarek Alaa",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nabil Donga",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ibrahim Adel",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Hamza Abdelkarim",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Juan Musso",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Gerónimo Rulli",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Giuliano Simeone",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Valentín Barco",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Exequiel Palacios",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "José Manuel López",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Thibaut Courtois",
    "code": "BEL",
    "color": "#e8475e",
@@ -5501,7 +5751,7 @@
    "yc": 0
   },
   {
-   "name": "Tyler Adams",
+   "name": "Chris Richards",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
@@ -5541,7 +5791,7 @@
    "yc": 1
   },
   {
-   "name": "Chris Richards",
+   "name": "Tyler Adams",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
@@ -5641,16 +5891,6 @@
    "yc": 0
   },
   {
-   "name": "Matt Turner",
-   "code": "USA",
-   "color": "#5ec8e0",
-   "nation": "USA",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Chris Brady",
    "code": "USA",
    "color": "#5ec8e0",
@@ -5661,7 +5901,7 @@
    "yc": 0
   },
   {
-   "name": "Joe Scally",
+   "name": "Matt Turner",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
@@ -5672,6 +5912,16 @@
   },
   {
    "name": "Mark McKenzie",
+   "code": "USA",
+   "color": "#5ec8e0",
+   "nation": "USA",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Joe Scally",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
@@ -7271,46 +7521,6 @@
    "yc": 0
   },
   {
-   "name": "Rodrigo De Paul",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Emiliano Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nahuel Molina",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Facundo Medina",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
    "name": "Yannick Semedo",
    "code": "CPV",
    "color": "#f5c451",
@@ -7339,26 +7549,6 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 0
-  },
-  {
-   "name": "Nicolás Tagliafico",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Leandro Paredes",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
   },
   {
    "name": "CJ Dos Santos",
@@ -7431,76 +7621,6 @@
    "yc": 0
   },
   {
-   "name": "Gerónimo Rulli",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Juan Musso",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nicolás Otamendi",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Exequiel Palacios",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Valentín Barco",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Giuliano Simeone",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "José Manuel López",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Lucas Herrington",
    "code": "AUS",
    "color": "#ef7d52",
@@ -7541,46 +7661,6 @@
    "yc": 1
   },
   {
-   "name": "Karim Hafez",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Mostafa Shobeir",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Yasser Ibrahim",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 2
-  },
-  {
-   "name": "Hamdy Fathy",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Mathew Ryan",
    "code": "AUS",
    "color": "#ef7d52",
@@ -7615,26 +7695,6 @@
    "code": "AUS",
    "color": "#ef7d52",
    "nation": "Australia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Hossam Abdelmaguid",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Hamza Abdelkarim",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -7695,66 +7755,6 @@
    "code": "AUS",
    "color": "#ef7d52",
    "nation": "Australia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Mohamed El-Shenawy",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Mahdi Soliman",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Mohamed Alaa",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Tarek Alaa",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nabil Donga",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ibrahim Adel",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -12482,9 +12482,9 @@
   }
  ],
  "totals": {
-  "goals": 261,
-  "xg": 235.5,
-  "assists": 197,
+  "goals": 266,
+  "xg": 239.1,
+  "assists": 202,
   "tracked": 1248
  }
 }
