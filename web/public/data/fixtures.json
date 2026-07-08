@@ -1337,9 +1337,9 @@
   "hCol": "#e8475e",
   "aCode": "COL",
   "aCol": "#5b8cff",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 0,
+  "sa": 0,
+  "status": "done",
   "matchId": "mt_258322938",
   "group": false
  },
@@ -1383,6 +1383,20 @@
   "sa": null,
   "status": "upcoming",
   "matchId": "mt_362533071",
+  "group": false
+ },
+ {
+  "round": "QUARTER-FINAL",
+  "date": "12 Jul 2026",
+  "ts": 1783818000.0,
+  "hCode": "ARG",
+  "hCol": "#c3cfdc",
+  "aCode": "SUI",
+  "aCol": "#e8475e",
+  "sh": null,
+  "sa": null,
+  "status": "upcoming",
+  "matchId": "mt_401944566",
   "group": false
  }
 ]

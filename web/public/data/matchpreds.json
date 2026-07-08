@@ -1,88 +1,5 @@
 [
  {
-  "round": "ROUND OF 16",
-  "date": "Tue, Jul 7",
-  "home": {
-   "code": "SUI",
-   "name": "Switzerland",
-   "color": "#e8475e"
-  },
-  "away": {
-   "code": "COL",
-   "name": "Colombia",
-   "color": "#5b8cff"
-  },
-  "result": {
-   "home": 31,
-   "draw": 27,
-   "away": 42
-  },
-  "advance": 43,
-  "projScore": [
-   0,
-   1
-  ],
-  "topScores": [
-   {
-    "score": [
-     1,
-     1
-    ],
-    "pct": 12.7
-   },
-   {
-    "score": [
-     0,
-     1
-    ],
-    "pct": 11.2
-   },
-   {
-    "score": [
-     1,
-     0
-    ],
-    "pct": 9.2
-   }
-  ],
-  "xg": [
-   1.14,
-   1.37
-  ],
-  "totals": {
-   "o15": 71,
-   "o25": 47,
-   "o35": 24
-  },
-  "btts": 52,
-  "stats": {
-   "shots": [
-    11.7,
-    13.1
-   ],
-   "sot": [
-    3.6,
-    4.9
-   ],
-   "corners": [
-    4.3,
-    4.2
-   ],
-   "cards": [
-    1.1,
-    1.7
-   ],
-   "fouls": [
-    11.5,
-    12.5
-   ]
-  },
-  "possession": [
-   49,
-   51
-  ]
- },
- {
   "round": "QUARTER-FINAL",
   "date": "Thu, Jul 9",
   "home": {
@@ -329,6 +246,89 @@
   "possession": [
    48,
    52
+  ]
+ },
+ {
+  "round": "QUARTER-FINAL",
+  "date": "Sun, Jul 12",
+  "home": {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "SUI",
+   "name": "Switzerland",
+   "color": "#e8475e"
+  },
+  "result": {
+   "home": 56,
+   "draw": 24,
+   "away": 21
+  },
+  "advance": 71,
+  "projScore": [
+   1,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 11.5
+   },
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 11.1
+   },
+   {
+    "score": [
+     2,
+     0
+    ],
+    "pct": 10.2
+   }
+  ],
+  "xg": [
+   1.77,
+   0.96
+  ],
+  "totals": {
+   "o15": 76,
+   "o25": 52,
+   "o35": 29
+  },
+  "btts": 52,
+  "stats": {
+   "shots": [
+    11.4,
+    11.6
+   ],
+   "sot": [
+    4.7,
+    3.8
+   ],
+   "corners": [
+    4.2,
+    4.7
+   ],
+   "cards": [
+    1.4,
+    1.2
+   ],
+   "fouls": [
+    12.2,
+    11.5
+   ]
+  },
+  "possession": [
+   51,
+   49
   ]
  }
 ]
