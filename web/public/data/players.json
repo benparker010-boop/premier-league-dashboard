@@ -2161,7 +2161,7 @@
    "yc": 0
   },
   {
-   "name": "Luis Javier Suárez",
+   "name": "Gustavo Puerta",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -2171,7 +2171,7 @@
    "yc": 1
   },
   {
-   "name": "Gustavo Puerta",
+   "name": "Luis Javier Suárez",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -2921,16 +2921,6 @@
    "yc": 0
   },
   {
-   "name": "Jefferson Lerma",
-   "code": "COL",
-   "color": "#5b8cff",
-   "nation": "Colombia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 1
-  },
-  {
    "name": "Jhon Lucumí",
    "code": "COL",
    "color": "#5b8cff",
@@ -2942,6 +2932,16 @@
   },
   {
    "name": "Johan Mojica",
+   "code": "COL",
+   "color": "#5b8cff",
+   "nation": "Colombia",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 1
+  },
+  {
+   "name": "Jefferson Lerma",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -5621,7 +5621,7 @@
    "yc": 0
   },
   {
-   "name": "Marvin Keller",
+   "name": "Yvon Mvogo",
    "code": "SUI",
    "color": "#e8475e",
    "nation": "Switzerland",
@@ -5631,7 +5631,7 @@
    "yc": 0
   },
   {
-   "name": "Yvon Mvogo",
+   "name": "Marvin Keller",
    "code": "SUI",
    "color": "#e8475e",
    "nation": "Switzerland",
@@ -5671,7 +5671,7 @@
    "yc": 0
   },
   {
-   "name": "Álvaro Montero",
+   "name": "David Ospina",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -5681,7 +5681,7 @@
    "yc": 0
   },
   {
-   "name": "David Ospina",
+   "name": "Álvaro Montero",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -5701,6 +5701,16 @@
    "yc": 0
   },
   {
+   "name": "Willer Ditta",
+   "code": "COL",
+   "color": "#5b8cff",
+   "nation": "Colombia",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Santiago Arias",
    "code": "COL",
    "color": "#5b8cff",
@@ -5711,7 +5721,7 @@
    "yc": 0
   },
   {
-   "name": "Willer Ditta",
+   "name": "Kevin Castaño",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
@@ -5742,16 +5752,6 @@
   },
   {
    "name": "Jorge Carrascal",
-   "code": "COL",
-   "color": "#5b8cff",
-   "nation": "Colombia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Kevin Castaño",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
