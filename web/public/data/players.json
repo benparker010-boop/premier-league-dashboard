@@ -1,6 +1,16 @@
 {
  "players": [
   {
+   "name": "Kylian Mbappé",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 8,
+   "assists": 3,
+   "xg": 5.2,
+   "yc": 0
+  },
+  {
    "name": "Lionel Messi",
    "code": "ARG",
    "color": "#c3cfdc",
@@ -21,16 +31,6 @@
    "yc": 0
   },
   {
-   "name": "Kylian Mbappé",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 7,
-   "assists": 2,
-   "xg": 4.0,
-   "yc": 0
-  },
-  {
    "name": "Harry Kane",
    "code": "ENG",
    "color": "#2ecc71",
@@ -38,6 +38,16 @@
    "goals": 6,
    "assists": 1,
    "xg": 3.3,
+   "yc": 0
+  },
+  {
+   "name": "Ousmane Dembélé",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 5,
+   "assists": 2,
+   "xg": 1.5,
    "yc": 0
   },
   {
@@ -88,16 +98,6 @@
    "goals": 4,
    "assists": 1,
    "xg": 1.5,
-   "yc": 0
-  },
-  {
-   "name": "Ousmane Dembélé",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 4,
-   "assists": 2,
-   "xg": 1.3,
    "yc": 0
   },
   {
@@ -281,6 +281,16 @@
    "yc": 0
   },
   {
+   "name": "Bradley Barcola",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 2,
+   "assists": 1,
+   "xg": 1.5,
+   "yc": 1
+  },
+  {
    "name": "Habib Diarra",
    "code": "SEN",
    "color": "#9d5fb5",
@@ -291,32 +301,22 @@
    "yc": 0
   },
   {
-   "name": "Youri Tielemans",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 2,
-   "assists": 0,
-   "xg": 1.4,
-   "yc": 0
-  },
-  {
-   "name": "Bradley Barcola",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 2,
-   "assists": 1,
-   "xg": 1.4,
-   "yc": 1
-  },
-  {
    "name": "Soufiane Rahimi",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
    "goals": 2,
    "assists": 1,
+   "xg": 1.4,
+   "yc": 0
+  },
+  {
+   "name": "Youri Tielemans",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 2,
+   "assists": 0,
    "xg": 1.4,
    "yc": 0
   },
@@ -631,6 +631,16 @@
    "yc": 0
   },
   {
+   "name": "Gessime Yassine",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.9,
+   "yc": 0
+  },
+  {
    "name": "Granit Xhaka",
    "code": "SUI",
    "color": "#e8475e",
@@ -657,16 +667,6 @@
    "nation": "Egypt",
    "goals": 1,
    "assists": 2,
-   "xg": 0.9,
-   "yc": 0
-  },
-  {
-   "name": "Gessime Yassine",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 1,
-   "assists": 0,
    "xg": 0.9,
    "yc": 0
   },
@@ -728,6 +728,16 @@
    "goals": 1,
    "assists": 0,
    "xg": 0.8,
+   "yc": 0
+  },
+  {
+   "name": "Désiré Doué",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.7,
    "yc": 0
   },
   {
@@ -1061,16 +1071,6 @@
    "yc": 0
   },
   {
-   "name": "Désiré Doué",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Mauricio",
    "code": "PAR",
    "color": "#9d5fb5",
@@ -1231,6 +1231,16 @@
    "yc": 0
   },
   {
+   "name": "Issa Diop",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 3
+  },
+  {
    "name": "Alexis Saelemaekers",
    "code": "BEL",
    "color": "#e8475e",
@@ -1279,16 +1289,6 @@
    "assists": 0,
    "xg": 0.2,
    "yc": 0
-  },
-  {
-   "name": "Issa Diop",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 2
   },
   {
    "name": "Connor Metcalfe",
@@ -1697,7 +1697,7 @@
    "nation": "France",
    "goals": 0,
    "assists": 5,
-   "xg": 1.8,
+   "xg": 2.0,
    "yc": 1
   },
   {
@@ -1851,6 +1851,16 @@
    "yc": 0
   },
   {
+   "name": "Adrien Rabiot",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.8,
+   "yc": 0
+  },
+  {
    "name": "Julián Alvarez",
    "code": "ARG",
    "color": "#c3cfdc",
@@ -1921,16 +1931,6 @@
    "yc": 0
   },
   {
-   "name": "Adrien Rabiot",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
    "name": "Derek Cornelius",
    "code": "CAN",
    "color": "#ef7d52",
@@ -1998,6 +1998,16 @@
    "goals": 0,
    "assists": 1,
    "xg": 0.7,
+   "yc": 0
+  },
+  {
+   "name": "Jean-Philippe Mateta",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
    "yc": 0
   },
   {
@@ -2161,6 +2171,26 @@
    "yc": 0
   },
   {
+   "name": "Dayot Upamecano",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
+   "name": "Neil El Aynaoui",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
    "name": "Gustavo Puerta",
    "code": "COL",
    "color": "#5b8cff",
@@ -2311,6 +2341,16 @@
    "yc": 1
   },
   {
+   "name": "Brahim Díaz",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 4,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
    "name": "Nico Elvedi",
    "code": "SUI",
    "color": "#e8475e",
@@ -2397,26 +2437,6 @@
    "nation": "Brazil",
    "goals": 0,
    "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Neil El Aynaoui",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Brahim Díaz",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 4,
    "xg": 0.4,
    "yc": 0
   },
@@ -2561,6 +2581,26 @@
    "yc": 0
   },
   {
+   "name": "Manu Koné",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 1
+  },
+  {
+   "name": "Bilal El Khannouss",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 1
+  },
+  {
    "name": "James Rodríguez",
    "code": "COL",
    "color": "#5b8cff",
@@ -2665,16 +2705,6 @@
    "code": "CAN",
    "color": "#ef7d52",
    "nation": "Canada",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 1
-  },
-  {
-   "name": "Bilal El Khannouss",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
@@ -2911,6 +2941,36 @@
    "yc": 1
   },
   {
+   "name": "Theo Hernández",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Ayoub El Kaabi",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Ayoube Amaimouni Echghouyab",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
    "name": "Manuel Akanji",
    "code": "SUI",
    "color": "#e8475e",
@@ -3121,16 +3181,6 @@
    "yc": 0
   },
   {
-   "name": "Manu Koné",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 1
-  },
-  {
    "name": "Diego Gómez",
    "code": "PAR",
    "color": "#9d5fb5",
@@ -3139,26 +3189,6 @@
    "assists": 0,
    "xg": 0.2,
    "yc": 2
-  },
-  {
-   "name": "Theo Hernández",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Jean-Philippe Mateta",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
   },
   {
    "name": "Moise Bombito",
@@ -3175,26 +3205,6 @@
    "code": "CAN",
    "color": "#ef7d52",
    "nation": "Canada",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Ayoub El Kaabi",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Ayoube Amaimouni Echghouyab",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
    "goals": 0,
    "assists": 0,
    "xg": 0.2,
@@ -3671,6 +3681,56 @@
    "yc": 0
   },
   {
+   "name": "William Saliba",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Jules Koundé",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Chemsdine Talbi",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Ayyoub Bouaddi",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Aurélien Tchouaméni",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
    "name": "Remo Freuler",
    "code": "SUI",
    "color": "#e8475e",
@@ -4061,26 +4121,6 @@
    "yc": 0
   },
   {
-   "name": "William Saliba",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Dayot Upamecano",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Gustavo Gómez",
    "code": "PAR",
    "color": "#9d5fb5",
@@ -4141,16 +4181,6 @@
    "yc": 0
   },
   {
-   "name": "Aurélien Tchouaméni",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "Luc De Fougerolles",
    "code": "CAN",
    "color": "#ef7d52",
@@ -4161,32 +4191,12 @@
    "yc": 2
   },
   {
-   "name": "Ayyoub Bouaddi",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Jacob Shaffelburg",
    "code": "CAN",
    "color": "#ef7d52",
    "nation": "Canada",
    "goals": 0,
    "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Chemsdine Talbi",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.1,
    "yc": 0
   },
@@ -5528,6 +5538,266 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Lucas Digne",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Mike Maignan",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Noussair Mazraoui",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Anass Salah-Eddine",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Yassine Bounou",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Malo Gusto",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Warren Zaïre-Emery",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Zakaria El Ouahdi",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sofyan Amrabat",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Amine Sbai",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Brice Samba",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Robin Risser",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ibrahima Konaté",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Maxence Lacroix",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Lucas Hernández",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "N'Golo Kanté",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Rayan Cherki",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Maghnes Akliouche",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marcus Thuram",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Munir El Kajoui",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ahmed Reda Tagnaouti",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Youssef Belammari",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Redouane Halhal",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Marwane Saadane",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Chadi Riad",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Samir El Mourabet",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
    "yc": 0
   },
   {
@@ -6911,36 +7181,6 @@
    "yc": 1
   },
   {
-   "name": "Jules Koundé",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Mike Maignan",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Lucas Digne",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Gustavo Velázquez",
    "code": "PAR",
    "color": "#9d5fb5",
@@ -6981,120 +7221,10 @@
    "yc": 1
   },
   {
-   "name": "Rayan Cherki",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "José Canale",
    "code": "PAR",
    "color": "#9d5fb5",
    "nation": "Paraguay",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Brice Samba",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Robin Risser",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Lucas Hernández",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Maxence Lacroix",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Malo Gusto",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ibrahima Konaté",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Maghnes Akliouche",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Warren Zaïre-Emery",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "N'Golo Kanté",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marcus Thuram",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -7231,36 +7361,6 @@
    "yc": 0
   },
   {
-   "name": "Noussair Mazraoui",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Yassine Bounou",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Redouane Halhal",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
    "name": "Jonathan Osorio",
    "code": "CAN",
    "color": "#ef7d52",
@@ -7275,36 +7375,6 @@
    "code": "CAN",
    "color": "#ef7d52",
    "nation": "Canada",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marwane Saadane",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Samir El Mourabet",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sofyan Amrabat",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -7379,76 +7449,6 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 1
-  },
-  {
-   "name": "Ahmed Reda Tagnaouti",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Munir El Kajoui",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Anass Salah-Eddine",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Zakaria El Ouahdi",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Chadi Riad",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Youssef Belammari",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Amine Sbai",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
   },
   {
    "name": "Jordan Ayew",
@@ -12482,9 +12482,9 @@
   }
  ],
  "totals": {
-  "goals": 266,
-  "xg": 240.4,
-  "assists": 202,
+  "goals": 268,
+  "xg": 243.6,
+  "assists": 204,
   "tracked": 1248
  }
 }

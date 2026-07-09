@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-09T17:32:46.763287+00:00",
+ "generatedAt": "2026-07-09T22:47:37.301425+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -395,8 +395,26 @@
  },
  "nextMatch": {
   "round": "QUARTER-FINAL",
+  "date": "Fri, Jul 10",
+  "time": "19:00 UTC",
+  "venue": "SoFi Stadium, Inglewood",
+  "home": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "BEL",
+   "name": "Belgium",
+   "color": "#e8475e"
+  },
+  "favCode": "ESP",
+  "prob": 79,
+  "probHome": 79
+ },
+ "lastMatch": {
+  "round": "QUARTER-FINAL",
   "date": "Thu, Jul 9",
-  "time": "20:00 UTC",
   "venue": "Gillette Stadium, Foxborough",
   "home": {
    "code": "FRA",
@@ -408,26 +426,8 @@
    "name": "Morocco",
    "color": "#e8475e"
   },
-  "favCode": "FRA",
-  "prob": 73,
-  "probHome": 73
- },
- "lastMatch": {
-  "round": "ROUND OF 16",
-  "date": "Tue, Jul 7",
-  "venue": "BC Place, Vancouver",
-  "home": {
-   "code": "SUI",
-   "name": "Switzerland",
-   "color": "#e8475e"
-  },
-  "away": {
-   "code": "COL",
-   "name": "Colombia",
-   "color": "#5b8cff"
-  },
-  "sh": 0,
+  "sh": 2,
   "sa": 0,
-  "scorers": "Granit Xhaka 120' · Zeki Amdouni 120' · Cédric Itten 120' · Rubén Vargas 120' · Juan Fernando Quintero 120' · Jaminton Campaz 120' · Luis Díaz 120'"
+  "scorers": "Kylian Mbappé 60' · Ousmane Dembélé 66'"
  }
 }

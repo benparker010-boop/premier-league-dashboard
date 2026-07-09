@@ -1,5 +1,479 @@
 [
  {
+  "id": "mt_625866143",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "MAR",
+   "name": "Morocco",
+   "color": "#e8475e"
+  },
+  "score": [
+   2,
+   0
+  ],
+  "round": "QUARTER-FINAL",
+  "date": "9 Jul 2026",
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Facundo Raul Tello Figueroa",
+  "stats": {
+   "possession": [
+    48,
+    52
+   ],
+   "xg": [
+    3.04,
+    0.14
+   ],
+   "shots": [
+    22,
+    5
+   ],
+   "sot": [
+    8,
+    1
+   ],
+   "big": [
+    5,
+    0
+   ],
+   "corners": [
+    null,
+    null
+   ],
+   "passes": [
+    485,
+    524
+   ],
+   "passAcc": [
+    null,
+    null
+   ],
+   "fouls": [
+    10,
+    13
+   ],
+   "yellow": [
+    0,
+    1
+   ]
+  },
+  "timeline": [
+   {
+    "min": 60,
+    "type": "g",
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "assist": null
+   },
+   {
+    "min": 63,
+    "type": "y",
+    "team": "away",
+    "player": "Issa Diop",
+    "assist": null
+   },
+   {
+    "min": 66,
+    "type": "g",
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "assist": null
+   }
+  ],
+  "shots": [
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 22.2,
+    "y": 33,
+    "min": 4
+   },
+   {
+    "team": "home",
+    "player": "Dayot Upamecano",
+    "xg": 0.46,
+    "outcome": "s",
+    "x": 4.5,
+    "y": 53.4,
+    "min": 4
+   },
+   {
+    "team": "home",
+    "player": "Désiré Doué",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 19.8,
+    "y": 30.1,
+    "min": 10
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.05,
+    "outcome": "o",
+    "x": 9,
+    "y": 55.9,
+    "min": 18
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.02,
+    "outcome": "b",
+    "x": 20.3,
+    "y": 72,
+    "min": 20
+   },
+   {
+    "team": "home",
+    "player": "Adrien Rabiot",
+    "xg": 0.05,
+    "outcome": "o",
+    "x": 8.5,
+    "y": 46,
+    "min": 21
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.82,
+    "outcome": "s",
+    "x": 11.5,
+    "y": 50,
+    "min": 28
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.04,
+    "outcome": "o",
+    "x": 19.1,
+    "y": 67,
+    "min": 33
+   },
+   {
+    "team": "home",
+    "player": "Désiré Doué",
+    "xg": 0.28,
+    "outcome": "s",
+    "x": 14.8,
+    "y": 46.8,
+    "min": 35
+   },
+   {
+    "team": "home",
+    "player": "Jules Koundé",
+    "xg": 0.05,
+    "outcome": "b",
+    "x": 9.8,
+    "y": 49.5,
+    "min": 36
+   },
+   {
+    "team": "away",
+    "player": "Achraf Hakimi",
+    "xg": 0.05,
+    "outcome": "o",
+    "x": 20.4,
+    "y": 73.9,
+    "min": 45
+   },
+   {
+    "team": "home",
+    "player": "Lucas Digne",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 24.8,
+    "y": 33.2,
+    "min": 45
+   },
+   {
+    "team": "home",
+    "player": "Michael Olise",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 22.2,
+    "y": 55.6,
+    "min": 45
+   },
+   {
+    "team": "home",
+    "player": "Manu Koné",
+    "xg": 0.06,
+    "outcome": "b",
+    "x": 24.4,
+    "y": 62.6,
+    "min": 45
+   },
+   {
+    "team": "away",
+    "player": "Brahim Díaz",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 19.6,
+    "y": 54.1,
+    "min": 48
+   },
+   {
+    "team": "home",
+    "player": "Désiré Doué",
+    "xg": 0.02,
+    "outcome": "s",
+    "x": 18.2,
+    "y": 24.2,
+    "min": 55
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.46,
+    "outcome": "o",
+    "x": 9.7,
+    "y": 43.4,
+    "min": 56
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.05,
+    "outcome": "g",
+    "x": 15.5,
+    "y": 34.6,
+    "min": 60
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.11,
+    "outcome": "g",
+    "x": 19.6,
+    "y": 50.8,
+    "min": 66
+   },
+   {
+    "team": "away",
+    "player": "Azzedine Ounahi",
+    "xg": 0.02,
+    "outcome": "s",
+    "x": 25.9,
+    "y": 43.2,
+    "min": 83
+   },
+   {
+    "team": "away",
+    "player": "Neil El Aynaoui",
+    "xg": 0.03,
+    "outcome": "o",
+    "x": 4.9,
+    "y": 37.8,
+    "min": 84
+   },
+   {
+    "team": "home",
+    "player": "Michael Olise",
+    "xg": 0.11,
+    "outcome": "o",
+    "x": 12.2,
+    "y": 63.8,
+    "min": 86
+   },
+   {
+    "team": "home",
+    "player": "Jean-Philippe Mateta",
+    "xg": 0.21,
+    "outcome": "o",
+    "x": 4.2,
+    "y": 51.8,
+    "min": 88
+   },
+   {
+    "team": "home",
+    "player": "Bradley Barcola",
+    "xg": 0.05,
+    "outcome": "s",
+    "x": 10.1,
+    "y": 29.1,
+    "min": 88
+   },
+   {
+    "team": "away",
+    "player": "Gessime Yassine",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 41.2,
+    "y": 85.5,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Jean-Philippe Mateta",
+    "xg": 0.15,
+    "outcome": "s",
+    "x": 15.4,
+    "y": 54.2,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Michael Olise",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 22.6,
+    "y": 39.9,
+    "min": 90
+   }
+  ],
+  "lineups": {
+   "home": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Mike Maignan",
+      "pos": "gk",
+      "num": 16
+     },
+     {
+      "name": "Dayot Upamecano",
+      "pos": "def",
+      "num": 2
+     },
+     {
+      "name": "William Saliba",
+      "pos": "def",
+      "num": 2
+     },
+     {
+      "name": "Lucas Digne",
+      "pos": "def",
+      "num": 12
+     },
+     {
+      "name": "Jules Koundé",
+      "pos": "def",
+      "num": 23
+     },
+     {
+      "name": "Adrien Rabiot",
+      "pos": "mid",
+      "num": 12
+     },
+     {
+      "name": "Michael Olise",
+      "pos": "mid",
+      "num": 17
+     },
+     {
+      "name": "Manu Koné",
+      "pos": "mid",
+      "num": 17
+     },
+     {
+      "name": "Kylian Mbappé",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Ousmane Dembélé",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Désiré Doué",
+      "pos": "fwd",
+      "num": 14
+     }
+    ],
+    "subs": [
+     "Brice Samba",
+     "Robin Risser",
+     "Ibrahima Konaté",
+     "Maxence Lacroix",
+     "Theo Hernández",
+     "Lucas Hernández",
+     "Malo Gusto",
+     "Rayan Cherki"
+    ]
+   },
+   "away": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Yassine Bounou",
+      "pos": "gk",
+      "num": 37
+     },
+     {
+      "name": "Achraf Hakimi",
+      "pos": "def",
+      "num": 2
+     },
+     {
+      "name": "Noussair Mazraoui",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Issa Diop",
+      "pos": "def",
+      "num": 31
+     },
+     {
+      "name": "Anass Salah-Eddine",
+      "pos": "def",
+      "num": 34
+     },
+     {
+      "name": "Neil El Aynaoui",
+      "pos": "mid",
+      "num": 8
+     },
+     {
+      "name": "Azzedine Ounahi",
+      "pos": "mid",
+      "num": 18
+     },
+     {
+      "name": "Ayyoub Bouaddi",
+      "pos": "mid",
+      "num": 32
+     },
+     {
+      "name": "Chemsdine Talbi",
+      "pos": "fwd",
+      "num": 7
+     },
+     {
+      "name": "Bilal El Khannouss",
+      "pos": "fwd",
+      "num": 11
+     },
+     {
+      "name": "Brahim Díaz",
+      "pos": "fwd",
+      "num": 21
+     }
+    ],
+    "subs": [
+     "Munir El Kajoui",
+     "Ahmed Reda Tagnaouti",
+     "Redouane Halhal",
+     "Youssef Belammari",
+     "Chadi Riad",
+     "Zakaria El Ouahdi",
+     "Marwane Saadane",
+     "Samir El Mourabet"
+    ]
+   }
+  }
+ },
+ {
   "id": "mt_258322938",
   "home": {
    "code": "SUI",
@@ -5584,415 +6058,6 @@
      "Ibrahim Adel",
      "Zizo",
      "Mahmoud Saber"
-    ]
-   }
-  }
- },
- {
-  "id": "mt_740177236",
-  "home": {
-   "code": "SUI",
-   "name": "Switzerland",
-   "color": "#e8475e"
-  },
-  "away": {
-   "code": "ALG",
-   "name": "Algeria",
-   "color": "#f5c451"
-  },
-  "score": [
-   2,
-   0
-  ],
-  "round": "ROUND OF 32",
-  "date": "3 Jul 2026",
-  "venue": "BC Place",
-  "city": "Vancouver",
-  "ref": "Falcon Perez, Yael",
-  "stats": {
-   "possession": [
-    45,
-    55
-   ],
-   "xg": [
-    2.45,
-    0.74
-   ],
-   "shots": [
-    11,
-    8
-   ],
-   "sot": [
-    5,
-    2
-   ],
-   "big": [
-    2,
-    2
-   ],
-   "corners": [
-    null,
-    null
-   ],
-   "passes": [
-    438,
-    563
-   ],
-   "passAcc": [
-    null,
-    null
-   ],
-   "fouls": [
-    10,
-    12
-   ],
-   "yellow": [
-    0,
-    2
-   ]
-  },
-  "timeline": [
-   {
-    "min": 10,
-    "type": "g",
-    "team": "home",
-    "player": "Breel Embolo",
-    "assist": null
-   },
-   {
-    "min": 36,
-    "type": "y",
-    "team": "away",
-    "player": "Farès Chaïbi",
-    "assist": null
-   },
-   {
-    "min": 46,
-    "type": "g",
-    "team": "home",
-    "player": "Dan Ndoye",
-    "assist": null
-   },
-   {
-    "min": 72,
-    "type": "y",
-    "team": "away",
-    "player": "Hicham Boudaoui",
-    "assist": null
-   }
-  ],
-  "shots": [
-   {
-    "team": "away",
-    "player": "Houssem Aouar",
-    "xg": 0.34,
-    "outcome": "o",
-    "x": 11,
-    "y": 53.8,
-    "min": 6
-   },
-   {
-    "team": "home",
-    "player": "Breel Embolo",
-    "xg": 1,
-    "outcome": "g",
-    "x": 3.2,
-    "y": 49.5,
-    "min": 10
-   },
-   {
-    "team": "away",
-    "player": "Houssem Aouar",
-    "xg": 0.03,
-    "outcome": "s",
-    "x": 23.8,
-    "y": 41.3,
-    "min": 14
-   },
-   {
-    "team": "home",
-    "player": "Denis Zakaria",
-    "xg": 0.2,
-    "outcome": "s",
-    "x": 8.9,
-    "y": 53,
-    "min": 15
-   },
-   {
-    "team": "away",
-    "player": "Ibrahim Maza",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 21.1,
-    "y": 33.7,
-    "min": 18
-   },
-   {
-    "team": "home",
-    "player": "Ricardo Rodríguez",
-    "xg": 0.02,
-    "outcome": "o",
-    "x": 28.2,
-    "y": 36.4,
-    "min": 25
-   },
-   {
-    "team": "home",
-    "player": "Denis Zakaria",
-    "xg": 0.09,
-    "outcome": "o",
-    "x": 7.6,
-    "y": 54,
-    "min": 37
-   },
-   {
-    "team": "away",
-    "player": "Farès Chaïbi",
-    "xg": 0.04,
-    "outcome": "s",
-    "x": 13.9,
-    "y": 33.7,
-    "min": 43
-   },
-   {
-    "team": "away",
-    "player": "Ibrahim Maza",
-    "xg": 0.1,
-    "outcome": "o",
-    "x": 10.6,
-    "y": 53.6,
-    "min": 45
-   },
-   {
-    "team": "home",
-    "player": "Dan Ndoye",
-    "xg": 0.14,
-    "outcome": "g",
-    "x": 14.4,
-    "y": 57.7,
-    "min": 46
-   },
-   {
-    "team": "away",
-    "player": "Riyad Mahrez",
-    "xg": 0.16,
-    "outcome": "b",
-    "x": 14.4,
-    "y": 46.9,
-    "min": 50
-   },
-   {
-    "team": "home",
-    "player": "Nico Elvedi",
-    "xg": 0.17,
-    "outcome": "b",
-    "x": 4.5,
-    "y": 45.4,
-    "min": 65
-   },
-   {
-    "team": "home",
-    "player": "Fabian Rieder",
-    "xg": 0.11,
-    "outcome": "s",
-    "x": 14.6,
-    "y": 49.7,
-    "min": 75
-   },
-   {
-    "team": "away",
-    "player": "Jaouen Hadjam",
-    "xg": 0.02,
-    "outcome": "o",
-    "x": 21.1,
-    "y": 27,
-    "min": 77
-   },
-   {
-    "team": "home",
-    "player": "Breel Embolo",
-    "xg": 0.03,
-    "outcome": "o",
-    "x": 19.6,
-    "y": 29.1,
-    "min": 80
-   },
-   {
-    "team": "home",
-    "player": "Fabian Rieder",
-    "xg": 0.69,
-    "outcome": "o",
-    "x": 2.2,
-    "y": 43.7,
-    "min": 81
-   },
-   {
-    "team": "home",
-    "player": "Noah Okafor",
-    "xg": 0.07,
-    "outcome": "b",
-    "x": 12.3,
-    "y": 36.3,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Ibrahim Maza",
-    "xg": 0.02,
-    "outcome": "b",
-    "x": 13.4,
-    "y": 32.2,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Remo Freuler",
-    "xg": 0.05,
-    "outcome": "s",
-    "x": 15.6,
-    "y": 55.9,
-    "min": 90
-   }
-  ],
-  "lineups": {
-   "home": {
-    "formation": "4-2-3-1",
-    "xi": [
-     {
-      "name": "Gregor Kobel",
-      "pos": "gk",
-      "num": 1
-     },
-     {
-      "name": "Denis Zakaria",
-      "pos": "def",
-      "num": 6
-     },
-     {
-      "name": "Manuel Akanji",
-      "pos": "def",
-      "num": 25
-     },
-     {
-      "name": "Nico Elvedi",
-      "pos": "def",
-      "num": 30
-     },
-     {
-      "name": "Ricardo Rodríguez",
-      "pos": "def",
-      "num": null
-     },
-     {
-      "name": "Granit Xhaka",
-      "pos": "mid",
-      "num": 34
-     },
-     {
-      "name": "Johan Manzambi",
-      "pos": "mid",
-      "num": 44
-     },
-     {
-      "name": "Remo Freuler",
-      "pos": "mid",
-      "num": null
-     },
-     {
-      "name": "Breel Embolo",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
-      "name": "Rubén Vargas",
-      "pos": "fwd",
-      "num": 11
-     },
-     {
-      "name": "Dan Ndoye",
-      "pos": "fwd",
-      "num": 14
-     }
-    ],
-    "subs": [
-     "Marvin Keller",
-     "Yvon Mvogo",
-     "Aurèle Amenda",
-     "Silvan Widmer",
-     "Eray Cömert",
-     "Christian Fassnacht",
-     "Michel Aebischer",
-     "Djibril Sow"
-    ]
-   },
-   "away": {
-    "formation": "4-2-3-1",
-    "xi": [
-     {
-      "name": "Luca Zidane",
-      "pos": "gk",
-      "num": 1
-     },
-     {
-      "name": "Ramy Bensebaini",
-      "pos": "def",
-      "num": 5
-     },
-     {
-      "name": "Rafik Belghali",
-      "pos": "def",
-      "num": 7
-     },
-     {
-      "name": "Rayan Aït-Nouri",
-      "pos": "def",
-      "num": 21
-     },
-     {
-      "name": "Aïssa Mandi",
-      "pos": "def",
-      "num": 23
-     },
-     {
-      "name": "Ramiz Zerrouki",
-      "pos": "mid",
-      "num": 6
-     },
-     {
-      "name": "Nabil Bentaleb",
-      "pos": "mid",
-      "num": 6
-     },
-     {
-      "name": "Farès Chaïbi",
-      "pos": "mid",
-      "num": 8
-     },
-     {
-      "name": "Riyad Mahrez",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
-      "name": "Houssem Aouar",
-      "pos": "fwd",
-      "num": 10
-     },
-     {
-      "name": "Ibrahim Maza",
-      "pos": "fwd",
-      "num": 30
-     }
-    ],
-    "subs": [
-     "Oussama Benbot",
-     "Melvin Mastil",
-     "Jaouen Hadjam",
-     "Zineddine Belaid",
-     "Achref Abada",
-     "Mohamed Tougai",
-     "Samir Sophian Chergui",
-     "Hicham Boudaoui"
     ]
    }
   }
