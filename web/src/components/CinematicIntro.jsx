@@ -202,20 +202,21 @@ export default function CinematicIntro({ onDone }) {
       settleEl.style.transform = ''
       logoEl.style.transition = 'opacity .2s ease'
       logoEl.style.opacity = '1'
-      requestAnimationFrame(() => {
-        const target = document.getElementById('pk-header-logo')
-        if (target) {
-          const tr = target.getBoundingClientRect()
-          const lr = logoEl.getBoundingClientRect()
-          if (tr.width > 0 && lr.width > 0) {
-            logoEl.style.transition = 'opacity .2s ease, transform .8s cubic-bezier(.72,.02,.26,1)'
-            logoEl.style.transform = `translate(${tr.left - lr.left}px, ${tr.top - lr.top}px) scale(${tr.width / lr.width})`
-          }
+      // synchronous style flush instead of requestAnimationFrame — rAF can
+      // stop entirely in background tabs, which would strand the intro
+      logoEl.getBoundingClientRect()
+      const target = document.getElementById('pk-header-logo')
+      if (target) {
+        const tr = target.getBoundingClientRect()
+        const lr = logoEl.getBoundingClientRect()
+        if (tr.width > 0 && lr.width > 0) {
+          logoEl.style.transition = 'opacity .2s ease, transform .8s cubic-bezier(.72,.02,.26,1)'
+          logoEl.style.transform = `translate(${tr.left - lr.left}px, ${tr.top - lr.top}px) scale(${tr.width / lr.width})`
         }
-        bgEl.style.transition = 'opacity .6s ease .18s'
-        bgEl.style.opacity = '0'
-        doneTimer = setTimeout(() => onDoneRef.current(), 880)
-      })
+      }
+      bgEl.style.transition = 'opacity .6s ease .18s'
+      bgEl.style.opacity = '0'
+      doneTimer = setTimeout(() => onDoneRef.current(), 880)
     }
 
     const skip = () => startHandoff()

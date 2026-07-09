@@ -3,6 +3,7 @@ import Background from './components/Background.jsx'
 import Header from './components/Header.jsx'
 import Ticker from './components/Ticker.jsx'
 import CinematicIntro, { INTRO_SEEN_KEY } from './components/CinematicIntro.jsx'
+import VideoIntro from './components/VideoIntro.jsx'
 import Overview from './views/Overview.jsx'
 import BracketView from './views/BracketView.jsx'
 import Groups from './views/Groups.jsx'
@@ -19,6 +20,27 @@ const VALID_VIEWS = new Set(['overview', 'bracket', 'groups', 'fixtures', 'match
 
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// The generated brand film is a 16:9 piece shown with object-fit: cover.
+// Use it whenever the logo's known end-frame position (see VideoIntro EF)
+// still fits fully on screen under the cover crop; otherwise (narrow
+// portrait phones) fall back to the canvas cinematic. Dev-only
+// ?introt/?forcecanvas force the canvas version (used for tuning and by
+// the humanize loop).
+const useVideoIntro = () => {
+  if (import.meta.env.DEV) {
+    const q = new URLSearchParams(window.location.search)
+    if (q.has('introt') || q.has('forcecanvas')) return false
+  }
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const scale = Math.max(vw / 1920, vh / 1080)
+  const left = (vw - 1920 * scale) / 2 + 510 * scale
+  const size = 900 * scale
+  const fits = left >= 12 && left + size <= vw - 12
+  if (import.meta.env.DEV) window.__introChoice = fits ? 'video' : 'canvas'
+  return fits
+}
 
 export default function App() {
   const { data } = useData()
@@ -129,7 +151,12 @@ export default function App() {
         {view === 'players' && <Players />}
       </div>
       <Ticker />
-      {intro === 'playing' && <CinematicIntro onDone={() => setIntro('done')} />}
+      {intro === 'playing' &&
+        (useVideoIntro() ? (
+          <VideoIntro onDone={() => setIntro('done')} />
+        ) : (
+          <CinematicIntro onDone={() => setIntro('done')} />
+        ))}
     </div>
   )
 }
