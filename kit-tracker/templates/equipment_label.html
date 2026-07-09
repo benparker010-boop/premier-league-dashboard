@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ equipment.kit_id }} label · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="page-head no-print">
+  <h1>QR label</h1>
+</div>
+
+<div class="label-card">
+  <img class="label-qr" src="{{ url_for('equipment_qr', equipment_id=equipment.id) }}"
+       alt="QR code for {{ equipment.kit_id }}">
+  <div class="label-id mono">{{ equipment.kit_id }}</div>
+  <div class="label-name">{{ equipment.name }}</div>
+  <div class="label-cat muted">{{ equipment.category }}</div>
+</div>
+
+<div class="btn-row no-print center">
+  <button type="button" class="btn btn-primary" onclick="window.print()">🖨 Print label</button>
+  <a class="btn" href="{{ url_for('equipment_new') }}">＋ Add another</a>
+  <a class="btn" href="{{ url_for('equipment_list') }}">Back to inventory</a>
+</div>
+
+{% endblock %}

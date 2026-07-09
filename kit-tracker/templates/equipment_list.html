@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Inventory · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <h1>Inventory</h1>
+  <a class="btn btn-primary" href="{{ url_for('equipment_new') }}">＋ Add equipment</a>
+</div>
+
+<form method="get" class="filter-row">
+  <select name="category" onchange="this.form.submit()">
+    <option value="">All categories</option>
+    {% for c in categories %}
+      <option value="{{ c }}" {% if c == selected_category %}selected{% endif %}>{{ c }}</option>
+    {% endfor %}
+  </select>
+  <select name="status" onchange="this.form.submit()">
+    <option value="">All statuses</option>
+    {% for s in statuses %}
+      <option value="{{ s }}" {% if s == selected_status %}selected{% endif %}>{{ s }}</option>
+    {% endfor %}
+  </select>
+  {% if selected_category or selected_status %}
+    <a class="btn btn-small" href="{{ url_for('equipment_list') }}">Clear</a>
+  {% endif %}
+</form>
+
+{% if items %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Category</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+          <tr>
+            <td class="mono">{{ item.kit_id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td><span class="badge badge-{{ badge_class(item.status) }}">{{ item.status }}</span></td>
+            <td><a class="btn btn-small" href="{{ url_for('equipment_label', equipment_id=item.id) }}">Label</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="empty">No equipment matches these filters.</p>
+{% endif %}
+
+{% endblock %}

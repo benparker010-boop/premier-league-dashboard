@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}New job · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>New job</h1>
+
+<form method="post" class="form card">
+  <label>
+    Job name *
+    <input type="text" name="job_name" required maxlength="120" placeholder="e.g. Henderson wedding" autofocus>
+  </label>
+  <label>
+    Client *
+    <input type="text" name="client_name" required maxlength="120" placeholder="e.g. Riverside Hotel">
+  </label>
+  <label>
+    Location
+    <input type="text" name="location" maxlength="200" placeholder="e.g. Riverside Hotel Ballroom, Bristol">
+  </label>
+  <div class="form-row">
+    <label>
+      Setup date
+      <input type="date" name="setup_date" value="{{ today }}">
+    </label>
+    <label>
+      Collection date
+      <input type="date" name="collection_date">
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Create job</button>
+</form>
+
+{% endblock %}

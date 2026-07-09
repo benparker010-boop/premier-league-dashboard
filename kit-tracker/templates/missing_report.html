@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Missing items · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>⚠️ Missing items</h1>
+
+{% if rows %}
+  <div class="card-list">
+    {% for row in rows %}
+      <div class="card missing-card">
+        <div class="job-card-head">
+          <strong>{{ row.equipment.name }}</strong>
+          <span class="mono muted">{{ row.equipment.kit_id }}</span>
+        </div>
+        <div class="muted small">{{ row.equipment.category }}</div>
+        {% if row.scan %}
+          <div class="small">
+            Last scanned on
+            <a href="{{ url_for('job_detail', job_id=row.job.id) }}">{{ row.job.job_name }}</a>
+            {% if row.job.location %}({{ row.job.location }}){% endif %}<br>
+            <span class="muted">{{ row.scan.scan_type }} scan by {{ row.scan.staff_name }} · {{ row.scan.timestamp|dt }}</span>
+          </div>
+        {% else %}
+          <div class="muted small">Never scanned onto a job.</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">🎉 Nothing is missing. All equipment is accounted for.</p>
+{% endif %}
+
+{% endblock %}

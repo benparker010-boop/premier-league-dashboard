@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Collection scan · {{ job.job_name }} · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h1>📥 Collection scan</h1>
+    <p class="muted">{{ job.job_name }} · {{ job.client_name }}</p>
+  </div>
+  <span id="job-badge" class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+</div>
+
+{% with scan_type = 'COLLECTION' %}{% include '_scanner.html' %}{% endwith %}
+
+<h2>Expected kit</h2>
+<div class="progress-wrap">
+  <div class="progress"><div id="progress-fill" class="progress-fill"
+    style="width: {{ (counts.collected / counts.expected * 100) if counts.expected else 0 }}%"></div></div>
+  <span id="progress-text" class="muted small"
+        data-expected="{{ counts.expected }}" data-collected="{{ counts.collected }}">
+    {{ counts.collected }} of {{ counts.expected }} collected
+  </span>
+</div>
+
+{% if rows %}
+  <ul id="expected-list" class="kit-list">
+    {% for row in rows %}
+      <li class="kit-item {% if row.collection %}done{% endif %}" data-eqid="{{ row.equipment.id }}">
+        <span class="kit-state">{% if row.collection %}✅{% else %}⭕{% endif %}</span>
+        <span class="kit-body">
+          <strong>{{ row.equipment.name }}</strong>
+          <span class="mono muted">{{ row.equipment.kit_id }}</span>
+          <span class="muted small kit-meta">
+            {% if row.collection %}
+              Collected by {{ row.collection.staff_name }} · {{ row.collection.timestamp|dt }}
+            {% else %}
+              Not collected yet
+            {% endif %}
+          </span>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if job.status != 'Completed' %}
+    <form id="complete-form" method="post"
+          action="{{ url_for('collection_complete', job_id=job.id) }}">
+      <button type="submit" class="btn btn-danger btn-block">
+        Mark collection complete
+      </button>
+      <p class="muted small center">Anything still unscanned will be flagged as Missing.</p>
+    </form>
+  {% endif %}
+{% else %}
+  <p class="empty">This job has no kit list — nothing was setup-scanned.</p>
+{% endif %}
+
+<div class="btn-row">
+  <a class="btn" href="{{ url_for('job_detail', job_id=job.id) }}">View job</a>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {% if not closed %}
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+  {% endif %}
+{% endblock %}

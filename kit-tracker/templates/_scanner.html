@@ -1,0 +1,39 @@
+{# Shared scanner block. Expects: job, scan_type ('SETUP'|'COLLECTION'), staff, closed #}
+<div id="scan-root"
+     data-job-id="{{ job.id }}"
+     data-scan-type="{{ scan_type }}"
+     data-endpoint="{{ url_for('api_scan') }}">
+
+  {% if closed %}
+    <div class="flash flash-info">
+      This job is {{ job.status }} — scanning is read-only here.
+      <a href="{{ url_for('job_detail', job_id=job.id) }}">View the job</a> instead.
+    </div>
+  {% else %}
+    <div class="card scanner-card">
+      <label class="staff-row">
+        Scanning as
+        <select id="staff-select">
+          <option value="" selected disabled>— choose your name —</option>
+          {% for name in staff %}
+            <option value="{{ name }}">{{ name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <div id="reader" class="reader"></div>
+
+      <button id="camera-toggle" type="button" class="btn btn-primary btn-block" disabled>
+        📷 Start camera
+      </button>
+
+      <form id="manual-form" class="manual-row" autocomplete="off">
+        <input id="manual-code" type="text" placeholder="Or type a code, e.g. KIT-0042 or 42"
+               autocapitalize="characters" autocorrect="off" spellcheck="false">
+        <button type="submit" class="btn">Add</button>
+      </form>
+    </div>
+
+    <div id="scan-banner" class="scan-banner" hidden></div>
+  {% endif %}
+</div>

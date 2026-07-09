@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Setup scan · {{ job.job_name }} · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="page-head">
+  <div>
+    <h1>📤 Setup scan</h1>
+    <p class="muted">{{ job.job_name }} · {{ job.client_name }}</p>
+  </div>
+  <span class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+</div>
+
+{% with scan_type = 'SETUP' %}{% include '_scanner.html' %}{% endwith %}
+
+<h2>Kit list <span id="kit-count" class="count-pill">{{ counts.expected }}</span></h2>
+<ul id="scan-list" class="kit-list">
+  {% for row in rows %}
+    <li class="kit-item" data-eqid="{{ row.equipment.id }}">
+      <span class="kit-state">📦</span>
+      <span class="kit-body">
+        <strong>{{ row.equipment.name }}</strong>
+        <span class="mono muted">{{ row.equipment.kit_id }}</span>
+        <span class="muted small">by {{ row.setup.staff_name }} · {{ row.setup.timestamp|dt }}</span>
+      </span>
+    </li>
+  {% endfor %}
+</ul>
+{% if not rows %}
+  <p class="empty" id="empty-hint">Nothing scanned yet — point the camera at an item's QR label.</p>
+{% endif %}
+
+<div class="btn-row">
+  <a class="btn" href="{{ url_for('job_detail', job_id=job.id) }}">Done — view job</a>
+  {% if job.status == 'Setup in Progress' %}
+    <form method="post" action="{{ url_for('setup_complete', job_id=job.id) }}">
+      <button type="submit" class="btn">Mark setup complete</button>
+    </form>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {% if not closed %}
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="tiles">
+  <a class="tile" href="{{ url_for('jobs_list') }}">
+    <span class="tile-num">{{ stats.active_jobs }}</span>
+    <span class="tile-label">Active jobs</span>
+  </a>
+  <a class="tile {% if stats.jobs_missing %}tile-danger{% endif %}" href="{{ url_for('jobs_list') }}">
+    <span class="tile-num">{{ stats.jobs_missing }}</span>
+    <span class="tile-label">Jobs with missing items</span>
+  </a>
+  <a class="tile" href="{{ url_for('equipment_list', status='Out on Job') }}">
+    <span class="tile-num">{{ stats.equipment_out }}</span>
+    <span class="tile-label">Items out on jobs</span>
+  </a>
+  <a class="tile {% if stats.equipment_missing %}tile-danger{% endif %}" href="{{ url_for('missing_report') }}">
+    <span class="tile-num">{{ stats.equipment_missing }}</span>
+    <span class="tile-label">Items missing</span>
+  </a>
+</div>
+
+<div class="quick-actions">
+  <a class="btn btn-primary" href="{{ url_for('job_new') }}">＋ New job</a>
+  <a class="btn" href="{{ url_for('setup_pick') }}">📤 Setup scan</a>
+  <a class="btn" href="{{ url_for('collection_pick') }}">📥 Collection scan</a>
+  <a class="btn" href="{{ url_for('equipment_new') }}">🏷 Add equipment</a>
+</div>
+
+<h2>Active jobs</h2>
+{% if jobs %}
+  <div class="card-list">
+    {% for job, counts in jobs %}
+      <a class="card job-card" href="{{ url_for('job_detail', job_id=job.id) }}">
+        <div class="job-card-head">
+          <strong>{{ job.job_name }}</strong>
+          <span class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+        </div>
+        <div class="muted">{{ job.client_name }}{% if job.location %} · {{ job.location }}{% endif %}</div>
+        <div class="muted small">
+          {{ counts.expected }} item{{ '' if counts.expected == 1 else 's' }} in kit
+          {% if job.status in ('Collection in Progress', 'Items Missing') %}
+            · {{ counts.collected }}/{{ counts.expected }} collected
+          {% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">No active jobs. <a href="{{ url_for('job_new') }}">Create one</a> to get started.</p>
+{% endif %}
+
+{% endblock %}

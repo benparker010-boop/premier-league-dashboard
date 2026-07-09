@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+{% if jobs %}
+  <div class="card-list">
+    {% for job in jobs %}
+      <a class="card job-card"
+         href="{{ url_for('setup_mode', job_id=job.id) if mode == 'setup' else url_for('collection_mode', job_id=job.id) }}">
+        <div class="job-card-head">
+          <strong>{{ job.job_name }}</strong>
+          <span class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+        </div>
+        <div class="muted">{{ job.client_name }}{% if job.location %} · {{ job.location }}{% endif %}</div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">{{ empty_hint }}</p>
+{% endif %}
+
+{% endblock %}

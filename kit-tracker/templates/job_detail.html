@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{{ job.job_name }} · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="card">
+  <div class="job-card-head">
+    <h1>{{ job.job_name }}</h1>
+    <span class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+  </div>
+  <p class="muted">
+    {{ job.client_name }}{% if job.location %} · {{ job.location }}{% endif %}<br>
+    Setup {{ job.setup_date|d }} · Collection {{ job.collection_date|d }}
+  </p>
+
+  <div class="btn-row">
+    {% if job.status in ('Setup in Progress', 'Live') %}
+      <a class="btn btn-primary" href="{{ url_for('setup_mode', job_id=job.id) }}">📤 Setup scan</a>
+    {% endif %}
+    {% if job.status != 'Completed' %}
+      <a class="btn btn-primary" href="{{ url_for('collection_mode', job_id=job.id) }}">📥 Collection scan</a>
+    {% endif %}
+    {% if job.status == 'Setup in Progress' and counts.expected > 0 %}
+      <form method="post" action="{{ url_for('setup_complete', job_id=job.id) }}">
+        <button type="submit" class="btn">Mark setup complete</button>
+      </form>
+    {% endif %}
+    {% if job.status == 'Collection in Progress' %}
+      <form method="post" action="{{ url_for('setup_reopen', job_id=job.id) }}">
+        <button type="submit" class="btn btn-small">Reopen setup scanning</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<h2>Kit list
+  <span class="muted small">
+    {{ counts.expected }} item{{ '' if counts.expected == 1 else 's' }}
+    {% if job.status not in ('Setup in Progress', 'Live') %}
+      · {{ counts.collected }} collected
+    {% endif %}
+  </span>
+</h2>
+
+{% if rows %}
+  <ul class="kit-list">
+    {% for row in rows %}
+      <li class="kit-item {% if row.collection %}done{% elif finalized %}missing{% endif %}">
+        <span class="kit-state">
+          {% if row.collection %}✅{% elif finalized %}🚩{% else %}⭕{% endif %}
+        </span>
+        <span class="kit-body">
+          <strong>{{ row.equipment.name }}</strong>
+          <span class="mono muted">{{ row.equipment.kit_id }}</span>
+          <span class="muted small">
+            Set up by {{ row.setup.staff_name }} · {{ row.setup.timestamp|dt }}
+            {% if row.collection %}
+              <br>Collected by {{ row.collection.staff_name }} · {{ row.collection.timestamp|dt }}
+            {% elif finalized %}
+              <br><strong class="danger-text">Still missing</strong>
+            {% endif %}
+          </span>
+        </span>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="empty">No items scanned onto this job yet.
+    {% if job.status in ('Setup in Progress', 'Live') %}
+      <a href="{{ url_for('setup_mode', job_id=job.id) }}">Start setup scanning</a>.
+    {% endif %}
+  </p>
+{% endif %}
+
+{% endblock %}

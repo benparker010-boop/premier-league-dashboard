@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Add equipment · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>Add equipment</h1>
+
+<form method="post" class="form card">
+  <label>
+    Name *
+    <input type="text" name="name" required maxlength="120"
+           placeholder="e.g. QSC K12.2 Powered Speaker" autofocus>
+  </label>
+  <label>
+    Category
+    <select name="category">
+      {% for c in categories %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button type="submit" class="btn btn-primary btn-block">Add &amp; generate QR label</button>
+</form>
+
+{% endblock %}
