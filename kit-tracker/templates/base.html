@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b5fff">
   <title>{% block title %}Kit Tracker{% endblock %}</title>
+  <link rel="manifest" href="{{ url_for('manifest') }}">
+  <link rel="icon" href="{{ url_for('static', filename='icons/favicon-32.png') }}" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kit Tracker">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -19,6 +26,11 @@
     <a href="{{ url_for('collection_pick') }}" {% if request.path == '/collection' %}class="active"{% endif %}>Collect</a>
     <a href="{{ url_for('equipment_list') }}" {% if request.path.startswith('/equipment') %}class="active"{% endif %}>Inventory</a>
     <a href="{{ url_for('missing_report') }}" {% if request.path == '/missing' %}class="active"{% endif %}>Missing</a>
+    {% if auth_enabled %}
+      <form class="nav-logout" method="post" action="{{ url_for('logout') }}">
+        <button type="submit">Log out</button>
+      </form>
+    {% endif %}
   </nav>
 
   <main>
@@ -41,6 +53,12 @@
         });
       }
     });
+    // Register the service worker so the app is installable to the home screen.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/sw.js").catch(function () { /* ignore */ });
+      });
+    }
   </script>
   {% block scripts %}{% endblock %}
 </body>

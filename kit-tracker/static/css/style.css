@@ -361,6 +361,26 @@ tbody tr:last-child td { border-bottom: none; }
   }
 }
 
+/* ---------- login ---------- */
+
+.login-main { max-width: 380px; }
+.login-brand { text-align: center; margin: 24px 0 8px; }
+.login-brand img { border-radius: 20px; box-shadow: 0 4px 14px rgba(11, 95, 255, 0.25); }
+.login-brand h1 { margin: 12px 0 2px; }
+
+.nav-logout { margin-left: auto; display: flex; align-items: center; }
+.nav-logout button {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.nav-logout button:active { color: var(--brand); }
+
 /* ---------- wider screens ---------- */
 
 @media (min-width: 560px) {

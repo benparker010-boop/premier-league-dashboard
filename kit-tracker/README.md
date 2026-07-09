@@ -28,6 +28,35 @@ in-flight demo job, so every screen is testable immediately:
 
 To start fresh, delete `instance/kit_tracker.sqlite` and restart.
 
+## Use it for real (deploy + install on phones)
+
+For the business, host it once on Railway and have staff add it to their home
+screen — full setup is in **[DEPLOY.md](DEPLOY.md)**. In short:
+
+1. Deploy the `kit-tracker/` folder to [Railway](https://railway.app) (Nixpacks
+   auto-builds it; `Procfile` + `railway.json` provide the gunicorn command and
+   a `/healthz` check). Any host that runs a Python web process over HTTPS works
+   — Render, Fly.io, PythonAnywhere.
+2. Mount a **Volume at `/data`** and set three environment variables:
+   `DATABASE_URL=sqlite:////data/kit_tracker.sqlite`, a random `SECRET_KEY`, and
+   `KIT_TRACKER_PASSWORD` (the shared team password).
+3. Open the HTTPS URL on a phone → **Add to Home Screen**. It installs as a
+   standalone app (its own icon, full-screen, camera works because it's HTTPS).
+
+### Shared-password gate
+
+There are no per-user accounts (by design). Instead, when the
+`KIT_TRACKER_PASSWORD` environment variable is set, the whole app sits behind a
+single shared-password sign-in — **set it before exposing Kit Tracker on any
+public URL.** Left unset (local `localhost` use), the app is open. The login
+session lasts 30 days per device, and a **Log out** link appears in the nav.
+
+### Installable web app (PWA)
+
+The app ships a web manifest, icons, and a service worker, so it's installable
+to the home screen and loads fast. It is *not* an offline app — every scan needs
+the network (offline support is deliberately out of scope).
+
 ## ⚠️ Camera access needs HTTPS
 
 Browsers only expose the camera in a *secure context*:

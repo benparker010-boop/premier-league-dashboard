@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b5fff">
+  <title>Sign in · Kit Tracker</title>
+  <link rel="icon" href="{{ url_for('static', filename='icons/favicon-32.png') }}" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('manifest') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <main class="login-main">
+    <div class="login-brand">
+      <img src="{{ url_for('static', filename='icons/icon-192.png') }}" alt="" width="72" height="72">
+      <h1>Kit Tracker</h1>
+      <p class="muted">Sign in with the team password.</p>
+    </div>
+
+    {% if error %}<div class="flash flash-error">{{ error }}</div>{% endif %}
+
+    <form method="post" class="form card">
+      <label>
+        Password
+        <input type="password" name="password" required autofocus
+               autocomplete="current-password" autocapitalize="off">
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+  </main>
+</body>
+</html>

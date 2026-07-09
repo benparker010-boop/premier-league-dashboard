@@ -1,7 +1,9 @@
 """Kit Tracker — scan equipment out to jobs and back in again."""
+import hmac
 import io
+import os
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import qrcode
 import qrcode.constants
@@ -16,6 +18,7 @@ from flask import (
     render_template,
     request,
     send_file,
+    session,
     url_for,
 )
 
@@ -30,15 +33,69 @@ from models import (
 )
 from seed import seed_if_empty
 
+
+def _database_uri():
+    """Where the SQLite file lives.
+
+    In production (e.g. Railway) set DATABASE_URL to a path on a mounted
+    volume so data survives redeploys, e.g.
+    ``sqlite:////data/kit_tracker.sqlite``. Locally it defaults to a file in
+    the Flask instance folder.
+    """
+    url = os.environ.get("DATABASE_URL")
+    if url:
+        # Make sure the target directory exists for an absolute sqlite path.
+        if url.startswith("sqlite:////"):
+            path = url[len("sqlite:///"):]  # keep the leading slash
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+        return url
+    return "sqlite:///kit_tracker.sqlite"
+
+
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "kit-tracker-dev"  # only used for flash messages
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///kit_tracker.sqlite"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "kit-tracker-dev")
+app.config["SQLALCHEMY_DATABASE_URI"] = _database_uri()
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
+
+# Optional shared-password gate. When KIT_TRACKER_PASSWORD is set (required on
+# any public URL), every page needs a one-time shared-password login. Left
+# unset locally, the app is open — matching the "no accounts" brief for
+# warehouse-LAN use.
+APP_PASSWORD = os.environ.get("KIT_TRACKER_PASSWORD", "").strip()
+AUTH_ENABLED = bool(APP_PASSWORD)
 
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
     seed_if_empty()
+
+if AUTH_ENABLED and app.config["SECRET_KEY"] == "kit-tracker-dev":
+    app.logger.warning(
+        "KIT_TRACKER_PASSWORD is set but SECRET_KEY is the insecure default — "
+        "set a strong random SECRET_KEY env var so login sessions can't be forged."
+    )
+elif not AUTH_ENABLED:
+    app.logger.warning(
+        "KIT_TRACKER_PASSWORD is not set — the app is UNPROTECTED. Set it before "
+        "exposing Kit Tracker on a public URL."
+    )
+
+# Endpoints reachable without logging in.
+PUBLIC_ENDPOINTS = {"login", "static", "service_worker", "manifest", "healthz"}
+
+
+@app.before_request
+def require_login():
+    if not AUTH_ENABLED:
+        return None
+    if request.endpoint in PUBLIC_ENDPOINTS:
+        return None
+    if session.get("authed"):
+        return None
+    if request.path.startswith("/api/"):
+        return jsonify(result="error", message="Session expired — please log in again."), 401
+    return redirect(url_for("login", next=request.path))
 
 # QR labels encode e.g. "KIT-0042"; tolerate missing dash / leading zeros.
 # Digit count is capped so absurd numbers fall through to "not recognized"
@@ -129,7 +186,65 @@ def fmt_d(value):
 
 @app.context_processor
 def inject_helpers():
-    return {"badge_class": lambda status: BADGE_CLASSES.get(status, "muted")}
+    return {
+        "badge_class": lambda status: BADGE_CLASSES.get(status, "muted"),
+        "auth_enabled": AUTH_ENABLED,
+    }
+
+
+# ---------------------------------------------------------------- auth / PWA
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if not AUTH_ENABLED or session.get("authed"):
+        return redirect(url_for("dashboard"))
+    error = None
+    if request.method == "POST":
+        supplied = (request.form.get("password") or "").encode("utf-8")
+        expected = APP_PASSWORD.encode("utf-8")
+        if hmac.compare_digest(supplied, expected):
+            session["authed"] = True
+            session.permanent = True
+            target = request.args.get("next") or url_for("dashboard")
+            # Only allow same-site relative redirects.
+            if not target.startswith("/"):
+                target = url_for("dashboard")
+            return redirect(target)
+        error = "Incorrect password."
+    return render_template("login.html", error=error)
+
+
+@app.post("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.route("/healthz")
+def healthz():
+    # Cheap liveness probe for Railway's healthcheck.
+    return "ok", 200
+
+
+@app.route("/sw.js")
+def service_worker():
+    # Served from the site root so its scope covers the whole app.
+    response = send_file(
+        os.path.join(app.static_folder, "sw.js"), mimetype="application/javascript"
+    )
+    response.headers["Service-Worker-Allowed"] = "/"
+    response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
+@app.route("/manifest.webmanifest")
+def manifest():
+    response = send_file(
+        os.path.join(app.static_folder, "manifest.webmanifest"),
+        mimetype="application/manifest+json",
+    )
+    response.headers["Cache-Control"] = "no-cache"
+    return response
 
 
 # ---------------------------------------------------------------- dashboard
@@ -599,6 +714,10 @@ def missing_report():
 
 
 if __name__ == "__main__":
+    # Local dev server. In production Kit Tracker is served by gunicorn
+    # (see Procfile) which imports `app` directly and never runs this block.
     # Camera access requires a secure context: localhost is fine in dev, but
     # phones on the LAN need HTTPS — see README for options.
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", "5000"))
+    debug = os.environ.get("FLASK_DEBUG", "1") == "1"
+    app.run(debug=debug, host="0.0.0.0", port=port)
