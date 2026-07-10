@@ -1365,9 +1365,9 @@
   "hCol": "#c3cfdc",
   "aCode": "BEL",
   "aCol": "#e8475e",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
+  "sh": 2,
+  "sa": 1,
+  "status": "done",
   "matchId": "mt_019700887",
   "group": false
  },

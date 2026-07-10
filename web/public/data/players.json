@@ -77,7 +77,7 @@
    "nation": "Spain",
    "goals": 4,
    "assists": 1,
-   "xg": 2.9,
+   "xg": 3.0,
    "yc": 0
   },
   {
@@ -188,6 +188,16 @@
    "goals": 3,
    "assists": 1,
    "xg": 1.6,
+   "yc": 0
+  },
+  {
+   "name": "Charles De Ketelaere",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 3,
+   "assists": 1,
+   "xg": 1.5,
    "yc": 0
   },
   {
@@ -311,16 +321,6 @@
    "yc": 0
   },
   {
-   "name": "Youri Tielemans",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 2,
-   "assists": 0,
-   "xg": 1.4,
-   "yc": 0
-  },
-  {
    "name": "Riyad Mahrez",
    "code": "ALG",
    "color": "#f5c451",
@@ -331,20 +331,20 @@
    "yc": 0
   },
   {
-   "name": "Mostafa Ziko",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
+   "name": "Mikel Merino",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
    "goals": 2,
-   "assists": 1,
+   "assists": 0,
    "xg": 1.3,
    "yc": 0
   },
   {
-   "name": "Charles De Ketelaere",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
+   "name": "Mostafa Ziko",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
    "goals": 2,
    "assists": 1,
    "xg": 1.3,
@@ -547,8 +547,18 @@
    "nation": "Spain",
    "goals": 1,
    "assists": 0,
-   "xg": 1.3,
+   "xg": 1.5,
    "yc": 0
+  },
+  {
+   "name": "Kevin De Bruyne",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 1,
+   "assists": 0,
+   "xg": 1.2,
+   "yc": 1
   },
   {
    "name": "Gonzalo Plata",
@@ -568,16 +578,6 @@
    "goals": 1,
    "assists": 1,
    "xg": 1.2,
-   "yc": 0
-  },
-  {
-   "name": "Kevin De Bruyne",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 1,
-   "assists": 0,
-   "xg": 1.1,
    "yc": 0
   },
   {
@@ -691,6 +691,26 @@
    "yc": 0
   },
   {
+   "name": "Pedro Porro",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.8,
+   "yc": 0
+  },
+  {
+   "name": "Fabián Ruiz",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.8,
+   "yc": 0
+  },
+  {
    "name": "Neymar",
    "code": "BRA",
    "color": "#5b8cff",
@@ -745,26 +765,6 @@
    "code": "ARG",
    "color": "#c3cfdc",
    "nation": "Argentina",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Pedro Porro",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Mikel Merino",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 1,
    "assists": 0,
    "xg": 0.7,
@@ -931,6 +931,16 @@
    "yc": 0
   },
   {
+   "name": "Alex Baena",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.5,
+   "yc": 1
+  },
+  {
    "name": "Cristian Romero",
    "code": "ARG",
    "color": "#c3cfdc",
@@ -1021,16 +1031,6 @@
    "yc": 1
   },
   {
-   "name": "Mahmoud Trézéguet",
-   "code": "EGY",
-   "color": "#5b8cff",
-   "nation": "Egypt",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Hans Vanaken",
    "code": "BEL",
    "color": "#e8475e",
@@ -1041,14 +1041,14 @@
    "yc": 0
   },
   {
-   "name": "Alex Baena",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
+   "name": "Mahmoud Trézéguet",
+   "code": "EGY",
+   "color": "#5b8cff",
+   "nation": "Egypt",
    "goals": 1,
    "assists": 1,
    "xg": 0.4,
-   "yc": 1
+   "yc": 0
   },
   {
    "name": "Mateo Chávez",
@@ -1231,16 +1231,6 @@
    "yc": 0
   },
   {
-   "name": "Issa Diop",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 3
-  },
-  {
    "name": "Alexis Saelemaekers",
    "code": "BEL",
    "color": "#e8475e",
@@ -1249,6 +1239,16 @@
    "assists": 0,
    "xg": 0.2,
    "yc": 0
+  },
+  {
+   "name": "Issa Diop",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 3
   },
   {
    "name": "Giovanni Reyna",
@@ -1751,6 +1751,16 @@
    "yc": 0
   },
   {
+   "name": "Maxim De Cuyper",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 1.1,
+   "yc": 1
+  },
+  {
    "name": "Jean-Philippe Mateta",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -1769,16 +1779,6 @@
    "assists": 0,
    "xg": 1.1,
    "yc": 0
-  },
-  {
-   "name": "Maxim De Cuyper",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 1.0,
-   "yc": 1
   },
   {
    "name": "Bruno Fernandes",
@@ -1938,6 +1938,16 @@
    "goals": 0,
    "assists": 3,
    "xg": 0.8,
+   "yc": 0
+  },
+  {
+   "name": "Dani Olmo",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.7,
    "yc": 0
   },
   {
@@ -2171,6 +2181,16 @@
    "yc": 0
   },
   {
+   "name": "Brandon Mechele",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 1
+  },
+  {
    "name": "Dayot Upamecano",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -2231,32 +2251,12 @@
    "yc": 0
   },
   {
-   "name": "Brandon Mechele",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.5,
-   "yc": 1
-  },
-  {
    "name": "Brenden Aaronson",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
    "goals": 0,
    "assists": 0,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
-   "name": "Dani Olmo",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.5,
    "yc": 0
   },
@@ -2341,6 +2341,26 @@
    "yc": 1
   },
   {
+   "name": "Rodri",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Dodi Lukebakio",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
    "name": "Brahim Díaz",
    "code": "MAR",
    "color": "#e8475e",
@@ -2369,16 +2389,6 @@
    "assists": 0,
    "xg": 0.4,
    "yc": 1
-  },
-  {
-   "name": "Dodi Lukebakio",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
   },
   {
    "name": "Ricardo Pepi",
@@ -2581,6 +2591,26 @@
    "yc": 0
   },
   {
+   "name": "Marc Cucurella",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 2,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
+   "name": "Matías Fernández-Pardo",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
    "name": "Bilal El Khannouss",
    "code": "MAR",
    "color": "#e8475e",
@@ -2615,36 +2645,6 @@
    "code": "ARG",
    "color": "#c3cfdc",
    "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Matías Fernández-Pardo",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Marc Cucurella",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Fabián Ruiz",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
@@ -2931,6 +2931,56 @@
    "yc": 1
   },
   {
+   "name": "Pau Cubarsí",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 1
+  },
+  {
+   "name": "Aymeric Laporte",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.2,
+   "yc": 1
+  },
+  {
+   "name": "Jérémy Doku",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Pedri",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 1
+  },
+  {
+   "name": "Arthur Theate",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
    "name": "Manu Koné",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -3037,56 +3087,6 @@
    "nation": "Egypt",
    "goals": 0,
    "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Jérémy Doku",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Arthur Theate",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Pedri",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 1
-  },
-  {
-   "name": "Rodri",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Aymeric Laporte",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.2,
    "yc": 0
   },
@@ -3681,6 +3681,56 @@
    "yc": 0
   },
   {
+   "name": "Timothy Castagne",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Nathan Ngoy",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Nicolas Raskin",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 2,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Pablo Gavi",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Thomas Meunier",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
    "name": "Jules Koundé",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -3851,16 +3901,6 @@
    "yc": 0
   },
   {
-   "name": "Timothy Castagne",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "Amadou Onana",
    "code": "BEL",
    "color": "#e8475e",
@@ -3871,42 +3911,12 @@
    "yc": 0
   },
   {
-   "name": "Nathan Ngoy",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Nicolas Raskin",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Sergiño Dest",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
    "goals": 0,
    "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Thomas Meunier",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.1,
    "yc": 0
   },
@@ -3925,16 +3935,6 @@
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Pau Cubarsí",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
@@ -3965,16 +3965,6 @@
    "code": "POR",
    "color": "#5ec8e0",
    "nation": "Portugal",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Pablo Gavi",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
    "goals": 0,
    "assists": 0,
    "xg": 0.1,
@@ -5541,6 +5531,196 @@
    "yc": 0
   },
   {
+   "name": "Unai Simón",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Thibaut Courtois",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nico Williams",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Senne Lammens",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Joaquin Seys",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Axel Witsel",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "David Raya",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Joan García",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Eric García",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marcos Llorente",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marc Pubill",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Alejandro Grimaldo",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Martín Zubimendi",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Borja Iglesias",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Yéremy Pino",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Víctor Muñoz",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Mike Penders",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Koni De Winter",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Diego Moreira",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Mike Maignan",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -6261,16 +6441,6 @@
    "yc": 0
   },
   {
-   "name": "Thibaut Courtois",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Chris Richards",
    "code": "USA",
    "color": "#5ec8e0",
@@ -6321,16 +6491,6 @@
    "yc": 1
   },
   {
-   "name": "Axel Witsel",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Maximilian Arfsten",
    "code": "USA",
    "color": "#5ec8e0",
@@ -6351,57 +6511,7 @@
    "yc": 0
   },
   {
-   "name": "Mike Penders",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Senne Lammens",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Joaquin Seys",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Koni De Winter",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Zeno Debast",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Diego Moreira",
    "code": "BEL",
    "color": "#e8475e",
    "nation": "Belgium",
@@ -6461,16 +6571,6 @@
    "yc": 0
   },
   {
-   "name": "Unai Simón",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Pedro Neto",
    "code": "POR",
    "color": "#5ec8e0",
@@ -6501,16 +6601,6 @@
    "yc": 1
   },
   {
-   "name": "Borja Iglesias",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Diogo Dalot",
    "code": "POR",
    "color": "#5ec8e0",
@@ -6529,106 +6619,6 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 1
-  },
-  {
-   "name": "David Raya",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Joan García",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marc Pubill",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Eric García",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marcos Llorente",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Alejandro Grimaldo",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Martín Zubimendi",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nico Williams",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Yéremy Pino",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Víctor Muñoz",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
   },
   {
    "name": "José Sá",
@@ -12482,9 +12472,9 @@
   }
  ],
  "totals": {
-  "goals": 268,
-  "xg": 244.1,
-  "assists": 204,
-  "tracked": 1248
+  "goals": 269,
+  "xg": 245.2,
+  "assists": 205,
+  "tracked": 1247
  }
 }
