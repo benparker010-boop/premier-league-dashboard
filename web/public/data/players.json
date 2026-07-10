@@ -2951,7 +2951,7 @@
    "yc": 0
   },
   {
-   "name": "Ayoub El Kaabi",
+   "name": "Ayoube Amaimouni Echghouyab",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
@@ -2961,7 +2961,7 @@
    "yc": 0
   },
   {
-   "name": "Ayoube Amaimouni Echghouyab",
+   "name": "Ayoub El Kaabi",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
@@ -5571,7 +5571,7 @@
    "yc": 0
   },
   {
-   "name": "Yassine Bounou",
+   "name": "Noussair Mazraoui",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
@@ -5581,7 +5581,7 @@
    "yc": 0
   },
   {
-   "name": "Noussair Mazraoui",
+   "name": "Yassine Bounou",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
@@ -5641,16 +5641,6 @@
    "yc": 0
   },
   {
-   "name": "Robin Risser",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Brice Samba",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -5661,7 +5651,7 @@
    "yc": 0
   },
   {
-   "name": "Ibrahima Konaté",
+   "name": "Robin Risser",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5681,6 +5671,16 @@
    "yc": 0
   },
   {
+   "name": "Ibrahima Konaté",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Maxence Lacroix",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -5691,7 +5691,7 @@
    "yc": 0
   },
   {
-   "name": "Rayan Cherki",
+   "name": "N'Golo Kanté",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5701,7 +5701,7 @@
    "yc": 0
   },
   {
-   "name": "N'Golo Kanté",
+   "name": "Rayan Cherki",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5761,16 +5761,6 @@
    "yc": 0
   },
   {
-   "name": "Marwane Saadane",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Youssef Belammari",
    "code": "MAR",
    "color": "#e8475e",
@@ -5789,6 +5779,16 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 1
+  },
+  {
+   "name": "Marwane Saadane",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
   },
   {
    "name": "Samir El Mourabet",
