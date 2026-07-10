@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Settings · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>⚙️ Settings</h1>
+
+<h2>Google Calendar sync</h2>
+<p class="muted small">
+  Pull events from a Google Calendar in as jobs. Each event becomes a job
+  (event title → job name, location → location, start/end → setup/collection
+  dates). Re-syncing updates existing jobs instead of duplicating them.
+</p>
+
+<form method="post" class="form card">
+  <input type="hidden" name="action" value="save">
+  <label>
+    Google Calendar secret iCal link
+    <input type="url" name="ical_url" value="{{ ical_url }}"
+           placeholder="https://calendar.google.com/calendar/ical/…/basic.ics"
+           autocomplete="off" spellcheck="false">
+  </label>
+  <p class="muted small" style="margin:0 0 8px">
+    In Google Calendar: <strong>Settings → Settings for my calendars →</strong>
+    pick your jobs calendar <strong>→ Integrate calendar →</strong> copy the
+    <strong>“Secret address in iCal format.”</strong> Treat it like a password —
+    anyone with this link can read that calendar.
+  </p>
+  <button type="submit" class="btn btn-primary btn-block">Save link</button>
+</form>
+
+<form method="post" class="card">
+  <input type="hidden" name="action" value="sync">
+  <button type="submit" class="btn btn-block {% if ical_url %}btn-primary{% endif %}"
+          {% if not ical_url %}disabled{% endif %}>
+    🔄 Sync now
+  </button>
+  {% if last_sync %}
+    <p class="muted small center" style="margin:10px 0 0">
+      Last synced {{ last_sync|dt }}{% if last_result %} · {{ last_result }}{% endif %}
+    </p>
+  {% else %}
+    <p class="muted small center" style="margin:10px 0 0">Not synced yet.</p>
+  {% endif %}
+</form>
+
+<div class="card">
+  <p class="muted small" style="margin:0">
+    <strong>Tip:</strong> keep your gigs on a dedicated Google Calendar and link
+    that one, so personal events don't turn into jobs. Imported jobs come in
+    with a blank client — open a job and tap <strong>Edit</strong> to fill in the
+    client and any details.
+  </p>
+</div>
+
+{% endblock %}

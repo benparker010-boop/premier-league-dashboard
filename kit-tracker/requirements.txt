@@ -3,3 +3,4 @@ Flask-SQLAlchemy>=3.1
 qrcode>=7.4
 Pillow>=10.0
 gunicorn>=21.2
+icalendar>=5.0

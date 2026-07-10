@@ -27,6 +27,7 @@
     <a href="{{ url_for('collection_pick') }}" {% if request.path == '/collection' %}class="active"{% endif %}>Collect</a>
     <a href="{{ url_for('equipment_list') }}" {% if request.path.startswith('/equipment') %}class="active"{% endif %}>Inventory</a>
     <a href="{{ url_for('missing_report') }}" {% if request.path == '/missing' %}class="active"{% endif %}>Missing</a>
+    <a href="{{ url_for('settings') }}" {% if request.path == '/settings' %}class="active"{% endif %}>Settings</a>
     {% if auth_enabled %}
       <form class="nav-logout" method="post" action="{{ url_for('logout') }}">
         <button type="submit">Log out</button>

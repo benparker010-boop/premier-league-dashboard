@@ -61,6 +61,9 @@ class Job(db.Model):
     setup_date = db.Column(db.Date, nullable=True)
     collection_date = db.Column(db.Date, nullable=True)
     status = db.Column(db.String(30), nullable=False, default="Setup in Progress")
+    # UID of the Google Calendar event this job was imported from, if any —
+    # lets a re-sync update the same job instead of duplicating it.
+    source_uid = db.Column(db.String(255), nullable=True, index=True)
 
     scans = db.relationship("ScanEvent", back_populates="job", lazy="dynamic")
 
@@ -84,3 +87,12 @@ class ScanEvent(db.Model):
 
     equipment = db.relationship("Equipment", back_populates="scans")
     job = db.relationship("Job", back_populates="scans")
+
+
+class AppSetting(db.Model):
+    """Simple key/value store for runtime config (e.g. the calendar link)."""
+
+    __tablename__ = "app_settings"
+
+    key = db.Column(db.String(60), primary_key=True)
+    value = db.Column(db.Text, nullable=False, default="")

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ job.job_name }} · Kit Tracker{% endblock %}
+{% block content %}
+
+<h1>Edit job</h1>
+
+<form method="post" class="form card">
+  <label>
+    Job name *
+    <input type="text" name="job_name" required maxlength="120" value="{{ job.job_name }}" autofocus>
+  </label>
+  <label>
+    Client
+    <input type="text" name="client_name" maxlength="120" value="{{ job.client_name }}"
+           placeholder="e.g. Riverside Hotel">
+  </label>
+  <label>
+    Location
+    <input type="text" name="location" maxlength="200" value="{{ job.location }}">
+  </label>
+  <div class="form-row">
+    <label>
+      Setup date
+      <input type="date" name="setup_date" value="{{ job.setup_date.isoformat() if job.setup_date else '' }}">
+    </label>
+    <label>
+      Collection date
+      <input type="date" name="collection_date" value="{{ job.collection_date.isoformat() if job.collection_date else '' }}">
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+  <a class="btn btn-block" href="{{ url_for('job_detail', job_id=job.id) }}">Cancel</a>
+</form>
+
+{% endblock %}

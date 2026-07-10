@@ -10,6 +10,8 @@
     <a class="cal-btn" href="{{ url_for('calendar_view', month=prev_month) }}" aria-label="Previous month">‹</a>
     <a class="cal-btn cal-today-btn" href="{{ url_for('calendar_view', month=this_month) }}">Today</a>
     <a class="cal-btn" href="{{ url_for('calendar_view', month=next_month) }}" aria-label="Next month">›</a>
+    <a class="btn btn-small cal-new" href="{{ url_for('settings') }}"
+       title="Google Calendar sync">{% if ical_configured %}🔄 Sync{% else %}🔗 Google Cal{% endif %}</a>
     <a class="btn btn-primary btn-small cal-new" href="{{ url_for('job_new') }}">＋ Job</a>
   </div>
 </div>

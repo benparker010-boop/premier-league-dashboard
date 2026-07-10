@@ -29,6 +29,7 @@
         <button type="submit" class="btn btn-small">Reopen setup scanning</button>
       </form>
     {% endif %}
+    <a class="btn btn-small" href="{{ url_for('job_edit', job_id=job.id) }}">Edit details</a>
   </div>
 </div>
 

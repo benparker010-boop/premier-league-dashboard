@@ -4,12 +4,15 @@ import hmac
 import io
 import os
 import re
+import urllib.request
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 
 import qrcode
 import qrcode.constants
+from icalendar import Calendar as ICalendar
 from markupsafe import Markup, escape
+from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 from flask import (
     Flask,
@@ -28,12 +31,24 @@ from models import (
     CATEGORIES,
     EQUIPMENT_STATUSES,
     STAFF,
+    AppSetting,
     Equipment,
     Job,
     ScanEvent,
     db,
+    utcnow,
 )
 from seed import seed_if_empty
+
+
+def _ensure_schema():
+    """Tiny idempotent migration: add columns introduced after v1 to an
+    existing SQLite database (db.create_all only creates missing *tables*)."""
+    with db.engine.connect() as conn:
+        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(jobs)"))]
+        if "source_uid" not in cols:
+            conn.execute(text("ALTER TABLE jobs ADD COLUMN source_uid VARCHAR(255)"))
+            conn.commit()
 
 
 def _database_uri():
@@ -70,6 +85,7 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+    _ensure_schema()
     seed_if_empty()
 
 if AUTH_ENABLED and app.config["SECRET_KEY"] == "kit-tracker-dev":
@@ -343,6 +359,146 @@ def calendar_view():
         this_month=today.strftime("%Y-%m"),
         weekday_names=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         today=today,
+        ical_configured=bool(get_setting("gcal_ical_url")),
+    )
+
+
+# ------------------------------------------------ Google Calendar (iCal) sync
+
+def get_setting(key, default=""):
+    row = db.session.get(AppSetting, key)
+    return row.value if row else default
+
+
+def set_setting(key, value):
+    row = db.session.get(AppSetting, key)
+    if row is None:
+        db.session.add(AppSetting(key=key, value=value))
+    else:
+        row.value = value
+    db.session.commit()
+
+
+def _event_dates(component):
+    """Map an iCal VEVENT's start/end to (setup_date, collection_date)."""
+    start = component.get("dtstart").dt
+    dtend = component.get("dtend")
+    end = dtend.dt if dtend is not None else start
+
+    setup_date = start.date() if isinstance(start, datetime) else start
+    if isinstance(end, datetime):
+        collection_date = end.date()
+    elif isinstance(end, date):
+        # All-day events use an EXCLUSIVE end date (the morning after) — step
+        # back a day so a one-day event collects on the same day it sets up.
+        collection_date = end - timedelta(days=1)
+    else:
+        collection_date = setup_date
+    if collection_date < setup_date:
+        collection_date = setup_date
+    return setup_date, collection_date
+
+
+def import_ical(raw_bytes):
+    """Parse an iCal feed and upsert its events as jobs. Returns a summary."""
+    cal = ICalendar.from_ical(raw_bytes)
+    created = updated = skipped = 0
+    # Ignore long-past events so a first sync doesn't import years of history.
+    cutoff = date.today() - timedelta(days=60)
+
+    for component in cal.walk("VEVENT"):
+        if component.get("dtstart") is None:
+            skipped += 1
+            continue
+        setup_date, collection_date = _event_dates(component)
+        if collection_date < cutoff:
+            skipped += 1
+            continue
+
+        uid = str(component.get("uid") or "").strip()
+        name = (str(component.get("summary") or "Untitled event").strip() or "Untitled event")[:120]
+        location = str(component.get("location") or "").strip()[:200]
+
+        job = Job.query.filter_by(source_uid=uid).first() if uid else None
+        if job is not None:
+            # Refresh scheduling fields only — never touch status or scans, so
+            # a job already being worked isn't disturbed by a re-sync.
+            job.job_name = name
+            job.location = location
+            job.setup_date = setup_date
+            job.collection_date = collection_date
+            updated += 1
+        else:
+            db.session.add(
+                Job(
+                    job_name=name,
+                    client_name="",
+                    location=location,
+                    setup_date=setup_date,
+                    collection_date=collection_date,
+                    status="Setup in Progress",
+                    source_uid=uid or None,
+                )
+            )
+            created += 1
+
+    db.session.commit()
+    return {"created": created, "updated": updated, "skipped": skipped}
+
+
+def fetch_ical(url):
+    # Google's "secret iCal address" is a plain HTTPS GET, no auth needed.
+    request_obj = urllib.request.Request(url, headers={"User-Agent": "KitTracker/1.0"})
+    with urllib.request.urlopen(request_obj, timeout=20) as response:
+        return response.read()
+
+
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    if request.method == "POST":
+        action = request.form.get("action")
+        if action == "save":
+            url = (request.form.get("ical_url") or "").strip()
+            if url and not url.lower().startswith(("http://", "https://")):
+                flash("That doesn't look like a valid link (it should start with https://).", "error")
+            else:
+                set_setting("gcal_ical_url", url)
+                flash("Calendar link saved." if url else "Calendar link cleared.", "success")
+        elif action == "sync":
+            url = get_setting("gcal_ical_url").strip()
+            if not url:
+                flash("Add your calendar link first, then sync.", "error")
+            else:
+                try:
+                    summary = import_ical(fetch_ical(url))
+                    set_setting("gcal_last_sync", utcnow().isoformat())
+                    result_text = "{} new, {} updated".format(
+                        summary["created"], summary["updated"]
+                    )
+                    if summary["skipped"]:
+                        result_text += ", {} skipped".format(summary["skipped"])
+                    set_setting("gcal_last_result", result_text)
+                    flash(
+                        f"Synced from Google Calendar: {summary['created']} new job(s), "
+                        f"{summary['updated']} updated.",
+                        "success",
+                    )
+                except Exception as exc:  # noqa: BLE001 — surface any fetch/parse error
+                    flash(f"Sync failed: {exc}", "error")
+        return redirect(url_for("settings"))
+
+    last_iso = get_setting("gcal_last_sync")
+    last_dt = None
+    if last_iso:
+        try:
+            last_dt = datetime.fromisoformat(last_iso)
+        except ValueError:
+            last_dt = None
+    return render_template(
+        "settings.html",
+        ical_url=get_setting("gcal_ical_url"),
+        last_sync=last_dt,
+        last_result=get_setting("gcal_last_result"),
     )
 
 
@@ -376,6 +532,26 @@ def job_new():
             flash(f"Job “{job.job_name}” created — ready for setup scanning.", "success")
             return redirect(url_for("job_detail", job_id=job.id))
     return render_template("job_new.html", today=date.today().isoformat())
+
+
+@app.route("/jobs/<int:job_id>/edit", methods=["GET", "POST"])
+def job_edit(job_id):
+    job = get_job_or_404(job_id)
+    if request.method == "POST":
+        job_name = (request.form.get("job_name") or "").strip()
+        client_name = (request.form.get("client_name") or "").strip()
+        if not job_name:
+            flash("Job name is required.", "error")
+        else:
+            job.job_name = job_name
+            job.client_name = client_name
+            job.location = (request.form.get("location") or "").strip()
+            job.setup_date = parse_date(request.form.get("setup_date"))
+            job.collection_date = parse_date(request.form.get("collection_date"))
+            db.session.commit()
+            flash("Job details updated.", "success")
+            return redirect(url_for("job_detail", job_id=job.id))
+    return render_template("job_edit.html", job=job)
 
 
 @app.route("/jobs/<int:job_id>")
