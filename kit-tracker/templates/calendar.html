@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Calendar · Kit Tracker{% endblock %}
+{% block content %}
+
+<div class="cal-head">
+  <div class="cal-title">
+    <h1>{{ month_label }}</h1>
+  </div>
+  <div class="cal-nav">
+    <a class="cal-btn" href="{{ url_for('calendar_view', month=prev_month) }}" aria-label="Previous month">‹</a>
+    <a class="cal-btn cal-today-btn" href="{{ url_for('calendar_view', month=this_month) }}">Today</a>
+    <a class="cal-btn" href="{{ url_for('calendar_view', month=next_month) }}" aria-label="Next month">›</a>
+    <a class="btn btn-primary btn-small cal-new" href="{{ url_for('job_new') }}">＋ Job</a>
+  </div>
+</div>
+
+<div class="cal-legend">
+  <span><i class="dot dot-setup"></i> Setup</span>
+  <span><i class="dot dot-collection"></i> Collection</span>
+</div>
+
+<div class="cal-scroll">
+  <div class="cal-grid" role="grid">
+    {% for name in weekday_names %}
+      <div class="cal-dow">{{ name }}</div>
+    {% endfor %}
+
+    {% for week in grid %}
+      {% for cell in week %}
+        <div class="cal-cell {% if not cell.in_month %}cal-out{% endif %} {% if cell.is_today %}cal-today{% endif %}">
+          <div class="cal-datenum">{{ cell.date.day }}</div>
+          <div class="cal-events">
+            {% for ev in cell.events %}
+              <a class="cal-chip chip-{{ ev.kind }}"
+                 href="{{ url_for('job_detail', job_id=ev.job.id) }}"
+                 title="{{ ev.kind|capitalize }} — {{ ev.job.job_name }} ({{ ev.job.client_name }})">
+                <span class="chip-kind">{{ '🔧' if ev.kind == 'setup' else '📦' }}</span>
+                <span class="chip-name">{{ ev.job.job_name }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+
+<h2>Agenda · {{ month_label }}</h2>
+{% if agenda %}
+  <div class="card-list">
+    {% for job in agenda %}
+      <a class="card job-card" href="{{ url_for('job_detail', job_id=job.id) }}">
+        <div class="job-card-head">
+          <strong>{{ job.job_name }}</strong>
+          <span class="badge badge-{{ badge_class(job.status) }}">{{ job.status }}</span>
+        </div>
+        <div class="muted small">{{ job.client_name }}{% if job.location %} · {{ job.location }}{% endif %}</div>
+        <div class="small">
+          <span class="tag tag-setup">🔧 Setup {{ job.setup_date|d }}</span>
+          <span class="tag tag-collection">📦 Collect {{ job.collection_date|d }}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="empty">No jobs scheduled in {{ month_label }}. <a href="{{ url_for('job_new') }}">Add one</a>.</p>
+{% endif %}
+
+{% endblock %}

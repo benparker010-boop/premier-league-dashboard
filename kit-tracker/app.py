@@ -1,8 +1,10 @@
 """Kit Tracker — scan equipment out to jobs and back in again."""
+import calendar as pycalendar
 import hmac
 import io
 import os
 import re
+from collections import defaultdict
 from datetime import date, datetime, timedelta
 
 import qrcode
@@ -264,6 +266,84 @@ def dashboard():
         "equipment_missing": Equipment.query.filter_by(status="Missing").count(),
     }
     return render_template("dashboard.html", jobs=jobs_with_counts, stats=stats)
+
+
+# ---------------------------------------------------------------- calendar
+
+def _month_base(param):
+    """Parse a ?month=YYYY-MM param into the first of that month; default today."""
+    if param:
+        try:
+            year, month = (int(part) for part in param.split("-", 1))
+            return date(year, month, 1)
+        except (ValueError, TypeError):
+            pass
+    return date.today().replace(day=1)
+
+
+@app.route("/calendar")
+def calendar_view():
+    today = date.today()
+    base = _month_base(request.args.get("month"))
+    year, month = base.year, base.month
+
+    # Weeks of date objects (Mon-first), including spillover days so the grid
+    # is always a full rectangle like Google Calendar's month view.
+    weeks = pycalendar.Calendar(firstweekday=0).monthdatescalendar(year, month)
+    start, end = weeks[0][0], weeks[-1][-1]
+
+    # A job shows on its setup date and (if different) its collection date.
+    jobs = Job.query.filter(
+        db.or_(
+            Job.setup_date.between(start, end),
+            Job.collection_date.between(start, end),
+        )
+    ).all()
+    by_day = defaultdict(list)
+    for job in jobs:
+        if job.setup_date and start <= job.setup_date <= end:
+            by_day[job.setup_date].append({"job": job, "kind": "setup"})
+        if job.collection_date and start <= job.collection_date <= end:
+            by_day[job.collection_date].append({"job": job, "kind": "collection"})
+
+    grid = []
+    for week in weeks:
+        row = []
+        for day in week:
+            row.append(
+                {
+                    "date": day,
+                    "in_month": day.month == month,
+                    "is_today": day == today,
+                    "events": sorted(
+                        by_day.get(day, []),
+                        key=lambda e: (e["kind"] != "setup", e["job"].job_name.lower()),
+                    ),
+                }
+            )
+        grid.append(row)
+
+    # Agenda: every dated job in this month, chronological — the mobile-friendly
+    # companion to the grid.
+    agenda = sorted(
+        [j for j in jobs if (j.setup_date and start <= j.setup_date <= end)
+         or (j.collection_date and start <= j.collection_date <= end)],
+        key=lambda j: (j.setup_date or j.collection_date or end),
+    )
+
+    prev_month = (base - timedelta(days=1)).replace(day=1)
+    next_month = (base + timedelta(days=32)).replace(day=1)
+    return render_template(
+        "calendar.html",
+        grid=grid,
+        agenda=agenda,
+        month_label=base.strftime("%B %Y"),
+        prev_month=prev_month.strftime("%Y-%m"),
+        next_month=next_month.strftime("%Y-%m"),
+        this_month=today.strftime("%Y-%m"),
+        weekday_names=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        today=today,
+    )
 
 
 # ---------------------------------------------------------------- jobs

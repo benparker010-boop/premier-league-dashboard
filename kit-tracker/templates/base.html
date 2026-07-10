@@ -21,6 +21,7 @@
 
   <nav class="mainnav no-print">
     <a href="{{ url_for('dashboard') }}" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
+    <a href="{{ url_for('calendar_view') }}" {% if request.path == '/calendar' %}class="active"{% endif %}>Calendar</a>
     <a href="{{ url_for('jobs_list') }}" {% if request.path.startswith('/jobs') %}class="active"{% endif %}>Jobs</a>
     <a href="{{ url_for('setup_pick') }}" {% if request.path == '/setup' %}class="active"{% endif %}>Setup</a>
     <a href="{{ url_for('collection_pick') }}" {% if request.path == '/collection' %}class="active"{% endif %}>Collect</a>
