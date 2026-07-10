@@ -26,7 +26,7 @@
     52
    ],
    "xg": [
-    3.04,
+    3.69,
     0.14
    ],
    "shots": [
@@ -38,7 +38,7 @@
     1
    ],
    "big": [
-    5,
+    6,
     0
    ],
    "corners": [
@@ -46,8 +46,8 @@
     null
    ],
    "passes": [
-    485,
-    524
+    486,
+    526
    ],
    "passAcc": [
     null,
@@ -340,12 +340,12 @@
       "num": 16
      },
      {
-      "name": "Dayot Upamecano",
+      "name": "William Saliba",
       "pos": "def",
       "num": 2
      },
      {
-      "name": "William Saliba",
+      "name": "Dayot Upamecano",
       "pos": "def",
       "num": 2
      },

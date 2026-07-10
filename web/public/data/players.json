@@ -7,7 +7,7 @@
    "nation": "France",
    "goals": 8,
    "assists": 3,
-   "xg": 5.2,
+   "xg": 5.3,
    "yc": 0
   },
   {
@@ -1751,6 +1751,16 @@
    "yc": 0
   },
   {
+   "name": "Jean-Philippe Mateta",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 1.1,
+   "yc": 0
+  },
+  {
    "name": "Omar Marmoush",
    "code": "EGY",
    "color": "#5b8cff",
@@ -1998,16 +2008,6 @@
    "goals": 0,
    "assists": 1,
    "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Jean-Philippe Mateta",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.6,
    "yc": 0
   },
   {
@@ -2581,16 +2581,6 @@
    "yc": 0
   },
   {
-   "name": "Manu Koné",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 1
-  },
-  {
    "name": "Bilal El Khannouss",
    "code": "MAR",
    "color": "#e8475e",
@@ -2938,6 +2928,16 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
+   "yc": 1
+  },
+  {
+   "name": "Manu Koné",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
    "yc": 1
   },
   {
@@ -3681,7 +3681,7 @@
    "yc": 0
   },
   {
-   "name": "William Saliba",
+   "name": "Jules Koundé",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -3691,7 +3691,7 @@
    "yc": 0
   },
   {
-   "name": "Jules Koundé",
+   "name": "William Saliba",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5541,16 +5541,6 @@
    "yc": 0
   },
   {
-   "name": "Lucas Digne",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Mike Maignan",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -5561,10 +5551,10 @@
    "yc": 0
   },
   {
-   "name": "Noussair Mazraoui",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
+   "name": "Lucas Digne",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -5582,6 +5572,16 @@
   },
   {
    "name": "Yassine Bounou",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Noussair Mazraoui",
    "code": "MAR",
    "color": "#e8475e",
    "nation": "Morocco",
@@ -5641,7 +5641,7 @@
    "yc": 0
   },
   {
-   "name": "Brice Samba",
+   "name": "Robin Risser",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5651,7 +5651,7 @@
    "yc": 0
   },
   {
-   "name": "Robin Risser",
+   "name": "Brice Samba",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5671,16 +5671,6 @@
    "yc": 0
   },
   {
-   "name": "Maxence Lacroix",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Lucas Hernández",
    "code": "FRA",
    "color": "#9d5fb5",
@@ -5691,7 +5681,7 @@
    "yc": 0
   },
   {
-   "name": "N'Golo Kanté",
+   "name": "Maxence Lacroix",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5702,6 +5692,16 @@
   },
   {
    "name": "Rayan Cherki",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "N'Golo Kanté",
    "code": "FRA",
    "color": "#9d5fb5",
    "nation": "France",
@@ -5751,6 +5751,26 @@
    "yc": 0
   },
   {
+   "name": "Chadi Riad",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marwane Saadane",
+   "code": "MAR",
+   "color": "#e8475e",
+   "nation": "Morocco",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Youssef Belammari",
    "code": "MAR",
    "color": "#e8475e",
@@ -5769,26 +5789,6 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 1
-  },
-  {
-   "name": "Marwane Saadane",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Chadi Riad",
-   "code": "MAR",
-   "color": "#e8475e",
-   "nation": "Morocco",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
   },
   {
    "name": "Samir El Mourabet",
@@ -12483,7 +12483,7 @@
  ],
  "totals": {
   "goals": 268,
-  "xg": 243.6,
+  "xg": 244.1,
   "assists": 204,
   "tracked": 1248
  }
