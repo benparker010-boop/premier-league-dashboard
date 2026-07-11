@@ -2341,16 +2341,6 @@
    "yc": 1
   },
   {
-   "name": "Rodri",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
    "name": "Dodi Lukebakio",
    "code": "BEL",
    "color": "#e8475e",
@@ -2588,6 +2578,16 @@
    "goals": 0,
    "assists": 0,
    "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Rodri",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
    "yc": 0
   },
   {
@@ -3681,16 +3681,6 @@
    "yc": 0
   },
   {
-   "name": "Timothy Castagne",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "Nathan Ngoy",
    "code": "BEL",
    "color": "#e8475e",
@@ -3709,6 +3699,16 @@
    "assists": 2,
    "xg": 0.1,
    "yc": 0
+  },
+  {
+   "name": "Timothy Castagne",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
   },
   {
    "name": "Pablo Gavi",
@@ -5671,7 +5671,7 @@
    "yc": 0
   },
   {
-   "name": "Yéremy Pino",
+   "name": "Víctor Muñoz",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -5681,7 +5681,7 @@
    "yc": 0
   },
   {
-   "name": "Víctor Muñoz",
+   "name": "Yéremy Pino",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -12473,7 +12473,7 @@
  ],
  "totals": {
   "goals": 269,
-  "xg": 245.2,
+  "xg": 245.1,
   "assists": 205,
   "tracked": 1247
  }

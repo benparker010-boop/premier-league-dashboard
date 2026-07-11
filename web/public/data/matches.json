@@ -26,8 +26,8 @@
     32
    ],
    "xg": [
-    2.08,
-    0.37
+    1.96,
+    0.34
    ],
    "shots": [
     17,
@@ -46,8 +46,8 @@
     null
    ],
    "passes": [
-    665,
-    314
+    664,
+    312
    ],
    "passAcc": [
     null,
@@ -358,12 +358,12 @@
       "num": 20
      },
      {
-      "name": "Mikel Oyarzabal",
+      "name": "Lamine Yamal",
       "pos": "fwd",
       "num": 10
      },
      {
-      "name": "Lamine Yamal",
+      "name": "Mikel Oyarzabal",
       "pos": "fwd",
       "num": 10
      },
