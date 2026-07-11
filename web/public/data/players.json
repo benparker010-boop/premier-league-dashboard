@@ -691,7 +691,7 @@
    "yc": 0
   },
   {
-   "name": "Fabián Ruiz",
+   "name": "Pedro Porro",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -701,7 +701,7 @@
    "yc": 0
   },
   {
-   "name": "Pedro Porro",
+   "name": "Fabián Ruiz",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -3681,6 +3681,16 @@
    "yc": 0
   },
   {
+   "name": "Timothy Castagne",
+   "code": "BEL",
+   "color": "#e8475e",
+   "nation": "Belgium",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
    "name": "Nicolas Raskin",
    "code": "BEL",
    "color": "#e8475e",
@@ -3699,16 +3709,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 0
-  },
-  {
-   "name": "Timothy Castagne",
-   "code": "BEL",
-   "color": "#e8475e",
-   "nation": "Belgium",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 1
   },
   {
    "name": "Pablo Gavi",
@@ -5621,16 +5621,6 @@
    "yc": 0
   },
   {
-   "name": "Marc Pubill",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Eric García",
    "code": "ESP",
    "color": "#c3cfdc",
@@ -5641,7 +5631,7 @@
    "yc": 0
   },
   {
-   "name": "Alejandro Grimaldo",
+   "name": "Marc Pubill",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -5661,7 +5651,7 @@
    "yc": 0
   },
   {
-   "name": "Víctor Muñoz",
+   "name": "Alejandro Grimaldo",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
@@ -5672,6 +5662,16 @@
   },
   {
    "name": "Yéremy Pino",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Víctor Muñoz",
    "code": "ESP",
    "color": "#c3cfdc",
    "nation": "Spain",
