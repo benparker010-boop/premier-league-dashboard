@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-11T20:27:47.539837+00:00",
+ "generatedAt": "2026-07-11T23:37:00.898366+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -395,22 +395,22 @@
  },
  "nextMatch": {
   "round": "QUARTER-FINAL",
-  "date": "Sat, Jul 11",
-  "time": "21:00 UTC",
-  "venue": "Hard Rock Stadium, Miami Garden",
+  "date": "Sun, Jul 12",
+  "time": "01:00 UTC",
+  "venue": "Arrowhead Stadium, Kansas City",
   "home": {
-   "code": "NOR",
-   "name": "Norway",
-   "color": "#f5c451"
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
   },
   "away": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
+   "code": "SUI",
+   "name": "Switzerland",
+   "color": "#e8475e"
   },
-  "favCode": "ENG",
-  "prob": 65,
-  "probHome": 35
+  "favCode": "ARG",
+  "prob": 71,
+  "probHome": 71
  },
  "lastMatch": {
   "round": "QUARTER-FINAL",
