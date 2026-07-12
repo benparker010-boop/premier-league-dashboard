@@ -16,8 +16,8 @@
    "color": "#c3cfdc",
    "nation": "Argentina",
    "goals": 8,
-   "assists": 1,
-   "xg": 4.8,
+   "assists": 2,
+   "xg": 5.1,
    "yc": 0
   },
   {
@@ -27,7 +27,7 @@
    "nation": "Norway",
    "goals": 7,
    "assists": 0,
-   "xg": 4.2,
+   "xg": 4.3,
    "yc": 0
   },
   {
@@ -37,8 +37,18 @@
    "nation": "England",
    "goals": 6,
    "assists": 1,
-   "xg": 3.3,
+   "xg": 3.4,
    "yc": 0
+  },
+  {
+   "name": "Jude Bellingham",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 6,
+   "assists": 1,
+   "xg": 2.5,
+   "yc": 1
   },
   {
    "name": "Ousmane Dembélé",
@@ -79,16 +89,6 @@
    "assists": 1,
    "xg": 3.0,
    "yc": 0
-  },
-  {
-   "name": "Jude Bellingham",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 4,
-   "assists": 1,
-   "xg": 1.9,
-   "yc": 1
   },
   {
    "name": "Julián Quiñones",
@@ -257,8 +257,18 @@
    "nation": "Switzerland",
    "goals": 2,
    "assists": 2,
-   "xg": 2.9,
-   "yc": 0
+   "xg": 3.0,
+   "yc": 1
+  },
+  {
+   "name": "Lautaro Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 2,
+   "assists": 1,
+   "xg": 2.2,
+   "yc": 1
   },
   {
    "name": "Cyle Larin",
@@ -378,6 +388,16 @@
    "goals": 2,
    "assists": 0,
    "xg": 1.0,
+   "yc": 0
+  },
+  {
+   "name": "Dan Ndoye",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 2,
+   "assists": 0,
+   "xg": 0.9,
    "yc": 0
   },
   {
@@ -521,16 +541,6 @@
    "yc": 1
   },
   {
-   "name": "Lautaro Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 1,
-   "xg": 1.8,
-   "yc": 0
-  },
-  {
    "name": "Luis Díaz",
    "code": "COL",
    "color": "#5b8cff",
@@ -581,6 +591,16 @@
    "yc": 0
   },
   {
+   "name": "Alexis Mac Allister",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 1,
+   "xg": 1.1,
+   "yc": 0
+  },
+  {
    "name": "Viktor Gyökeres",
    "code": "SWE",
    "color": "#2ecc71",
@@ -599,6 +619,16 @@
    "assists": 0,
    "xg": 1.1,
    "yc": 0
+  },
+  {
+   "name": "Granit Xhaka",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 1,
+   "assists": 0,
+   "xg": 1.0,
+   "yc": 2
   },
   {
    "name": "Caleb Yirenkyi",
@@ -631,6 +661,16 @@
    "yc": 0
   },
   {
+   "name": "Julián Alvarez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.9,
+   "yc": 0
+  },
+  {
    "name": "Gessime Yassine",
    "code": "MAR",
    "color": "#e8475e",
@@ -639,16 +679,6 @@
    "assists": 0,
    "xg": 0.9,
    "yc": 0
-  },
-  {
-   "name": "Granit Xhaka",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.9,
-   "yc": 2
   },
   {
    "name": "Jhon Arias",
@@ -751,16 +781,6 @@
    "yc": 0
   },
   {
-   "name": "Désiré Doué",
-   "code": "FRA",
-   "color": "#9d5fb5",
-   "nation": "France",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.7,
-   "yc": 0
-  },
-  {
    "name": "Enzo Fernández",
    "code": "ARG",
    "color": "#c3cfdc",
@@ -777,6 +797,16 @@
    "nation": "England",
    "goals": 1,
    "assists": 0,
+   "xg": 0.7,
+   "yc": 0
+  },
+  {
+   "name": "Désiré Doué",
+   "code": "FRA",
+   "color": "#9d5fb5",
+   "nation": "France",
+   "goals": 1,
+   "assists": 1,
    "xg": 0.7,
    "yc": 0
   },
@@ -838,16 +868,6 @@
    "goals": 1,
    "assists": 0,
    "xg": 0.7,
-   "yc": 0
-  },
-  {
-   "name": "Dan Ndoye",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.6,
    "yc": 0
   },
   {
@@ -931,16 +951,6 @@
    "yc": 0
   },
   {
-   "name": "Alex Baena",
-   "code": "ESP",
-   "color": "#c3cfdc",
-   "nation": "Spain",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.5,
-   "yc": 1
-  },
-  {
    "name": "Cristian Romero",
    "code": "ARG",
    "color": "#c3cfdc",
@@ -949,6 +959,16 @@
    "assists": 0,
    "xg": 0.5,
    "yc": 0
+  },
+  {
+   "name": "Alex Baena",
+   "code": "ESP",
+   "color": "#c3cfdc",
+   "nation": "Spain",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.5,
+   "yc": 1
   },
   {
    "name": "Alexander Freeman",
@@ -1141,6 +1161,16 @@
    "yc": 0
   },
   {
+   "name": "Leo Østigård",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
    "name": "Auston Trusty",
    "code": "USA",
    "color": "#5ec8e0",
@@ -1157,16 +1187,6 @@
    "nation": "Portugal",
    "goals": 1,
    "assists": 1,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Leo Østigård",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 1,
-   "assists": 0,
    "xg": 0.3,
    "yc": 0
   },
@@ -1229,6 +1249,36 @@
    "assists": 0,
    "xg": 0.3,
    "yc": 0
+  },
+  {
+   "name": "Lisandro Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 1,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Andreas Schjelderup",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 3,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Antonio Nusa",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 1
   },
   {
    "name": "Alexis Saelemaekers",
@@ -1401,6 +1451,36 @@
    "yc": 1
   },
   {
+   "name": "Giovani Lo Celso",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Marcus Pedersen",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Thelo Aasgaard",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 1,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
    "name": "Yasser Ibrahim",
    "code": "EGY",
    "color": "#5b8cff",
@@ -1411,16 +1491,6 @@
    "yc": 2
   },
   {
-   "name": "Lisandro Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Mahmoud Saber",
    "code": "EGY",
    "color": "#5b8cff",
@@ -1429,16 +1499,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 1
-  },
-  {
-   "name": "Giovani Lo Celso",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
   },
   {
    "name": "Sebastian Berhalter",
@@ -1467,26 +1527,6 @@
    "nation": "Mexico",
    "goals": 1,
    "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Antonio Nusa",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Thelo Aasgaard",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 1,
-   "assists": 0,
    "xg": 0.1,
    "yc": 0
   },
@@ -1585,16 +1625,6 @@
    "code": "CRO",
    "color": "#2ecc71",
    "nation": "Croatia",
-   "goals": 1,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Marcus Pedersen",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 1,
    "assists": 0,
    "xg": 0.1,
@@ -1721,6 +1751,16 @@
    "yc": 0
   },
   {
+   "name": "Martin Ødegaard",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 4,
+   "xg": 1.3,
+   "yc": 0
+  },
+  {
    "name": "Mehdi Taremi",
    "code": "IRN",
    "color": "#f5c451",
@@ -1728,16 +1768,6 @@
    "goals": 0,
    "assists": 0,
    "xg": 1.3,
-   "yc": 0
-  },
-  {
-   "name": "Martin Ødegaard",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 3,
-   "xg": 1.2,
    "yc": 0
   },
   {
@@ -1781,16 +1811,6 @@
    "yc": 0
   },
   {
-   "name": "Bruno Fernandes",
-   "code": "POR",
-   "color": "#5ec8e0",
-   "nation": "Portugal",
-   "goals": 0,
-   "assists": 1,
-   "xg": 1.0,
-   "yc": 0
-  },
-  {
    "name": "Nico O'Reilly",
    "code": "ENG",
    "color": "#2ecc71",
@@ -1801,22 +1821,32 @@
    "yc": 0
   },
   {
-   "name": "Bruno Guimarães",
-   "code": "BRA",
-   "color": "#5b8cff",
-   "nation": "Brazil",
-   "goals": 0,
-   "assists": 4,
-   "xg": 1.0,
-   "yc": 0
-  },
-  {
    "name": "Jørgen Strand Larsen",
    "code": "NOR",
    "color": "#f5c451",
    "nation": "Norway",
    "goals": 0,
    "assists": 0,
+   "xg": 1.0,
+   "yc": 0
+  },
+  {
+   "name": "Bruno Fernandes",
+   "code": "POR",
+   "color": "#5ec8e0",
+   "nation": "Portugal",
+   "goals": 0,
+   "assists": 1,
+   "xg": 1.0,
+   "yc": 0
+  },
+  {
+   "name": "Bruno Guimarães",
+   "code": "BRA",
+   "color": "#5b8cff",
+   "nation": "Brazil",
+   "goals": 0,
+   "assists": 4,
    "xg": 1.0,
    "yc": 0
   },
@@ -1867,16 +1897,6 @@
    "nation": "France",
    "goals": 0,
    "assists": 1,
-   "xg": 0.8,
-   "yc": 0
-  },
-  {
-   "name": "Julián Alvarez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
    "xg": 0.8,
    "yc": 0
   },
@@ -2031,12 +2051,42 @@
    "yc": 2
   },
   {
-   "name": "Alexis Mac Allister",
+   "name": "Nicolás González",
    "code": "ARG",
    "color": "#c3cfdc",
    "nation": "Argentina",
    "goals": 0,
    "assists": 1,
+   "xg": 0.6,
+   "yc": 0
+  },
+  {
+   "name": "Alexander Sørloth",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
+   "yc": 0
+  },
+  {
+   "name": "Ezri Konsa",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.6,
+   "yc": 0
+  },
+  {
+   "name": "Djed Spence",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
    "xg": 0.6,
    "yc": 0
   },
@@ -2059,16 +2109,6 @@
    "assists": 0,
    "xg": 0.6,
    "yc": 1
-  },
-  {
-   "name": "Ezri Konsa",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.6,
-   "yc": 0
   },
   {
    "name": "Endrick",
@@ -2181,6 +2221,26 @@
    "yc": 0
   },
   {
+   "name": "Thiago Almada",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 1
+  },
+  {
+   "name": "Oscar Bobb",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.5,
+   "yc": 0
+  },
+  {
    "name": "Brandon Mechele",
    "code": "BEL",
    "color": "#e8475e",
@@ -2241,40 +2301,10 @@
    "yc": 1
   },
   {
-   "name": "Nicolás González",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
    "name": "Brenden Aaronson",
    "code": "USA",
    "color": "#5ec8e0",
    "nation": "USA",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
-   "name": "Djed Spence",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.5,
-   "yc": 0
-  },
-  {
-   "name": "Oscar Bobb",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 0,
    "assists": 0,
    "xg": 0.5,
@@ -2341,6 +2371,46 @@
    "yc": 1
   },
   {
+   "name": "Nico Elvedi",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 1
+  },
+  {
+   "name": "Torbjørn Heggem",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Noni Madueke",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
+   "name": "Bukayo Saka",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 3,
+   "xg": 0.4,
+   "yc": 0
+  },
+  {
    "name": "Dodi Lukebakio",
    "code": "BEL",
    "color": "#e8475e",
@@ -2359,16 +2429,6 @@
    "assists": 4,
    "xg": 0.4,
    "yc": 0
-  },
-  {
-   "name": "Nico Elvedi",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 1
   },
   {
    "name": "Davinson Sánchez",
@@ -2399,36 +2459,6 @@
    "assists": 0,
    "xg": 0.4,
    "yc": 2
-  },
-  {
-   "name": "Noni Madueke",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Alexander Sørloth",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
-  },
-  {
-   "name": "Torbjørn Heggem",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.4,
-   "yc": 0
   },
   {
    "name": "Raphinha",
@@ -2581,6 +2611,46 @@
    "yc": 0
   },
   {
+   "name": "Michel Aebischer",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
+   "name": "Marcos Senesi",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
+   "name": "Kristoffer Ajer",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.3,
+   "yc": 1
+  },
+  {
+   "name": "Anthony Gordon",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 3,
+   "xg": 0.3,
+   "yc": 0
+  },
+  {
    "name": "Marc Cucurella",
    "code": "ESP",
    "color": "#c3cfdc",
@@ -2641,36 +2711,6 @@
    "yc": 0
   },
   {
-   "name": "Marcos Senesi",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Anthony Gordon",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Bukayo Saka",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 3,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
    "name": "Éderson",
    "code": "BRA",
    "color": "#5b8cff",
@@ -2705,16 +2745,6 @@
    "code": "AUS",
    "color": "#ef7d52",
    "nation": "Australia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.3,
-   "yc": 0
-  },
-  {
-   "name": "Michel Aebischer",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
    "goals": 0,
    "assists": 0,
    "xg": 0.3,
@@ -2931,6 +2961,56 @@
    "yc": 1
   },
   {
+   "name": "Manuel Akanji",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Djibril Sow",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Elliot Anderson",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Marc Guéhi",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
+   "name": "Kristian Thorstvedt",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.2,
+   "yc": 0
+  },
+  {
    "name": "Aymeric Laporte",
    "code": "ESP",
    "color": "#c3cfdc",
@@ -3021,16 +3101,6 @@
    "yc": 0
   },
   {
-   "name": "Manuel Akanji",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Jhon Lucumí",
    "code": "COL",
    "color": "#5b8cff",
@@ -3061,16 +3131,6 @@
    "yc": 1
   },
   {
-   "name": "Djibril Sow",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
    "name": "Mohanad Lasheen",
    "code": "EGY",
    "color": "#5b8cff",
@@ -3099,26 +3159,6 @@
    "assists": 0,
    "xg": 0.2,
    "yc": 2
-  },
-  {
-   "name": "Elliot Anderson",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Marc Guéhi",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
   },
   {
    "name": "Brian Gutiérrez",
@@ -3157,26 +3197,6 @@
    "nation": "Mexico",
    "goals": 0,
    "assists": 3,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Kristoffer Ajer",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.2,
-   "yc": 0
-  },
-  {
-   "name": "Kristian Thorstvedt",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
    "xg": 0.2,
    "yc": 0
   },
@@ -3681,6 +3701,96 @@
    "yc": 0
   },
   {
+   "name": "Remo Freuler",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Leandro Paredes",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Gonzalo Montiel",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Noah Okafor",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Nico Paz",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Patrick Berg",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 2,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Declan Rice",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.1,
+   "yc": 1
+  },
+  {
+   "name": "Fredrik Aursnes",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
+   "name": "Eberechi Eze",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.1,
+   "yc": 0
+  },
+  {
    "name": "Timothy Castagne",
    "code": "BEL",
    "color": "#e8475e",
@@ -3781,16 +3891,6 @@
    "yc": 1
   },
   {
-   "name": "Remo Freuler",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
    "name": "Juan Fernando Quintero",
    "code": "COL",
    "color": "#5b8cff",
@@ -3807,16 +3907,6 @@
    "nation": "Colombia",
    "goals": 0,
    "assists": 1,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Noah Okafor",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
    "xg": 0.1,
    "yc": 0
   },
@@ -3859,46 +3949,6 @@
    "assists": 1,
    "xg": 0.1,
    "yc": 2
-  },
-  {
-   "name": "Leandro Paredes",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Gonzalo Montiel",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
-   "name": "Nico Paz",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
-  },
-  {
-   "name": "Thiago Almada",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.1,
-   "yc": 0
   },
   {
    "name": "Amadou Onana",
@@ -3981,16 +4031,6 @@
    "yc": 0
   },
   {
-   "name": "Declan Rice",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "César Montes",
    "code": "MEX",
    "color": "#ef7d52",
@@ -4041,16 +4081,6 @@
    "yc": 0
   },
   {
-   "name": "Patrick Berg",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 2,
-   "xg": 0.1,
-   "yc": 1
-  },
-  {
    "name": "Gabriel Magalhães",
    "code": "BRA",
    "color": "#5b8cff",
@@ -4089,16 +4119,6 @@
    "assists": 0,
    "xg": 0.1,
    "yc": 1
-  },
-  {
-   "name": "Andreas Schjelderup",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 3,
-   "xg": 0.1,
-   "yc": 0
   },
   {
    "name": "Danilo Santos",
@@ -5531,6 +5551,486 @@
    "yc": 0
   },
   {
+   "name": "Ricardo Rodríguez",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Gregor Kobel",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nahuel Molina",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Rodrigo De Paul",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nicolás Tagliafico",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Emiliano Martínez",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Miro Muheim",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Eray Cömert",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Silvan Widmer",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ardon Jashari",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Zeki Amdouni",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Nicolás Otamendi",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "José Manuel López",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Yvon Mvogo",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Marvin Keller",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Luca Jaquez",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Aurèle Amenda",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Christian Fassnacht",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Cédric Itten",
+   "code": "SUI",
+   "color": "#e8475e",
+   "nation": "Switzerland",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Gerónimo Rulli",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Juan Musso",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Facundo Medina",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 1
+  },
+  {
+   "name": "Valentín Barco",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Giuliano Simeone",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Exequiel Palacios",
+   "code": "ARG",
+   "color": "#c3cfdc",
+   "nation": "Argentina",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "David Møller Wolfe",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 1,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ørjan Nyland",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Julian Ryerson",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sander Berge",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "John Stones",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Jordan Pickford",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Dan Burn",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Reece James",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Morgan Rogers",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sander Tangvik",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Egil Selvik",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Sondre Langås",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Henrik Sælebakke Falchener",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Fredrik André Bjørkan",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Morten Thorsby",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Jens Petter Hauge",
+   "code": "NOR",
+   "color": "#f5c451",
+   "nation": "Norway",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "James Trafford",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Dean Henderson",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Trevoh Chalobah",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Kobbie Mainoo",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Jordan Henderson",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ivan Toney",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
+   "name": "Ollie Watkins",
+   "code": "ENG",
+   "color": "#2ecc71",
+   "nation": "England",
+   "goals": 0,
+   "assists": 0,
+   "xg": 0.0,
+   "yc": 0
+  },
+  {
    "name": "Unai Simón",
    "code": "ESP",
    "color": "#c3cfdc",
@@ -5981,36 +6481,6 @@
    "yc": 0
   },
   {
-   "name": "Ardon Jashari",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Gregor Kobel",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ricardo Rodríguez",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Camilo Vargas",
    "code": "COL",
    "color": "#5b8cff",
@@ -6021,100 +6491,10 @@
    "yc": 0
   },
   {
-   "name": "Silvan Widmer",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Miro Muheim",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Zeki Amdouni",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Cédric Itten",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Yerry Mina",
    "code": "COL",
    "color": "#5b8cff",
    "nation": "Colombia",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Yvon Mvogo",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Marvin Keller",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Aurèle Amenda",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Eray Cömert",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Christian Fassnacht",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -6231,72 +6611,12 @@
    "yc": 0
   },
   {
-   "name": "Nahuel Molina",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Nicolás Tagliafico",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Rodrigo De Paul",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Emiliano Martínez",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Hamdy Fathy",
    "code": "EGY",
    "color": "#5b8cff",
    "nation": "Egypt",
    "goals": 0,
    "assists": 0,
-   "xg": 0.0,
-   "yc": 1
-  },
-  {
-   "name": "Nicolás Otamendi",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Facundo Medina",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 1,
    "xg": 0.0,
    "yc": 1
   },
@@ -6375,66 +6695,6 @@
    "code": "EGY",
    "color": "#5b8cff",
    "nation": "Egypt",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Juan Musso",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Gerónimo Rulli",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Giuliano Simeone",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Valentín Barco",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Exequiel Palacios",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "José Manuel López",
-   "code": "ARG",
-   "color": "#c3cfdc",
-   "nation": "Argentina",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -6701,36 +6961,6 @@
    "yc": 0
   },
   {
-   "name": "John Stones",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Dan Burn",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Morgan Rogers",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Jarell Quansah",
    "code": "ENG",
    "color": "#2ecc71",
@@ -6739,16 +6969,6 @@
    "assists": 0,
    "xg": 0.0,
    "yc": 1
-  },
-  {
-   "name": "Jordan Pickford",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
   },
   {
    "name": "Guillermo Martínez",
@@ -6787,96 +7007,6 @@
    "nation": "Mexico",
    "goals": 0,
    "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Dean Henderson",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "James Trafford",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Reece James",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Trevoh Chalobah",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Eberechi Eze",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Kobbie Mainoo",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Jordan Henderson",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ollie Watkins",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Ivan Toney",
-   "code": "ENG",
-   "color": "#2ecc71",
-   "nation": "England",
-   "goals": 0,
-   "assists": 0,
    "xg": 0.0,
    "yc": 0
   },
@@ -6961,130 +7091,10 @@
    "yc": 0
   },
   {
-   "name": "Ørjan Nyland",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Julian Ryerson",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "David Møller Wolfe",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 1,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sander Berge",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Alisson",
    "code": "BRA",
    "color": "#5b8cff",
    "nation": "Brazil",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Fredrik Aursnes",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sander Tangvik",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Egil Selvik",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Henrik Sælebakke Falchener",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Sondre Langås",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Fredrik André Bjørkan",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Morten Thorsby",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
-   "name": "Jens Petter Hauge",
-   "code": "NOR",
-   "color": "#f5c451",
-   "nation": "Norway",
    "goals": 0,
    "assists": 0,
    "xg": 0.0,
@@ -12361,16 +12371,6 @@
    "yc": 0
   },
   {
-   "name": "Luca Jaquez",
-   "code": "SUI",
-   "color": "#e8475e",
-   "nation": "Switzerland",
-   "goals": 0,
-   "assists": 0,
-   "xg": 0.0,
-   "yc": 0
-  },
-  {
    "name": "Edouard Mendy",
    "code": "SEN",
    "color": "#9d5fb5",
@@ -12472,9 +12472,9 @@
   }
  ],
  "totals": {
-  "goals": 269,
-  "xg": 245.1,
-  "assists": 205,
+  "goals": 276,
+  "xg": 249.3,
+  "assists": 210,
   "tracked": 1247
  }
 }

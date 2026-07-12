@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-11T23:37:00.898366+00:00",
+ "generatedAt": "2026-07-12T07:48:53.273122+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -394,9 +394,27 @@
   }
  },
  "nextMatch": {
+  "round": "SEMI-FINAL",
+  "date": "Tue, Jul 14",
+  "time": "19:00 UTC",
+  "venue": "AT&T Stadium, Arlington",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "favCode": "ESP",
+  "prob": 59,
+  "probHome": 41
+ },
+ "lastMatch": {
   "round": "QUARTER-FINAL",
   "date": "Sun, Jul 12",
-  "time": "01:00 UTC",
   "venue": "Arrowhead Stadium, Kansas City",
   "home": {
    "code": "ARG",
@@ -408,26 +426,8 @@
    "name": "Switzerland",
    "color": "#e8475e"
   },
-  "favCode": "ARG",
-  "prob": 71,
-  "probHome": 71
- },
- "lastMatch": {
-  "round": "QUARTER-FINAL",
-  "date": "Fri, Jul 10",
-  "venue": "SoFi Stadium, Inglewood",
-  "home": {
-   "code": "ESP",
-   "name": "Spain",
-   "color": "#c3cfdc"
-  },
-  "away": {
-   "code": "BEL",
-   "name": "Belgium",
-   "color": "#e8475e"
-  },
-  "sh": 2,
+  "sh": 1,
   "sa": 1,
-  "scorers": "Fabián Ruiz 30' · Mikel Merino 88' · Charles De Ketelaere 41'"
+  "scorers": "Alexis Mac Allister 10' · Julián Alvarez 112' · Lautaro Martínez 120' · Dan Ndoye 67'"
  }
 }
