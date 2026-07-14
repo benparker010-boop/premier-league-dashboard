@@ -1,42 +1,30 @@
 {
- "generatedAt": "2026-07-14T11:12:38.604371+00:00",
+ "generatedAt": "2026-07-14T15:16:50.496580+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 32.1
-  },
-  {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5",
-   "v": 21.4
+   "v": 35.2
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 21.3
+   "v": 27.5
+  },
+  {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5",
+   "v": 22.6
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 13.4
-  },
-  {
-   "code": "SUI",
-   "name": "Switzerland",
-   "color": "#e8475e",
-   "v": 3.5
-  },
-  {
-   "code": "NOR",
-   "name": "Norway",
-   "color": "#f5c451",
-   "v": 3.4
+   "v": 14.7
   }
  ],
  "bracket": {
@@ -56,11 +44,11 @@
     "sh": 0,
     "sa": 3,
     "winner": "away",
-    "favHome": false,
-    "prob": 53,
+    "favHome": true,
+    "prob": 51,
     "projScore": [
-     0,
-     1
+     1,
+     0
     ],
     "tier": "result"
    },
@@ -80,7 +68,7 @@
     "sa": 1,
     "winner": "away",
     "favHome": false,
-    "prob": 82,
+    "prob": 83,
     "projScore": [
      0,
      2
@@ -149,7 +137,7 @@
     "sa": 1,
     "winner": "away",
     "favHome": false,
-    "prob": 70,
+    "prob": 73,
     "projScore": [
      0,
      1
@@ -172,7 +160,7 @@
     "sa": 4,
     "winner": "away",
     "favHome": false,
-    "prob": 59,
+    "prob": 63,
     "projScore": [
      0,
      1
@@ -195,7 +183,7 @@
     "sa": 2,
     "winner": "home",
     "favHome": true,
-    "prob": 87,
+    "prob": 88,
     "projScore": [
      2,
      0
@@ -218,7 +206,7 @@
     "sa": 0,
     "winner": "home",
     "favHome": false,
-    "prob": 57,
+    "prob": 59,
     "projScore": [
      0,
      1
@@ -229,49 +217,26 @@
   "qf": [
    {
     "home": {
-     "code": "MAR",
-     "name": "Morocco",
-     "color": "#e8475e"
-    },
-    "away": {
      "code": "FRA",
      "name": "France",
      "color": "#9d5fb5"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
-    "favHome": false,
-    "prob": 73,
-    "projScore": [
-     0,
-     1
-    ],
-    "tier": "projected"
-   },
-   {
-    "home": {
-     "code": "NOR",
-     "name": "Norway",
-     "color": "#f5c451"
-    },
     "away": {
-     "code": "ENG",
-     "name": "England",
-     "color": "#2ecc71"
+     "code": "MAR",
+     "name": "Morocco",
+     "color": "#e8475e"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
-    "favHome": false,
-    "prob": 65,
+    "done": true,
+    "sh": 2,
+    "sa": 0,
+    "winner": "home",
+    "favHome": true,
+    "prob": 78,
     "projScore": [
-     1,
-     2
+     2,
+     0
     ],
-    "tier": "projected"
+    "tier": "result"
    },
    {
     "home": {
@@ -284,17 +249,40 @@
      "name": "Belgium",
      "color": "#e8475e"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 2,
+    "sa": 1,
+    "winner": "home",
     "favHome": true,
     "prob": 79,
     "projScore": [
      2,
      0
     ],
-    "tier": "projected"
+    "tier": "result"
+   },
+   {
+    "home": {
+     "code": "NOR",
+     "name": "Norway",
+     "color": "#f5c451"
+    },
+    "away": {
+     "code": "ENG",
+     "name": "England",
+     "color": "#2ecc71"
+    },
+    "done": true,
+    "sh": 1,
+    "sa": 1,
+    "winner": "away",
+    "favHome": false,
+    "prob": 65,
+    "projScore": [
+     0,
+     1
+    ],
+    "tier": "result"
    },
    {
     "home": {
@@ -307,17 +295,17 @@
      "name": "Switzerland",
      "color": "#e8475e"
     },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
+    "done": true,
+    "sh": 1,
+    "sa": 1,
+    "winner": "home",
     "favHome": true,
-    "prob": 71,
+    "prob": 72,
     "projScore": [
      1,
      0
     ],
-    "tier": "projected"
+    "tier": "result"
    }
   ],
   "sf": [
@@ -328,27 +316,27 @@
      "color": "#9d5fb5"
     },
     "away": {
-     "code": "ENG",
-     "name": "England",
-     "color": "#2ecc71"
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
     },
     "done": false,
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 57,
+    "favHome": false,
+    "prob": 58,
     "projScore": [
-     1,
-     0
+     0,
+     1
     ],
-    "tier": "projected"
+    "tier": "confirmed"
    },
    {
     "home": {
-     "code": "ESP",
-     "name": "Spain",
-     "color": "#c3cfdc"
+     "code": "ENG",
+     "name": "England",
+     "color": "#2ecc71"
     },
     "away": {
      "code": "ARG",
@@ -359,35 +347,35 @@
     "sh": null,
     "sa": null,
     "winner": null,
-    "favHome": true,
-    "prob": 56,
+    "favHome": false,
+    "prob": 60,
     "projScore": [
-     1,
-     0
+     0,
+     1
     ],
-    "tier": "projected"
+    "tier": "confirmed"
    }
   ],
   "final": {
    "home": {
-    "code": "FRA",
-    "name": "France",
-    "color": "#9d5fb5"
-   },
-   "away": {
     "code": "ESP",
     "name": "Spain",
+    "color": "#c3cfdc"
+   },
+   "away": {
+    "code": "ARG",
+    "name": "Argentina",
     "color": "#c3cfdc"
    },
    "done": false,
    "sh": null,
    "sa": null,
    "winner": null,
-   "favHome": false,
-   "prob": 59,
+   "favHome": true,
+   "prob": 57,
    "projScore": [
-    0,
-    1
+    1,
+    0
    ],
    "tier": "projected",
    "champion": "Spain"
@@ -409,8 +397,8 @@
    "color": "#c3cfdc"
   },
   "favCode": "ESP",
-  "prob": 59,
-  "probHome": 41
+  "prob": 58,
+  "probHome": 42
  },
  "lastMatch": {
   "round": "QUARTER-FINAL",

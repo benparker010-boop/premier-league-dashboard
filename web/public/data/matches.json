@@ -4558,8 +4558,8 @@
     66
    ],
    "xg": [
-    2.61,
-    1.05
+    2.73,
+    0.84
    ],
    "shots": [
     14,
@@ -4578,8 +4578,8 @@
     null
    ],
    "passes": [
-    331,
-    681
+    329,
+    680
    ],
    "passAcc": [
     null,
@@ -4953,12 +4953,12 @@
       "num": 7
      },
      {
-      "name": "Alexander Sørloth",
+      "name": "Erling Haaland",
       "pos": "fwd",
       "num": 9
      },
      {
-      "name": "Erling Haaland",
+      "name": "Alexander Sørloth",
       "pos": "fwd",
       "num": 9
      }

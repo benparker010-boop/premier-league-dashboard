@@ -11,7 +11,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_153637999",
-  "group": true
+  "group": true,
+  "venue": "Estadio Azteca",
+  "city": "Mexico City",
+  "ref": "Wilton Pereira Sampaio",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP A",
@@ -25,7 +30,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_153637955",
-  "group": true
+  "group": true,
+  "venue": "Estadio Akron",
+  "city": "Guadalajara",
+  "ref": "Amin Mohamed Omar",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP B",
@@ -39,7 +49,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_641915402",
-  "group": true
+  "group": true,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Facundo Raul Tello Figueroa",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP D",
@@ -53,7 +68,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_517473281",
-  "group": true
+  "group": true,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Danny Makkelie",
+  "htSh": 3,
+  "htSa": 0
  },
  {
   "round": "GROUP B",
@@ -67,7 +87,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_641919660",
-  "group": true
+  "group": true,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Said Martinez",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP C",
@@ -81,7 +106,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_153637518",
-  "group": true
+  "group": true,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Slavko Vinčić",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP C",
@@ -95,7 +125,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_517473267",
-  "group": true
+  "group": true,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Mustapha Ghorbal",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP D",
@@ -109,7 +144,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_028389414",
-  "group": true
+  "group": true,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Jesús Valenzuela",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP E",
@@ -123,7 +163,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_732520954",
-  "group": true
+  "group": true,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Jalal Jayed",
+  "htSh": 3,
+  "htSa": 1
  },
  {
   "round": "GROUP F",
@@ -137,7 +182,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_465851856",
-  "group": true
+  "group": true,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Ismail Elfath",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP E",
@@ -151,7 +201,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_028389435",
-  "group": true
+  "group": true,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "François Letexier",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP F",
@@ -165,7 +220,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798753",
-  "group": true
+  "group": true,
+  "venue": "Estadio BBVA",
+  "city": "Monterrey",
+  "ref": "Falcon Perez, Yael",
+  "htSh": 2,
+  "htSa": 1
  },
  {
   "round": "GROUP H",
@@ -179,7 +239,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_517473171",
-  "group": true
+  "group": true,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Adham Mohammad",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP G",
@@ -193,7 +258,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_370102747",
-  "group": true
+  "group": true,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Abel, Ramon Abatti",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP H",
@@ -207,7 +277,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798066",
-  "group": true
+  "group": true,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Maurizio Mariani",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP G",
@@ -221,7 +296,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_986264843",
-  "group": true
+  "group": true,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "César Ramos Palazuelos",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP I",
@@ -235,7 +315,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209797283",
-  "group": true
+  "group": true,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Alireza Faghani",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP I",
@@ -249,7 +334,12 @@
   "sa": 4,
   "status": "done",
   "matchId": "mt_517473168",
-  "group": true
+  "group": true,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Pierre Ghislain Atcho",
+  "htSh": 1,
+  "htSa": 2
  },
  {
   "round": "GROUP J",
@@ -263,7 +353,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_028389471",
-  "group": true
+  "group": true,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Szymon Marciniak",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP J",
@@ -277,7 +372,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798581",
-  "group": true
+  "group": true,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Beida Dahane",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP K",
@@ -291,7 +391,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_732520442",
-  "group": true
+  "group": true,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Ibrahim Al-Jassim Abdulrahman",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP L",
@@ -305,7 +410,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_028383092",
-  "group": true
+  "group": true,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Clement Turpin",
+  "htSh": 2,
+  "htSa": 2
  },
  {
   "round": "GROUP L",
@@ -319,7 +429,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_370102032",
-  "group": true
+  "group": true,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Glenn Nyberg",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP K",
@@ -333,7 +448,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_986264782",
-  "group": true
+  "group": true,
+  "venue": "Estadio Azteca",
+  "city": "Mexico City",
+  "ref": "Anthony Taylor",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP A",
@@ -347,7 +467,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798567",
-  "group": true
+  "group": true,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Tori Penso",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP B",
@@ -361,7 +486,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_641915446",
-  "group": true
+  "group": true,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Joao Pedro Pinheiro",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP B",
@@ -375,7 +505,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_894046992",
-  "group": true
+  "group": true,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Cristian Garay",
+  "htSh": 3,
+  "htSa": 0
  },
  {
   "round": "GROUP A",
@@ -389,7 +524,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_153636108",
-  "group": true
+  "group": true,
+  "venue": "Estadio Akron",
+  "city": "Guadalajara",
+  "ref": "Gustavo Tejera",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP D",
@@ -403,7 +543,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_894046538",
-  "group": true
+  "group": true,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Felix Zwayer",
+  "htSh": 2,
+  "htSa": 0
  },
  {
   "round": "GROUP C",
@@ -417,7 +562,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_732520916",
-  "group": true
+  "group": true,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Ilgiz Tantashev",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP C",
@@ -431,7 +581,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_641915383",
-  "group": true
+  "group": true,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "Alejandro Hernandez",
+  "htSh": 3,
+  "htSa": 0
  },
  {
   "round": "GROUP D",
@@ -445,7 +600,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_732520931",
-  "group": true
+  "group": true,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Iván Barton",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP F",
@@ -459,7 +619,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_370102162",
-  "group": true
+  "group": true,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Michael Oliver",
+  "htSh": 2,
+  "htSa": 0
  },
  {
   "round": "GROUP E",
@@ -473,7 +638,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_465851784",
-  "group": true
+  "group": true,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Juan Gabriel Benitez",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP E",
@@ -487,7 +657,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_641915358",
-  "group": true
+  "group": true,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Ning Ma",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP F",
@@ -501,7 +676,12 @@
   "sa": 4,
   "status": "done",
   "matchId": "mt_517473411",
-  "group": true
+  "group": true,
+  "venue": "Estadio BBVA",
+  "city": "Monterrey",
+  "ref": "Istvan Kovacs",
+  "htSh": 0,
+  "htSa": 2
  },
  {
   "round": "GROUP H",
@@ -515,7 +695,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_153637587",
-  "group": true
+  "group": true,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Raphael Claus",
+  "htSh": 3,
+  "htSa": 0
  },
  {
   "round": "GROUP G",
@@ -529,7 +714,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_732525756",
-  "group": true
+  "group": true,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Dario Herrera",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP H",
@@ -543,7 +733,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_153637559",
-  "group": true
+  "group": true,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Espen Eskas",
+  "htSh": 2,
+  "htSa": 1
  },
  {
   "round": "GROUP G",
@@ -557,7 +752,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_370102726",
-  "group": true
+  "group": true,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Omar Mohamed Al Ali",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP J",
@@ -571,7 +771,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_986262946",
-  "group": true
+  "group": true,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Amin Mohamed Omar",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP I",
@@ -585,7 +790,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_732520476",
-  "group": true
+  "group": true,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "Drew Fischer",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP I",
@@ -599,7 +809,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_153637911",
-  "group": true
+  "group": true,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Wilton Pereira Sampaio",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP J",
@@ -613,7 +828,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_153637966",
-  "group": true
+  "group": true,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Slavko Vinčić",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP K",
@@ -627,7 +847,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_894046526",
-  "group": true
+  "group": true,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Jalal Jayed",
+  "htSh": 3,
+  "htSa": 0
  },
  {
   "round": "GROUP L",
@@ -641,7 +866,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_986264630",
-  "group": true
+  "group": true,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Said Martinez",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP L",
@@ -655,7 +885,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_153636113",
-  "group": true
+  "group": true,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Pierre Ghislain Atcho",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP K",
@@ -669,7 +904,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_517473884",
-  "group": true
+  "group": true,
+  "venue": "Estadio Akron",
+  "city": "Guadalajara",
+  "ref": "Maurizio Mariani",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP B",
@@ -683,7 +923,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_732520309",
-  "group": true
+  "group": true,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Jesús Valenzuela",
+  "htSh": 2,
+  "htSa": 1
  },
  {
   "round": "GROUP B",
@@ -697,7 +942,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798077",
-  "group": true
+  "group": true,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Abel, Ramon Abatti",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP C",
@@ -711,7 +961,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_028389482",
-  "group": true
+  "group": true,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Danny Makkelie",
+  "htSh": 2,
+  "htSa": 2
  },
  {
   "round": "GROUP C",
@@ -725,7 +980,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_209798693",
-  "group": true
+  "group": true,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "César Ramos Palazuelos",
+  "htSh": 0,
+  "htSa": 2
  },
  {
   "round": "GROUP A",
@@ -739,7 +999,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_028389197",
-  "group": true
+  "group": true,
+  "venue": "Estadio BBVA",
+  "city": "Monterrey",
+  "ref": "Facundo Raul Tello Figueroa",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP A",
@@ -753,7 +1018,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_986264714",
-  "group": true
+  "group": true,
+  "venue": "Estadio Azteca",
+  "city": "Mexico City",
+  "ref": "Falcon Perez, Yael",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP E",
@@ -767,7 +1037,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_894046563",
-  "group": true
+  "group": true,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "Glenn Nyberg",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP E",
@@ -781,7 +1056,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_370102820",
-  "group": true
+  "group": true,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Tori Penso",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP F",
@@ -795,7 +1075,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_517473422",
-  "group": true
+  "group": true,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Katia García",
+  "htSh": 0,
+  "htSa": 2
  },
  {
   "round": "GROUP F",
@@ -809,7 +1094,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_986264218",
-  "group": true
+  "group": true,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Iván Barton",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP D",
@@ -823,7 +1113,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_209798660",
-  "group": true
+  "group": true,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Clement Turpin",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP D",
@@ -837,7 +1132,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_370102873",
-  "group": true
+  "group": true,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Mustapha Ghorbal",
+  "htSh": 2,
+  "htSa": 1
  },
  {
   "round": "GROUP I",
@@ -851,7 +1151,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_209798033",
-  "group": true
+  "group": true,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Anthony Taylor",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP I",
@@ -865,7 +1170,12 @@
   "sa": 4,
   "status": "done",
   "matchId": "mt_370102505",
-  "group": true
+  "group": true,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Michael Oliver",
+  "htSh": 1,
+  "htSa": 3
  },
  {
   "round": "GROUP H",
@@ -879,7 +1189,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_209798011",
-  "group": true
+  "group": true,
+  "venue": "Estadio Akron",
+  "city": "Guadalajara",
+  "ref": "Ismail Elfath",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP H",
@@ -893,7 +1208,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_517473114",
-  "group": true
+  "group": true,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "François Letexier",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP G",
@@ -907,7 +1227,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_894046969",
-  "group": true
+  "group": true,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Szymon Marciniak",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP G",
@@ -921,7 +1246,12 @@
   "sa": 5,
   "status": "done",
   "matchId": "mt_986264824",
-  "group": true
+  "group": true,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Adham Mohammad",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP L",
@@ -935,7 +1265,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_641915103",
-  "group": true
+  "group": true,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Ibrahim Al-Jassim Abdulrahman",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP L",
@@ -949,7 +1284,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_028389889",
-  "group": true
+  "group": true,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "Drew Fischer",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "GROUP K",
@@ -963,7 +1303,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_370102675",
-  "group": true
+  "group": true,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Felix Zwayer",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "GROUP K",
@@ -977,7 +1322,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_641915285",
-  "group": true
+  "group": true,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Alireza Faghani",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "GROUP J",
@@ -991,7 +1341,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_370102627",
-  "group": true
+  "group": true,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Ilgiz Tantashev",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "GROUP J",
@@ -1005,7 +1360,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_028389140",
-  "group": true
+  "group": true,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Istvan Kovacs",
+  "htSh": 0,
+  "htSa": 2
  },
  {
   "round": "ROUND OF 32",
@@ -1019,7 +1379,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_197411337",
-  "group": false
+  "group": false,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Joao Pedro Pinheiro",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1033,7 +1398,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_974099680",
-  "group": false
+  "group": false,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Maurizio Mariani",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1047,7 +1417,16 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_019700821",
-  "group": false
+  "group": false,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Jalal Jayed",
+  "etSh": 1,
+  "etSa": 1,
+  "penSh": 3,
+  "penSa": 4,
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1061,7 +1440,16 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_836288445",
-  "group": false
+  "group": false,
+  "venue": "Estadio BBVA",
+  "city": "Monterrey",
+  "ref": "Wilton Pereira Sampaio",
+  "etSh": 1,
+  "etSa": 1,
+  "penSh": 2,
+  "penSa": 3,
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1075,7 +1463,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_740177219",
-  "group": false
+  "group": false,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Jesús Valenzuela",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1089,7 +1482,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_401944555",
-  "group": false
+  "group": false,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Danny Makkelie",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1103,7 +1501,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_258322991",
-  "group": false
+  "group": false,
+  "venue": "Estadio Azteca",
+  "city": "Mexico City",
+  "ref": "Slavko Vinčić",
+  "htSh": 2,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1117,7 +1520,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_197411351",
-  "group": false
+  "group": false,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Adham Mohammad",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1131,7 +1539,14 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_583655717",
-  "group": false
+  "group": false,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Said Martinez",
+  "etSh": 3,
+  "etSa": 2,
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1145,7 +1560,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_974099603",
-  "group": false
+  "group": false,
+  "venue": "Levi's Stadium",
+  "city": "Santa Clara",
+  "ref": "Raphael Claus",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1159,7 +1579,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_019700818",
-  "group": false
+  "group": false,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Glenn Nyberg",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1173,7 +1598,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_362533007",
-  "group": false
+  "group": false,
+  "venue": "BMO Field",
+  "city": "Toronto",
+  "ref": "Espen Eskas",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1187,7 +1617,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_740177236",
-  "group": false
+  "group": false,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Falcon Perez, Yael",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1201,7 +1636,16 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_836288496",
-  "group": false
+  "group": false,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Gustavo Tejera",
+  "etSh": 1,
+  "etSa": 1,
+  "penSh": 2,
+  "penSa": 4,
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 32",
@@ -1215,7 +1659,14 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_740177225",
-  "group": false
+  "group": false,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Drew Fischer",
+  "etSh": 3,
+  "etSa": 2,
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 32",
@@ -1229,7 +1680,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_258322952",
-  "group": false
+  "group": false,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Clement Turpin",
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 16",
@@ -1243,7 +1699,12 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_740177240",
-  "group": false
+  "group": false,
+  "venue": "NRG Stadium",
+  "city": "Houston",
+  "ref": "Michael Oliver",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 16",
@@ -1257,7 +1718,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_197411398",
-  "group": false
+  "group": false,
+  "venue": "Lincoln Financial Field",
+  "city": "Philadelphia",
+  "ref": "Ilgiz Tantashev",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 16",
@@ -1271,7 +1737,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_625866124",
-  "group": false
+  "group": false,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Ismail Elfath",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 16",
@@ -1285,7 +1756,10 @@
   "sa": 3,
   "status": "done",
   "matchId": "mt_362533068",
-  "group": false
+  "group": false,
+  "venue": "Estadio Azteca",
+  "city": "Mexico City",
+  "ref": "Alireza Faghani"
  },
  {
   "round": "ROUND OF 16",
@@ -1299,7 +1773,10 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_197411346",
-  "group": false
+  "group": false,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Anthony Taylor"
  },
  {
   "round": "ROUND OF 16",
@@ -1313,7 +1790,12 @@
   "sa": 4,
   "status": "done",
   "matchId": "mt_974099669",
-  "group": false
+  "group": false,
+  "venue": "Lumen Field",
+  "city": "Seattle",
+  "ref": "Adham Mohammad",
+  "htSh": 1,
+  "htSa": 2
  },
  {
   "round": "ROUND OF 16",
@@ -1327,7 +1809,12 @@
   "sa": 2,
   "status": "done",
   "matchId": "mt_583655765",
-  "group": false
+  "group": false,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "François Letexier",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "ROUND OF 16",
@@ -1341,7 +1828,16 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_258322938",
-  "group": false
+  "group": false,
+  "venue": "BC Place",
+  "city": "Vancouver",
+  "ref": "Iván Barton",
+  "etSh": 0,
+  "etSa": 0,
+  "penSh": 4,
+  "penSa": 3,
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "QUARTER-FINAL",
@@ -1355,7 +1851,12 @@
   "sa": 0,
   "status": "done",
   "matchId": "mt_625866143",
-  "group": false
+  "group": false,
+  "venue": "Gillette Stadium",
+  "city": "Foxborough",
+  "ref": "Facundo Raul Tello Figueroa",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "QUARTER-FINAL",
@@ -1369,7 +1870,12 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_019700887",
-  "group": false
+  "group": false,
+  "venue": "SoFi Stadium",
+  "city": "Inglewood",
+  "ref": "Michael Oliver",
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "QUARTER-FINAL",
@@ -1383,7 +1889,14 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_362533071",
-  "group": false
+  "group": false,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Clement Turpin",
+  "etSh": 1,
+  "etSa": 2,
+  "htSh": 1,
+  "htSa": 1
  },
  {
   "round": "QUARTER-FINAL",
@@ -1397,7 +1910,14 @@
   "sa": 1,
   "status": "done",
   "matchId": "mt_401944566",
-  "group": false
+  "group": false,
+  "venue": "Arrowhead Stadium",
+  "city": "Kansas City",
+  "ref": "Joao Pedro Pinheiro",
+  "etSh": 3,
+  "etSa": 1,
+  "htSh": 1,
+  "htSa": 0
  },
  {
   "round": "SEMI-FINAL",
@@ -1411,7 +1931,10 @@
   "sa": null,
   "status": "upcoming",
   "matchId": "mt_836288430",
-  "group": false
+  "group": false,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": null
  },
  {
   "round": "SEMI-FINAL",
@@ -1425,6 +1948,9 @@
   "sa": null,
   "status": "upcoming",
   "matchId": "mt_625866112",
-  "group": false
+  "group": false,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": null
  }
 ]
