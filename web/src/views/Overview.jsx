@@ -158,7 +158,7 @@ function PredictedChampionCard({ champions, modelVersion }) {
   )
 }
 
-function NextMatchCard({ nextMatch, goBracket }) {
+function NextMatchCard({ nextMatch, pred, goBracket }) {
   const nm = nextMatch
   if (!nm) return null
   return (
@@ -201,6 +201,33 @@ function NextMatchCard({ nextMatch, goBracket }) {
           {nm.favCode} {nm.prob}%
         </span>
       </div>
+      {pred && (
+        <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,.08)' }}>
+          <div style={{ display: 'flex', height: 6, borderRadius: 3, overflow: 'hidden', gap: 1 }}>
+            <div style={{ width: `${pred.result.home}%`, background: nm.home.color }} title={`${nm.home.name} ${pred.result.home}%`} />
+            <div style={{ width: `${pred.result.draw}%`, background: 'rgba(255,255,255,.22)' }} title={`Draw ${pred.result.draw}%`} />
+            <div style={{ width: `${pred.result.away}%`, background: nm.away.color }} title={`${nm.away.name} ${pred.result.away}%`} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+            <span style={mono({ fontSize: 9, color: 'var(--text-dim-2)' })}>{nm.home.code} {pred.result.home}%</span>
+            <span style={mono({ fontSize: 9, color: 'var(--text-dim-2)' })}>DRAW {pred.result.draw}%</span>
+            <span style={mono({ fontSize: 9, color: 'var(--text-dim-2)' })}>{nm.away.code} {pred.result.away}%</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
+            <span style={mono({ fontSize: 9.5, color: 'var(--text-muted)' })}>
+              xG <span style={{ color: 'var(--text-secondary)' }}>{pred.xg[0].toFixed(1)}–{pred.xg[1].toFixed(1)}</span>
+            </span>
+            {pred.topScores?.[0] && (
+              <span style={mono({ fontSize: 9.5, color: 'var(--text-muted)' })}>
+                LIKELY <span style={{ color: 'var(--text-secondary)' }}>{pred.topScores[0].score[0]}–{pred.topScores[0].score[1]}</span>
+              </span>
+            )}
+            <span style={mono({ fontSize: 9.5, color: 'var(--text-muted)' })}>
+              O2.5 <span style={{ color: 'var(--text-secondary)' }}>{pred.totals?.o25}%</span>
+            </span>
+          </div>
+        </div>
+      )}
       <button
         onClick={goBracket}
         style={mono({ marginTop: 12, background: 'transparent', border: 'none', padding: 0, color: 'var(--teal)', fontSize: 10, cursor: 'pointer' })}
@@ -264,6 +291,11 @@ export default function Overview({ chat, setView }) {
     return () => clearInterval(t)
   }, [])
   const pred = data?.predictions
+  const nextMatchPred = pred?.nextMatch
+    ? (data?.matchpreds || []).find(
+        (p) => p.home.code === pred.nextMatch.home.code && p.away.code === pred.nextMatch.away.code,
+      )
+    : null
 
   return (
     <div>
@@ -338,7 +370,7 @@ export default function Overview({ chat, setView }) {
         {/* right: predictions sidebar */}
         <aside style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
           {pred && <PredictedChampionCard champions={pred.champions} modelVersion={pred.modelVersion} />}
-          <NextMatchCard nextMatch={pred?.nextMatch} goBracket={() => setView('bracket')} />
+          <NextMatchCard nextMatch={pred?.nextMatch} pred={nextMatchPred} goBracket={() => setView('bracket')} />
           <LastResultCard lastMatch={pred?.lastMatch} goFixtures={() => setView('fixtures')} />
         </aside>
       </main>

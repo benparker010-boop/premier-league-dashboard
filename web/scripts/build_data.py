@@ -149,6 +149,23 @@ def venue_of(mid):
             "ref": (ref.get("name") if isinstance(ref, dict) else ref) or "—"}
 
 
+def score_extra(mid):
+    """Extra-time / penalty-shootout breakdown, already fetched in
+    match_detail's score block but previously discarded entirely."""
+    sc = match_detail(mid).get("score") or {}
+    out = {}
+    if sc.get("went_to_extra_time"):
+        et = sc.get("after_extra_time") or {}
+        out["etSh"], out["etSa"] = et.get("home"), et.get("away")
+    if sc.get("went_to_penalties"):
+        pens = sc.get("penalty_shootout") or {}
+        out["penSh"], out["penSa"] = pens.get("home"), pens.get("away")
+    ht = sc.get("half_time_home"), sc.get("half_time_away")
+    if ht[0] is not None or ht[1] is not None:
+        out["htSh"], out["htSa"] = ht
+    return out
+
+
 # ---------------------------------------------------------------- date helpers
 def parse_dt(m):
     s = m.get("utc_date") or m.get("datetime") or m.get("date")
@@ -281,7 +298,7 @@ def build_groups(fin):
             teams.append({
                 "code": code_of(r["name"]), "color": color_of(r["name"]), "name": r["name"],
                 "p": r["p"], "w": r["w"], "d": r["d"], "l": r["l"],
-                "gd": r["gd"], "pts": r["pts"],
+                "gf": r["gf"], "ga": r["ga"], "gd": r["gd"], "pts": r["pts"],
                 "qual": "q1" if i == 0 else "q2" if i == 1 else "x",
             })
         out.append({"name": g, "teams": teams})
@@ -308,7 +325,8 @@ def build_fixtures(all_matches):
         dt = parse_dt(m)
         done = m.get("status") == "finished"
         sc = m["score"]
-        rows.append({
+        v = venue_of(m["id"])
+        row = {
             "round": round_label(m),
             "date": fmt_date(dt),
             "ts": dt.timestamp() if dt else 0,
@@ -319,33 +337,89 @@ def build_fixtures(all_matches):
             "status": "done" if done else "upcoming",
             "matchId": m["id"],
             "group": bool(m.get("group_label")),
-        })
+            "venue": v["venue"], "city": v["city"], "ref": v["ref"] if done else None,
+        }
+        if done:
+            row.update(score_extra(m["id"]))
+        rows.append(row)
     rows.sort(key=lambda r: r["ts"])
     return rows
 
 
 # ---------------------------------------------------------------- predictions
+'''Bracket-slot template: the API labels an undecided knockout fixture's
+teams "W<n>" ("winner of official match n") rather than pairing fixtures by
+kickoff order — e.g. a quarter-final can read "W93 vs W94" while a sibling
+reads "W91 vs W92". Fixed FIFA-style numbering for this format is 8 group
+games' worth of rounds ending at round_of_32 (73-88), round_of_16 (89-96),
+quarter_final (97-100), semi_final (101-102), final (104); each round's
+dates/venues are fixed per official slot at draw time, so sorting a round's
+own matches by kickoff time recovers ascending slot numbers within it. That
+lets every "W<n>" placeholder be resolved to the real fixture n rounds back,
+instead of assuming adjacent-by-date fixtures are bracket siblings — the old
+assumption, which could put teams from opposite halves of the real draw
+(e.g. Spain and Argentina) into the same projected semifinal.'''
+STAGE_SLOT_RANGES = {
+    "round_of_32": (73, 88), "round_of_16": (89, 96),
+    "quarter_final": (97, 100), "semi_final": (101, 102), "final": (104, 104),
+}
+
+
+def bracket_scaffold(fin, sched):
+    all_ko = fin + sched
+    stage_matches, by_number = {}, {}
+    for stage, (lo, hi) in STAGE_SLOT_RANGES.items():
+        ms = [m for m in all_ko if m.get("stage_name") == stage]
+        ms.sort(key=lambda m: (parse_dt(m).timestamp() if parse_dt(m) else 0, m["id"]))
+        stage_matches[stage] = ms
+        for i, m in enumerate(ms):
+            num = lo + i
+            if num <= hi:
+                by_number[num] = m
+    return stage_matches, by_number
+
+
 def build_predictions(fin, sched):
-    r16 = [m for m in (fin + sched) if m.get("stage_name") == "round_of_16"]
-    r16.sort(key=lambda m: (parse_dt(m).timestamp() if parse_dt(m) else 0, m["id"]))
+    stage_matches, by_number = bracket_scaffold(fin, sched)
+    advance_cache = {}
+
+    def resolve_side(name):
+        """A real team name, or a 'W93' placeholder walked back to whichever
+        real team the model (or an actual result) has advancing there."""
+        seen = set()
+        while name and name[0] == "W" and name[1:].isdigit() and name not in seen:
+            seen.add(name)
+            src = by_number.get(int(name[1:]))
+            if not src:
+                break
+            name = advancing(src)
+        return name
 
     def advancing(m):
         """The team that goes through: real winner if played, else model favourite."""
-        h, a = m["home_team"]["name"], m["away_team"]["name"]
+        if m["id"] in advance_cache:
+            return advance_cache[m["id"]]
+        h, a = resolve_side(m["home_team"]["name"]), resolve_side(m["away_team"]["name"])
         if m.get("status") == "finished":
             w = m["score"].get("winner")
-            return h if w == "home" else a
-        mu = matchup(h, a)
-        return h if mu["pHome"] >= mu["pAway"] else a
+            out = h if w == "home" else a
+        else:
+            mu = matchup(h, a)
+            out = h if mu["pHome"] >= mu["pAway"] else a
+        advance_cache[m["id"]] = out
+        return out
 
-    # ---- R16 cards ----
-    r16_cards = []
-    for m in r16:
-        h, a = m["home_team"]["name"], m["away_team"]["name"]
+    def build_card(m):
+        raw_h, raw_a = m["home_team"]["name"], m["away_team"]["name"]
+        h, a = resolve_side(raw_h), resolve_side(raw_a)
         done = m.get("status") == "finished"
+        # a fixture the tournament itself has already fixed (both real team
+        # names known) reads as "confirmed", not a Parker-simulated "projected"
+        # guess — even though neither side has kicked off yet
+        real_fixture = not is_placeholder(raw_h) and not is_placeholder(raw_a)
         mu = matchup(h, a)
         fav_home = mu["pHome"] >= mu["pAway"]
-        r16_cards.append({
+        return {
             "home": team_obj(h), "away": team_obj(a),
             "done": done,
             "sh": m["score"].get("home") if done else None,
@@ -354,34 +428,21 @@ def build_predictions(fin, sched):
             "favHome": fav_home,
             "prob": round((mu["pHome"] if fav_home else mu["pAway"]) * 100),
             "projScore": mu["score"],
-            "tier": "result" if done else "confirmed",
-        })
+            "tier": "result" if done else ("confirmed" if real_fixture else "projected"),
+        }
 
-    # ---- projected QF / SF / F over the R16 winners (Parker's path) ----
-    def project_round(entrants):
-        cards, winners = [], []
-        for i in range(0, len(entrants), 2):
-            h, a = entrants[i], entrants[i + 1]
-            mu = matchup(h, a)
-            fav_home = mu["pHome"] >= mu["pAway"]
-            cards.append({
-                "home": team_obj(h), "away": team_obj(a), "done": False,
-                "sh": None, "sa": None, "winner": None, "favHome": fav_home,
-                "prob": round((mu["pHome"] if fav_home else mu["pAway"]) * 100),
-                "projScore": mu["score"], "tier": "projected",
-            })
-            winners.append(h if fav_home else a)
-        return cards, winners
-
-    r16_adv = [advancing(m) for m in r16]
-    qf_cards, qf_w = project_round(r16_adv)
-    sf_cards, sf_w = project_round(qf_w)
-    final_cards, champ_w = project_round(sf_w)
-    final_card = final_cards[0] if final_cards else None
+    r16_cards = [build_card(m) for m in stage_matches["round_of_16"]]
+    qf_cards = [build_card(m) for m in stage_matches["quarter_final"]]
+    sf_cards = [build_card(m) for m in stage_matches["semi_final"]]
+    final_matches = stage_matches["final"]
+    final_card = build_card(final_matches[0]) if final_matches else None
     if final_card:
-        final_card["champion"] = champ_w[0] if champ_w else None
+        m = final_matches[0]
+        winning_side = m["home_team"]["name"] if final_card.get("winner") == "home" or (
+            final_card["winner"] is None and final_card["favHome"]) else m["away_team"]["name"]
+        final_card["champion"] = resolve_side(winning_side)
 
-    champions = monte_carlo(r16)
+    champions = monte_carlo(stage_matches, by_number)
 
     # ---- next match / last result ----
     upcoming = [m for m in sched if not is_placeholder(m["home_team"]["name"])
@@ -463,6 +524,7 @@ def build_matchpreds(sched, cap=12):
                           for t in p.get("top_scorelines", [])[:3]],
             "xg": [round(p["expected_goals"]["home"], 2),
                    round(p["expected_goals"]["away"], 2)],
+            "elo": [round(p["elo"]["home"]), round(p["elo"]["away"])] if p.get("elo") else None,
             "totals": {"o15": pct(p["totals"]["over_1.5"]),
                        "o25": pct(p["totals"]["over_2.5"]),
                        "o35": pct(p["totals"]["over_3.5"])},
@@ -518,36 +580,66 @@ def build_matchups():
     return out
 
 
-def monte_carlo(r16):
-    """Simulate the knockout tree N times; tally champions → title odds."""
+def monte_carlo(stage_matches, by_number):
+    """Simulate the real knockout tree (see bracket_scaffold) N times; tally
+    champions → title odds. Walks the same 'W<n>' placeholder scaffold as
+    build_predictions so the odds are consistent with the displayed bracket,
+    instead of re-deriving a separate (and previously mismatched) pairing."""
     import random
     rng = random.Random(42)
-    fixtures = []
-    for m in r16:
-        h, a = m["home_team"]["name"], m["away_team"]["name"]
-        done = m.get("status") == "finished"
-        w = None
-        if done:
+
+    def sim_side(name, cache):
+        seen = set()
+        while name and name[0] == "W" and name[1:].isdigit() and name not in seen:
+            seen.add(name)
+            src = by_number.get(int(name[1:]))
+            if not src:
+                break
+            name = sim_match(src, cache)
+        return name
+
+    def sim_match(m, cache):
+        mid = m["id"]
+        if mid in cache:
+            return cache[mid]
+        h, a = sim_side(m["home_team"]["name"], cache), sim_side(m["away_team"]["name"], cache)
+        if m.get("status") == "finished":
             w = h if m["score"].get("winner") == "home" else a
-        fixtures.append((h, a, w))
+        else:
+            mu = matchup(h, a)
+            w = h if rng.random() < mu["pHome"] else a
+        cache[mid] = w
+        return w
+
+    final_matches = stage_matches.get("final") or []
+    # fall back to the deepest known round if the schedule window doesn't
+    # carry a final fixture yet, pairing that round's own matches adjacently
+    # (there is no deeper placeholder scaffold to walk in that case)
+    fallback = None
+    if not final_matches:
+        for stage in ("semi_final", "quarter_final", "round_of_16"):
+            if stage_matches.get(stage):
+                fallback = stage_matches[stage]
+                break
+
     counts = {}
     for _ in range(N_SIMS):
-        round_teams = []
-        for h, a, w in fixtures:
-            if w is not None:
-                round_teams.append(w)
-            else:
-                mu = matchup(h, a)
-                round_teams.append(h if rng.random() < mu["pHome"] else a)
-        while len(round_teams) > 1:
-            nxt = []
-            for i in range(0, len(round_teams), 2):
-                h, a = round_teams[i], round_teams[i + 1]
-                mu = matchup(h, a)
-                nxt.append(h if rng.random() < mu["pHome"] else a)
-            round_teams = nxt
-        champ = round_teams[0]
-        counts[champ] = counts.get(champ, 0) + 1
+        cache = {}
+        if final_matches:
+            champ = sim_match(final_matches[0], cache)
+        elif fallback:
+            teams = [sim_match(m, cache) for m in fallback]
+            while len(teams) > 1:
+                nxt = []
+                for i in range(0, len(teams), 2):
+                    mu = matchup(teams[i], teams[i + 1])
+                    nxt.append(teams[i] if rng.random() < mu["pHome"] else teams[i + 1])
+                teams = nxt
+            champ = teams[0] if teams else None
+        else:
+            champ = None
+        if champ:
+            counts[champ] = counts.get(champ, 0) + 1
     ranked = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)
     out = []
     for name, c in ranked[:6]:
@@ -597,6 +689,9 @@ def dig(d, *keys):
     return None
 
 
+POSITION_LABEL = {"G": "GK", "D": "DEF", "M": "MID", "F": "FWD"}
+
+
 def build_players(fin):
     agg = {}
     finished_ids = [m["id"] for m in fin]
@@ -608,15 +703,37 @@ def build_players(fin):
             pid = p.get("player_id")
             if not pid:
                 continue
-            rec = agg.setdefault(pid, {"name": p.get("player_name"), "team_id": p.get("team_id"),
-                                       "goals": 0, "assists": 0, "xg": 0.0, "yc": 0})
+            rec = agg.setdefault(pid, {
+                "name": p.get("player_name"), "team_id": p.get("team_id"), "position": None,
+                "goals": 0, "assists": 0, "xg": 0.0, "xa": 0.0, "yc": 0, "rc": 0,
+                "apps": 0, "minutes": 0, "ratingSum": 0.0, "ratingN": 0,
+                "keyPasses": 0, "tackles": 0, "interceptions": 0, "clearances": 0, "saves": 0,
+            })
+            if not rec["position"] and p.get("position"):
+                rec["position"] = p["position"]
             sh = p.get("shooting") or {}
             gen = p.get("general") or {}
             pas = p.get("passing") or {}
+            dfn = p.get("defending") or {}
+            gk = p.get("goalkeeping") or {}
+            if p.get("played"):
+                rec["apps"] += 1
+            rec["minutes"] += dig(p, "minutes_played") or 0
             rec["goals"] += dig(sh, "goals") or 0
             rec["xg"] += dig(sh, "expected_goals") or 0.0
+            rec["xa"] += dig(sh, "expected_assists") or 0.0
             rec["yc"] += dig(gen, "yellow_cards") or 0
+            rec["rc"] += dig(gen, "red_cards") or 0
             rec["assists"] += dig(pas, "assists", "goal_assist") or 0
+            rec["keyPasses"] += dig(pas, "key_passes") or 0
+            rec["tackles"] += dig(dfn, "tackles") or 0
+            rec["interceptions"] += dig(dfn, "interceptions") or 0
+            rec["clearances"] += dig(dfn, "clearances") or 0
+            rec["saves"] += dig(gk, "saves") or 0
+            rating = p.get("rating")
+            if isinstance(rating, (int, float)):
+                rec["ratingSum"] += rating
+                rec["ratingN"] += 1
     # team_id -> name
     tid_name = {}
     for m in fin:
@@ -629,8 +746,15 @@ def build_players(fin):
             continue
         players.append({
             "name": rec["name"], "code": code_of(nation), "color": color_of(nation),
-            "nation": nation, "goals": rec["goals"], "assists": rec["assists"],
-            "xg": round(rec["xg"], 1), "yc": rec["yc"],
+            "nation": nation, "position": POSITION_LABEL.get(rec["position"], None),
+            "goals": rec["goals"], "assists": rec["assists"],
+            "xg": round(rec["xg"], 1), "xa": round(rec["xa"], 1),
+            "yc": rec["yc"], "rc": rec["rc"],
+            "apps": rec["apps"], "minutes": rec["minutes"],
+            "rating": round(rec["ratingSum"] / rec["ratingN"], 2) if rec["ratingN"] else None,
+            "keyPasses": rec["keyPasses"], "tackles": rec["tackles"],
+            "interceptions": rec["interceptions"], "clearances": rec["clearances"],
+            "saves": rec["saves"],
         })
     players.sort(key=lambda p: (p["goals"], p["xg"]), reverse=True)
     totals = {

@@ -1,5 +1,6 @@
 import BracketGrid from '../components/BracketGrid.jsx'
 import BracketLegend from '../components/BracketLegend.jsx'
+import Round32Strip from '../components/Round32Strip.jsx'
 
 export default function BracketView() {
   return (
@@ -13,6 +14,7 @@ export default function BracketView() {
         </div>
         <BracketLegend full />
       </div>
+      <Round32Strip />
       <BracketGrid />
     </div>
   )

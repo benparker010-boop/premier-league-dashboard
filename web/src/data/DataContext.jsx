@@ -13,7 +13,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 const DataContext = createContext(null)
 
-const FILES = ['predictions', 'groups', 'players', 'fixtures', 'matches']
+const FILES = ['predictions', 'groups', 'players', 'fixtures', 'matches', 'matchpreds']
 
 export function DataProvider({ children }) {
   const [data, setData] = useState(null)
@@ -26,8 +26,8 @@ export function DataProvider({ children }) {
       if (!r.ok) throw new Error(`${f}.json ${r.status}`)
       return r.json()
     })))
-      .then(([predictions, groups, players, fixtures, matches]) => {
-        if (alive) setData({ predictions, groups, players, fixtures, matches })
+      .then(([predictions, groups, players, fixtures, matches, matchpreds]) => {
+        if (alive) setData({ predictions, groups, players, fixtures, matches, matchpreds })
       })
       .catch((e) => alive && setError(e))
     return () => {

@@ -9,8 +9,21 @@ const TABS = [
   ['xg', 'xG'],
   ['assists', 'Assists'],
   ['cards', 'Cards'],
+  ['redcards', 'Red Cards'],
+  ['rating', 'Rating'],
+  ['minutes', 'Minutes'],
 ]
-const KEY = { goals: 'goals', xg: 'xg', assists: 'assists', cards: 'yc' }
+const KEY = { goals: 'goals', xg: 'xg', assists: 'assists', cards: 'yc', redcards: 'rc', rating: 'rating', minutes: 'minutes' }
+// the rightmost leaderboard column always mirrors the active tab (falling
+// back to xG for the tabs whose own stat is already one of the fixed G/A
+// columns), so every tab surfaces a number you can't already see
+const RIGHT_COL = {
+  cards: { label: 'YC', val: (pl) => pl.yc },
+  redcards: { label: 'RC', val: (pl) => pl.rc },
+  rating: { label: 'RTG', val: (pl) => (pl.rating != null ? pl.rating.toFixed(2) : '—') },
+  minutes: { label: 'MIN', val: (pl) => pl.minutes },
+}
+const rightCol = (tab) => RIGHT_COL[tab] || { label: 'xG', val: (pl) => pl.xg.toFixed(1) }
 
 export default function Players() {
   const [tab, setTab] = useState('goals')
@@ -152,7 +165,7 @@ export default function Players() {
               color: 'var(--text-dim)',
             })}
           >
-            <span>#</span><span>PLAYER</span><span /><span style={{ textAlign: 'center' }}>G</span><span style={{ textAlign: 'center' }}>A</span><span style={{ textAlign: 'right' }}>xG</span>
+            <span>#</span><span>PLAYER</span><span /><span style={{ textAlign: 'center' }}>G</span><span style={{ textAlign: 'center' }}>A</span><span style={{ textAlign: 'right' }}>{rightCol(tab).label}</span>
           </div>
           <div style={{ maxHeight: 500, overflowY: 'auto' }}>
             {sorted.map((pl, i) => (
@@ -166,7 +179,7 @@ export default function Players() {
                   <div style={{ minWidth: 0 }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{pl.name}</div>
                     <div style={mono({ fontSize: 9, color: 'var(--text-dim)', letterSpacing: '.04em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' })}>
-                      {pl.code} · {pl.nation}
+                      {pl.code} · {pl.nation}{pl.position ? ` · ${pl.position}` : ''}
                     </div>
                   </div>
                 </div>
@@ -182,7 +195,7 @@ export default function Players() {
                 </div>
                 <span style={mono({ fontSize: 13, fontWeight: 700, color: 'var(--text-body)', textAlign: 'center' })}>{pl.goals}</span>
                 <span style={mono({ fontSize: 12, color: 'var(--text-secondary-2)', textAlign: 'center' })}>{pl.assists}</span>
-                <span style={mono({ fontSize: 11, color: 'var(--text-muted-2)', textAlign: 'right' })}>{pl.xg.toFixed(1)}</span>
+                <span style={mono({ fontSize: 11, color: 'var(--text-muted-2)', textAlign: 'right' })}>{rightCol(tab).val(pl)}</span>
               </div>
             ))}
             {sorted.length === 0 && (

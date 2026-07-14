@@ -15,13 +15,15 @@ export default function Fixtures({ openMatchLab, goBracket }) {
   const { data } = useData()
   const fixtures = data?.fixtures || []
   const labIds = new Set((data?.matches || []).map((m) => m.id))
+  const predByPair = new Map((data?.matchpreds || []).map((p) => [p.home.code + '|' + p.away.code, p]))
   const all = fixtures.map((f) => ({
     ...f,
     sh: f.status === 'done' && f.sh != null ? String(f.sh) : '–',
     sa: f.status === 'done' && f.sa != null ? String(f.sa) : '–',
     // group-stage matches with lab detail deep-link into Match Lab; others jump to the bracket
     on: labIds.has(f.matchId) ? () => openMatchLab(f.matchId) : goBracket,
-    venue: '',
+    venueLine: f.venue ? [f.venue, f.city].filter(Boolean).join(', ') : '',
+    pred: f.status === 'upcoming' ? predByPair.get(f.hCode + '|' + f.aCode) : null,
   }))
   const rows = all.filter((f) => filter === 'all' || f.status === filter)
 
@@ -106,20 +108,43 @@ export default function Fixtures({ openMatchLab, goBracket }) {
                   <span style={mono({ fontSize: 13, fontWeight: 600, color: 'var(--text-body)' })}>{f.aCode}</span>
                 </div>
               </div>
-              <div style={mono({ fontSize: 9.5, color: 'var(--text-dim-2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' })}>{f.venue}</div>
               <div
-                style={mono({
-                  justifySelf: 'end',
-                  padding: '4px 10px',
-                  borderRadius: 100,
-                  background: done ? 'rgba(0,224,198,.1)' : 'rgba(255,255,255,.05)',
-                  fontSize: 9,
-                  letterSpacing: '.08em',
-                  color: done ? 'var(--teal)' : 'var(--text-secondary)',
-                })}
+                title={done && f.ref ? `Referee: ${f.ref}` : undefined}
+                style={mono({ fontSize: 9.5, color: 'var(--text-dim-2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' })}
               >
-                {done ? 'FT' : 'SCHEDULED'}
+                {f.venueLine}
               </div>
+              {f.pred ? (
+                <div
+                  style={mono({
+                    justifySelf: 'end',
+                    padding: '4px 10px',
+                    borderRadius: 100,
+                    background: 'rgba(0,224,198,.1)',
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: '.04em',
+                    color: 'var(--teal)',
+                    whiteSpace: 'nowrap',
+                  })}
+                >
+                  {f.pred.result.home >= f.pred.result.away ? f.hCode : f.aCode} {Math.max(f.pred.result.home, f.pred.result.away)}%
+                </div>
+              ) : (
+                <div
+                  style={mono({
+                    justifySelf: 'end',
+                    padding: '4px 10px',
+                    borderRadius: 100,
+                    background: done ? 'rgba(0,224,198,.1)' : 'rgba(255,255,255,.05)',
+                    fontSize: 9,
+                    letterSpacing: '.08em',
+                    color: done ? 'var(--teal)' : 'var(--text-secondary)',
+                  })}
+                >
+                  {done ? 'FT' : 'SCHEDULED'}
+                </div>
+              )}
             </div>
           )
         })}

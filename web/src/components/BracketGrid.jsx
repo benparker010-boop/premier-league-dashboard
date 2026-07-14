@@ -51,6 +51,17 @@ function tierProps(m) {
 
 function MatchCard({ m, x, y, final = false }) {
   const t = tierProps(m)
+  // the champion tag must follow the resolved winner/favourite, not always
+  // "home" — home isn't guaranteed to be the projected (or actual) champion
+  const champCode = final
+    ? m.champion === m.home.name
+      ? m.home.code
+      : m.champion === m.away.name
+        ? m.away.code
+        : m.favHome
+          ? m.home.code
+          : m.away.code
+    : null
   const row = (code, col, textCol, score, scoreCol, glowDot) => (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -81,7 +92,7 @@ function MatchCard({ m, x, y, final = false }) {
           {final ? 'PREDICTED CHAMPION' : t.tagText}
         </span>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: 8, fontWeight: 700, color: final ? '#f5c451' : t.probCol }}>
-          {final ? t.hCode + ' ' + m.prob + '%' : t.probText}
+          {final ? champCode + ' ' + m.prob + '%' : t.probText}
         </span>
       </div>
     </div>

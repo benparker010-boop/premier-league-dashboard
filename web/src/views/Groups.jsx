@@ -37,7 +37,7 @@ export default function Groups() {
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(0,224,198,.45),transparent)' }} />
             <div style={{ padding: '12px 14px 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={mono({ fontSize: 13, fontWeight: 700, letterSpacing: '.1em', color: 'var(--text-brightest)' })}>GROUP {grp.name}</span>
-              <span style={mono({ fontSize: 8.5, color: 'var(--text-dim)', letterSpacing: '.06em', whiteSpace: 'pre' })}>P  W  D  L  GD  Pts</span>
+              <span style={mono({ fontSize: 8.5, color: 'var(--text-dim)', letterSpacing: '.06em', whiteSpace: 'pre' })}>P  W  D  L  GF  GA  GD  Pts</span>
             </div>
             {grp.teams.map((t, i) => {
               const qual = t.qual !== 'x'
@@ -61,6 +61,8 @@ export default function Groups() {
                     <span style={{ width: 16, textAlign: 'center' }}>{t.w}</span>
                     <span style={{ width: 16, textAlign: 'center' }}>{t.d}</span>
                     <span style={{ width: 16, textAlign: 'center' }}>{t.l}</span>
+                    <span style={{ width: 18, textAlign: 'center' }}>{t.gf}</span>
+                    <span style={{ width: 18, textAlign: 'center' }}>{t.ga}</span>
                     <span style={{ width: 26, textAlign: 'center', color: '#6f8093' }}>{(t.gd >= 0 ? '+' : '') + t.gd}</span>
                     <span style={{ width: 22, textAlign: 'right', fontWeight: qual ? 700 : 400, color: qual ? 'var(--text-brightest)' : 'var(--text-dim-2)' }}>{t.pts}</span>
                   </div>
