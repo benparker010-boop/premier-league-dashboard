@@ -1759,7 +1759,9 @@
   "group": false,
   "venue": "Estadio Azteca",
   "city": "Mexico City",
-  "ref": "Alireza Faghani"
+  "ref": "Alireza Faghani",
+  "htSh": 1,
+  "htSa": 2
  },
  {
   "round": "ROUND OF 16",
@@ -1776,7 +1778,9 @@
   "group": false,
   "venue": "AT&T Stadium",
   "city": "Arlington",
-  "ref": "Anthony Taylor"
+  "ref": "Anthony Taylor",
+  "htSh": 0,
+  "htSa": 0
  },
  {
   "round": "ROUND OF 16",

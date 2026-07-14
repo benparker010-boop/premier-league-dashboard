@@ -1,30 +1,30 @@
 {
- "generatedAt": "2026-07-14T15:16:50.496580+00:00",
+ "generatedAt": "2026-07-14T16:03:56.942167+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 35.2
+   "v": 35.1
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 27.5
+   "v": 28.0
   },
   {
    "code": "FRA",
    "name": "France",
    "color": "#9d5fb5",
-   "v": 22.6
+   "v": 21.1
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 14.7
+   "v": 15.9
   }
  ],
  "bracket": {
@@ -44,11 +44,11 @@
     "sh": 0,
     "sa": 3,
     "winner": "away",
-    "favHome": true,
-    "prob": 51,
+    "favHome": false,
+    "prob": 53,
     "projScore": [
-     1,
-     0
+     0,
+     1
     ],
     "tier": "result"
    },
@@ -68,7 +68,7 @@
     "sa": 1,
     "winner": "away",
     "favHome": false,
-    "prob": 83,
+    "prob": 82,
     "projScore": [
      0,
      2
@@ -137,7 +137,7 @@
     "sa": 1,
     "winner": "away",
     "favHome": false,
-    "prob": 73,
+    "prob": 70,
     "projScore": [
      0,
      1
@@ -160,7 +160,7 @@
     "sa": 4,
     "winner": "away",
     "favHome": false,
-    "prob": 63,
+    "prob": 59,
     "projScore": [
      0,
      1
@@ -183,7 +183,7 @@
     "sa": 2,
     "winner": "home",
     "favHome": true,
-    "prob": 88,
+    "prob": 87,
     "projScore": [
      2,
      0
@@ -206,7 +206,7 @@
     "sa": 0,
     "winner": "home",
     "favHome": false,
-    "prob": 59,
+    "prob": 57,
     "projScore": [
      0,
      1
@@ -231,9 +231,9 @@
     "sa": 0,
     "winner": "home",
     "favHome": true,
-    "prob": 78,
+    "prob": 73,
     "projScore": [
-     2,
+     1,
      0
     ],
     "tier": "result"
@@ -279,8 +279,8 @@
     "favHome": false,
     "prob": 65,
     "projScore": [
-     0,
-     1
+     1,
+     2
     ],
     "tier": "result"
    },
@@ -300,7 +300,7 @@
     "sa": 1,
     "winner": "home",
     "favHome": true,
-    "prob": 72,
+    "prob": 71,
     "projScore": [
      1,
      0
@@ -325,7 +325,7 @@
     "sa": null,
     "winner": null,
     "favHome": false,
-    "prob": 58,
+    "prob": 59,
     "projScore": [
      0,
      1
@@ -348,7 +348,7 @@
     "sa": null,
     "winner": null,
     "favHome": false,
-    "prob": 60,
+    "prob": 59,
     "projScore": [
      0,
      1
@@ -372,7 +372,7 @@
    "sa": null,
    "winner": null,
    "favHome": true,
-   "prob": 57,
+   "prob": 56,
    "projScore": [
     1,
     0
@@ -397,8 +397,8 @@
    "color": "#c3cfdc"
   },
   "favCode": "ESP",
-  "prob": 58,
-  "probHome": 42
+  "prob": 59,
+  "probHome": 41
  },
  "lastMatch": {
   "round": "QUARTER-FINAL",
