@@ -1,5 +1,430 @@
 [
  {
+  "id": "mt_836288430",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "score": [
+   0,
+   2
+  ],
+  "round": "SEMI-FINAL",
+  "date": "14 Jul 2026",
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Iván Barton",
+  "stats": {
+   "possession": [
+    49,
+    51
+   ],
+   "xg": [
+    0.3,
+    1.63
+   ],
+   "shots": [
+    10,
+    10
+   ],
+   "sot": [
+    3,
+    2
+   ],
+   "big": [
+    0,
+    3
+   ],
+   "corners": [
+    null,
+    null
+   ],
+   "passes": [
+    472,
+    500
+   ],
+   "passAcc": [
+    null,
+    null
+   ],
+   "fouls": [
+    11,
+    12
+   ],
+   "yellow": [
+    2,
+    1
+   ]
+  },
+  "timeline": [
+   {
+    "min": 9,
+    "type": "y",
+    "team": "home",
+    "player": "Adrien Rabiot",
+    "assist": null
+   },
+   {
+    "min": 22,
+    "type": "g",
+    "team": "away",
+    "player": "Mikel Oyarzabal",
+    "assist": null
+   },
+   {
+    "min": 31,
+    "type": "y",
+    "team": "away",
+    "player": "Marc Cucurella",
+    "assist": null
+   },
+   {
+    "min": 58,
+    "type": "g",
+    "team": "away",
+    "player": "Pedro Porro",
+    "assist": null
+   },
+   {
+    "min": 86,
+    "type": "y",
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "assist": null
+   }
+  ],
+  "shots": [
+   {
+    "team": "home",
+    "player": "Adrien Rabiot",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 25.3,
+    "y": 52.3,
+    "min": 6
+   },
+   {
+    "team": "away",
+    "player": "Alex Baena",
+    "xg": 0.06,
+    "outcome": "b",
+    "x": 18.2,
+    "y": 70.8,
+    "min": 11
+   },
+   {
+    "team": "away",
+    "player": "Mikel Oyarzabal",
+    "xg": 0.82,
+    "outcome": "g",
+    "x": 11.5,
+    "y": 50,
+    "min": 22
+   },
+   {
+    "team": "away",
+    "player": "Dani Olmo",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 27.3,
+    "y": 33.7,
+    "min": 34
+   },
+   {
+    "team": "home",
+    "player": "Bradley Barcola",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 19.8,
+    "y": 29.5,
+    "min": 36
+   },
+   {
+    "team": "away",
+    "player": "Pedro Porro",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 26,
+    "y": 71.6,
+    "min": 37
+   },
+   {
+    "team": "away",
+    "player": "Fabián Ruiz",
+    "xg": 0.12,
+    "outcome": "b",
+    "x": 8.9,
+    "y": 55.1,
+    "min": 38
+   },
+   {
+    "team": "away",
+    "player": "Mikel Oyarzabal",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 21.6,
+    "y": 30.5,
+    "min": 52
+   },
+   {
+    "team": "away",
+    "player": "Pedro Porro",
+    "xg": 0.5,
+    "outcome": "g",
+    "x": 11.2,
+    "y": 57.3,
+    "min": 58
+   },
+   {
+    "team": "away",
+    "player": "Alex Baena",
+    "xg": 0.02,
+    "outcome": "b",
+    "x": 19.2,
+    "y": 25.6,
+    "min": 58
+   },
+   {
+    "team": "home",
+    "player": "Aurélien Tchouaméni",
+    "xg": 0.06,
+    "outcome": "o",
+    "x": 6.1,
+    "y": 40.3,
+    "min": 65
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 16.9,
+    "y": 64.6,
+    "min": 67
+   },
+   {
+    "team": "home",
+    "player": "Désiré Doué",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 19.9,
+    "y": 36.4,
+    "min": 68
+   },
+   {
+    "team": "away",
+    "player": "Ferran Torres",
+    "xg": 0.06,
+    "outcome": "o",
+    "x": 9.5,
+    "y": 48.1,
+    "min": 78
+   },
+   {
+    "team": "home",
+    "player": "Désiré Doué",
+    "xg": 0.02,
+    "outcome": "s",
+    "x": 23.8,
+    "y": 28.5,
+    "min": 81
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.05,
+    "outcome": "o",
+    "x": 18.6,
+    "y": 25.1,
+    "min": 89
+   },
+   {
+    "team": "home",
+    "player": "Kylian Mbappé",
+    "xg": 0.01,
+    "outcome": "o",
+    "x": 25,
+    "y": 25.3,
+    "min": 90
+   },
+   {
+    "team": "away",
+    "player": "Nico Williams",
+    "xg": 0.03,
+    "outcome": "o",
+    "x": 4.5,
+    "y": 29.5,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.02,
+    "outcome": "s",
+    "x": 9.8,
+    "y": 69.7,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Ousmane Dembélé",
+    "xg": 0.03,
+    "outcome": "s",
+    "x": 11.9,
+    "y": 72.6,
+    "min": 90
+   }
+  ],
+  "lineups": {
+   "home": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Mike Maignan",
+      "pos": "gk",
+      "num": 16
+     },
+     {
+      "name": "William Saliba",
+      "pos": "def",
+      "num": 2
+     },
+     {
+      "name": "Dayot Upamecano",
+      "pos": "def",
+      "num": 2
+     },
+     {
+      "name": "Lucas Digne",
+      "pos": "def",
+      "num": 12
+     },
+     {
+      "name": "Jules Koundé",
+      "pos": "def",
+      "num": 23
+     },
+     {
+      "name": "Adrien Rabiot",
+      "pos": "mid",
+      "num": 12
+     },
+     {
+      "name": "Aurélien Tchouaméni",
+      "pos": "mid",
+      "num": 14
+     },
+     {
+      "name": "Michael Olise",
+      "pos": "mid",
+      "num": 17
+     },
+     {
+      "name": "Ousmane Dembélé",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Kylian Mbappé",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Bradley Barcola",
+      "pos": "fwd",
+      "num": 29
+     }
+    ],
+    "subs": [
+     "Brice Samba",
+     "Robin Risser",
+     "Maxence Lacroix",
+     "Ibrahima Konaté",
+     "Theo Hernández",
+     "Lucas Hernández",
+     "Malo Gusto",
+     "Rayan Cherki"
+    ]
+   },
+   "away": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Unai Simón",
+      "pos": "gk",
+      "num": 1
+     },
+     {
+      "name": "Marc Cucurella",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Pau Cubarsí",
+      "pos": "def",
+      "num": 5
+     },
+     {
+      "name": "Aymeric Laporte",
+      "pos": "def",
+      "num": 14
+     },
+     {
+      "name": "Pedro Porro",
+      "pos": "def",
+      "num": 23
+     },
+     {
+      "name": "Fabián Ruiz",
+      "pos": "mid",
+      "num": 8
+     },
+     {
+      "name": "Rodri",
+      "pos": "mid",
+      "num": 16
+     },
+     {
+      "name": "Dani Olmo",
+      "pos": "mid",
+      "num": 20
+     },
+     {
+      "name": "Mikel Oyarzabal",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Lamine Yamal",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Alex Baena",
+      "pos": "fwd",
+      "num": 10
+     }
+    ],
+    "subs": [
+     "David Raya",
+     "Joan García",
+     "Marc Pubill",
+     "Eric García",
+     "Pablo Gavi",
+     "Pedri",
+     "Marcos Llorente",
+     "Alejandro Grimaldo"
+    ]
+   }
+  }
+ },
+ {
   "id": "mt_401944566",
   "home": {
    "code": "ARG",
@@ -5390,437 +5815,6 @@
      "Lucas Hernández",
      "Malo Gusto",
      "Rayan Cherki"
-    ]
-   }
-  }
- },
- {
-  "id": "mt_740177240",
-  "home": {
-   "code": "CAN",
-   "name": "Canada",
-   "color": "#ef7d52"
-  },
-  "away": {
-   "code": "MAR",
-   "name": "Morocco",
-   "color": "#e8475e"
-  },
-  "score": [
-   0,
-   3
-  ],
-  "round": "ROUND OF 16",
-  "date": "4 Jul 2026",
-  "venue": "NRG Stadium",
-  "city": "Houston",
-  "ref": "Michael Oliver",
-  "stats": {
-   "possession": [
-    45,
-    55
-   ],
-   "xg": [
-    0.84,
-    0.82
-   ],
-   "shots": [
-    10,
-    5
-   ],
-   "sot": [
-    3,
-    4
-   ],
-   "big": [
-    1,
-    2
-   ],
-   "corners": [
-    null,
-    null
-   ],
-   "passes": [
-    359,
-    473
-   ],
-   "passAcc": [
-    null,
-    null
-   ],
-   "fouls": [
-    24,
-    14
-   ],
-   "yellow": [
-    4,
-    4
-   ]
-  },
-  "timeline": [
-   {
-    "min": 20,
-    "type": "y",
-    "team": "away",
-    "player": "Redouane Halhal",
-    "assist": null
-   },
-   {
-    "min": 40,
-    "type": "y",
-    "team": "home",
-    "player": "Richie Laryea",
-    "assist": null
-   },
-   {
-    "min": 40,
-    "type": "y",
-    "team": "away",
-    "player": "Achraf Hakimi",
-    "assist": null
-   },
-   {
-    "min": 43,
-    "type": "y",
-    "team": "home",
-    "player": "Jonathan David",
-    "assist": null
-   },
-   {
-    "min": 45,
-    "type": "y",
-    "team": "away",
-    "player": "Azzedine Ounahi",
-    "assist": null
-   },
-   {
-    "min": 45,
-    "type": "y",
-    "team": "away",
-    "player": "Bilal El Khannouss",
-    "assist": null
-   },
-   {
-    "min": 49,
-    "type": "y",
-    "team": "home",
-    "player": "Luc De Fougerolles",
-    "assist": null
-   },
-   {
-    "min": 50,
-    "type": "g",
-    "team": "away",
-    "player": "Azzedine Ounahi",
-    "assist": null
-   },
-   {
-    "min": 67,
-    "type": "y",
-    "team": "home",
-    "player": "Cyle Larin",
-    "assist": null
-   },
-   {
-    "min": 82,
-    "type": "g",
-    "team": "away",
-    "player": "Azzedine Ounahi",
-    "assist": null
-   },
-   {
-    "min": 90,
-    "type": "g",
-    "team": "away",
-    "player": "Soufiane Rahimi",
-    "assist": null
-   }
-  ],
-  "shots": [
-   {
-    "team": "home",
-    "player": "Jonathan David",
-    "xg": 0.02,
-    "outcome": "s",
-    "x": 3,
-    "y": 34.9,
-    "min": 5
-   },
-   {
-    "team": "home",
-    "player": "Tani Oluwaseyi",
-    "xg": 0.27,
-    "outcome": "s",
-    "x": 11,
-    "y": 44.5,
-    "min": 10
-   },
-   {
-    "team": "home",
-    "player": "Tani Oluwaseyi",
-    "xg": 0.06,
-    "outcome": "o",
-    "x": 11.6,
-    "y": 40.1,
-    "min": 11
-   },
-   {
-    "team": "home",
-    "player": "Alistair Johnston",
-    "xg": 0.05,
-    "outcome": "b",
-    "x": 10.7,
-    "y": 53.4,
-    "min": 18
-   },
-   {
-    "team": "away",
-    "player": "Soufiane Rahimi",
-    "xg": 0.02,
-    "outcome": "s",
-    "x": 26.9,
-    "y": 46.6,
-    "min": 29
-   },
-   {
-    "team": "home",
-    "player": "Luc De Fougerolles",
-    "xg": 0.15,
-    "outcome": "o",
-    "x": 11,
-    "y": 53.1,
-    "min": 49
-   },
-   {
-    "team": "away",
-    "player": "Azzedine Ounahi",
-    "xg": 0.07,
-    "outcome": "g",
-    "x": 18.1,
-    "y": 52.3,
-    "min": 50
-   },
-   {
-    "team": "home",
-    "player": "Jonathan David",
-    "xg": 0.18,
-    "outcome": "o",
-    "x": 17.8,
-    "y": 48.9,
-    "min": 78
-   },
-   {
-    "team": "home",
-    "player": "Tajon Buchanan",
-    "xg": 0.02,
-    "outcome": "s",
-    "x": 29.2,
-    "y": 41.2,
-    "min": 79
-   },
-   {
-    "team": "away",
-    "player": "Azzedine Ounahi",
-    "xg": 0.15,
-    "outcome": "g",
-    "x": 13.8,
-    "y": 56.9,
-    "min": 82
-   },
-   {
-    "team": "home",
-    "player": "Jonathan David",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 21.4,
-    "y": 31.1,
-    "min": 84
-   },
-   {
-    "team": "away",
-    "player": "Soufiane Rahimi",
-    "xg": 0.08,
-    "outcome": "o",
-    "x": 11.7,
-    "y": 50.7,
-    "min": 85
-   },
-   {
-    "team": "home",
-    "player": "Alistair Johnston",
-    "xg": 0.02,
-    "outcome": "o",
-    "x": 11.1,
-    "y": 62.8,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Jonathan Osorio",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 14.6,
-    "y": 62.7,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Jayden Nelson",
-    "xg": 0.03,
-    "outcome": "o",
-    "x": 22,
-    "y": 39,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Soufiane Rahimi",
-    "xg": 0.42,
-    "outcome": "g",
-    "x": 12.8,
-    "y": 38.7,
-    "min": 90
-   }
-  ],
-  "lineups": {
-   "home": {
-    "formation": "4-4-2",
-    "xi": [
-     {
-      "name": "Maxime Crépeau",
-      "pos": "gk",
-      "num": 71
-     },
-     {
-      "name": "Alistair Johnston",
-      "pos": "def",
-      "num": 2
-     },
-     {
-      "name": "Richie Laryea",
-      "pos": "def",
-      "num": 22
-     },
-     {
-      "name": "Luc De Fougerolles",
-      "pos": "def",
-      "num": 44
-     },
-     {
-      "name": "Moise Bombito",
-      "pos": "def",
-      "num": 64
-     },
-     {
-      "name": "Niko Sigur",
-      "pos": "mid",
-      "num": 8
-     },
-     {
-      "name": "Tajon Buchanan",
-      "pos": "mid",
-      "num": 17
-     },
-     {
-      "name": "Ali Ahmed",
-      "pos": "mid",
-      "num": 21
-     },
-     {
-      "name": "Stephen Eustaquio",
-      "pos": "mid",
-      "num": 46
-     },
-     {
-      "name": "Tani Oluwaseyi",
-      "pos": "fwd",
-      "num": 21
-     },
-     {
-      "name": "Jonathan David",
-      "pos": "fwd",
-      "num": 30
-     }
-    ],
-    "subs": [
-     "Owen Goodman",
-     "Dayne St. Clair",
-     "Alfie Jones",
-     "Derek Cornelius",
-     "Joel Waterman",
-     "Alphonso Davies",
-     "Liam Millar",
-     "Nathan-Dylan Saliba"
-    ]
-   },
-   "away": {
-    "formation": "4-2-3-1",
-    "xi": [
-     {
-      "name": "Yassine Bounou",
-      "pos": "gk",
-      "num": 37
-     },
-     {
-      "name": "Achraf Hakimi",
-      "pos": "def",
-      "num": 2
-     },
-     {
-      "name": "Redouane Halhal",
-      "pos": "def",
-      "num": 2
-     },
-     {
-      "name": "Noussair Mazraoui",
-      "pos": "def",
-      "num": 3
-     },
-     {
-      "name": "Issa Diop",
-      "pos": "def",
-      "num": 31
-     },
-     {
-      "name": "Neil El Aynaoui",
-      "pos": "mid",
-      "num": 8
-     },
-     {
-      "name": "Azzedine Ounahi",
-      "pos": "mid",
-      "num": 18
-     },
-     {
-      "name": "Ayyoub Bouaddi",
-      "pos": "mid",
-      "num": 32
-     },
-     {
-      "name": "Bilal El Khannouss",
-      "pos": "fwd",
-      "num": 11
-     },
-     {
-      "name": "Brahim Díaz",
-      "pos": "fwd",
-      "num": 21
-     },
-     {
-      "name": "Ismael Saibari",
-      "pos": "fwd",
-      "num": 34
-     }
-    ],
-    "subs": [
-     "Munir El Kajoui",
-     "Ahmed Reda Tagnaouti",
-     "Youssef Belammari",
-     "Anass Salah-Eddine",
-     "Chadi Riad",
-     "Zakaria El Ouahdi",
-     "Marwane Saadane",
-     "Samir El Mourabet"
     ]
    }
   }

@@ -1,24 +1,24 @@
 {
- "generatedAt": "2026-07-14T20:34:34.334268+00:00",
+ "generatedAt": "2026-07-14T23:36:44.916946+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
-   "code": "W10",
-   "name": "W102",
-   "color": "#ef7d52",
-   "v": 49.9
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc",
+   "v": 59.7
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 29.9
+   "v": 26.1
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 20.2
+   "v": 14.3
   }
  ],
  "bracket": {
@@ -305,6 +305,29 @@
   "sf": [
    {
     "home": {
+     "code": "FRA",
+     "name": "France",
+     "color": "#9d5fb5"
+    },
+    "away": {
+     "code": "ESP",
+     "name": "Spain",
+     "color": "#c3cfdc"
+    },
+    "done": true,
+    "sh": 0,
+    "sa": 2,
+    "winner": "away",
+    "favHome": false,
+    "prob": 59,
+    "projScore": [
+     0,
+     1
+    ],
+    "tier": "result"
+   },
+   {
+    "home": {
      "code": "ENG",
      "name": "England",
      "color": "#2ecc71"
@@ -329,27 +352,27 @@
   ],
   "final": {
    "home": {
-    "code": "ARG",
-    "name": "Argentina",
+    "code": "ESP",
+    "name": "Spain",
     "color": "#c3cfdc"
    },
    "away": {
-    "code": "W10",
-    "name": "W102",
-    "color": "#ef7d52"
+    "code": "ARG",
+    "name": "Argentina",
+    "color": "#c3cfdc"
    },
    "done": false,
    "sh": null,
    "sa": null,
    "winner": null,
    "favHome": true,
-   "prob": 50,
+   "prob": 56,
    "projScore": [
     1,
-    1
+    0
    ],
    "tier": "projected",
-   "champion": "Argentina"
+   "champion": "Spain"
   }
  },
  "nextMatch": {
@@ -372,21 +395,21 @@
   "probHome": 41
  },
  "lastMatch": {
-  "round": "QUARTER-FINAL",
-  "date": "Sun, Jul 12",
-  "venue": "Arrowhead Stadium, Kansas City",
+  "round": "SEMI-FINAL",
+  "date": "Tue, Jul 14",
+  "venue": "AT&T Stadium, Arlington",
   "home": {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc"
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
   },
   "away": {
-   "code": "SUI",
-   "name": "Switzerland",
-   "color": "#e8475e"
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
   },
-  "sh": 1,
-  "sa": 1,
-  "scorers": "Alexis Mac Allister 10' · Julián Alvarez 112' · Lautaro Martínez 120' · Dan Ndoye 67'"
+  "sh": 0,
+  "sa": 2,
+  "scorers": "Mikel Oyarzabal 22' · Pedro Porro 58'"
  }
 }

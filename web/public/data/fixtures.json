@@ -1,25 +1,6 @@
 [
  {
   "round": "GROUP A",
-  "date": "11 Jun 2026",
-  "ts": 1781204400.0,
-  "hCode": "MEX",
-  "hCol": "#ef7d52",
-  "aCode": "RSA",
-  "aCol": "#c3cfdc",
-  "sh": 2,
-  "sa": 0,
-  "status": "done",
-  "matchId": "mt_153637999",
-  "group": true,
-  "venue": "Estadio Azteca",
-  "city": "Mexico City",
-  "ref": "Wilton Pereira Sampaio",
-  "htSh": 1,
-  "htSa": 0
- },
- {
-  "round": "GROUP A",
   "date": "12 Jun 2026",
   "ts": 1781229600.0,
   "hCode": "KOR",
@@ -1922,6 +1903,25 @@
   "etSa": 1,
   "htSh": 1,
   "htSa": 0
+ },
+ {
+  "round": "SEMI-FINAL",
+  "date": "14 Jul 2026",
+  "ts": 1784055600.0,
+  "hCode": "FRA",
+  "hCol": "#9d5fb5",
+  "aCode": "ESP",
+  "aCol": "#c3cfdc",
+  "sh": 0,
+  "sa": 2,
+  "status": "done",
+  "matchId": "mt_836288430",
+  "group": false,
+  "venue": "AT&T Stadium",
+  "city": "Arlington",
+  "ref": "Iván Barton",
+  "htSh": 0,
+  "htSa": 1
  },
  {
   "round": "SEMI-FINAL",
