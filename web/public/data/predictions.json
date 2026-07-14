@@ -1,30 +1,24 @@
 {
- "generatedAt": "2026-07-14T16:03:56.942167+00:00",
+ "generatedAt": "2026-07-14T20:34:34.334268+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
-   "code": "ESP",
-   "name": "Spain",
-   "color": "#c3cfdc",
-   "v": 35.1
+   "code": "W10",
+   "name": "W102",
+   "color": "#ef7d52",
+   "v": 49.9
   },
   {
    "code": "ARG",
    "name": "Argentina",
    "color": "#c3cfdc",
-   "v": 28.0
-  },
-  {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5",
-   "v": 21.1
+   "v": 29.9
   },
   {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71",
-   "v": 15.9
+   "v": 20.2
   }
  ],
  "bracket": {
@@ -311,29 +305,6 @@
   "sf": [
    {
     "home": {
-     "code": "FRA",
-     "name": "France",
-     "color": "#9d5fb5"
-    },
-    "away": {
-     "code": "ESP",
-     "name": "Spain",
-     "color": "#c3cfdc"
-    },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
-    "favHome": false,
-    "prob": 59,
-    "projScore": [
-     0,
-     1
-    ],
-    "tier": "confirmed"
-   },
-   {
-    "home": {
      "code": "ENG",
      "name": "England",
      "color": "#2ecc71"
@@ -358,45 +329,45 @@
   ],
   "final": {
    "home": {
-    "code": "ESP",
-    "name": "Spain",
-    "color": "#c3cfdc"
-   },
-   "away": {
     "code": "ARG",
     "name": "Argentina",
     "color": "#c3cfdc"
+   },
+   "away": {
+    "code": "W10",
+    "name": "W102",
+    "color": "#ef7d52"
    },
    "done": false,
    "sh": null,
    "sa": null,
    "winner": null,
    "favHome": true,
-   "prob": 56,
+   "prob": 50,
    "projScore": [
     1,
-    0
+    1
    ],
    "tier": "projected",
-   "champion": "Spain"
+   "champion": "Argentina"
   }
  },
  "nextMatch": {
   "round": "SEMI-FINAL",
-  "date": "Tue, Jul 14",
+  "date": "Wed, Jul 15",
   "time": "19:00 UTC",
-  "venue": "AT&T Stadium, Arlington",
+  "venue": "Mercedes-Benz Stadium, Atlanta",
   "home": {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5"
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71"
   },
   "away": {
-   "code": "ESP",
-   "name": "Spain",
+   "code": "ARG",
+   "name": "Argentina",
    "color": "#c3cfdc"
   },
-  "favCode": "ESP",
+  "favCode": "ARG",
   "prob": 59,
   "probHome": 41
  },

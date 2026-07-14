@@ -1925,23 +1925,6 @@
  },
  {
   "round": "SEMI-FINAL",
-  "date": "14 Jul 2026",
-  "ts": 1784055600.0,
-  "hCode": "FRA",
-  "hCol": "#9d5fb5",
-  "aCode": "ESP",
-  "aCol": "#c3cfdc",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
-  "matchId": "mt_836288430",
-  "group": false,
-  "venue": "AT&T Stadium",
-  "city": "Arlington",
-  "ref": null
- },
- {
-  "round": "SEMI-FINAL",
   "date": "15 Jul 2026",
   "ts": 1784142000.0,
   "hCode": "ENG",
