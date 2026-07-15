@@ -1922,22 +1922,5 @@
   "ref": "Iván Barton",
   "htSh": 0,
   "htSa": 1
- },
- {
-  "round": "SEMI-FINAL",
-  "date": "15 Jul 2026",
-  "ts": 1784142000.0,
-  "hCode": "ENG",
-  "hCol": "#2ecc71",
-  "aCode": "ARG",
-  "aCol": "#c3cfdc",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
-  "matchId": "mt_625866112",
-  "group": false,
-  "venue": "Mercedes-Benz Stadium",
-  "city": "Atlanta",
-  "ref": null
  }
 ]

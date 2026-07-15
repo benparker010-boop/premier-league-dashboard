@@ -1,24 +1,18 @@
 {
- "generatedAt": "2026-07-15T16:54:00.106965+00:00",
+ "generatedAt": "2026-07-15T20:38:38.371336+00:00",
  "modelVersion": "v3.0",
  "champions": [
+  {
+   "code": "W10",
+   "name": "W102",
+   "color": "#ef7d52",
+   "v": 50.3
+  },
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 59.7
-  },
-  {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc",
-   "v": 26.1
-  },
-  {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71",
-   "v": 14.3
+   "v": 49.7
   }
  ],
  "bracket": {
@@ -325,29 +319,6 @@
      1
     ],
     "tier": "result"
-   },
-   {
-    "home": {
-     "code": "ENG",
-     "name": "England",
-     "color": "#2ecc71"
-    },
-    "away": {
-     "code": "ARG",
-     "name": "Argentina",
-     "color": "#c3cfdc"
-    },
-    "done": false,
-    "sh": null,
-    "sa": null,
-    "winner": null,
-    "favHome": false,
-    "prob": 59,
-    "projScore": [
-     0,
-     1
-    ],
-    "tier": "confirmed"
    }
   ],
   "final": {
@@ -357,43 +328,25 @@
     "color": "#c3cfdc"
    },
    "away": {
-    "code": "ARG",
-    "name": "Argentina",
-    "color": "#c3cfdc"
+    "code": "W10",
+    "name": "W102",
+    "color": "#ef7d52"
    },
    "done": false,
    "sh": null,
    "sa": null,
    "winner": null,
    "favHome": true,
-   "prob": 56,
+   "prob": 50,
    "projScore": [
     1,
-    0
+    1
    ],
    "tier": "projected",
    "champion": "Spain"
   }
  },
- "nextMatch": {
-  "round": "SEMI-FINAL",
-  "date": "Wed, Jul 15",
-  "time": "19:00 UTC",
-  "venue": "Mercedes-Benz Stadium, Atlanta",
-  "home": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
-  },
-  "away": {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc"
-  },
-  "favCode": "ARG",
-  "prob": 59,
-  "probHome": 41
- },
+ "nextMatch": null,
  "lastMatch": {
   "round": "SEMI-FINAL",
   "date": "Tue, Jul 14",
