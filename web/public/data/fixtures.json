@@ -1,24 +1,5 @@
 [
  {
-  "round": "GROUP A",
-  "date": "12 Jun 2026",
-  "ts": 1781229600.0,
-  "hCode": "KOR",
-  "hCol": "#e8475e",
-  "aCode": "CZE",
-  "aCol": "#c3cfdc",
-  "sh": 2,
-  "sa": 1,
-  "status": "done",
-  "matchId": "mt_153637955",
-  "group": true,
-  "venue": "Estadio Akron",
-  "city": "Guadalajara",
-  "ref": "Amin Mohamed Omar",
-  "htSh": 0,
-  "htSa": 0
- },
- {
   "round": "GROUP B",
   "date": "12 Jun 2026",
   "ts": 1781290800.0,
@@ -1922,5 +1903,24 @@
   "ref": "Iván Barton",
   "htSh": 0,
   "htSa": 1
+ },
+ {
+  "round": "SEMI-FINAL",
+  "date": "15 Jul 2026",
+  "ts": 1784142000.0,
+  "hCode": "ENG",
+  "hCol": "#2ecc71",
+  "aCode": "ARG",
+  "aCol": "#c3cfdc",
+  "sh": 1,
+  "sa": 2,
+  "status": "done",
+  "matchId": "mt_625866112",
+  "group": false,
+  "venue": "Mercedes-Benz Stadium",
+  "city": "Atlanta",
+  "ref": "Ismail Elfath",
+  "htSh": 0,
+  "htSa": 0
  }
 ]

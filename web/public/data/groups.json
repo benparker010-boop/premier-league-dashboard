@@ -31,31 +31,31 @@
     "qual": "q2"
    },
    {
-    "code": "KOR",
-    "color": "#e8475e",
-    "name": "South Korea",
-    "p": 3,
-    "w": 1,
-    "d": 0,
-    "l": 2,
-    "gf": 2,
-    "ga": 3,
-    "gd": -1,
-    "pts": 3,
-    "qual": "x"
-   },
-   {
     "code": "CZE",
     "color": "#c3cfdc",
     "name": "Czechia",
-    "p": 3,
+    "p": 2,
     "w": 0,
     "d": 1,
-    "l": 2,
-    "gf": 2,
-    "ga": 6,
-    "gd": -4,
+    "l": 1,
+    "gf": 1,
+    "ga": 4,
+    "gd": -3,
     "pts": 1,
+    "qual": "x"
+   },
+   {
+    "code": "KOR",
+    "color": "#e8475e",
+    "name": "South Korea",
+    "p": 2,
+    "w": 0,
+    "d": 0,
+    "l": 2,
+    "gf": 0,
+    "ga": 2,
+    "gd": -2,
+    "pts": 0,
     "qual": "x"
    }
   ]
