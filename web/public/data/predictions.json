@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-15T23:45:25.811369+00:00",
+ "generatedAt": "2026-07-16T07:37:44.431074+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -365,11 +365,29 @@
     1,
     0
    ],
-   "tier": "projected",
+   "tier": "confirmed",
    "champion": "Spain"
   }
  },
- "nextMatch": null,
+ "nextMatch": {
+  "round": "KNOCKOUT",
+  "date": "Sat, Jul 18",
+  "time": "21:00 UTC",
+  "venue": "Hard Rock Stadium, Miami Garden",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71"
+  },
+  "favCode": "FRA",
+  "prob": 57,
+  "probHome": 57
+ },
  "lastMatch": {
   "round": "SEMI-FINAL",
   "date": "Wed, Jul 15",

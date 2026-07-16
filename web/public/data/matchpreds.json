@@ -1,1 +1,176 @@
-[]
+[
+ {
+  "round": "KNOCKOUT",
+  "date": "Sat, Jul 18",
+  "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
+   "code": "ENG",
+   "name": "England",
+   "color": "#2ecc71"
+  },
+  "result": {
+   "home": 43,
+   "draw": 26,
+   "away": 31
+  },
+  "advance": 57,
+  "projScore": [
+   1,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 12.2
+   },
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 10.1
+   },
+   {
+    "score": [
+     2,
+     1
+    ],
+    "pct": 9.0
+   }
+  ],
+  "xg": [
+   1.48,
+   1.21
+  ],
+  "elo": [
+   2102,
+   2055
+  ],
+  "totals": {
+   "o15": 75,
+   "o25": 51,
+   "o35": 28
+  },
+  "btts": 54,
+  "stats": {
+   "shots": [
+    13.5,
+    11.3
+   ],
+   "sot": [
+    5.0,
+    4.0
+   ],
+   "corners": [
+    5.5,
+    4.3
+   ],
+   "cards": [
+    1.1,
+    1.0
+   ],
+   "fouls": [
+    12.3,
+    10.2
+   ]
+  },
+  "possession": [
+   51,
+   49
+  ]
+ },
+ {
+  "round": "FINAL",
+  "date": "Sun, Jul 19",
+  "home": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
+  },
+  "result": {
+   "home": 42,
+   "draw": 27,
+   "away": 31
+  },
+  "advance": 56,
+  "projScore": [
+   1,
+   0
+  ],
+  "topScores": [
+   {
+    "score": [
+     1,
+     1
+    ],
+    "pct": 12.7
+   },
+   {
+    "score": [
+     1,
+     0
+    ],
+    "pct": 11.3
+   },
+   {
+    "score": [
+     0,
+     1
+    ],
+    "pct": 9.4
+   }
+  ],
+  "xg": [
+   1.36,
+   1.13
+  ],
+  "elo": [
+   2162,
+   2121
+  ],
+  "totals": {
+   "o15": 71,
+   "o25": 47,
+   "o35": 24
+  },
+  "btts": 51,
+  "stats": {
+   "shots": [
+    13.2,
+    10.3
+   ],
+   "sot": [
+    4.0,
+    3.5
+   ],
+   "corners": [
+    5.4,
+    3.2
+   ],
+   "cards": [
+    1.1,
+    1.3
+   ],
+   "fouls": [
+    11.1,
+    10.3
+   ]
+  },
+  "possession": [
+   53,
+   47
+  ]
+ }
+]
