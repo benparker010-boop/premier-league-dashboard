@@ -1924,23 +1924,6 @@
   "htSa": 0
  },
  {
-  "round": "KNOCKOUT",
-  "date": "18 Jul 2026",
-  "ts": 1784408400.0,
-  "hCode": "FRA",
-  "hCol": "#9d5fb5",
-  "aCode": "ENG",
-  "aCol": "#2ecc71",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
-  "matchId": "mt_583655786",
-  "group": false,
-  "venue": "Hard Rock Stadium",
-  "city": "Miami Garden",
-  "ref": null
- },
- {
   "round": "FINAL",
   "date": "19 Jul 2026",
   "ts": 1784487600.0,

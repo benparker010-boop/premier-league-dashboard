@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-18T20:13:23.666001+00:00",
+ "generatedAt": "2026-07-18T22:34:56.460588+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -370,23 +370,23 @@
   }
  },
  "nextMatch": {
-  "round": "KNOCKOUT",
-  "date": "Sat, Jul 18",
-  "time": "21:00 UTC",
-  "venue": "Hard Rock Stadium, Miami Garden",
+  "round": "FINAL",
+  "date": "Sun, Jul 19",
+  "time": "19:00 UTC",
+  "venue": "MetLife Stadium, East Rutherford",
   "home": {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5"
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
   },
   "away": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
   },
-  "favCode": "FRA",
-  "prob": 57,
-  "probHome": 57
+  "favCode": "ESP",
+  "prob": 56,
+  "probHome": 56
  },
  "lastMatch": {
   "round": "SEMI-FINAL",
