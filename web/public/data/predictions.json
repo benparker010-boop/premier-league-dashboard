@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-19T17:45:08.074056+00:00",
+ "generatedAt": "2026-07-19T20:28:12.431543+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -344,50 +344,9 @@
     "tier": "result"
    }
   ],
-  "final": {
-   "home": {
-    "code": "ESP",
-    "name": "Spain",
-    "color": "#c3cfdc"
-   },
-   "away": {
-    "code": "ARG",
-    "name": "Argentina",
-    "color": "#c3cfdc"
-   },
-   "done": false,
-   "sh": null,
-   "sa": null,
-   "winner": null,
-   "favHome": true,
-   "prob": 56,
-   "projScore": [
-    1,
-    0
-   ],
-   "tier": "confirmed",
-   "champion": "Spain"
-  }
+  "final": null
  },
- "nextMatch": {
-  "round": "FINAL",
-  "date": "Sun, Jul 19",
-  "time": "19:00 UTC",
-  "venue": "MetLife Stadium, East Rutherford",
-  "home": {
-   "code": "ESP",
-   "name": "Spain",
-   "color": "#c3cfdc"
-  },
-  "away": {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc"
-  },
-  "favCode": "ESP",
-  "prob": 56,
-  "probHome": 56
- },
+ "nextMatch": null,
  "lastMatch": {
   "round": "KNOCKOUT",
   "date": "Sat, Jul 18",

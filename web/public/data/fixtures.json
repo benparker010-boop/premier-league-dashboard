@@ -1922,22 +1922,5 @@
   "ref": "Jesús Valenzuela",
   "htSh": 0,
   "htSa": 4
- },
- {
-  "round": "FINAL",
-  "date": "19 Jul 2026",
-  "ts": 1784487600.0,
-  "hCode": "ESP",
-  "hCol": "#c3cfdc",
-  "aCode": "ARG",
-  "aCol": "#c3cfdc",
-  "sh": null,
-  "sa": null,
-  "status": "upcoming",
-  "matchId": "mt_401944500",
-  "group": false,
-  "venue": "MetLife Stadium",
-  "city": "East Rutherford",
-  "ref": null
  }
 ]
