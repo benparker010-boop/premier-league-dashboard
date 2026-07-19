@@ -1,24 +1,5 @@
 [
  {
-  "round": "GROUP B",
-  "date": "12 Jun 2026",
-  "ts": 1781290800.0,
-  "hCode": "CAN",
-  "hCol": "#ef7d52",
-  "aCode": "BIH",
-  "aCol": "#1faf6b",
-  "sh": 1,
-  "sa": 1,
-  "status": "done",
-  "matchId": "mt_641915402",
-  "group": true,
-  "venue": "BMO Field",
-  "city": "Toronto",
-  "ref": "Facundo Raul Tello Figueroa",
-  "htSh": 0,
-  "htSa": 1
- },
- {
   "round": "GROUP D",
   "date": "13 Jun 2026",
   "ts": 1781312400.0,
@@ -1922,6 +1903,25 @@
   "ref": "Ismail Elfath",
   "htSh": 0,
   "htSa": 0
+ },
+ {
+  "round": "KNOCKOUT",
+  "date": "18 Jul 2026",
+  "ts": 1784408400.0,
+  "hCode": "FRA",
+  "hCol": "#9d5fb5",
+  "aCode": "ENG",
+  "aCol": "#2ecc71",
+  "sh": 4,
+  "sa": 6,
+  "status": "done",
+  "matchId": "mt_583655786",
+  "group": false,
+  "venue": "Hard Rock Stadium",
+  "city": "Miami Garden",
+  "ref": "Jesús Valenzuela",
+  "htSh": 0,
+  "htSa": 4
  },
  {
   "round": "FINAL",

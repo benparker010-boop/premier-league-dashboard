@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-18T22:34:56.460588+00:00",
+ "generatedAt": "2026-07-19T07:38:51.904240+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
@@ -389,21 +389,21 @@
   "probHome": 56
  },
  "lastMatch": {
-  "round": "SEMI-FINAL",
-  "date": "Wed, Jul 15",
-  "venue": "Mercedes-Benz Stadium, Atlanta",
+  "round": "KNOCKOUT",
+  "date": "Sat, Jul 18",
+  "venue": "Hard Rock Stadium, Miami Garden",
   "home": {
+   "code": "FRA",
+   "name": "France",
+   "color": "#9d5fb5"
+  },
+  "away": {
    "code": "ENG",
    "name": "England",
    "color": "#2ecc71"
   },
-  "away": {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc"
-  },
-  "sh": 1,
-  "sa": 2,
-  "scorers": "Anthony Gordon 55' · Enzo Fernández 85' · Lautaro Martínez 90'"
+  "sh": 4,
+  "sa": 6,
+  "scorers": "Kylian Mbappé 48' · Bradley Barcola 54' · Kylian Mbappé 66' · Ousmane Dembélé 90' · Declan Rice 3' · Ezri Konsa 18' · Bukayo Saka 37' · Bukayo Saka 45' · Bukayo Saka 87' · Jude Bellingham 90'"
  }
 }
