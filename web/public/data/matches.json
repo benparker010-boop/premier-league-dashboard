@@ -343,17 +343,7 @@
       "num": 23
      },
      {
-      "name": "Eric García",
-      "pos": "def",
-      "num": 24
-     },
-     {
       "name": "Fabián Ruiz",
-      "pos": "mid",
-      "num": 8
-     },
-     {
-      "name": "Pedri",
       "pos": "mid",
       "num": 8
      },
@@ -368,27 +358,7 @@
       "num": 20
      },
      {
-      "name": "Mikel Merino",
-      "pos": "mid",
-      "num": 23
-     },
-     {
-      "name": "Martín Zubimendi",
-      "pos": "mid",
-      "num": 36
-     },
-     {
-      "name": "Ferran Torres",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
       "name": "Mikel Oyarzabal",
-      "pos": "fwd",
-      "num": 10
-     },
-     {
-      "name": "Nico Williams",
       "pos": "fwd",
       "num": 10
      },
@@ -408,10 +378,10 @@
      "Joan García",
      "Marcos Llorente",
      "Marc Pubill",
+     "Eric García",
      "Pablo Gavi",
-     "Alejandro Grimaldo",
-     "Borja Iglesias",
-     "Yéremy Pino"
+     "Pedri",
+     "Alejandro Grimaldo"
     ]
    },
    "away": {
