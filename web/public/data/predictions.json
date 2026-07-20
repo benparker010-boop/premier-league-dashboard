@@ -1,18 +1,12 @@
 {
- "generatedAt": "2026-07-19T20:28:12.431543+00:00",
+ "generatedAt": "2026-07-20T03:15:52.176608+00:00",
  "modelVersion": "v3.0",
  "champions": [
   {
    "code": "ESP",
    "name": "Spain",
    "color": "#c3cfdc",
-   "v": 55.6
-  },
-  {
-   "code": "ARG",
-   "name": "Argentina",
-   "color": "#c3cfdc",
-   "v": 44.4
+   "v": 100.0
   }
  ],
  "bracket": {
@@ -344,25 +338,48 @@
     "tier": "result"
    }
   ],
-  "final": null
+  "final": {
+   "home": {
+    "code": "ESP",
+    "name": "Spain",
+    "color": "#c3cfdc"
+   },
+   "away": {
+    "code": "ARG",
+    "name": "Argentina",
+    "color": "#c3cfdc"
+   },
+   "done": true,
+   "sh": 0,
+   "sa": 0,
+   "winner": "home",
+   "favHome": true,
+   "prob": 56,
+   "projScore": [
+    1,
+    0
+   ],
+   "tier": "result",
+   "champion": "Spain"
+  }
  },
  "nextMatch": null,
  "lastMatch": {
-  "round": "KNOCKOUT",
-  "date": "Sat, Jul 18",
-  "venue": "Hard Rock Stadium, Miami Garden",
+  "round": "FINAL",
+  "date": "Sun, Jul 19",
+  "venue": "MetLife Stadium, East Rutherford",
   "home": {
-   "code": "FRA",
-   "name": "France",
-   "color": "#9d5fb5"
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
   },
   "away": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
   },
-  "sh": 4,
-  "sa": 6,
-  "scorers": "Kylian Mbappé 48' · Bradley Barcola 54' · Kylian Mbappé 66' · Ousmane Dembélé 90' · Declan Rice 3' · Ezri Konsa 18' · Bukayo Saka 37' · Bukayo Saka 45' · Bukayo Saka 87' · Jude Bellingham 90'"
+  "sh": 0,
+  "sa": 0,
+  "scorers": "Ferran Torres 106'"
  }
 }

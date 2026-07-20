@@ -1,24 +1,5 @@
 [
  {
-  "round": "GROUP D",
-  "date": "13 Jun 2026",
-  "ts": 1781312400.0,
-  "hCode": "USA",
-  "hCol": "#5ec8e0",
-  "aCode": "PAR",
-  "aCol": "#9d5fb5",
-  "sh": 4,
-  "sa": 1,
-  "status": "done",
-  "matchId": "mt_517473281",
-  "group": true,
-  "venue": "SoFi Stadium",
-  "city": "Inglewood",
-  "ref": "Danny Makkelie",
-  "htSh": 3,
-  "htSa": 0
- },
- {
   "round": "GROUP B",
   "date": "13 Jun 2026",
   "ts": 1781377200.0,
@@ -1922,5 +1903,26 @@
   "ref": "Jesús Valenzuela",
   "htSh": 0,
   "htSa": 4
+ },
+ {
+  "round": "FINAL",
+  "date": "19 Jul 2026",
+  "ts": 1784487600.0,
+  "hCode": "ESP",
+  "hCol": "#c3cfdc",
+  "aCode": "ARG",
+  "aCol": "#c3cfdc",
+  "sh": 0,
+  "sa": 0,
+  "status": "done",
+  "matchId": "mt_401944500",
+  "group": false,
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Slavko Vinčić",
+  "etSh": 1,
+  "etSa": 0,
+  "htSh": 0,
+  "htSa": 0
  }
 ]

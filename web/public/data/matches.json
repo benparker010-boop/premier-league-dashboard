@@ -1,5 +1,462 @@
 [
  {
+  "id": "mt_401944500",
+  "home": {
+   "code": "ESP",
+   "name": "Spain",
+   "color": "#c3cfdc"
+  },
+  "away": {
+   "code": "ARG",
+   "name": "Argentina",
+   "color": "#c3cfdc"
+  },
+  "score": [
+   0,
+   0
+  ],
+  "round": "FINAL",
+  "date": "19 Jul 2026",
+  "venue": "MetLife Stadium",
+  "city": "East Rutherford",
+  "ref": "Slavko Vinčić",
+  "stats": {
+   "possession": [
+    65,
+    35
+   ],
+   "xg": [
+    1.94,
+    0.2
+   ],
+   "shots": [
+    20,
+    2
+   ],
+   "sot": [
+    12,
+    0
+   ],
+   "big": [
+    4,
+    0
+   ],
+   "corners": [
+    null,
+    null
+   ],
+   "passes": [
+    852,
+    464
+   ],
+   "passAcc": [
+    null,
+    null
+   ],
+   "fouls": [
+    21,
+    25
+   ],
+   "yellow": [
+    0,
+    6
+   ]
+  },
+  "timeline": [
+   {
+    "min": 41,
+    "type": "y",
+    "team": "away",
+    "player": "Lisandro Martínez",
+    "assist": null
+   },
+   {
+    "min": 52,
+    "type": "y",
+    "team": "away",
+    "player": "Leandro Paredes",
+    "assist": null
+   },
+   {
+    "min": 82,
+    "type": "y",
+    "team": "away",
+    "player": "Enzo Fernández",
+    "assist": null
+   },
+   {
+    "min": 90,
+    "type": "y",
+    "team": "away",
+    "player": "Cristian Romero",
+    "assist": null
+   },
+   {
+    "min": 90,
+    "type": "y",
+    "team": "away",
+    "player": "Enzo Fernández",
+    "assist": null
+   },
+   {
+    "min": 106,
+    "type": "g",
+    "team": "home",
+    "player": "Ferran Torres",
+    "assist": null
+   },
+   {
+    "min": 111,
+    "type": "y",
+    "team": "away",
+    "player": "Alexis Mac Allister",
+    "assist": null
+   }
+  ],
+  "shots": [
+   {
+    "team": "home",
+    "player": "Lamine Yamal",
+    "xg": 0.1,
+    "outcome": "s",
+    "x": 6.4,
+    "y": 67.7,
+    "min": 5
+   },
+   {
+    "team": "home",
+    "player": "Mikel Oyarzabal",
+    "xg": 0.1,
+    "outcome": "s",
+    "x": 18.9,
+    "y": 54,
+    "min": 39
+   },
+   {
+    "team": "home",
+    "player": "Marc Cucurella",
+    "xg": 0.03,
+    "outcome": "o",
+    "x": 21.2,
+    "y": 26,
+    "min": 43
+   },
+   {
+    "team": "home",
+    "player": "Alex Baena",
+    "xg": 0.07,
+    "outcome": "s",
+    "x": 20,
+    "y": 40.1,
+    "min": 46
+   },
+   {
+    "team": "home",
+    "player": "Lamine Yamal",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 23.6,
+    "y": 73.5,
+    "min": 61
+   },
+   {
+    "team": "home",
+    "player": "Dani Olmo",
+    "xg": 0.05,
+    "outcome": "s",
+    "x": 24.3,
+    "y": 52.1,
+    "min": 64
+   },
+   {
+    "team": "home",
+    "player": "Dani Olmo",
+    "xg": 0.15,
+    "outcome": "b",
+    "x": 5.2,
+    "y": 53.4,
+    "min": 65
+   },
+   {
+    "team": "home",
+    "player": "Ferran Torres",
+    "xg": 0.17,
+    "outcome": "s",
+    "x": 8.1,
+    "y": 55,
+    "min": 67
+   },
+   {
+    "team": "home",
+    "player": "Pedri",
+    "xg": 0.04,
+    "outcome": "s",
+    "x": 18.2,
+    "y": 46.4,
+    "min": 77
+   },
+   {
+    "team": "home",
+    "player": "Pau Cubarsí",
+    "xg": 0.03,
+    "outcome": "s",
+    "x": 21.5,
+    "y": 72,
+    "min": 77
+   },
+   {
+    "team": "home",
+    "player": "Aymeric Laporte",
+    "xg": 0.09,
+    "outcome": "s",
+    "x": 6.7,
+    "y": 44.8,
+    "min": 81
+   },
+   {
+    "team": "home",
+    "player": "Ferran Torres",
+    "xg": 0.11,
+    "outcome": "o",
+    "x": 11.7,
+    "y": 59.9,
+    "min": 87
+   },
+   {
+    "team": "home",
+    "player": "Rodri",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 28.2,
+    "y": 54.8,
+    "min": 89
+   },
+   {
+    "team": "home",
+    "player": "Nico Williams",
+    "xg": 0.08,
+    "outcome": "s",
+    "x": 15.8,
+    "y": 70.6,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Lamine Yamal",
+    "xg": 0.07,
+    "outcome": "s",
+    "x": 24,
+    "y": 47,
+    "min": 90
+   },
+   {
+    "team": "home",
+    "player": "Nico Williams",
+    "xg": 0.25,
+    "outcome": "s",
+    "x": 8.1,
+    "y": 45.9,
+    "min": 93
+   },
+   {
+    "team": "home",
+    "player": "Lamine Yamal",
+    "xg": 0.02,
+    "outcome": "o",
+    "x": 23.3,
+    "y": 67.7,
+    "min": 101
+   },
+   {
+    "team": "home",
+    "player": "Mikel Merino",
+    "xg": 0.23,
+    "outcome": "o",
+    "x": 7.5,
+    "y": 49.3,
+    "min": 103
+   },
+   {
+    "team": "home",
+    "player": "Nico Williams",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 26.6,
+    "y": 42.1,
+    "min": 104
+   },
+   {
+    "team": "home",
+    "player": "Ferran Torres",
+    "xg": 0.23,
+    "outcome": "g",
+    "x": 8,
+    "y": 44.2,
+    "min": 106
+   },
+   {
+    "team": "away",
+    "player": "Lionel Messi",
+    "xg": 0.03,
+    "outcome": "b",
+    "x": 20,
+    "y": 67.9,
+    "min": 117
+   },
+   {
+    "team": "away",
+    "player": "Giuliano Simeone",
+    "xg": 0.18,
+    "outcome": "o",
+    "x": 9.2,
+    "y": 52.4,
+    "min": 120
+   }
+  ],
+  "lineups": {
+   "home": {
+    "formation": "4-2-3-1",
+    "xi": [
+     {
+      "name": "Unai Simón",
+      "pos": "gk",
+      "num": 1
+     },
+     {
+      "name": "Marc Cucurella",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Pau Cubarsí",
+      "pos": "def",
+      "num": 5
+     },
+     {
+      "name": "Aymeric Laporte",
+      "pos": "def",
+      "num": 14
+     },
+     {
+      "name": "Pedro Porro",
+      "pos": "def",
+      "num": 23
+     },
+     {
+      "name": "Fabián Ruiz",
+      "pos": "mid",
+      "num": 8
+     },
+     {
+      "name": "Rodri",
+      "pos": "mid",
+      "num": 16
+     },
+     {
+      "name": "Dani Olmo",
+      "pos": "mid",
+      "num": 20
+     },
+     {
+      "name": "Mikel Oyarzabal",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Lamine Yamal",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Alex Baena",
+      "pos": "fwd",
+      "num": 10
+     }
+    ],
+    "subs": [
+     "David Raya",
+     "Joan García",
+     "Marcos Llorente",
+     "Marc Pubill",
+     "Eric García",
+     "Pablo Gavi",
+     "Pedri",
+     "Alejandro Grimaldo"
+    ]
+   },
+   "away": {
+    "formation": "4-4-2",
+    "xi": [
+     {
+      "name": "Emiliano Martínez",
+      "pos": "gk",
+      "num": 23
+     },
+     {
+      "name": "Nicolás Tagliafico",
+      "pos": "def",
+      "num": 3
+     },
+     {
+      "name": "Lisandro Martínez",
+      "pos": "def",
+      "num": 6
+     },
+     {
+      "name": "Cristian Romero",
+      "pos": "def",
+      "num": 17
+     },
+     {
+      "name": "Gonzalo Montiel",
+      "pos": "def",
+      "num": 29
+     },
+     {
+      "name": "Rodrigo De Paul",
+      "pos": "mid",
+      "num": 7
+     },
+     {
+      "name": "Enzo Fernández",
+      "pos": "mid",
+      "num": 8
+     },
+     {
+      "name": "Alexis Mac Allister",
+      "pos": "mid",
+      "num": 10
+     },
+     {
+      "name": "Nicolás González",
+      "pos": "mid",
+      "num": 11
+     },
+     {
+      "name": "Lionel Messi",
+      "pos": "fwd",
+      "num": 10
+     },
+     {
+      "name": "Julián Alvarez",
+      "pos": "fwd",
+      "num": 19
+     }
+    ],
+    "subs": [
+     "Gerónimo Rulli",
+     "Juan Musso",
+     "Marcos Senesi",
+     "Nahuel Molina",
+     "Nicolás Otamendi",
+     "Facundo Medina",
+     "Leandro Paredes",
+     "Valentín Barco"
+    ]
+   }
+  }
+ },
+ {
   "id": "mt_583655786",
   "home": {
    "code": "FRA",
@@ -5440,579 +5897,6 @@
      "Pablo Gavi",
      "Fabián Ruiz",
      "Nico Williams"
-    ]
-   }
-  }
- },
- {
-  "id": "mt_362533068",
-  "home": {
-   "code": "MEX",
-   "name": "Mexico",
-   "color": "#ef7d52"
-  },
-  "away": {
-   "code": "ENG",
-   "name": "England",
-   "color": "#2ecc71"
-  },
-  "score": [
-   2,
-   3
-  ],
-  "round": "ROUND OF 16",
-  "date": "6 Jul 2026",
-  "venue": "Estadio Azteca",
-  "city": "Mexico City",
-  "ref": "Alireza Faghani",
-  "stats": {
-   "possession": [
-    67,
-    33
-   ],
-   "xg": [
-    1.88,
-    1.61
-   ],
-   "shots": [
-    20,
-    6
-   ],
-   "sot": [
-    5,
-    5
-   ],
-   "big": [
-    2,
-    3
-   ],
-   "corners": [
-    null,
-    null
-   ],
-   "passes": [
-    453,
-    244
-   ],
-   "passAcc": [
-    null,
-    null
-   ],
-   "fouls": [
-    14,
-    7
-   ],
-   "yellow": [
-    2,
-    4
-   ]
-  },
-  "timeline": [
-   {
-    "min": 1,
-    "type": "y",
-    "team": "away",
-    "player": "Declan Rice",
-    "assist": null
-   },
-   {
-    "min": 36,
-    "type": "g",
-    "team": "away",
-    "player": "Jude Bellingham",
-    "assist": null
-   },
-   {
-    "min": 38,
-    "type": "g",
-    "team": "away",
-    "player": "Jude Bellingham",
-    "assist": null
-   },
-   {
-    "min": 42,
-    "type": "g",
-    "team": "home",
-    "player": "Julián Quiñones",
-    "assist": null
-   },
-   {
-    "min": 54,
-    "type": "r",
-    "team": "away",
-    "player": "Jarell Quansah",
-    "assist": null
-   },
-   {
-    "min": 60,
-    "type": "g",
-    "team": "away",
-    "player": "Harry Kane",
-    "assist": null
-   },
-   {
-    "min": 68,
-    "type": "y",
-    "team": "away",
-    "player": "Marc Guéhi",
-    "assist": null
-   },
-   {
-    "min": 69,
-    "type": "g",
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "assist": null
-   },
-   {
-    "min": 71,
-    "type": "y",
-    "team": "home",
-    "player": "Jorge Sánchez",
-    "assist": null
-   },
-   {
-    "min": 72,
-    "type": "y",
-    "team": "away",
-    "player": "Nico O'Reilly",
-    "assist": null
-   },
-   {
-    "min": 90,
-    "type": "y",
-    "team": "away",
-    "player": "Jordan Henderson",
-    "assist": null
-   },
-   {
-    "min": 90,
-    "type": "y",
-    "team": "home",
-    "player": "Johan Vásquez",
-    "assist": null
-   }
-  ],
-  "shots": [
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.02,
-    "outcome": "b",
-    "x": 25.9,
-    "y": 55.4,
-    "min": 3
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.05,
-    "outcome": "s",
-    "x": 11.9,
-    "y": 54.2,
-    "min": 15
-   },
-   {
-    "team": "home",
-    "player": "Gilberto Mora",
-    "xg": 0.05,
-    "outcome": "b",
-    "x": 16.2,
-    "y": 34,
-    "min": 19
-   },
-   {
-    "team": "away",
-    "player": "Anthony Gordon",
-    "xg": 0.04,
-    "outcome": "s",
-    "x": 8.9,
-    "y": 25,
-    "min": 26
-   },
-   {
-    "team": "home",
-    "player": "Luis Romo",
-    "xg": 0.03,
-    "outcome": "o",
-    "x": 27.8,
-    "y": 51.1,
-    "min": 32
-   },
-   {
-    "team": "away",
-    "player": "Jude Bellingham",
-    "xg": 0.33,
-    "outcome": "g",
-    "x": 4.8,
-    "y": 45.5,
-    "min": 36
-   },
-   {
-    "team": "away",
-    "player": "Jude Bellingham",
-    "xg": 0.29,
-    "outcome": "g",
-    "x": 3.8,
-    "y": 47.8,
-    "min": 38
-   },
-   {
-    "team": "home",
-    "player": "Julián Quiñones",
-    "xg": 0.2,
-    "outcome": "g",
-    "x": 9.1,
-    "y": 50.9,
-    "min": 42
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.1,
-    "outcome": "o",
-    "x": 15.4,
-    "y": 40.1,
-    "min": 45
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.03,
-    "outcome": "s",
-    "x": 14.8,
-    "y": 46.6,
-    "min": 45
-   },
-   {
-    "team": "home",
-    "player": "Julián Quiñones",
-    "xg": 0.02,
-    "outcome": "b",
-    "x": 32,
-    "y": 54.3,
-    "min": 48
-   },
-   {
-    "team": "away",
-    "player": "Nico O'Reilly",
-    "xg": 0.05,
-    "outcome": "o",
-    "x": 19.4,
-    "y": 49.3,
-    "min": 49
-   },
-   {
-    "team": "home",
-    "player": "Julián Quiñones",
-    "xg": 0.01,
-    "outcome": "o",
-    "x": 24.3,
-    "y": 28.2,
-    "min": 57
-   },
-   {
-    "team": "away",
-    "player": "Harry Kane",
-    "xg": 0.82,
-    "outcome": "g",
-    "x": 11.5,
-    "y": 50,
-    "min": 60
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.82,
-    "outcome": "g",
-    "x": 11.5,
-    "y": 50,
-    "min": 69
-   },
-   {
-    "team": "home",
-    "player": "Brian Gutiérrez",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 10,
-    "y": 28.9,
-    "min": 78
-   },
-   {
-    "team": "home",
-    "player": "Edson Álvarez",
-    "xg": 0.19,
-    "outcome": "o",
-    "x": 4.8,
-    "y": 51.4,
-    "min": 80
-   },
-   {
-    "team": "home",
-    "player": "Santiago Giménez",
-    "xg": 0.12,
-    "outcome": "o",
-    "x": 13.3,
-    "y": 50.3,
-    "min": 82
-   },
-   {
-    "team": "home",
-    "player": "Álvaro Fidalgo",
-    "xg": 0.02,
-    "outcome": "s",
-    "x": 26.5,
-    "y": 39.9,
-    "min": 89
-   },
-   {
-    "team": "home",
-    "player": "Álvaro Fidalgo",
-    "xg": 0.11,
-    "outcome": "b",
-    "x": 9.9,
-    "y": 65.1,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.03,
-    "outcome": "o",
-    "x": 13.6,
-    "y": 72,
-    "min": 90
-   },
-   {
-    "team": "away",
-    "player": "Jude Bellingham",
-    "xg": 0.02,
-    "outcome": "s",
-    "x": 46.8,
-    "y": 36.4,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Jesús Gallardo",
-    "xg": 0.02,
-    "outcome": "o",
-    "x": 22.9,
-    "y": 26.8,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 18.1,
-    "y": 55.3,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Edson Álvarez",
-    "xg": 0.03,
-    "outcome": "b",
-    "x": 26.5,
-    "y": 47.9,
-    "min": 90
-   },
-   {
-    "team": "home",
-    "player": "Raúl Jiménez",
-    "xg": 0.14,
-    "outcome": "o",
-    "x": 12.2,
-    "y": 46,
-    "min": 90
-   }
-  ],
-  "lineups": {
-   "home": {
-    "formation": "4-3-3",
-    "xi": [
-     {
-      "name": "Raúl Rangel",
-      "pos": "gk",
-      "num": 1
-     },
-     {
-      "name": "Jesús Gallardo",
-      "pos": "def",
-      "num": 20
-     },
-     {
-      "name": "Johan Vásquez",
-      "pos": "def",
-      "num": 22
-     },
-     {
-      "name": "César Montes",
-      "pos": "def",
-      "num": 23
-     },
-     {
-      "name": "Jorge Sánchez",
-      "pos": "def",
-      "num": 35
-     },
-     {
-      "name": "Edson Álvarez",
-      "pos": "mid",
-      "num": 4
-     },
-     {
-      "name": "Erik Lira",
-      "pos": "mid",
-      "num": 6
-     },
-     {
-      "name": "Luis Romo",
-      "pos": "mid",
-      "num": 7
-     },
-     {
-      "name": "Brian Gutiérrez",
-      "pos": "mid",
-      "num": 11
-     },
-     {
-      "name": "Álvaro Fidalgo",
-      "pos": "mid",
-      "num": 15
-     },
-     {
-      "name": "Gilberto Mora",
-      "pos": "mid",
-      "num": 19
-     },
-     {
-      "name": "Santiago Giménez",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
-      "name": "Raúl Jiménez",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
-      "name": "Guillermo Martínez",
-      "pos": "fwd",
-      "num": 9
-     },
-     {
-      "name": "Roberto Alvarado",
-      "pos": "fwd",
-      "num": 25
-     },
-     {
-      "name": "Julián Quiñones",
-      "pos": "fwd",
-      "num": 33
-     }
-    ],
-    "subs": [
-     "Carlos Acevedo",
-     "Guillermo Ochoa",
-     "Israel Reyes",
-     "Mateo Chávez",
-     "Alexis Vega",
-     "Orbelín Pineda",
-     "César Huerta",
-     "Obed Vargas"
-    ]
-   },
-   "away": {
-    "formation": "4-2-3-1",
-    "xi": [
-     {
-      "name": "Jordan Pickford",
-      "pos": "gk",
-      "num": 1
-     },
-     {
-      "name": "Jarell Quansah",
-      "pos": "def",
-      "num": 4
-     },
-     {
-      "name": "Ezri Konsa",
-      "pos": "def",
-      "num": 4
-     },
-     {
-      "name": "Marc Guéhi",
-      "pos": "def",
-      "num": 15
-     },
-     {
-      "name": "Djed Spence",
-      "pos": "def",
-      "num": 24
-     },
-     {
-      "name": "Dan Burn",
-      "pos": "def",
-      "num": 33
-     },
-     {
-      "name": "Nico O'Reilly",
-      "pos": "def",
-      "num": 33
-     },
-     {
-      "name": "John Stones",
-      "pos": "def",
-      "num": null
-     },
-     {
-      "name": "Jude Bellingham",
-      "pos": "mid",
-      "num": 5
-     },
-     {
-      "name": "Elliot Anderson",
-      "pos": "mid",
-      "num": 8
-     },
-     {
-      "name": "Morgan Rogers",
-      "pos": "mid",
-      "num": 27
-     },
-     {
-      "name": "Declan Rice",
-      "pos": "mid",
-      "num": 41
-     },
-     {
-      "name": "Bukayo Saka",
-      "pos": "fwd",
-      "num": 7
-     },
-     {
-      "name": "Harry Kane",
-      "pos": "fwd",
-      "num": 9
-     },
-     {
-      "name": "Anthony Gordon",
-      "pos": "fwd",
-      "num": 10
-     }
-    ],
-    "subs": [
-     "James Trafford",
-     "Dean Henderson",
-     "Trevoh Chalobah",
-     "Reece James",
-     "Jordan Henderson",
-     "Eberechi Eze",
-     "Kobbie Mainoo",
-     "Marcus Rashford"
     ]
    }
   }
